@@ -1,4 +1,5 @@
 import SwiftUI
+import AudioToolbox
 
 //
 //  AlarmView.swift
@@ -47,6 +48,10 @@ struct AlarmView: View {
         .padding()
         .navigationTitle("알람")
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            AudioServicesPlaySystemSound(1005)
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        }
     }
 }
 
