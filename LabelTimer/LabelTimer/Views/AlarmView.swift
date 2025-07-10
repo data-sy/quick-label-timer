@@ -15,43 +15,74 @@ import AudioToolbox
 struct AlarmView: View {
     let timerData: TimerData
     @Binding var path: [Route]
+    
+    @State private var alarmTimer: Timer?
 
     var body: some View {
         VStack(spacing: 24) {
             Text("⏰ 타이머 종료")
-                .font(.largeTitle)
+                .font(.title3)
+                .fontWeight(.regular)
 
             if !timerData.label.isEmpty {
-                Text("라벨: \(timerData.label)")
-                    .font(.title2)
-                    .foregroundColor(.gray)
+                Text(timerData.label)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.top, 8)
+            } else {
+                Spacer().frame(height: 16) // 라벨이 없을 때 간격 유지
             }
+            
+            Spacer().frame(height: 40)
 
-            Button("재시작") {
-                path.append(.runningTimer(data: timerData))
-            }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color.green)
-            .foregroundColor(.white)
-            .cornerRadius(10)
+            HStack {
+                Button("재시작") {
+                    stopAlarm()
+                    path.append(.runningTimer(data: timerData))
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .foregroundColor(.primary)
+                .cornerRadius(10)
+                .contentShape(Rectangle())
 
-            Button("홈으로") {
-                path = []
+                Spacer(minLength: 40)
+
+                Button("확인") {
+                    stopAlarm()
+                    path = []
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .contentShape(Rectangle())
             }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color.gray.opacity(0.2))
-            .foregroundColor(.red)
-            .cornerRadius(10)
+            .padding(.horizontal)
+            
         }
         .padding()
         .navigationTitle("알람")
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            AudioServicesPlaySystemSound(1005)
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+            startAlarm()
+        }
+        .onDisappear {
+            stopAlarm()
         }
     }
-}
 
+    func startAlarm() {
+        alarmTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            AudioServicesPlaySystemSound(1005) // 사운드
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) // 진동
+        }
+    }
+
+    func stopAlarm() {
+        alarmTimer?.invalidate()
+        alarmTimer = nil
+    }
+}

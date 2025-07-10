@@ -69,6 +69,8 @@ struct TimerInputView: View {
             .cornerRadius(12)
             .padding(.horizontal)
 
+            Spacer().frame(height: 32)
+
             HStack(spacing: 16) {
                 Button("홈으로") {
                     path = []
