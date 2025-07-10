@@ -18,21 +18,56 @@ struct TimerInputView: View {
     @State private var minutes = 0
     @State private var seconds = 0
     @State private var label = ""
+    
+    @FocusState private var isLabelFocused: Bool
 
     var body: some View {
         VStack {
-            Form {
-                Section(header: Text("시간 설정")) {
-                    Stepper("시: \(hours)", value: $hours, in: 0...23)
-                    Stepper("분: \(minutes)", value: $minutes, in: 0...59)
-                    Stepper("초: \(seconds)", value: $seconds, in: 0...59)
-                }
 
-                Section(header: Text("라벨")) {
-                    TextField("라벨을 입력하세요", text: $label)
-                        .submitLabel(.done)
+            HStack(spacing: 10) {
+                Picker("시", selection: $hours) {
+                    ForEach(0..<24, id: \.self) { Text("\($0)시") }
                 }
+                .pickerStyle(.wheel)
+                .frame(width: 100)
+                .clipped()
+
+                Picker("분", selection: $minutes) {
+                    ForEach(0..<60, id: \.self) { Text("\($0)분") }
+                }
+                .pickerStyle(.wheel)
+                .frame(width: 100)
+                .clipped()
+
+                Picker("초", selection: $seconds) {
+                    ForEach(0..<60, id: \.self) { Text("\($0)초") }
+                }
+                .pickerStyle(.wheel)
+                .frame(width: 100)
+                .clipped()
             }
+            .frame(height: 150)
+            .padding(.bottom)
+            
+            HStack {
+                Text("레이블")
+                    .foregroundColor(.gray)
+
+                TextField("입력", text: $label)
+                    .focused($isLabelFocused)
+                    .multilineTextAlignment(.trailing)
+                    .foregroundColor(.primary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+            }
+            .contentShape(Rectangle()) // 💡 터치 영역 확대
+            .onTapGesture {
+                isLabelFocused = true
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            .padding(.horizontal)
 
             HStack(spacing: 16) {
                 Button("홈으로") {
@@ -43,8 +78,10 @@ struct TimerInputView: View {
                 .background(Color.gray.opacity(0.2))
                 .foregroundColor(.red)
                 .cornerRadius(10)
+                
+                Spacer(minLength: 40)
 
-                Button("시작") {
+                Button("타이머 시작") {
                     let data = TimerData(
                         hours: hours,
                         minutes: minutes,
@@ -53,7 +90,6 @@ struct TimerInputView: View {
                     )
                     path.append(.runningTimer(data: data))
                 }
-                .disabled(hours == 0 && minutes == 0 && seconds == 0)
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(Color.green)
