@@ -30,39 +30,39 @@ struct TimerInputView: View {
 
                 Section(header: Text("라벨")) {
                     TextField("라벨을 입력하세요", text: $label)
-                }
-
-                // ✅ 타이머 시작 버튼 (Form 안에 포함)
-                Section {
-                    Button("타이머 시작") {
-                        let data = TimerData(
-                            hours: hours,
-                            minutes: minutes,
-                            seconds: seconds,
-                            label: label
-                        )
-                        path.append(.runningTimer(data))
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                        .submitLabel(.done)
                 }
             }
 
-            Button("홈으로") {
-                path = []
+            HStack(spacing: 16) {
+                Button("홈으로") {
+                    path = []
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .foregroundColor(.red)
+                .cornerRadius(10)
+
+                Button("시작") {
+                    let data = TimerData(
+                        hours: hours,
+                        minutes: minutes,
+                        seconds: seconds,
+                        label: label
+                    )
+                    path.append(.runningTimer(data))
+                }
+                .disabled(hours == 0 && minutes == 0 && seconds == 0)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.green)
+                .foregroundColor(.white)
+                .cornerRadius(10)
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color.gray.opacity(0.2))
-            .foregroundColor(.red)
-            .cornerRadius(10)
             .padding(.horizontal)
             .padding(.bottom)
         }
         .navigationTitle("타이머 설정")
     }
 }
-
