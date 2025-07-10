@@ -11,4 +11,5 @@ import Foundation
 enum Route: Hashable {
     case timerInput
     case runningTimer(TimerData)
+    case alarm(data: TimerData)
 }

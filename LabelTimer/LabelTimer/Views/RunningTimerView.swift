@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 //
 //  RunningTimerView.swift
@@ -13,14 +14,19 @@ import SwiftUI
 
 struct RunningTimerView: View {
     let timerData: TimerData
+    @Binding var path: [Route]
+
+    @State private var remainingSeconds: Int = 0
+    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack(spacing: 20) {
             Text("⏱ 타이머 실행 중")
                 .font(.title)
 
-            Text(String(format: "%02d:%02d:%02d", timerData.hours, timerData.minutes, timerData.seconds))
+            Text(timeString(from: remainingSeconds))
                 .font(.system(size: 48, weight: .bold))
+                .monospacedDigit()
 
             if !timerData.label.isEmpty {
                 Text("라벨: \(timerData.label)")
@@ -30,6 +36,24 @@ struct RunningTimerView: View {
         }
         .padding()
         .navigationTitle("실행 중")
+        .onAppear {
+            remainingSeconds = timerData.hours * 3600 + timerData.minutes * 60 + timerData.seconds
+        }
+        .onReceive(timer) { _ in
+            if remainingSeconds > 0 {
+                remainingSeconds -= 1
+            } else {
+                timer.upstream.connect().cancel()
+                path.append(.alarm(data: timerData))
+            }
+        }
+    }
+
+    func timeString(from totalSeconds: Int) -> String {
+        let h = totalSeconds / 3600
+        let m = (totalSeconds % 3600) / 60
+        let s = totalSeconds % 60
+        return String(format: "%02d:%02d:%02d", h, m, s)
     }
 }
 

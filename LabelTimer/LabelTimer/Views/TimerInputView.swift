@@ -51,7 +51,7 @@ struct TimerInputView: View {
                 }
             }
 
-            Button("홈으로 돌아가기") {
+            Button("홈으로") {
                 path = []
             }
             .frame(maxWidth: .infinity)

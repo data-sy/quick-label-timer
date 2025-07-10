@@ -36,7 +36,9 @@ struct HomeView: View {
                 case .timerInput:
                     TimerInputView(path: $path)
                 case .runningTimer(let timerData):
-                    RunningTimerView(timerData: timerData)
+                    RunningTimerView(timerData: timerData, path: $path)
+                case .alarm(data: let data):
+                    AlarmView(timerData: data, path: $path)
                 }
             }
         }
