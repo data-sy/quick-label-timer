@@ -1,4 +1,5 @@
 import SwiftUI
+import UserNotifications
 
 //
 //  HomeView.swift
@@ -16,31 +17,40 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            VStack {
-                Spacer()
+            VStack(spacing: 20) {
+                Text("LabelTimer")
+                    .font(.largeTitle)
+                    .bold()
 
-                NavigationLink(value: Route.timerInput) {
-                    Text("＋ 새 타이머")
-                        .font(.title2)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
+                Button("+ 새 타이머") {
+                    path.append(.timerInput)
                 }
-
-                Spacer()
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
             }
-            .navigationTitle("홈")
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .timerInput:
                     TimerInputView(path: $path)
-                case .runningTimer(let timerData):
-                    RunningTimerView(timerData: timerData, path: $path)
+                case .runningTimer(data: let data):
+                    RunningTimerView(timerData: data, path: $path)
                 case .alarm(data: let data):
                     AlarmView(timerData: data, path: $path)
                 }
             }
+            .onAppear {
+                UNUserNotificationCenter.current()
+                    .requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                        if granted {
+                            print("🔔 알림 권한 허용됨")
+                        } else {
+                            print("❌ 알림 권한 거부됨 또는 오류: \(error?.localizedDescription ?? "알 수 없음")")
+                        }
+                    }
+            }
         }
     }
 }
+

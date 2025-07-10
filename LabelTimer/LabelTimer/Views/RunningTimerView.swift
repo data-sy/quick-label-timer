@@ -1,5 +1,5 @@
 import SwiftUI
-import Combine
+import UserNotifications
 
 //
 //  RunningTimerView.swift
@@ -17,7 +17,7 @@ struct RunningTimerView: View {
     @Binding var path: [Route]
 
     @State private var remainingSeconds: Int = 0
-    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State private var timer: Timer? = nil
 
     var body: some View {
         VStack(spacing: 20) {
@@ -33,27 +33,53 @@ struct RunningTimerView: View {
                     .font(.headline)
                     .foregroundColor(.gray)
             }
+
+            Button("홈으로") {
+                timer?.invalidate()
+                path = []
+            }
+            .foregroundColor(.red)
+            .padding(.top, 20)
         }
         .padding()
-        .navigationTitle("실행 중")
+        .navigationTitle("타이머 실행")
         .onAppear {
-            remainingSeconds = timerData.hours * 3600 + timerData.minutes * 60 + timerData.seconds
+            remainingSeconds = timerData.totalSeconds
+            startCountdown()
+            scheduleNotification(label: timerData.label, after: remainingSeconds)
         }
-        .onReceive(timer) { _ in
+        .onDisappear {
+            timer?.invalidate()
+        }
+    }
+
+    func timeString(from seconds: Int) -> String {
+        let h = seconds / 3600
+        let m = (seconds % 3600) / 60
+        let s = seconds % 60
+        return String(format: "%02d:%02d:%02d", h, m, s)
+    }
+
+    func startCountdown() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             if remainingSeconds > 0 {
                 remainingSeconds -= 1
             } else {
-                timer.upstream.connect().cancel()
+                timer?.invalidate()
                 path.append(.alarm(data: timerData))
             }
         }
     }
 
-    func timeString(from totalSeconds: Int) -> String {
-        let h = totalSeconds / 3600
-        let m = (totalSeconds % 3600) / 60
-        let s = totalSeconds % 60
-        return String(format: "%02d:%02d:%02d", h, m, s)
+    func scheduleNotification(label: String, after seconds: Int) {
+        let content = UNMutableNotificationContent()
+        content.title = "⏰ 타이머 종료"
+        content.body = label.isEmpty ? "타이머가 끝났습니다." : "\(label) 타이머가 끝났습니다."
+        content.sound = .default
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request)
     }
 }
-

@@ -28,7 +28,7 @@ struct AlarmView: View {
             }
 
             Button("재시작") {
-                path.append(.runningTimer(timerData))
+                path.append(.runningTimer(data: timerData))
             }
             .padding()
             .frame(maxWidth: .infinity)

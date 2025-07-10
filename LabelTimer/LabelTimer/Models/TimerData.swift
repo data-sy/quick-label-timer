@@ -14,4 +14,8 @@ struct TimerData: Hashable {
     let minutes: Int
     let seconds: Int
     let label: String
+    
+    var totalSeconds: Int {
+        hours * 3600 + minutes * 60 + seconds
+    }
 }

@@ -51,7 +51,7 @@ struct TimerInputView: View {
                         seconds: seconds,
                         label: label
                     )
-                    path.append(.runningTimer(data))
+                    path.append(.runningTimer(data: data))
                 }
                 .disabled(hours == 0 && minutes == 0 && seconds == 0)
                 .frame(maxWidth: .infinity)
