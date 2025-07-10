@@ -12,27 +12,41 @@ import SwiftUI
 /// - ViewModel: TimerInputViewModel
 
 struct TimerInputView: View {
-    @StateObject private var viewModel = TimerInputViewModel()
-    
+    @Binding var path: [TimerData]
+
+    @State private var hours = 0
+    @State private var minutes = 0
+    @State private var seconds = 0
+    @State private var label = ""
+
     var body: some View {
-        VStack(spacing: 16) {
-            Text("시간을 입력하세요.")
-                .font(.title)
+        Form {
+            Section(header: Text("시간 설정")) {
+                Stepper("시: \(hours)", value: $hours, in: 0...23)
+                Stepper("분: \(minutes)", value: $minutes, in: 0...59)
+                Stepper("초: \(seconds)", value: $seconds, in: 0...59)
+            }
 
-            Picker("시", selection: $viewModel.selectedHour) {
-                ForEach(0..<24) { Text("\($0)시") }
-            }.pickerStyle(.menu)
+            Section(header: Text("라벨")) {
+                TextField("라벨을 입력하세요", text: $label)
+            }
 
-            Picker("분", selection: $viewModel.selectedMinute) {
-                ForEach(0..<60) { Text("\($0)분") }
-            }.pickerStyle(.menu)
-
-            Picker("초", selection: $viewModel.selectedSecond) {
-                ForEach(0..<60) { Text("\($0)초") }
-            }.pickerStyle(.menu)
-            
+            Button("타이머 시작") {
+                let timerData = TimerData(
+                    hours: hours,
+                    minutes: minutes,
+                    seconds: seconds,
+                    label: label
+                )
+                path.append(timerData)
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+            .cornerRadius(10)
         }
-        .padding()
-        .presentationDetents([.medium])
+        .navigationTitle("타이머 설정")
     }
 }
+
