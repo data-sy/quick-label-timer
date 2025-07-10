@@ -20,26 +20,47 @@ struct TimerInputView: View {
     @State private var label = ""
 
     var body: some View {
-        Form {
-            Section(header: Text("시간 설정")) {
-                Stepper("시: \(hours)", value: $hours, in: 0...23)
-                Stepper("분: \(minutes)", value: $minutes, in: 0...59)
-                Stepper("초: \(seconds)", value: $seconds, in: 0...59)
+        VStack {
+            Form {
+                Section(header: Text("시간 설정")) {
+                    Stepper("시: \(hours)", value: $hours, in: 0...23)
+                    Stepper("분: \(minutes)", value: $minutes, in: 0...59)
+                    Stepper("초: \(seconds)", value: $seconds, in: 0...59)
+                }
+
+                Section(header: Text("라벨")) {
+                    TextField("라벨을 입력하세요", text: $label)
+                }
+
+                // ✅ 타이머 시작 버튼 (Form 안에 포함)
+                Section {
+                    Button("타이머 시작") {
+                        let data = TimerData(
+                            hours: hours,
+                            minutes: minutes,
+                            seconds: seconds,
+                            label: label
+                        )
+                        path.append(.runningTimer(data))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                }
             }
 
-            Section(header: Text("라벨")) {
-                TextField("라벨을 입력하세요", text: $label)
-            }
-
-            Button("타이머 시작") {
-                let data = TimerData(hours: hours, minutes: minutes, seconds: seconds, label: label)
-                path.append(.runningTimer(data))
+            Button("홈으로 돌아가기") {
+                path = []
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color.green)
-            .foregroundColor(.white)
+            .background(Color.gray.opacity(0.2))
+            .foregroundColor(.red)
             .cornerRadius(10)
+            .padding(.horizontal)
+            .padding(.bottom)
         }
         .navigationTitle("타이머 설정")
     }
