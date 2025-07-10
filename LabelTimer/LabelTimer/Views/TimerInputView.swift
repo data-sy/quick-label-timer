@@ -12,7 +12,7 @@ import SwiftUI
 /// - ViewModel: TimerInputViewModel
 
 struct TimerInputView: View {
-    @Binding var path: [TimerData]
+    @Binding var path: [Route]
 
     @State private var hours = 0
     @State private var minutes = 0
@@ -32,13 +32,8 @@ struct TimerInputView: View {
             }
 
             Button("타이머 시작") {
-                let timerData = TimerData(
-                    hours: hours,
-                    minutes: minutes,
-                    seconds: seconds,
-                    label: label
-                )
-                path.append(timerData)
+                let data = TimerData(hours: hours, minutes: minutes, seconds: seconds, label: label)
+                path.append(.runningTimer(data))
             }
             .frame(maxWidth: .infinity)
             .padding()

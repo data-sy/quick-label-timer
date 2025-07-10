@@ -12,25 +12,32 @@ import SwiftUI
 /// - ViewModel: 없음
 
 struct HomeView: View {
-    @State private var path: [TimerData] = []
+    @State private var path: [Route] = []
 
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
                 Spacer()
 
-                NavigationLink("＋ 새 타이머", destination: TimerInputView(path: $path))
-                    .font(.title2)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
+                NavigationLink(value: Route.timerInput) {
+                    Text("＋ 새 타이머")
+                        .font(.title2)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                }
 
                 Spacer()
             }
             .navigationTitle("홈")
-            .navigationDestination(for: TimerData.self) { timerData in
-                RunningTimerView(timerData: timerData)
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .timerInput:
+                    TimerInputView(path: $path)
+                case .runningTimer(let timerData):
+                    RunningTimerView(timerData: timerData)
+                }
             }
         }
     }
