@@ -9,7 +9,6 @@ import SwiftUI
 /// 시/분/초 및 라벨을 입력받는 타이머 설정 화면
 ///
 /// - 사용 목적: 타이머 시간과 라벨 입력 처리
-/// - ViewModel: TimerInputViewModel
 
 struct TimerInputView: View {
     @Binding var path: [Route]
@@ -22,7 +21,7 @@ struct TimerInputView: View {
     @FocusState private var isLabelFocused: Bool
 
     var body: some View {
-        VStack {
+        VStack(spacing: 24) {
 
             HStack(spacing: 10) {
                 Picker("시", selection: $hours) {
@@ -47,7 +46,6 @@ struct TimerInputView: View {
                 .clipped()
             }
             .frame(height: 150)
-            .padding(.bottom)
 
             HStack {
                 Text("레이블")
@@ -72,7 +70,21 @@ struct TimerInputView: View {
             Spacer().frame(height: 32)
 
             HStack(spacing: 16) {
-                Spacer()
+                Button {
+                    hours = 0
+                    minutes = 0
+                    seconds = 0
+                    label = ""
+                    isLabelFocused = false
+                } label: {
+                    Label("리셋", systemImage: "arrow.counterclockwise")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(width: UIScreen.main.bounds.width * 0.23)
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .foregroundColor(.red)
+                .cornerRadius(10)
 
                 Button("타이머 시작") {
                     let data = TimerData(
@@ -90,11 +102,8 @@ struct TimerInputView: View {
                 .cornerRadius(10)
                 .disabled(hours + minutes + seconds == 0)
                 .opacity(hours + minutes + seconds == 0 ? 0.5 : 1.0)
-
-                Spacer()
             }
             .padding(.horizontal)
-            .padding(.bottom)
         }
         .navigationTitle("타이머 설정")
     }
