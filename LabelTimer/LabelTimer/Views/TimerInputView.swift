@@ -97,6 +97,9 @@ struct TimerInputView: View {
                 .background(Color.green)
                 .foregroundColor(.white)
                 .cornerRadius(10)
+                .disabled(hours + minutes + seconds == 0)
+                .opacity(hours + minutes + seconds == 0 ? 0.5 : 1.0)
+
             }
             .padding(.horizontal)
             .padding(.bottom)

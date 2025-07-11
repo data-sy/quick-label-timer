@@ -34,7 +34,7 @@ struct RunningTimerView: View {
                     .foregroundColor(.gray)
             }
 
-            Button("홈으로") {
+            Button("중지 후 홈으로") {
                 timer?.invalidate()
                 path = []
             }
@@ -45,6 +45,12 @@ struct RunningTimerView: View {
         .navigationTitle("타이머 실행")
         .onAppear {
             remainingSeconds = timerData.totalSeconds
+
+            guard remainingSeconds > 0 else {
+                path.append(.alarm(data: timerData))
+                return
+            }
+
             startCountdown()
             scheduleNotification(label: timerData.label, after: remainingSeconds)
         }
