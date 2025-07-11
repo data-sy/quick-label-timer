@@ -16,21 +16,30 @@ struct RunningTimerView: View {
 
     @State private var remainingSeconds: Int = 0
     @State private var timer: Timer? = nil
-
+    @State private var progress: Double = 1.0
+    
     var body: some View {
         VStack(spacing: 24) {
+            
             Text("⏱ 타이머 실행 중")
-                .font(.title)
-
+                .font(.title3)
+                .fontWeight(.regular)
+            
+            if !timerData.label.isEmpty {
+                Text(timerData.label)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.top, 8)
+            } else {
+                Spacer().frame(height: 16) // 라벨이 없을 때 간격 유지
+            }
+            
+            Spacer().frame(height: 12)
+            
             Text(timeString(from: remainingSeconds))
                 .font(.system(size: 48, weight: .bold))
                 .monospacedDigit()
-
-            if !timerData.label.isEmpty {
-                Text("라벨: \(timerData.label)")
-                    .font(.headline)
-                    .foregroundColor(.gray)
-            }
+                .foregroundColor(Color(.systemGray))
 
             Button("중지 후 홈으로") {
                 stopTimer()
@@ -49,6 +58,7 @@ struct RunningTimerView: View {
                 path.append(.alarm(data: timerData))
                 return
             }
+            
             NotificationUtils.scheduleNotification(label: timerData.label, after: remainingSeconds)
             startCountdown()
         }
@@ -79,4 +89,5 @@ struct RunningTimerView: View {
         timer?.invalidate()
         timer = nil
     }
+    
 }

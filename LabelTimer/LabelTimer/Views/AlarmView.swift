@@ -10,7 +10,6 @@ import AudioToolbox
 /// 타이머 종료 시 알람과 라벨을 표시하는 화면
 ///
 /// - 사용 목적: 타이머 종료 후 알림 및 라벨 텍스트 강조
-/// - ViewModel: RunningTimerViewModel
 
 struct AlarmView: View {
     let timerData: TimerData
@@ -36,18 +35,18 @@ struct AlarmView: View {
             Spacer().frame(height: 40)
 
             HStack {
-                Button("재시작") {
+                Button {
                     stopAlarm()
                     path.append(.runningTimer(data: timerData))
+                } label: {
+                    Label("재시작", systemImage: "arrow.counterclockwise")
                 }
-                .frame(maxWidth: .infinity)
+                .frame(width: UIScreen.main.bounds.width * 0.23)
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .foregroundColor(.primary)
                 .cornerRadius(10)
                 .contentShape(Rectangle())
-
-                Spacer(minLength: 40)
 
                 Button("확인") {
                     stopAlarm()
