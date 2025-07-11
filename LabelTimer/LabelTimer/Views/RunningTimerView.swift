@@ -1,5 +1,4 @@
 import SwiftUI
-import UserNotifications
 
 //
 //  RunningTimerView.swift
@@ -10,7 +9,6 @@ import UserNotifications
 /// 실행 중인 타이머의 남은 시간을 표시하는 화면
 ///
 /// - 사용 목적: 실시간 카운트다운 표시, 종료 시 알람으로 전환
-/// - ViewModel: RunningTimerViewModel
 
 struct RunningTimerView: View {
     let timerData: TimerData
@@ -35,7 +33,8 @@ struct RunningTimerView: View {
             }
 
             Button("중지 후 홈으로") {
-                timer?.invalidate()
+                stopTimer()
+                NotificationUtils.cancelScheduledNotification()
                 path = []
             }
             .foregroundColor(.red)
@@ -52,10 +51,10 @@ struct RunningTimerView: View {
             }
 
             startCountdown()
-            scheduleNotification(label: timerData.label, after: remainingSeconds)
+            NotificationUtils.scheduleNotification(label: timerData.label, after: remainingSeconds)
         }
         .onDisappear {
-            timer?.invalidate()
+            stopTimer()
         }
     }
 
@@ -71,21 +70,14 @@ struct RunningTimerView: View {
             if remainingSeconds > 0 {
                 remainingSeconds -= 1
             } else {
-                timer?.invalidate()
+                stopTimer()
                 path.append(.alarm(data: timerData))
             }
         }
     }
 
-    func scheduleNotification(label: String, after seconds: Int) {
-        let content = UNMutableNotificationContent()
-        content.title = "⏰ 타이머 종료"
-        content.body = label.isEmpty ? "타이머가 끝났습니다." : "\(label) 타이머가 끝났습니다."
-        content.sound = .default
-
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request)
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
     }
 }
