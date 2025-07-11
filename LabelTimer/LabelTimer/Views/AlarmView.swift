@@ -19,47 +19,31 @@ struct AlarmView: View {
 
     var body: some View {
         VStack(spacing: 24) {
-            Text("⏰ 타이머 종료")
-                .font(.title3)
-                .fontWeight(.regular)
 
-            if !timerData.label.isEmpty {
-                Text(timerData.label)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.top, 8)
-            } else {
-                Spacer().frame(height: 16) // 라벨이 없을 때 간격 유지
-            }
+            TimerTitleView(text: "타이머 종료")
+
+            LabelDisplayView(label: timerData.label)
+
+            CountdownView(seconds: 0)
+                .hidden() // 공간 확보용
             
-            Spacer().frame(height: 40)
-
-            HStack {
-                Button {
+            CommonButtonRow(
+                leftTitle: "재시작",
+                leftIcon: "arrow.counterclockwise",
+                leftAction: {
                     stopAlarm()
                     path.append(.runningTimer(data: timerData))
-                } label: {
-                    Label("재시작", systemImage: "arrow.counterclockwise")
-                }
-                .frame(width: UIScreen.main.bounds.width * 0.23)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .foregroundColor(.primary)
-                .cornerRadius(10)
-                .contentShape(Rectangle())
-
-                Button("확인") {
+                },
+                leftColor: .primary,
+                leftWidthRatio: 0.23,
+                rightTitle: "확인",
+                rightAction: {
                     stopAlarm()
                     path = []
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .contentShape(Rectangle())
-            }
-            .padding(.horizontal)
+                },
+                rightColor: .blue,
+                isRightDisabled: false
+            )
             
         }
         .padding()

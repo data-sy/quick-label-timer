@@ -23,70 +23,24 @@ struct TimerInputView: View {
     var body: some View {
         VStack(spacing: 24) {
 
-            HStack(spacing: 10) {
-                Picker("시", selection: $hours) {
-                    ForEach(0..<24, id: \.self) { Text("\($0)시") }
-                }
-                .pickerStyle(.wheel)
-                .frame(width: 100)
-                .clipped()
+            TimePickerGroupView(hours: $hours, minutes: $minutes, seconds: $seconds)
 
-                Picker("분", selection: $minutes) {
-                    ForEach(0..<60, id: \.self) { Text("\($0)분") }
-                }
-                .pickerStyle(.wheel)
-                .frame(width: 100)
-                .clipped()
+            LabelInputFieldView(label: $label, isLabelFocused: _isLabelFocused)
 
-                Picker("초", selection: $seconds) {
-                    ForEach(0..<60, id: \.self) { Text("\($0)초") }
-                }
-                .pickerStyle(.wheel)
-                .frame(width: 100)
-                .clipped()
-            }
-            .frame(height: 150)
-
-            HStack {
-                Text("레이블")
-                    .foregroundColor(.gray)
-
-                TextField("입력", text: $label)
-                    .focused($isLabelFocused)
-                    .multilineTextAlignment(.trailing)
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-            }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                isLabelFocused = true
-            }
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(12)
-            .padding(.horizontal)
-
-            Spacer().frame(height: 32)
-
-            HStack(spacing: 16) {
-                Button {
+            CommonButtonRow(
+                leftTitle: "리셋",
+                leftIcon: "arrow.counterclockwise",
+                leftAction: {
                     hours = 0
                     minutes = 0
                     seconds = 0
                     label = ""
                     isLabelFocused = false
-                } label: {
-                    Label("리셋", systemImage: "arrow.counterclockwise")
-                        .frame(maxWidth: .infinity)
-                }
-                .frame(width: UIScreen.main.bounds.width * 0.23)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .foregroundColor(.red)
-                .cornerRadius(10)
-
-                Button("타이머 시작") {
+                },
+                leftColor: .red,
+                leftWidthRatio: 0.23,
+                rightTitle: "타이머 시작",
+                rightAction: {
                     let data = TimerData(
                         hours: hours,
                         minutes: minutes,
@@ -94,17 +48,12 @@ struct TimerInputView: View {
                         label: label
                     )
                     path.append(.runningTimer(data: data))
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.green)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .disabled(hours + minutes + seconds == 0)
-                .opacity(hours + minutes + seconds == 0 ? 0.5 : 1.0)
-            }
-            .padding(.horizontal)
+                },
+                rightColor: .green,
+                isRightDisabled: hours + minutes + seconds == 0
+            )
         }
+        .padding()
         .navigationTitle("타이머 설정")
     }
 }

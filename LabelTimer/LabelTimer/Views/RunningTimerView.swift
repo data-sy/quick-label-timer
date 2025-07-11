@@ -21,26 +21,12 @@ struct RunningTimerView: View {
     var body: some View {
         VStack(spacing: 24) {
             
-            Text("⏱ 타이머 실행 중")
-                .font(.title3)
-                .fontWeight(.regular)
+            TimerTitleView(text: "타이머 실행 중")
             
-            if !timerData.label.isEmpty {
-                Text(timerData.label)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.top, 8)
-            } else {
-                Spacer().frame(height: 16) // 라벨이 없을 때 간격 유지
-            }
+            LabelDisplayView(label: timerData.label)
             
-            Spacer().frame(height: 12)
+            CountdownView(seconds: remainingSeconds)
             
-            Text(timeString(from: remainingSeconds))
-                .font(.system(size: 48, weight: .bold))
-                .monospacedDigit()
-                .foregroundColor(Color(.systemGray))
-
             Button("중지 후 홈으로") {
                 stopTimer()
                 NotificationUtils.cancelScheduledNotification()
@@ -65,13 +51,6 @@ struct RunningTimerView: View {
         .onDisappear {
             stopTimer()
         }
-    }
-
-    func timeString(from seconds: Int) -> String {
-        let h = seconds / 3600
-        let m = (seconds % 3600) / 60
-        let s = seconds % 60
-        return String(format: "%02d:%02d:%02d", h, m, s)
     }
 
     func startCountdown() {
