@@ -18,7 +18,7 @@ struct RunningTimerView: View {
     @State private var timer: Timer? = nil
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 24) {
             Text("⏱ 타이머 실행 중")
                 .font(.title)
 
@@ -49,9 +49,8 @@ struct RunningTimerView: View {
                 path.append(.alarm(data: timerData))
                 return
             }
-
-            startCountdown()
             NotificationUtils.scheduleNotification(label: timerData.label, after: remainingSeconds)
+            startCountdown()
         }
         .onDisappear {
             stopTimer()

@@ -43,5 +43,8 @@ struct AppEntryPoint: View {
                 }
             }
         }
+        .onAppear {
+            NotificationUtils.requestAuthorization()
+        }
     }
 }
