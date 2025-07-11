@@ -14,11 +14,11 @@ import SwiftUI
 struct TimerInputView: View {
     @Binding var path: [Route]
 
-    @State private var hours = 0
-    @State private var minutes = 0
-    @State private var seconds = 0
-    @State private var label = ""
-    
+    @Binding var hours: Int
+    @Binding var minutes: Int
+    @Binding var seconds: Int
+    @Binding var label: String
+
     @FocusState private var isLabelFocused: Bool
 
     var body: some View {
@@ -48,7 +48,7 @@ struct TimerInputView: View {
             }
             .frame(height: 150)
             .padding(.bottom)
-            
+
             HStack {
                 Text("레이블")
                     .foregroundColor(.gray)
@@ -60,7 +60,7 @@ struct TimerInputView: View {
                     .lineLimit(1)
                     .truncationMode(.tail)
             }
-            .contentShape(Rectangle()) // 💡 터치 영역 확대
+            .contentShape(Rectangle())
             .onTapGesture {
                 isLabelFocused = true
             }
@@ -72,16 +72,7 @@ struct TimerInputView: View {
             Spacer().frame(height: 32)
 
             HStack(spacing: 16) {
-                Button("홈으로") {
-                    path = []
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .foregroundColor(.red)
-                .cornerRadius(10)
-                
-                Spacer(minLength: 40)
+                Spacer()
 
                 Button("타이머 시작") {
                     let data = TimerData(
@@ -100,6 +91,7 @@ struct TimerInputView: View {
                 .disabled(hours + minutes + seconds == 0)
                 .opacity(hours + minutes + seconds == 0 ? 0.5 : 1.0)
 
+                Spacer()
             }
             .padding(.horizontal)
             .padding(.bottom)

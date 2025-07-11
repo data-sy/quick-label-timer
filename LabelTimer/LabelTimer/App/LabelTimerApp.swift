@@ -11,7 +11,8 @@ import SwiftUI
 struct LabelTimerApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            AppEntryPoint()
         }
     }
 }
+
