@@ -16,26 +16,28 @@ struct RunningTimerView: View {
 
     @State private var remainingSeconds: Int = 0
     @State private var timer: Timer? = nil
-    @State private var progress: Double = 1.0
     
     var body: some View {
-        VStack(spacing: 24) {
-            
-            TimerTitleView(text: "타이머 실행 중")
-            
-            LabelDisplayView(label: timerData.label)
-            
-            CountdownView(seconds: remainingSeconds)
-            
-            Button("중지 후 홈으로") {
-                stopTimer()
-                NotificationUtils.cancelScheduledNotification()
-                path = []
+        AppScreenLayout(
+            content: {
+                VStack(spacing: 24) {
+                    TimerTitleView(text: "타이머 실행 중")
+                    LabelDisplayView(label: timerData.label)
+                    CountdownView(seconds: remainingSeconds)
+                }
+            },
+            bottom: {
+                Button("중지 후 홈으로") {
+                    stopTimer()
+                    NotificationUtils.cancelScheduledNotification()
+                    path = []
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .foregroundColor(.red)
+                .cornerRadius(10)
             }
-            .foregroundColor(.red)
-            .padding(.top, 20)
-        }
-        .padding()
+        )
         .navigationTitle("타이머 실행")
         .onAppear {
             remainingSeconds = timerData.totalSeconds

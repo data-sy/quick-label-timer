@@ -48,7 +48,5 @@ struct CommonButtonRow: View {
                 .disabled(isRightDisabled)
                 .opacity(isRightDisabled ? 0.5 : 1.0)
         }
-        .padding(.horizontal)
-        .padding(.bottom)
     }
 }

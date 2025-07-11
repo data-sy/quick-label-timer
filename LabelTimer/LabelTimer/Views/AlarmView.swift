@@ -18,35 +18,34 @@ struct AlarmView: View {
     @State private var alarmTimer: Timer?
 
     var body: some View {
-        VStack(spacing: 24) {
-
-            TimerTitleView(text: "타이머 종료")
-
-            LabelDisplayView(label: timerData.label)
-
-            CountdownView(seconds: 0)
-                .hidden() // 공간 확보용
-            
-            CommonButtonRow(
-                leftTitle: "재시작",
-                leftIcon: "arrow.counterclockwise",
-                leftAction: {
-                    stopAlarm()
-                    path.append(.runningTimer(data: timerData))
-                },
-                leftColor: .primary,
-                leftWidthRatio: 0.23,
-                rightTitle: "확인",
-                rightAction: {
-                    stopAlarm()
-                    path = []
-                },
-                rightColor: .blue,
-                isRightDisabled: false
-            )
-            
-        }
-        .padding()
+        AppScreenLayout(
+            content: {
+                VStack(spacing: 24) {
+                    TimerTitleView(text: "타이머 종료")
+                    LabelDisplayView(label: timerData.label)
+                    CountdownView(seconds: 0).hidden() // 공간 확보용
+                }
+            },
+            bottom: {
+                CommonButtonRow(
+                    leftTitle: "재시작",
+                    leftIcon: "arrow.counterclockwise",
+                    leftAction: {
+                        stopAlarm()
+                        path.append(.runningTimer(data: timerData))
+                    },
+                    leftColor: .primary,
+                    leftWidthRatio: 0.23,
+                    rightTitle: "확인",
+                    rightAction: {
+                        stopAlarm()
+                        path = []
+                    },
+                    rightColor: .blue,
+                    isRightDisabled: false
+                )
+            }
+        )
         .navigationTitle("알람")
         .navigationBarBackButtonHidden(true)
         .onAppear {
