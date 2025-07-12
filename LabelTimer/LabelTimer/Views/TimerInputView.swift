@@ -23,7 +23,16 @@ struct TimerInputView: View {
     var body: some View {
         AppScreenLayout(
             content: {
-                VStack(spacing: 24) {
+                VStack(spacing: 8) {
+                    QuickStartTimerGridView(
+                        presets: TimerPresetProvider.presets,
+                        onSelect: { preset in
+                            let data = TimerData(from: preset)
+                            path.append(.runningTimer(data: data))
+                        }
+                    )
+//                    .background(Color.red) // 시각화 영역 확인
+                    
                     TimePickerGroupView(
                         hours: $hours,
                         minutes: $minutes,
@@ -55,7 +64,9 @@ struct TimerInputView: View {
                             hours: hours,
                             minutes: minutes,
                             seconds: seconds,
-                            label: label
+                            label: label,
+                            emoji: nil,
+                            usageType: .plan
                         )
                         path.append(.runningTimer(data: data))
                     },

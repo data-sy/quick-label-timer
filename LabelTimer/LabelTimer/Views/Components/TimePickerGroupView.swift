@@ -17,28 +17,29 @@ struct TimePickerGroupView: View {
     @Binding var seconds: Int
 
     var body: some View {
-        HStack(spacing: 8) {
-            Picker("시", selection: $hours) {
-                ForEach(0..<24, id: \.self) { Text("\($0)시") }
-            }
-            .pickerStyle(.wheel)
-            .frame(width: 100)
-            .clipped()
-
-            Picker("분", selection: $minutes) {
-                ForEach(0..<60, id: \.self) { Text("\($0)분") }
-            }
-            .pickerStyle(.wheel)
-            .frame(width: 100)
-            .clipped()
-
-            Picker("초", selection: $seconds) {
-                ForEach(0..<60, id: \.self) { Text("\($0)초") }
-            }
-            .pickerStyle(.wheel)
-            .frame(width: 100)
-            .clipped()
+        HStack(spacing: 16) {
+            timePickerInline(value: $hours, range: 0..<24, label: "시")
+            timePickerInline(value: $minutes, range: 0..<60, label: "분")
+            timePickerInline(value: $seconds, range: 0..<60, label: "초")
         }
-        .frame(height: 150)
+        .padding(.horizontal)
+        .padding(.vertical, 12)
+    }
+
+    @ViewBuilder
+    private func timePickerInline(value: Binding<Int>, range: Range<Int>, label: String) -> some View {
+        HStack(spacing: 4) {
+            Picker("", selection: value) {
+                ForEach(range, id: \.self) { Text("\($0)") }
+            }
+            .pickerStyle(.wheel)
+            .frame(width: 60, height: 90)
+            .clipped()
+
+            Text(label)
+                .font(.headline)
+                .foregroundColor(.primary)
+        }
+//        .background(Color.green) // 시각화 영역 확인
     }
 }
