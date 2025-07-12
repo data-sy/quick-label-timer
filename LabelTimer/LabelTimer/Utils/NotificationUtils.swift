@@ -18,9 +18,7 @@ enum NotificationUtils {
     static func requestAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if granted {
-                print("🔔 알림 권한 허용됨")
             } else {
-                print("❌ 알림 권한 거부됨 또는 오류: \(error?.localizedDescription ?? "알 수 없음")")
             }
         }
     }
@@ -42,9 +40,7 @@ enum NotificationUtils {
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
-                print("❌ 알림 예약 실패: \(error.localizedDescription)")
             } else {
-                print("✅ 알림 예약 완료")
             }
         }
     }
@@ -52,6 +48,5 @@ enum NotificationUtils {
     /// 예약된 알림 취소
     static func cancelScheduledNotification() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["labelTimerNotification"])
-        print("🗑️ 예약된 알림 취소됨")
     }
 }
