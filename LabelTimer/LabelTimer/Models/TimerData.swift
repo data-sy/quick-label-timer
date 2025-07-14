@@ -1,3 +1,5 @@
+import Foundation
+
 //
 //  TimerData.swift
 //  LabelTimer
@@ -6,30 +8,38 @@
 //
 /// 타이머 설정 정보를 저장하는 모델
 ///
-/// - 사용 목적: 사용자가 입력한 시, 분, 초, 라벨을 보존하고 총 시간을 계산함
+/// - 사용 목적: 타이머의 설정 값과 실행 시각, 종료 시각, 실행 여부, 남은 시간 등을 통합 관리함.
 
-struct TimerData: Hashable {
+struct TimerData: Identifiable, Hashable {
+    let id: UUID = UUID()
+
+    let label: String
     let hours: Int
     let minutes: Int
     let seconds: Int
-    let label: String
-    let emoji: String?
-    let usageType: UsageType
-    
+
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
     }
-        
+
+    // ⏱ 실행 관련 속성
+    var startDate: Date
+    var endDate: Date
+    var isRunning: Bool
+    var remainingSeconds: Int
 }
 
-// MARK: - Preset 변환용 이니셜라이저
 extension TimerData {
-    init(from preset: TimerPreset) {
-        self.hours = preset.hours
-        self.minutes = preset.minutes
-        self.seconds = preset.seconds
-        self.label = preset.label
-        self.emoji = preset.emoji
-        self.usageType = preset.usageType
+    func updating(remainingSeconds: Int) -> TimerData {
+        TimerData(
+            label: self.label,
+            hours: self.hours,
+            minutes: self.minutes,
+            seconds: self.seconds,
+            startDate: self.startDate,
+            endDate: self.endDate,
+            isRunning: remainingSeconds > 0,
+            remainingSeconds: remainingSeconds
+        )
     }
 }

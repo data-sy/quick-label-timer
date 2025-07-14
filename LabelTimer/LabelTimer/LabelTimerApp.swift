@@ -11,8 +11,11 @@ import SwiftUI
 struct LabelTimerApp: App {
     var body: some Scene {
         WindowGroup {
-            AppEntryPoint()
+            MainTimerBoardView()
+                .environmentObject(TimerManager())
+                .onAppear {
+                    NotificationUtils.requestAuthorization()
+                }
         }
     }
 }
-
