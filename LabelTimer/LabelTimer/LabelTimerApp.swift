@@ -9,10 +9,14 @@ import SwiftUI
 
 @main
 struct LabelTimerApp: App {
+    @StateObject private var timerManager = TimerManager()
+    @StateObject private var presetManager = PresetManager()
+
     var body: some Scene {
         WindowGroup {
             MainTimerBoardView()
-                .environmentObject(TimerManager())
+                .environmentObject(timerManager)
+                .environmentObject(presetManager)
                 .onAppear {
                     NotificationUtils.requestAuthorization()
                 }

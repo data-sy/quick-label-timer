@@ -10,15 +10,22 @@ import Foundation
 ///
 /// - 사용 목적: 자주 사용하는 시간과 라벨을 저장해두고 빠르게 실행할 수 있도록 함.
 
-struct TimerPreset: Identifiable, Hashable {
-    let id = UUID()
+struct TimerPreset: Identifiable, Codable, Hashable {
+    let id: UUID
     let hours: Int
     let minutes: Int
     let seconds: Int
     let label: String
-    let createdAt: Date
 
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
+    }
+
+    init(hours: Int, minutes: Int, seconds: Int, label: String) {
+        self.id = UUID()
+        self.hours = hours
+        self.minutes = minutes
+        self.seconds = seconds
+        self.label = label
     }
 }

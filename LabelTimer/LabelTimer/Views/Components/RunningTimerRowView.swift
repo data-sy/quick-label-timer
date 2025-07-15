@@ -30,19 +30,19 @@ struct RunningTimerRowView: View {
     var body: some View {
         TimerRowView(
             label: timer.label,
-            timeText: formattedRemainingTime,
-            button: AnyView(
-                Button(action: {
-                    // TODO: 타이머 정지 로직 구현 예정
-                    print("🛑 정지: \(timer.label)")
-                }) {
-                    Image(systemName: "stop.fill")
-                        .foregroundColor(.white)
-                        .padding(8)
-                        .background(Color.red)
-                        .clipShape(Circle())
-                }
-            )
+            timeText: formattedRemainingTime
+//            button: AnyView(
+//                Button(action: {
+//                    // TODO: 타이머 정지 로직 구현 예정
+//                    print("🛑 정지: \(timer.label)")
+//                }) {
+//                    Image(systemName: "stop.fill")
+//                        .foregroundColor(.white)
+//                        .padding(8)
+//                        .background(Color.red)
+//                        .clipShape(Circle())
+//                }
+//            )
         )
     }
 }

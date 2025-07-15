@@ -13,7 +13,7 @@ import SwiftUI
 struct TimerRowView: View {
     let label: String
     let timeText: String
-    let button: AnyView?
+//    let button: AnyView?
 
     var body: some View {
         HStack {
@@ -28,13 +28,17 @@ struct TimerRowView: View {
 
             Spacer()
 
-            // 버튼이 있을 경우만 표시
-            if let button = button {
-                button
-            }
+//            // 버튼이 있을 경우만 표시
+//            if let button = button {
+//                button
+//            }
         }
         .padding()
-        .background(Color(.secondarySystemBackground))
+//        .background(Color(.secondarySystemBackground))
         .cornerRadius(12)
+        // 영역 테스트용
+        .background(Color.yellow)
+        .border(Color.red)
+
     }
 }
