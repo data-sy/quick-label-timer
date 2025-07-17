@@ -13,8 +13,9 @@ import SwiftUI
 struct TimerRowView: View {
     let label: String
     let timeText: String
-//    let button: AnyView?
-
+    let leftButton: AnyView?
+    let rightButton: AnyView?
+    
     var body: some View {
         HStack {
             // 라벨 및 시간
@@ -28,10 +29,14 @@ struct TimerRowView: View {
 
             Spacer()
 
-//            // 버튼이 있을 경우만 표시
-//            if let button = button {
-//                button
-//            }
+            if let leftButton = leftButton {
+                leftButton
+            }
+
+            // ✅ 오른쪽 버튼
+            if let rightButton = rightButton {
+                rightButton
+            }
         }
         .padding()
 //        .background(Color(.secondarySystemBackground))

@@ -24,7 +24,8 @@ struct PresetListView: View {
                 ForEach(presetManager.allPresets, id: \.id) { preset in
                     PresetTimerRowView(
                         preset: preset,
-                        onStart: {}
+                        onStart: {},
+                        onDelete: {}
                     )
                 }
             }
