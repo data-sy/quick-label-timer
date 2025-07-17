@@ -24,7 +24,7 @@ struct RunningTimersView: View {
                     .foregroundColor(.gray)
                     .padding(.top, 8)
             } else {
-                ForEach(timerManager.timers) { timer in
+                ForEach(timerManager.timers.sorted(by: { $0.startDate > $1.startDate })) { timer in
                     RunningTimerRowView(timer: timer)
                 }
             }
