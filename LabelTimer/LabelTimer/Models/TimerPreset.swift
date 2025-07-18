@@ -16,16 +16,18 @@ struct TimerPreset: Identifiable, Codable, Hashable {
     let minutes: Int
     let seconds: Int
     let label: String
+    let createdAt: Date
 
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
     }
-
-    init(hours: Int, minutes: Int, seconds: Int, label: String) {
+    
+    init(hours: Int, minutes: Int, seconds: Int, label: String, createdAt: Date = Date()) {
         self.id = UUID()
         self.hours = hours
         self.minutes = minutes
         self.seconds = seconds
         self.label = label
+        self.createdAt = createdAt
     }
 }

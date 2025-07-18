@@ -14,7 +14,6 @@ import SwiftUI
 struct PresetTimerRowView: View {
     let preset: TimerPreset
     let onStart: () -> Void
-    let onDelete: () -> Void
 
     /// 전체 시간을 포맷된 문자열로 반환
     private var formattedTotalTime: String {
@@ -34,17 +33,7 @@ struct PresetTimerRowView: View {
         TimerRowView(
             label: preset.label,
             timeText: formattedTotalTime,
-            leftButton: AnyView(
-                            Button(action: {
-                                onDelete()
-                            }) {
-                                Image(systemName: "xmark")
-                                    .foregroundColor(.white)
-                                    .padding(8)
-                                    .background(Color.gray)
-                                    .clipShape(Circle())
-                            }
-                        ),
+            leftButton: nil,
             rightButton: AnyView(
                 Button(action: {
                     onStart()
