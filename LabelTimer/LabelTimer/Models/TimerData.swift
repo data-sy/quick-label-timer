@@ -1,3 +1,5 @@
+import Foundation
+
 //
 //  TimerData.swift
 //  LabelTimer
@@ -6,30 +8,84 @@
 //
 /// 타이머 설정 정보를 저장하는 모델
 ///
-/// - 사용 목적: 사용자가 입력한 시, 분, 초, 라벨을 보존하고 총 시간을 계산함
+/// - 사용 목적: 타이머의 설정 값과 실행 시각, 종료 시각, 실행 여부, 남은 시간 등을 통합 관리함.
 
-struct TimerData: Hashable {
+enum TimerStatus {
+    case running
+    case paused
+    case stopped
+    case completed
+}
+
+struct TimerData: Identifiable, Hashable {
+    let id: UUID
+
+    let label: String
     let hours: Int
     let minutes: Int
     let seconds: Int
-    let label: String
-    let emoji: String?
-    let usageType: UsageType
+    let createdAt: Date
     
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
     }
-        
+
+    // 실행 관련 속성
+    var endDate: Date
+    var remainingSeconds: Int
+    var status: TimerStatus
+
+    // 명시적 생성자 (id는 기본값으로 자동 생성 가능)
+    init(
+        id: UUID = UUID(),
+        label: String,
+        hours: Int,
+        minutes: Int,
+        seconds: Int,
+        createdAt: Date,
+        endDate: Date,
+        remainingSeconds: Int,
+        status: TimerStatus
+    ) {
+        self.id = id
+        self.label = label
+        self.hours = hours
+        self.minutes = minutes
+        self.seconds = seconds
+        self.createdAt = createdAt
+        self.endDate = endDate
+        self.remainingSeconds = remainingSeconds
+        self.status = status
+    }
 }
 
-// MARK: - Preset 변환용 이니셜라이저
 extension TimerData {
-    init(from preset: TimerPreset) {
-        self.hours = preset.hours
-        self.minutes = preset.minutes
-        self.seconds = preset.seconds
-        self.label = preset.label
-        self.emoji = preset.emoji
-        self.usageType = preset.usageType
+    /// 남은 시간 갱신, 완료 여부 자동 판단
+    func updating(remainingSeconds: Int) -> TimerData {
+        TimerData(
+            id: self.id,
+            label: self.label,
+            hours: self.hours,
+            minutes: self.minutes,
+            seconds: self.seconds,
+            createdAt: self.createdAt,
+            endDate: self.endDate,
+            remainingSeconds: remainingSeconds,
+            status: remainingSeconds > 0 ? .running : .completed // 상태 반영
+        )
+    }
+    /// 상태 변경  (예: 일시정지, 정지, 재시작 등)
+    func updating(status: TimerStatus) -> TimerData {
+        TimerData(
+            id: self.id,
+            label: self.label,
+            hours: self.hours,
+            minutes: self.minutes,
+            seconds: self.seconds,
+            createdAt: self.createdAt,
+            endDate: self.endDate,
+            remainingSeconds: self.remainingSeconds,
+            status: status
+        )
     }
 }

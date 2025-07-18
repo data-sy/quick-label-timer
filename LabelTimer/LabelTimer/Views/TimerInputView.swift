@@ -6,75 +6,71 @@ import SwiftUI
 //
 //  Created by 이소연 on 7/9/25.
 //
-/// 시/분/초 및 라벨을 입력받는 타이머 설정 화면
+/// 타이머를 입력하는 뷰
 ///
-/// - 사용 목적: 타이머 시간과 라벨 입력 처리
+/// - 사용 목적: 사용자가 라벨과 시간을 입력하고 타이머를 시작할 수 있도록 함.
 
 struct TimerInputView: View {
-    @Binding var path: [Route]
-
-    @Binding var hours: Int
-    @Binding var minutes: Int
-    @Binding var seconds: Int
-    @Binding var label: String
-
-    @FocusState private var isLabelFocused: Bool
+    @State private var label: String = ""
+    @State private var hours: Int = 0
+    @State private var minutes: Int = 0
+    @State private var seconds: Int = 0
+    
+    @EnvironmentObject var timerManager: TimerManager
 
     var body: some View {
-        AppScreenLayout(
-            content: {
-                VStack(spacing: 8) {
-                    QuickStartTimerGridView(
-                        presets: TimerPresetProvider.presets,
-                        onSelect: { preset in
-                            let data = TimerData(from: preset)
-                            path.append(.runningTimer(data: data))
-                        }
-                    )
-//                    .background(Color.red) // 시각화 영역 확인
-                    
-                    TimePickerGroupView(
-                        hours: $hours,
-                        minutes: $minutes,
-                        seconds: $seconds
-                    )
+        VStack(alignment: .leading, spacing: 16) {
+            // 라벨 + 시작 버튼
+            HStack {
+                TextField("라벨을 입력하세요", text: $label)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
 
-                    LabelInputFieldView(
-                        label: $label,
-                        isLabelFocused: _isLabelFocused
+                Button(action: {
+                    timerManager.addTimer(
+                        hours: hours,
+                        minutes: minutes,
+                        seconds: seconds,
+                        label: label
                     )
+                }) {
+                    Text("시작")
+                        .fontWeight(.bold)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(Color.accentColor)
+                        .foregroundColor(.white)
+                        .clipShape(Capsule())
                 }
-            },
-            bottom: {
-                CommonButtonRow(
-                    leftTitle: "리셋",
-                    leftIcon: "arrow.counterclockwise",
-                    leftAction: {
-                        hours = 0
-                        minutes = 0
-                        seconds = 0
-                        label = ""
-                        isLabelFocused = false
-                    },
-                    leftColor: .red,
-                    leftWidthRatio: 0.23,
-                    rightTitle: "타이머 시작",
-                    rightAction: {
-                        let data = TimerData(
-                            hours: hours,
-                            minutes: minutes,
-                            seconds: seconds,
-                            label: label,
-                            emoji: nil,
-                            usageType: .plan
-                        )
-                        path.append(.runningTimer(data: data))
-                    },
-                    rightColor: .green,
-                    isRightDisabled: hours + minutes + seconds == 0
-                )
+                .disabled(label.isEmpty || (hours + minutes + seconds) == 0)
             }
-        )
-        .navigationTitle("타이머 설정")
+
+            // 시간 선택 휠
+            HStack(spacing: 0) {
+                Picker(selection: $hours, label: Text("시")) {
+                    ForEach(0..<24) { Text("\($0)시간") }
+                }
+                .pickerStyle(.wheel)
+                .frame(maxWidth: .infinity)
+
+                Picker(selection: $minutes, label: Text("분")) {
+                    ForEach(0..<60) { Text("\($0)분") }
+                }
+                .pickerStyle(.wheel)
+                .frame(maxWidth: .infinity)
+
+                Picker(selection: $seconds, label: Text("초")) {
+                    ForEach(0..<60) { Text("\($0)초") }
+                }
+                .pickerStyle(.wheel)
+                .frame(maxWidth: .infinity)
+            }
+            .frame(height: 120)
+        }
+        .padding()
     }
+}
+
+#Preview {
+    TimerInputView()
+        .environmentObject(TimerManager())
 }
