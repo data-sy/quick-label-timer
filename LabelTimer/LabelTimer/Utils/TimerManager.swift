@@ -14,22 +14,23 @@ import Combine
 final class TimerManager: ObservableObject {
     /// 현재 실행 중인 타이머 목록
     @Published var timers: [TimerData] = []
-    
+
     private var timer: Timer?
 
     init() {
         startTicking()
     }
-    
+
+    /// 매초마다 타이머 상태 업데이트
     func startTicking() {
-        timer?.invalidate() // 기존 타이머 종료
+        timer?.invalidate()
 
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             let now = Date()
 
-            // 매초마다 타이머 상태 업데이트
+            // 실행 중인 타이머만 남은 시간 갱신
             self.timers = self.timers.map { timer in
-                guard timer.isRunning else { return timer }
+                guard timer.status == .running else { return timer }
 
                 let remaining = Int(timer.endDate.timeIntervalSince(now))
                 return timer.updating(remainingSeconds: max(remaining, 0))
@@ -38,30 +39,113 @@ final class TimerManager: ObservableObject {
 
         RunLoop.main.add(timer!, forMode: .common)
     }
-    
-    /// 타이머 추가
+
+    /// 새 타이머 추가
     func addTimer(hours: Int, minutes: Int, seconds: Int, label: String) {
         let totalSeconds = hours * 3600 + minutes * 60 + seconds
         guard totalSeconds > 0 else { return }
 
-        let start = Date()
-        let end = start.addingTimeInterval(TimeInterval(totalSeconds))
+        let now = Date()
+        let end = now.addingTimeInterval(TimeInterval(totalSeconds))
 
         let newTimer = TimerData(
             label: label,
             hours: hours,
             minutes: minutes,
             seconds: seconds,
-            startDate: start,
+            createdAt: now,
             endDate: end,
-            isRunning: true,
-            remainingSeconds: totalSeconds
+            remainingSeconds: totalSeconds,
+            status: .running
         )
 
         timers.append(newTimer)
-        
-        // ✅ 로깅
-        print("✅ 타이머 추가됨: \(newTimer.label) (\(totalSeconds)초)")
-        print("현재 실행 중인 타이머 수: \(timers.count)")
     }
+
+    /// 실행 중인 타이머를 일시정지
+    func pauseTimer(id: UUID) {
+        timers = timers.map { timer in
+            guard timer.id == id, timer.status == .running else { return timer }
+            return timer.updating(status: .paused)
+        }
+    }
+
+    /// 일시정지된 타이머를 재개
+    func resumeTimer(id: UUID) {
+        timers = timers.map { timer in
+            guard timer.id == id, timer.status == .paused else { return timer }
+
+            let now = Date()
+            let newEnd = now.addingTimeInterval(TimeInterval(timer.remainingSeconds))
+
+            return TimerData(
+                id: timer.id,
+                label: timer.label,
+                hours: timer.hours,
+                minutes: timer.minutes,
+                seconds: timer.seconds,
+                createdAt: timer.createdAt,
+                endDate: newEnd,
+                remainingSeconds: timer.remainingSeconds,
+                status: .running
+            )
+        }
+    }
+
+    /// 타이머를 정지 상태로 변경
+    func stopTimer(id: UUID) {
+        timers = timers.map { timer in
+            guard timer.id == id else { return timer }
+
+            let total = timer.totalSeconds
+            let now = Date()
+            let newEnd = now.addingTimeInterval(TimeInterval(total))
+
+            return TimerData(
+                id: timer.id,
+                label: timer.label,
+                hours: timer.hours,
+                minutes: timer.minutes,
+                seconds: timer.seconds,
+                createdAt: timer.createdAt,
+                endDate: newEnd,
+                remainingSeconds: total,
+                status: .stopped
+            )
+        }
+    }
+
+
+    /// 기존 타이머를 재시작 (위치 유지)
+    func restartTimer(id: UUID) {
+        guard let index = timers.firstIndex(where: { $0.id == id }) else { return }
+
+        let old = timers[index]
+        let totalSeconds = old.totalSeconds
+        let now = Date()
+        let newEnd = now.addingTimeInterval(TimeInterval(totalSeconds))
+
+        let restarted = TimerData(
+            id: old.id,
+            label: old.label,
+            hours: old.hours,
+            minutes: old.minutes,
+            seconds: old.seconds,
+            createdAt: old.createdAt,
+            endDate: newEnd,
+            remainingSeconds: totalSeconds,
+            status: .running
+        )
+
+        timers[index] = restarted
+    }
+    
+    /// 실행 중인 타이머 삭제 (실행중인 타이머 -> 프리셋 목록으로 이동)
+    @discardableResult
+    func removeTimer(id: UUID) -> TimerData? {
+        guard let index = timers.firstIndex(where: { $0.id == id }) else { return nil }
+        let removed = timers.remove(at: index)
+        return removed
+    }
+
 }

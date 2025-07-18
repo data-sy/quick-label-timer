@@ -12,16 +12,16 @@ import SwiftUI
 
 struct RunningTimerRowView: View {
     let timer: TimerData
+    let onAction: (TimerButtonType) -> Void
 
-    /// 현재 UI 상태 (일시정지, 멈춤 등)
     @State private var uiState: TimerInteractionState
 
-    init(timer: TimerData) {
+    init(timer: TimerData, onAction: @escaping (TimerButtonType) -> Void) {
         self.timer = timer
-        _uiState = State(initialValue: timer.interactionState) // 초기 상태 설정
+        self._uiState = State(initialValue: timer.interactionState)
+        self.onAction = onAction
     }
 
-    /// 남은 시간을 계산해 포맷된 문자열로 반환
     private var formattedRemainingTime: String {
         let remaining = max(timer.remainingSeconds, 0)
         let hours = remaining / 3600
@@ -36,15 +36,14 @@ struct RunningTimerRowView: View {
     }
 
     var body: some View {
-        let buttons = buttonSet(for: uiState) // 현재 UI 상태에 따른 버튼 세트
+        let buttons = buttonSet(for: uiState)
 
         TimerRowView(
             label: timer.label,
             timeText: formattedRemainingTime,
             leftButton: AnyView(
                 Button(action: {
-                    uiState = nextState(from: uiState, button: buttons.left)
-                    // TODO: 버튼 동작 로직은 추후 연결
+                    handleAction(buttons.left)
                 }) {
                     Image(systemName: buttons.left.iconName)
                         .foregroundColor(.white)
@@ -55,8 +54,7 @@ struct RunningTimerRowView: View {
             ),
             rightButton: AnyView(
                 Button(action: {
-                    uiState = nextState(from: uiState, button: buttons.right)
-                    // TODO: 버튼 동작 로직은 추후 연결
+                    handleAction(buttons.right)
                 }) {
                     Image(systemName: buttons.right.iconName)
                         .foregroundColor(.white)
@@ -67,24 +65,21 @@ struct RunningTimerRowView: View {
             )
         )
     }
+
+    private func handleAction(_ button: TimerButtonType) {
+        onAction(button)
+        uiState = nextState(from: uiState, button: button)
+    }
 }
 
-// MARK: - UI 상태 관련 타입 및 로직
+// MARK: - UI 상태 관련
 
-/// 실행 중 타이머의 UI 상태
 fileprivate enum TimerInteractionState {
-    case running
-    case paused
-    case stopped
+    case running, paused, stopped
 }
 
-/// 좌/우 버튼 종류
-private enum TimerButtonType {
-    case play     // 재생
-    case pause    // 일시정지
-    case restart  // 재시작
-    case stop     // 멈춤
-    case delete   // 삭제
+enum TimerButtonType {
+    case play, pause, restart, stop, delete
 
     var iconName: String {
         switch self {
@@ -107,22 +102,19 @@ private enum TimerButtonType {
     }
 }
 
-/// 좌/우 버튼 세트
 private struct TimerButtonSet {
     let left: TimerButtonType
     let right: TimerButtonType
 }
 
-/// 상태에 따라 버튼 세트 반환
 private func buttonSet(for state: TimerInteractionState) -> TimerButtonSet {
     switch state {
     case .running: return TimerButtonSet(left: .stop, right: .pause)
-    case .paused:  return TimerButtonSet(left: .delete, right: .play)
+    case .paused: return TimerButtonSet(left: .delete, right: .play)
     case .stopped: return TimerButtonSet(left: .delete, right: .restart)
     }
 }
 
-/// 버튼 클릭에 따라 다음 상태 반환
 private func nextState(from current: TimerInteractionState, button: TimerButtonType) -> TimerInteractionState {
     switch (current, button) {
     case (.running, .stop): return .stopped
@@ -135,7 +127,7 @@ private func nextState(from current: TimerInteractionState, button: TimerButtonT
     }
 }
 
-// MARK: - TimerData 확장: 상태 → UI 상태
+// MARK: - TimerData 확장
 
 extension TimerData {
     fileprivate var interactionState: TimerInteractionState {

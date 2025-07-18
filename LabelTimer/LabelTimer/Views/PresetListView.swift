@@ -30,6 +30,7 @@ struct PresetListView: View {
                                 seconds: preset.seconds,
                                 label: preset.label
                             )
+                            presetManager.deletePreset(preset)
                         }
                     )
                     .swipeActions(edge: .trailing) {

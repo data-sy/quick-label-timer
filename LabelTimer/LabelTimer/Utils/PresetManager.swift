@@ -31,6 +31,19 @@ final class PresetManager: ObservableObject {
         userPresets.append(preset)
         savePresets()
     }
+    
+    /// 실행 중 타이머를 프리셋으로 추가
+    func addPreset(from timer: TimerData) {
+        let preset = TimerPreset(
+            hours: timer.hours,
+            minutes: timer.minutes,
+            seconds: timer.seconds,
+            label: timer.label,
+            createdAt: Date()
+        )
+        userPresets.insert(preset, at: 0) // 최신순을 유지하기 위해 앞에 삽입
+        savePresets()
+    }
 
     /// 사용자 프리셋 삭제
     /// - Parameter preset: 삭제할 프리셋
