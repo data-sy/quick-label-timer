@@ -11,64 +11,53 @@ import SwiftUI
 /// - 사용 목적: 사용자가 라벨과 시간을 입력하고 타이머를 시작할 수 있도록 함.
 
 struct TimerInputView: View {
-    @State private var label: String = ""
-    @State private var hours: Int = 0
-    @State private var minutes: Int = 0
-    @State private var seconds: Int = 0
-    
-    @EnvironmentObject var timerManager: TimerManager
+    @State private var label = ""
+    @State private var hours = 0
+    @State private var minutes = 0
+    @State private var seconds = 0
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // 라벨 + 시작 버튼
-            HStack {
-                TextField("라벨을 입력하세요", text: $label)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            // 타이틀
+            Text("타이머 생성")
+                .font(.title2)
+                .bold()
 
-                Button(action: {
-                    timerManager.addTimer(
-                        hours: hours,
-                        minutes: minutes,
-                        seconds: seconds,
-                        label: label
+            // 입력 필드 + 휠 + 버튼 묶은 내부 박스
+            VStack(spacing: 16) {
+                LabelInputField(label: $label)
+
+                // 구분선
+                Divider()
+
+                HStack(spacing: 24) {
+                    TimePickerGroup(
+                        hours: $hours,
+                        minutes: $minutes,
+                        seconds: $seconds
                     )
-                }) {
-                    Text("시작")
-                        .fontWeight(.bold)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Color.accentColor)
-                        .foregroundColor(.white)
-                        .clipShape(Capsule())
+
+                    TimerInputStartButton(
+                        isDisabled: label.isEmpty || (hours + minutes + seconds) == 0,
+                        onTap: {
+                            // 타이머 시작 로직
+                        }
+                    )
                 }
-                .disabled(label.isEmpty || (hours + minutes + seconds) == 0)
             }
-
-            // 시간 선택 휠
-            HStack(spacing: 0) {
-                Picker(selection: $hours, label: Text("시")) {
-                    ForEach(0..<24) { Text("\($0)시간") }
-                }
-                .pickerStyle(.wheel)
-                .frame(maxWidth: .infinity)
-
-                Picker(selection: $minutes, label: Text("분")) {
-                    ForEach(0..<60) { Text("\($0)분") }
-                }
-                .pickerStyle(.wheel)
-                .frame(maxWidth: .infinity)
-
-                Picker(selection: $seconds, label: Text("초")) {
-                    ForEach(0..<60) { Text("\($0)초") }
-                }
-                .pickerStyle(.wheel)
-                .frame(maxWidth: .infinity)
-            }
-            .frame(height: 120)
         }
         .padding()
+        .background(Color(.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .padding(.horizontal)
+//        .border(Color.blue)
     }
 }
+
+#Preview {
+    TimerInputView()
+}
+
 
 #Preview {
     TimerInputView()
