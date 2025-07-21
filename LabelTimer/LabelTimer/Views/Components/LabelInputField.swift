@@ -12,6 +12,7 @@ import SwiftUI
 
 struct LabelInputField: View {
     @Binding var label: String
+    @FocusState.Binding var isFocused: Bool
 
     var body: some View {
         HStack {
@@ -24,6 +25,14 @@ struct LabelInputField: View {
                 .overlay(Color.gray.opacity(0.4))
             
             TextField("레이블을 입력하세요", text: $label)
+                .focused($isFocused)
+                .frame(maxWidth: .infinity)
+
+        }
+        .padding(.vertical, 16)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isFocused = true
         }
     }
 }

@@ -15,17 +15,18 @@ struct TimerInputView: View {
     @State private var hours = 0
     @State private var minutes = 0
     @State private var seconds = 0
+    @FocusState private var isLabelFocused: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 0) {
             // 타이틀
             Text("타이머 생성")
                 .font(.title2)
                 .bold()
 
             // 입력 필드 + 휠 + 버튼 묶은 내부 박스
-            VStack(spacing: 16) {
-                LabelInputField(label: $label)
+            VStack(spacing: 0) {
+                LabelInputField(label: $label, isFocused: $isLabelFocused)
 
                 // 구분선
                 Divider()
