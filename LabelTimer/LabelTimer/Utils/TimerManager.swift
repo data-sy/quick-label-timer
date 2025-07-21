@@ -12,12 +12,13 @@ import Combine
 /// - 사용 목적: 타이머 추가, 삭제, 상태 업데이트 등을 전역에서 관리함.
 
 final class TimerManager: ObservableObject {
-    /// 현재 실행 중인 타이머 목록
     @Published var timers: [TimerData] = []
 
+    private let presetManager: PresetManager
     private var timer: Timer?
 
-    init() {
+    init(presetManager: PresetManager) {
+        self.presetManager = presetManager
         startTicking()
     }
 
@@ -48,8 +49,10 @@ final class TimerManager: ObservableObject {
         let now = Date()
         let end = now.addingTimeInterval(TimeInterval(totalSeconds))
 
+        let finalLabel = label.isEmpty ? generateAutoLabel() : label
+        
         let newTimer = TimerData(
-            label: label,
+            label: finalLabel,
             hours: hours,
             minutes: minutes,
             seconds: seconds,
@@ -60,6 +63,19 @@ final class TimerManager: ObservableObject {
         )
 
         timers.append(newTimer)
+    }
+
+    /// 레이블이 비어 있을 경우 중복되지 않는 자동 레이블("타이머N") 생성
+    private func generateAutoLabel() -> String {
+        let existingLabels = timers.map(\.label) + presetManager.allPresets.map(\.label)
+        var index = 1
+        while true {
+            let candidate = "타이머\(index)"
+            if !existingLabels.contains(candidate) {
+                return candidate
+            }
+            index += 1
+        }
     }
 
     /// 실행 중인 타이머를 일시정지

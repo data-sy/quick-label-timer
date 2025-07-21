@@ -16,7 +16,7 @@ struct MainTimerBoardView: View {
             VStack(spacing: 24) {
                 TimerInputView()
                 RunningTimersView()
-//                PresetListView()
+                PresetListView()
                     .frame(height: 400) // ScrollView 내 List높이 0 방지용 고정 height
             }
             .padding()
@@ -25,7 +25,10 @@ struct MainTimerBoardView: View {
 }
 
 #Preview {
-    MainTimerBoardView()
-        .environmentObject(TimerManager())
-        .environmentObject(PresetManager())
+    let presetManager = PresetManager()
+    let timerManager = TimerManager(presetManager: presetManager)
+    return MainTimerBoardView()
+        .environmentObject(timerManager)
+        .environmentObject(presetManager)
 }
+

@@ -16,6 +16,8 @@ struct TimerInputView: View {
     @State private var minutes = 0
     @State private var seconds = 0
     @FocusState private var isLabelFocused: Bool
+    
+    @EnvironmentObject var timerManager: TimerManager
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -39,9 +41,23 @@ struct TimerInputView: View {
                     )
 
                     TimerInputStartButton(
-                        isDisabled: label.isEmpty || (hours + minutes + seconds) == 0,
+                        isDisabled: (hours + minutes + seconds) == 0,
                         onTap: {
-                            // 타이머 시작 로직
+                            let total = hours * 3600 + minutes * 60 + seconds
+                            guard total > 0 else { return }
+
+                            timerManager.addTimer(
+                                hours: hours,
+                                minutes: minutes,
+                                seconds: seconds,
+                                label: label
+                            )
+                            
+                            // 입력 초기화
+                            label = ""
+                            hours = 0
+                            minutes = 0
+                            seconds = 0
                         }
                     )
                 }
@@ -56,11 +72,8 @@ struct TimerInputView: View {
 }
 
 #Preview {
-    TimerInputView()
-}
-
-
-#Preview {
-    TimerInputView()
-        .environmentObject(TimerManager())
+    let presetManager = PresetManager()
+    let timerManager = TimerManager(presetManager: presetManager)
+    return TimerInputView()
+        .environmentObject(timerManager)
 }
