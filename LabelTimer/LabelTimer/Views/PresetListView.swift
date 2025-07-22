@@ -12,6 +12,9 @@ import SwiftUI
 struct PresetListView: View {
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager
+    
+    @State private var presetToDelete: TimerPreset? = nil
+    @State private var showingDeleteAlert: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -23,20 +26,45 @@ struct PresetListView: View {
                 ForEach(presetManager.allPresets, id: \.id) { preset in
                     PresetTimerRowView(
                         preset: preset,
-                        onStart: {
-                            timerManager.addTimer(
-                                hours: preset.hours,
-                                minutes: preset.minutes,
-                                seconds: preset.seconds,
-                                label: preset.label
-                            )
-                            presetManager.deletePreset(preset)
+                        onAction: { action in
+                            handleAction(action, preset: preset)
                         }
                     )
                 }
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
+        }
+        .alert("\(presetToDelete?.label.isEmpty == false ? "“\(presetToDelete!.label)”" : "이") 타이머를 삭제하시겠습니까?",
+               isPresented: $showingDeleteAlert,
+               actions: {
+                   Button("취소", role: .cancel) { }
+                   Button("삭제", role: .destructive) {
+                       if let preset = presetToDelete {
+                           presetManager.deletePreset(preset)
+                           presetToDelete = nil
+                       }
+                   }
+               }
+        )
+    }
+    private func handleAction(_ action: TimerButtonType, preset: TimerPreset) {
+        switch action {
+        case .play:
+            timerManager.addTimer(
+                hours: preset.hours,
+                minutes: preset.minutes,
+                seconds: preset.seconds,
+                label: preset.label
+            )
+            presetManager.deletePreset(preset)
+
+        case .delete:
+            presetToDelete = preset
+            showingDeleteAlert = true
+
+        default:
+            break
         }
     }
 }
