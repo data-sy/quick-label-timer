@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct LabelTimerApp: App {
-    @StateObject private var timerManager = TimerManager()
     @StateObject private var presetManager = PresetManager()
-
+    @StateObject private var timerManager : TimerManager
+    
+    // 지연 초기화(deferred init)
+    init() {
+        let preset = PresetManager()
+        _presetManager = StateObject(wrappedValue: preset)
+        _timerManager = StateObject(wrappedValue: TimerManager(presetManager: preset))
+    }
+    
     var body: some Scene {
         WindowGroup {
             MainTimerBoardView()

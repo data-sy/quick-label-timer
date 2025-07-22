@@ -33,13 +33,6 @@ struct PresetListView: View {
                             presetManager.deletePreset(preset)
                         }
                     )
-                    .swipeActions(edge: .trailing) {
-                        Button(role: .destructive) {
-                            presetManager.deletePreset(preset)
-                        } label: {
-                            Label("삭제", systemImage: "trash")
-                        }
-                    }
                 }
             }
             .listStyle(.plain)

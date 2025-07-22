@@ -17,9 +17,18 @@ struct MainTimerBoardView: View {
                 TimerInputView()
                 RunningTimersView()
                 PresetListView()
-                    .frame(height: 400) // ScrollView안에 List를 넣을 경우 List의 높이가 자동으로 계산되지 않아서 height가 0으로 렌더링됨. 이를 방지하기 위한 고정 높이
+                    .frame(height: 400) // ScrollView 내 List높이 0 방지용 고정 height
             }
             .padding()
         }
     }
 }
+
+#Preview {
+    let presetManager = PresetManager()
+    let timerManager = TimerManager(presetManager: presetManager)
+    return MainTimerBoardView()
+        .environmentObject(timerManager)
+        .environmentObject(presetManager)
+}
+
