@@ -33,20 +33,19 @@ struct PresetTimerRowView: View {
         TimerRowView(
             label: preset.label,
             timeText: formattedTotalTime,
-
             leftButton: AnyView(
                 TimerActionButton(type: .delete) {
                     onAction(.delete)
                 }
                 .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
             ),
-
             rightButton: AnyView(
                 TimerActionButton(type: .play) {
                     onAction(.play)
                 }
                 .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
-            )
+            ),
+            state: TimerInteractionState.waiting
         )
     }
 }

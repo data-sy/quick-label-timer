@@ -82,3 +82,11 @@ final class PresetManager: ObservableObject {
         }
     }
 }
+
+#if DEBUG
+extension PresetManager {
+    func setPresets(_ presets: [TimerPreset]) {
+        self.userPresets = presets
+    }
+}
+#endif

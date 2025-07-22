@@ -10,6 +10,7 @@
 ///   내부적으로 타이머 모델의 status를 변환해 UI용 상태로 활용
 
 enum TimerInteractionState {
+    case waiting
     case running
     case paused
     case stopped

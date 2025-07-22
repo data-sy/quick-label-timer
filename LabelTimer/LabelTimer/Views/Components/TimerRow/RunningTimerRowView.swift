@@ -51,7 +51,8 @@ struct RunningTimerRowView: View {
                 TimerActionButton(type: buttons.right) {
                     handleAction(buttons.right)
                 }
-            )
+            ),
+            state: uiState
         )
     }
 

@@ -17,7 +17,7 @@ struct PresetListView: View {
     @State private var showingDeleteAlert: Bool = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 0) {
             Text("타이머 목록")
                 .font(.headline)
                 .padding(.horizontal)
@@ -68,3 +68,25 @@ struct PresetListView: View {
         }
     }
 }
+
+#if DEBUG
+struct PresetListView_Previews: PreviewProvider {
+    static var previews: some View {
+        let presetManager = PresetManager()
+        presetManager.setPresets([
+            TimerPreset(hours: 0, minutes: 25, seconds: 0, label: "집중"),
+            TimerPreset(hours: 0, minutes: 5, seconds: 0, label: "짧은 휴식"),
+            TimerPreset(hours: 0, minutes: 15, seconds: 0, label: "긴 휴식")
+        ])
+
+        let timerManager = TimerManager(presetManager: presetManager)
+
+        return PresetListView()
+            .environmentObject(presetManager)
+            .environmentObject(timerManager)
+            .previewLayout(.sizeThatFits)
+            .padding()
+    }
+}
+#endif
+

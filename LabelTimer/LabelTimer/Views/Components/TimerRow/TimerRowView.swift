@@ -15,6 +15,7 @@ struct TimerRowView: View {
     let timeText: String
     let leftButton: AnyView?
     let rightButton: AnyView?
+    let state: TimerInteractionState
     
     var body: some View {
         HStack {
@@ -33,17 +34,11 @@ struct TimerRowView: View {
                 leftButton
             }
 
-            // ✅ 오른쪽 버튼
             if let rightButton = rightButton {
                 rightButton
             }
         }
         .padding()
-//        .background(Color(.secondarySystemBackground))
-        .cornerRadius(12)
-        // 영역 테스트용
-        .background(Color.yellow)
-        .border(Color.red)
-
+        .timerRowStyle(for: state)
     }
 }
