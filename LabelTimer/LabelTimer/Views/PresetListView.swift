@@ -18,9 +18,7 @@ struct PresetListView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("타이머 목록")
-                .font(.headline)
-                .padding(.horizontal)
+            SectionTitle(text: "타이머 목록")
 
             List {
                 ForEach(presetManager.allPresets, id: \.id) { preset in
@@ -35,6 +33,7 @@ struct PresetListView: View {
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
         }
+        .border(Color.green)
         .alert("\(presetToDelete?.label.isEmpty == false ? "“\(presetToDelete!.label)”" : "이") 타이머를 삭제하시겠습니까?",
                isPresented: $showingDeleteAlert,
                actions: {

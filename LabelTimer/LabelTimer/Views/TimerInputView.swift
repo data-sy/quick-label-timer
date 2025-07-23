@@ -21,10 +21,7 @@ struct TimerInputView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // 타이틀
-            Text("타이머 생성")
-                .font(.title2)
-                .bold()
+            SectionTitle(text: "타이머 생성")
 
             // 입력 필드 + 휠 + 버튼 묶은 내부 박스
             VStack(spacing: 0) {
@@ -67,7 +64,7 @@ struct TimerInputView: View {
         .background(Color(.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .padding(.horizontal)
-//        .border(Color.blue)
+        .border(Color.blue)
     }
 }
 
