@@ -24,11 +24,13 @@ struct RunningTimersView: View {
                     .padding(.top, 8)
                     .frame(maxWidth: .infinity, alignment: .center)
             } else {
-                ForEach(timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt })) { timer in
-                    RunningTimerRowView(timer: timer) { action in
-                        handleAction(action, for: timer)
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt })) { timer in
+                        RunningTimerRowView(timer: timer) { action in
+                            handleAction(action, for: timer)
+                        }
+                        Divider()
                     }
-                    Divider()
                 }
             }
         }
