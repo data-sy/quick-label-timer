@@ -15,6 +15,7 @@ struct TimerInputView: View {
     @State private var hours = 0
     @State private var minutes = 0
     @State private var seconds = 0
+    @State private var isStartButtonDisabled = true
     @FocusState private var isLabelFocused: Bool
     
     @EnvironmentObject var timerManager: TimerManager
@@ -38,7 +39,7 @@ struct TimerInputView: View {
                     )
 
                     TimerInputStartButton(
-                        isDisabled: (hours + minutes + seconds) == 0,
+                        isDisabled: isStartButtonDisabled,
                         onTap: {
                             let total = hours * 3600 + minutes * 60 + seconds
                             guard total > 0 else { return }
@@ -65,6 +66,23 @@ struct TimerInputView: View {
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .padding(.horizontal)
         .border(Color.blue)
+        // 값이 바뀔 때 버튼 비활성화 상태 업데이트
+        .onChange(of: hours) {
+            updateButtonState()
+        }
+        .onChange(of: minutes) {
+            updateButtonState()
+        }
+        .onChange(of: seconds) {
+            updateButtonState()
+        }
+        // 처음 화면 진입 시 초기 상태 업데이트
+        .onAppear {
+            updateButtonState()
+        }
+    }
+    private func updateButtonState() {
+        isStartButtonDisabled = (hours + minutes + seconds) == 0
     }
 }
 
