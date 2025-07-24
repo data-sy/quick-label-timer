@@ -15,6 +15,11 @@ struct TimerRowView: View {
     let timeText: String
     let leftButton: AnyView?
     let rightButton: AnyView?
+
+    // 폰트 크기 및 두께 (고정값)
+    private let labelFont: Font = .headline
+    private let timeFont: Font = .system(size: 44, weight: .regular)
+    // 폰트 및 배경 색상 (타이머 상태에 따라 변함)
     let state: TimerInteractionState
     
     var body: some View {
@@ -22,10 +27,9 @@ struct TimerRowView: View {
             // 라벨 및 시간
             VStack(alignment: .leading) {
                 Text(label)
-                    .font(.headline)
+                    .font(labelFont)
                 Text(timeText)
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .font(timeFont)
             }
 
             Spacer()
@@ -39,6 +43,7 @@ struct TimerRowView: View {
             }
         }
         .padding()
+        .cornerRadius(8)
         .timerRowStateStyle(for: state)
     }
 }
