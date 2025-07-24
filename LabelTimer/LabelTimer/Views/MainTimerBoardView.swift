@@ -14,6 +14,10 @@ struct MainTimerBoardView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
+                // 실험용 폰트 비교 뷰
+                TimerFontExperimentView()
+  
+                // 기존 뷰
                 TimerInputView()
                 RunningTimersView()
                 PresetListView()
