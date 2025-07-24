@@ -33,7 +33,7 @@ struct PresetListView: View {
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
         }
-        .border(Color.green)
+//        .border(Color.green)
         .alert("\(presetToDelete?.label.isEmpty == false ? "“\(presetToDelete!.label)”" : "이") 타이머를 삭제하시겠습니까?",
                isPresented: $showingDeleteAlert,
                actions: {

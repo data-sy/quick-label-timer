@@ -62,9 +62,9 @@ struct TimerInputView: View {
         }
         .padding()
         .background(Color(.secondarySystemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
         .padding(.horizontal)
-        .border(Color.blue)
+//        .border(Color.blue)
     }
 }
 
