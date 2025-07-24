@@ -39,6 +39,6 @@ struct TimerRowView: View {
             }
         }
         .padding()
-        .timerRowStyle(for: state)
+        .timerRowStateStyle(for: state)
     }
 }

@@ -1,15 +1,16 @@
-//
-//  TimerRowStyle.swift
-//  LabelTimer
-//
-//  Created by 이소연 on 7/22/25.
-//
-
-
 import SwiftUI
 
-/// 타이머 상태에 따라 배경색, 텍스트 색상, 보더를 설정하는 Modifier
-struct TimerRowStyle: ViewModifier {
+//
+//  TimerRowStateStyle.swift
+//  LabelTimer
+//
+//  Created by 이소연 on 7/24/25.
+//
+/// 타이머 상태에 따라 배경색, 텍스트 색상을 설정하는 ViewModifier
+///
+/// - 사용 목적: 실행 중, 일시정지, 정지 등의 타이머 상태에 따라 `TimerRowView` 에 일관된 스타일을 적용함
+
+struct TimerRowStateStyle: ViewModifier {
     let state: TimerInteractionState
 
     func body(content: Content) -> some View {
@@ -60,7 +61,8 @@ struct TimerRowStyle: ViewModifier {
 }
 
 extension View {
-    func timerRowStyle(for state: TimerInteractionState) -> some View {
-        self.modifier(TimerRowStyle(state: state))
+    /// 타이머 상태에 따라 `TimerRowStateStyle` Modifier를 적용함
+    func timerRowStateStyle(for state: TimerInteractionState) -> some View {
+        self.modifier(TimerRowStateStyle(state: state))
     }
 }
