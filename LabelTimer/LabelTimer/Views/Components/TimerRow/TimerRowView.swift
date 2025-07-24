@@ -15,35 +15,36 @@ struct TimerRowView: View {
     let timeText: String
     let leftButton: AnyView?
     let rightButton: AnyView?
-    
+    let state: TimerInteractionState
+
     var body: some View {
-        HStack {
-            // 라벨 및 시간
-            VStack(alignment: .leading) {
-                Text(label)
-                    .font(.headline)
-                Text(timeText)
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-            }
+        let style = TimerRowStateStyle(state: state)
 
-            Spacer()
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(label)
+                        .font(style.labelFont)
 
-            if let leftButton = leftButton {
-                leftButton
-            }
+                    Text(timeText)
+                        .font(style.timeFont)
+                }
 
-            // ✅ 오른쪽 버튼
-            if let rightButton = rightButton {
-                rightButton
+                Spacer()
+
+                HStack(spacing: 12) {
+                    if let leftButton = leftButton {
+                        leftButton
+                    }
+
+                    if let rightButton = rightButton {
+                        rightButton
+                    }
+                }
             }
+            .padding()
+            .modifier(style) // 배경색 및 텍스트 색 적용
         }
-        .padding()
-//        .background(Color(.secondarySystemBackground))
-        .cornerRadius(12)
-        // 영역 테스트용
-        .background(Color.yellow)
-        .border(Color.red)
 
     }
 }

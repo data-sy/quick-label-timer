@@ -1,1 +1,3 @@
-/LabelTimer.xcodeproj/project.xcworkspace/xcuserdata/
+# Xcode user data
+**/xcuserdata/
+*.xcuserstate

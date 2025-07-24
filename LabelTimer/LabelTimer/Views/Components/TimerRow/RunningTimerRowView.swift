@@ -42,99 +42,22 @@ struct RunningTimerRowView: View {
             label: timer.label,
             timeText: formattedRemainingTime,
             leftButton: AnyView(
-                Button(action: {
+                TimerActionButton(type: buttons.left) {
                     handleAction(buttons.left)
-                }) {
-                    Image(systemName: buttons.left.iconName)
-                        .foregroundColor(.white)
-                        .padding(8)
-                        .background(buttons.left.backgroundColor)
-                        .clipShape(Circle())
                 }
             ),
+
             rightButton: AnyView(
-                Button(action: {
+                TimerActionButton(type: buttons.right) {
                     handleAction(buttons.right)
-                }) {
-                    Image(systemName: buttons.right.iconName)
-                        .foregroundColor(.white)
-                        .padding(8)
-                        .background(buttons.right.backgroundColor)
-                        .clipShape(Circle())
                 }
-            )
+            ),
+            state: uiState
         )
     }
 
     private func handleAction(_ button: TimerButtonType) {
         onAction(button)
         uiState = nextState(from: uiState, button: button)
-    }
-}
-
-// MARK: - UI 상태 관련
-
-fileprivate enum TimerInteractionState {
-    case running, paused, stopped
-}
-
-enum TimerButtonType {
-    case play, pause, restart, stop, delete
-
-    var iconName: String {
-        switch self {
-        case .play: return "play.fill"
-        case .pause: return "pause.fill"
-        case .restart: return "gobackward"
-        case .stop: return "stop.fill"
-        case .delete: return "xmark"
-        }
-    }
-
-    var backgroundColor: Color {
-        switch self {
-        case .play: return .green
-        case .pause: return .orange
-        case .restart: return .blue
-        case .stop: return .red
-        case .delete: return .gray
-        }
-    }
-}
-
-private struct TimerButtonSet {
-    let left: TimerButtonType
-    let right: TimerButtonType
-}
-
-private func buttonSet(for state: TimerInteractionState) -> TimerButtonSet {
-    switch state {
-    case .running: return TimerButtonSet(left: .stop, right: .pause)
-    case .paused: return TimerButtonSet(left: .delete, right: .play)
-    case .stopped: return TimerButtonSet(left: .delete, right: .restart)
-    }
-}
-
-private func nextState(from current: TimerInteractionState, button: TimerButtonType) -> TimerInteractionState {
-    switch (current, button) {
-    case (.running, .stop): return .stopped
-    case (.running, .pause): return .paused
-    case (.paused, .play): return .running
-    case (.paused, .delete): return .stopped
-    case (.stopped, .restart): return .running
-    case (.stopped, .delete): return .stopped
-    default: return current
-    }
-}
-
-// MARK: - TimerData 확장
-
-extension TimerData {
-    fileprivate var interactionState: TimerInteractionState {
-        switch status {
-        case .running: return .running
-        case .paused: return .paused
-        case .completed, .stopped: return .stopped
-        }
     }
 }

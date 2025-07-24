@@ -12,25 +12,20 @@ import SwiftUI
 struct PresetListView: View {
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager
+    
+    @State private var presetToDelete: TimerPreset? = nil
+    @State private var showingDeleteAlert: Bool = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("타이머 목록")
-                .font(.headline)
-                .padding(.horizontal)
+        VStack(alignment: .leading, spacing: 0) {
+            SectionTitle(text: "타이머 목록")
 
             List {
                 ForEach(presetManager.allPresets, id: \.id) { preset in
                     PresetTimerRowView(
                         preset: preset,
-                        onStart: {
-                            timerManager.addTimer(
-                                hours: preset.hours,
-                                minutes: preset.minutes,
-                                seconds: preset.seconds,
-                                label: preset.label
-                            )
-                            presetManager.deletePreset(preset)
+                        onAction: { action in
+                            handleAction(action, preset: preset)
                         }
                     )
                 }
@@ -38,5 +33,59 @@ struct PresetListView: View {
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
         }
+//        .border(Color.green)
+        .alert("\(presetToDelete?.label.isEmpty == false ? "“\(presetToDelete!.label)”" : "이") 타이머를 삭제하시겠습니까?",
+               isPresented: $showingDeleteAlert,
+               actions: {
+                   Button("취소", role: .cancel) { }
+                   Button("삭제", role: .destructive) {
+                       if let preset = presetToDelete {
+                           presetManager.deletePreset(preset)
+                           presetToDelete = nil
+                       }
+                   }
+               }
+        )
+    }
+    private func handleAction(_ action: TimerButtonType, preset: TimerPreset) {
+        switch action {
+        case .play:
+            timerManager.addTimer(
+                hours: preset.hours,
+                minutes: preset.minutes,
+                seconds: preset.seconds,
+                label: preset.label
+            )
+            presetManager.deletePreset(preset)
+
+        case .delete:
+            presetToDelete = preset
+            showingDeleteAlert = true
+
+        default:
+            break
+        }
     }
 }
+
+#if DEBUG
+struct PresetListView_Previews: PreviewProvider {
+    static var previews: some View {
+        let presetManager = PresetManager()
+        presetManager.setPresets([
+            TimerPreset(hours: 0, minutes: 25, seconds: 0, label: "집중"),
+            TimerPreset(hours: 0, minutes: 5, seconds: 0, label: "짧은 휴식"),
+            TimerPreset(hours: 0, minutes: 15, seconds: 0, label: "긴 휴식")
+        ])
+
+        let timerManager = TimerManager(presetManager: presetManager)
+
+        return PresetListView()
+            .environmentObject(presetManager)
+            .environmentObject(timerManager)
+            .previewLayout(.sizeThatFits)
+            .padding()
+    }
+}
+#endif
+

@@ -13,8 +13,8 @@ import SwiftUI
 
 struct PresetTimerRowView: View {
     let preset: TimerPreset
-    let onStart: () -> Void
-
+    let onAction: (TimerButtonType) -> Void
+    
     /// 전체 시간을 포맷된 문자열로 반환
     private var formattedTotalTime: String {
         let total = preset.totalSeconds
@@ -33,18 +33,19 @@ struct PresetTimerRowView: View {
         TimerRowView(
             label: preset.label,
             timeText: formattedTotalTime,
-            leftButton: nil,
-            rightButton: AnyView(
-                Button(action: {
-                    onStart()
-                }) {
-                    Image(systemName: "play.fill")
-                        .foregroundColor(.white)
-                        .padding(8)
-                        .background(Color.accentColor)
-                        .clipShape(Circle())
+            leftButton: AnyView(
+                TimerActionButton(type: .delete) {
+                    onAction(.delete)
                 }
-            )
+                .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
+            ),
+            rightButton: AnyView(
+                TimerActionButton(type: .play) {
+                    onAction(.play)
+                }
+                .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
+            ),
+            state: TimerInteractionState.waiting
         )
     }
 }

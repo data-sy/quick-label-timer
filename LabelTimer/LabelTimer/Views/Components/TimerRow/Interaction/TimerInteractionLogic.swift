@@ -20,6 +20,8 @@ struct TimerButtonSet {
 /// 현재 상태에 따라 버튼 세트를 반환
 func buttonSet(for state: TimerInteractionState) -> TimerButtonSet {
     switch state {
+    case .waiting:
+        return TimerButtonSet(left: .delete, right: .play)
     case .running:
         return TimerButtonSet(left: .stop, right: .pause)
     case .paused:

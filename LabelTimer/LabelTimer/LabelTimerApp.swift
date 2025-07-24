@@ -24,6 +24,7 @@ struct LabelTimerApp: App {
             MainTimerBoardView()
                 .environmentObject(timerManager)
                 .environmentObject(presetManager)
+                .preferredColorScheme(.dark) // 다크모드
                 .onAppear {
                     NotificationUtils.requestAuthorization()
                 }

@@ -17,10 +17,15 @@ struct TimerActionButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: type.iconName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20, height: 20)
                 .foregroundColor(.white)
-                .padding(8)
+                .padding(16)
                 .background(type.backgroundColor)
                 .clipShape(Circle())
         }
+        .frame(width: 50, height: 50)
     }
 }
+

@@ -16,13 +16,13 @@ struct RunningTimersView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("실행 중인 타이머")
-                .font(.headline)
+            SectionTitle(text: "실행중인 타이머")
 
             if timerManager.timers.isEmpty {
                 Text("아직 실행 중인 타이머가 없습니다.")
                     .foregroundColor(.gray)
                     .padding(.top, 8)
+                    .frame(maxWidth: .infinity, alignment: .center)
             } else {
                 ForEach(timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt })) { timer in
                     RunningTimerRowView(timer: timer) { action in
@@ -31,7 +31,8 @@ struct RunningTimersView: View {
                 }
             }
         }
-        .padding(.horizontal)
+        .padding()
+//        .border(Color.red)
     }
 
     /// 버튼 액션 처리
