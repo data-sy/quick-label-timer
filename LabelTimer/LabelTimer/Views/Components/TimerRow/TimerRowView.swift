@@ -15,35 +15,36 @@ struct TimerRowView: View {
     let timeText: String
     let leftButton: AnyView?
     let rightButton: AnyView?
-
-    // 폰트 크기 및 두께 (고정값)
-    private let labelFont: Font = .headline
-    private let timeFont: Font = .system(size: 44, weight: .regular)
-    // 폰트 및 배경 색상 (타이머 상태에 따라 변함)
     let state: TimerInteractionState
-    
+
     var body: some View {
-        HStack {
-            // 라벨 및 시간
-            VStack(alignment: .leading) {
-                Text(label)
-                    .font(labelFont)
-                Text(timeText)
-                    .font(timeFont)
-            }
+        let style = TimerRowStateStyle(state: state)
 
-            Spacer()
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(label)
+                        .font(style.labelFont)
 
-            if let leftButton = leftButton {
-                leftButton
-            }
+                    Text(timeText)
+                        .font(style.timeFont)
+                }
 
-            if let rightButton = rightButton {
-                rightButton
+                Spacer()
+
+                HStack(spacing: 12) {
+                    if let leftButton = leftButton {
+                        leftButton
+                    }
+
+                    if let rightButton = rightButton {
+                        rightButton
+                    }
+                }
             }
+            .padding()
+            .modifier(style) // 배경색 및 텍스트 색 적용
         }
-        .padding()
-        .cornerRadius(8)
-        .timerRowStateStyle(for: state)
+
     }
 }
