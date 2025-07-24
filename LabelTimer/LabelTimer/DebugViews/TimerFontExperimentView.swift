@@ -58,9 +58,9 @@ private struct TimerFontSample: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(label)
-                .font(.caption)
-                .foregroundColor(.secondary)
+//            Text(label)
+//                .font(.caption)
+//                .foregroundColor(.secondary)
 
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
@@ -117,7 +117,7 @@ private enum FontSampleGroup: CaseIterable {
         case .whiteOnBlack, .whiteLabelOrangeTime:
             return .white
         case .orangeOnWhite, .orangeOnBlack, .orangeLabelBlackTime, .orangeLabelWhiteTime:
-            return Constants.orange
+            return .brandColor
         }
     }
 
@@ -130,7 +130,7 @@ private enum FontSampleGroup: CaseIterable {
         case .whiteOnBlack, .orangeLabelWhiteTime:
             return .white
         case .orangeOnWhite, .orangeOnBlack, .blackLabelOrangeTime, .whiteLabelOrangeTime:
-            return Constants.orange
+            return .brandColor
         }
     }
 
@@ -169,14 +169,4 @@ private enum FontSampleGroup: CaseIterable {
 
 private enum Constants {
     static let timerStartSeconds = 180
-    static let orange = Color(hex: 0xFF6F00)
-}
-
-private extension Color {
-    init(hex: UInt, alpha: Double = 1.0) {
-        let r = Double((hex >> 16) & 0xFF) / 255
-        let g = Double((hex >> 8) & 0xFF) / 255
-        let b = Double(hex & 0xFF) / 255
-        self.init(.sRGB, red: r, green: g, blue: b, opacity: alpha)
-    }
 }
