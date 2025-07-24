@@ -1,3 +1,7 @@
-# Xcode user data
+# Xcode user-specific files
 **/xcuserdata/
 *.xcuserstate
+
+# Additional common Xcode metadata (safe to ignore globally)
+*.xccheckout
+*.xcscmblueprint
