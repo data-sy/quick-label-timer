@@ -21,7 +21,15 @@ struct TimerInputView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            SectionTitle(text: "타이머 생성")
+            HStack {
+                SectionTitle(text: "타이머 생성")
+
+                Spacer()
+                
+                AlarmSettingToggles()
+            }
+
+
 
             // 입력 필드 + 휠 + 버튼 묶은 내부 박스
             VStack(spacing: 0) {
@@ -73,4 +81,5 @@ struct TimerInputView: View {
     let timerManager = TimerManager(presetManager: presetManager)
     return TimerInputView()
         .environmentObject(timerManager)
+        .environmentObject(UserSettings.shared)
 }
