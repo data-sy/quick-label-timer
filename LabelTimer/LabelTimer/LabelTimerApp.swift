@@ -17,6 +17,7 @@ struct LabelTimerApp: App {
         let preset = PresetManager()
         _presetManager = StateObject(wrappedValue: preset)
         _timerManager = StateObject(wrappedValue: TimerManager(presetManager: preset))
+        NotificationUtils.requestAuthorization()
     }
     
     var body: some Scene {
@@ -25,9 +26,6 @@ struct LabelTimerApp: App {
                 .environmentObject(timerManager)
                 .environmentObject(presetManager)
                 .preferredColorScheme(.dark) // 다크모드
-                .onAppear {
-                    NotificationUtils.requestAuthorization()
-                }
         }
     }
 }

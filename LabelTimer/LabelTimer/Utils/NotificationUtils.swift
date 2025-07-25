@@ -18,7 +18,9 @@ enum NotificationUtils {
 
     /// 알림 권한 요청 (앱 시작 시 1회)
     static func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
                 #if DEBUG
                 print("알림 권한 요청 실패: \(error)")
@@ -29,6 +31,7 @@ enum NotificationUtils {
                 #endif
             }
         }
+        center.delegate = NotificationDelegate.shared
     }
 
     /// 특정 타이머에 대한 로컬 알림 예약
