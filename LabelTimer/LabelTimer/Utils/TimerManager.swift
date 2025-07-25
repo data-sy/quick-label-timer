@@ -22,6 +22,16 @@ final class TimerManager: ObservableObject {
         startTicking()
     }
 
+    /// 타이머 로컬 알림 예약
+    private func scheduleNotification(for timer: TimerData) {
+        let interval = max(0, timer.endDate.timeIntervalSince(Date()))
+        NotificationUtils.scheduleNotification(
+            id: timer.id.uuidString,
+            label: timer.label,
+            after: Int(interval)
+        )
+    }
+    
     /// 매초마다 타이머 상태 업데이트
     func startTicking() {
         timer?.invalidate()
@@ -63,6 +73,7 @@ final class TimerManager: ObservableObject {
         )
 
         timers.append(newTimer)
+        scheduleNotification(for: newTimer)
     }
 
     /// 레이블이 비어 있을 경우 중복되지 않는 자동 레이블("타이머N") 생성
@@ -80,6 +91,8 @@ final class TimerManager: ObservableObject {
 
     /// 실행 중인 타이머를 일시정지
     func pauseTimer(id: UUID) {
+        NotificationUtils.cancelScheduledNotification(id: id.uuidString)
+        
         timers = timers.map { timer in
             guard timer.id == id, timer.status == .running else { return timer }
             return timer.updating(status: .paused)
@@ -93,8 +106,8 @@ final class TimerManager: ObservableObject {
 
             let now = Date()
             let newEnd = now.addingTimeInterval(TimeInterval(timer.remainingSeconds))
-
-            return TimerData(
+            
+            let resumed = TimerData(
                 id: timer.id,
                 label: timer.label,
                 hours: timer.hours,
@@ -105,11 +118,15 @@ final class TimerManager: ObservableObject {
                 remainingSeconds: timer.remainingSeconds,
                 status: .running
             )
+            scheduleNotification(for: resumed)
+            return resumed
         }
     }
 
     /// 타이머를 정지 상태로 변경
     func stopTimer(id: UUID) {
+        NotificationUtils.cancelScheduledNotification(id: id.uuidString)
+        
         timers = timers.map { timer in
             guard timer.id == id else { return timer }
 
@@ -130,7 +147,6 @@ final class TimerManager: ObservableObject {
             )
         }
     }
-
 
     /// 기존 타이머를 재시작 (위치 유지)
     func restartTimer(id: UUID) {
@@ -154,14 +170,16 @@ final class TimerManager: ObservableObject {
         )
 
         timers[index] = restarted
+        scheduleNotification(for: restarted)
     }
     
     /// 실행 중인 타이머 삭제 (실행중인 타이머 -> 프리셋 목록으로 이동)
     @discardableResult
     func removeTimer(id: UUID) -> TimerData? {
+        NotificationUtils.cancelScheduledNotification(id: id.uuidString)
+
         guard let index = timers.firstIndex(where: { $0.id == id }) else { return nil }
         let removed = timers.remove(at: index)
         return removed
     }
-
 }
