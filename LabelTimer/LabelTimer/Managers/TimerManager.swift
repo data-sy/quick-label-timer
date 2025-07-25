@@ -16,10 +16,12 @@ final class TimerManager: ObservableObject {
     @Published var timers: [TimerData] = []
     
     private let presetManager: PresetManager
+    private let userSettings: UserSettings
     private var timer: Timer?
     
-    init(presetManager: PresetManager) {
+    init(presetManager: PresetManager, userSettings: UserSettings = .shared) {
         self.presetManager = presetManager
+        self.userSettings = userSettings
         startTicking()
     }
     
@@ -47,10 +49,10 @@ final class TimerManager: ObservableObject {
                 let remaining = Int(timer.endDate.timeIntervalSince(now))
                 let clamped = max(remaining, 0)
                 
-                if timer.remainingSeconds > 0, clamped == 0 {
+                if timer.remainingSeconds > 0, clamped == 0, UserSettings.shared.isSoundOn {
                     AlarmSoundPlayer.shared.playAlarmSound(for: timer.id, named: "alarm")
                 }
-                
+
                 return timer.updating(remainingSeconds: clamped)
             }
         }

@@ -22,7 +22,7 @@ final class UserSettings: ObservableObject {
     }
 
     private init() {
-        self.isSoundOn = UserDefaults.standard.object(forKey: "isSoundOn") as? Bool ?? true
+        self.isSoundOn = UserDefaults.standard.object(forKey: "isSoundOn") as? Bool ?? false
         self.isVibrationOn = UserDefaults.standard.object(forKey: "isVibrationOn") as? Bool ?? true
     }
 }
