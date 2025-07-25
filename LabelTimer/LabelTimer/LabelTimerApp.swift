@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct LabelTimerApp: App {
+    @Environment(\.scenePhase) private var scenePhase
+    
     @StateObject private var presetManager = PresetManager()
     @StateObject private var timerManager : TimerManager
     
@@ -25,7 +27,13 @@ struct LabelTimerApp: App {
             MainTimerBoardView()
                 .environmentObject(timerManager)
                 .environmentObject(presetManager)
+                .environmentObject(UserSettings.shared)
                 .preferredColorScheme(.dark) // 다크모드
+        }
+        .onChange(of: scenePhase) {
+            if scenePhase == .active {
+                timerManager.stopAlarmsForExpiredTimers()
+            }
         }
     }
 }
