@@ -49,9 +49,15 @@ final class TimerManager: ObservableObject {
                 let remaining = Int(timer.endDate.timeIntervalSince(now))
                 let clamped = max(remaining, 0)
                 
-                if timer.remainingSeconds > 0, clamped == 0, UserSettings.shared.isSoundOn {
-                    AlarmSoundPlayer.shared.playAlarmSound(for: timer.id, named: "alarm")
+                if timer.remainingSeconds > 0, clamped == 0 {
+                    if UserSettings.shared.isSoundOn {
+                        AlarmSoundPlayer.shared.playAlarmSound(for: timer.id, named: "alarm")
+                    }
+                    if UserSettings.shared.isVibrationOn {
+                        VibrationUtils.vibrate()
+                    }
                 }
+
 
                 return timer.updating(remainingSeconds: clamped)
             }
