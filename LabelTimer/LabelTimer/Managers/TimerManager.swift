@@ -17,11 +17,15 @@ final class TimerManager: ObservableObject {
     
     private let presetManager: PresetManager
     private let userSettings: UserSettings
+    private let alarmHandler: AlarmTriggering
+
     private var timer: Timer?
     
-    init(presetManager: PresetManager, userSettings: UserSettings = .shared) {
+    init(presetManager: PresetManager, userSettings: UserSettings = .shared,
+         alarmHandler: AlarmTriggering = AlarmHandler()) {
         self.presetManager = presetManager
         self.userSettings = userSettings
+        self.alarmHandler = alarmHandler // 테스트용
         startTicking()
     }
     
@@ -34,33 +38,36 @@ final class TimerManager: ObservableObject {
             after: Int(interval)
         )
     }
-    
-    /// 매초마다 타이머 상태 업데이트
+
+    /// 타이머 상태를 현재 시각 기준으로 1초 업데이트하고 알람 조건을 확인
+    func tick() {
+        let now = Date()
+
+        self.timers = self.timers.map { timer in
+            guard timer.status == .running else { return timer }
+
+            let remaining = Int(timer.endDate.timeIntervalSince(now))
+            let clamped = max(remaining, 0)
+
+            if timer.remainingSeconds != clamped, clamped == 0 { // 테스트 하는 과정에서 조건 수정
+                if userSettings.isSoundOn {
+                    alarmHandler.playSound(for: timer.id)
+                }
+                if userSettings.isVibrationOn {
+                    alarmHandler.vibrate()
+                }
+            }
+
+            return timer.updating(remainingSeconds: clamped)
+        }
+    }
+
+    /// 매초마다 타이머 상태 업데이트 (매초마다 tick()을 반복 실행)
     func startTicking() {
         timer?.invalidate()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            let now = Date()
-            
-            // 실행 중인 타이머만 남은 시간 갱신
-            self.timers = self.timers.map { timer in
-                guard timer.status == .running else { return timer }
-                
-                let remaining = Int(timer.endDate.timeIntervalSince(now))
-                let clamped = max(remaining, 0)
-                
-                if timer.remainingSeconds > 0, clamped == 0 {
-                    if UserSettings.shared.isSoundOn {
-                        AlarmSoundPlayer.shared.playAlarmSound(for: timer.id, named: "alarm")
-                    }
-                    if UserSettings.shared.isVibrationOn {
-                        VibrationUtils.vibrate()
-                    }
-                }
-
-
-                return timer.updating(remainingSeconds: clamped)
-            }
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.tick()
         }
         
         RunLoop.main.add(timer!, forMode: .common)
