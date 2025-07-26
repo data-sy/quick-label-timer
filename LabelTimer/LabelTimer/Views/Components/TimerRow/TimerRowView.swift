@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  TimerRowView.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import SwiftUI
 /// 타이머 정보(레이블 + 시간 + 버튼)를 표시하는 공통 뷰
 ///
 /// - 사용 목적: 실행 중 타이머, 프리셋 타이머 등 다양한 타이머 항목을 동일한 레이아웃으로 표현함
+
+import SwiftUI
 
 struct TimerRowView: View {
     let label: String

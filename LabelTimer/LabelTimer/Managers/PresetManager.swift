@@ -1,5 +1,3 @@
-import Foundation
-
 //
 //  PresetManager.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import Foundation
 /// 프리셋 타이머를 관리하는 매니저 클래스
 ///
 /// - 사용 목적: 앱 최초 실행 시 기본 프리셋을 등록하고, 사용자 프리셋을 UserDefaults에 저장/관리함.
+
+import Foundation
 
 final class PresetManager: ObservableObject {
     /// 사용자 정의 프리셋 목록 (최초 실행 시 기본 프리셋 포함)

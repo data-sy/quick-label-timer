@@ -1,12 +1,15 @@
-import UserNotifications
-@testable import LabelTimer
-
 //
 //  MockNotificationCenter.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/24/25.
 //
+/// 로컬 알림 스케줄링 로직 테스트를 위한 Mock 클래스 및 단위 테스트
+///
+/// - 사용 목적: NotificationScheduling 프로토콜을 구현한 Mock을 통해 타이머 알림 예약 동작을 검증
+
+import UserNotifications
+@testable import LabelTimer
 
 final class MockNotificationCenter: NotificationScheduling {
     var addedRequests: [UNNotificationRequest] = []

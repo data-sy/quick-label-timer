@@ -1,5 +1,3 @@
-import UserNotifications
-
 //
 //  NotificationScheduling.swift
 //  LabelTimer
@@ -10,6 +8,8 @@ import UserNotifications
 ///
 /// - 사용 목적: 테스트 코드에서 NotificationCenter를 모킹(mocking)할 수 있게 하기 위함
 /// - 실제 구현체로 UNUserNotificationCenter를 사용하되, 의존성을 프로토콜로 추상화하여 테스트 가능하게 함
+
+import UserNotifications
 
 protocol NotificationScheduling {
     func add(_ request: UNNotificationRequest, withCompletionHandler: ((Error?) -> Void)?)

@@ -1,7 +1,3 @@
-import Foundation
-import Combine
-import AVFoundation
-
 //
 //  TimerManager.swift
 //  LabelTimer
@@ -11,6 +7,10 @@ import AVFoundation
 /// 실행 중인 타이머들을 관리하는 클래스
 ///
 /// - 사용 목적: 타이머 추가, 삭제, 상태 업데이트 등을 전역에서 관리함.
+
+import Foundation
+import Combine
+import AVFoundation
 
 final class TimerManager: ObservableObject {
     @Published var timers: [TimerData] = []

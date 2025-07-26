@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  TimerButtonType.swift
 //  LabelTimer
@@ -10,6 +8,8 @@ import SwiftUI
 ///
 /// - 사용 목적: 각 버튼 상태에 따라 사용할 SF Symbol 아이콘과 배경 색상 지정
 ///   타이머 항목의 재생, 일시정지, 정지, 삭제, 재시작 등 액션에 일관된 스타일 제공
+
+import SwiftUI
 
 enum TimerButtonType {
     case play, pause, restart, stop, delete

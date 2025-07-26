@@ -1,6 +1,3 @@
-
-import SwiftUI
-
 //
 //  PresetTimerRowView.swift
 //  LabelTimer
@@ -10,6 +7,8 @@ import SwiftUI
 /// 프리셋 타이머에 대한 UI를 제공하는 래퍼 뷰
 ///
 /// - 사용 목적: 미리 정의된 타이머의 전체 시간과 실행 버튼을 표시함
+
+import SwiftUI
 
 struct PresetTimerRowView: View {
     let preset: TimerPreset

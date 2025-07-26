@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  RunningTimersView.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import SwiftUI
 /// 실행 중인 타이머 목록을 표시하는 뷰
 ///
 /// - 사용 목적: 생성된 타이머를 리스트 형태로 보여주고, 남은 시간을 실시간으로 업데이트
+
+import SwiftUI
 
 struct RunningTimersView: View {
     @EnvironmentObject var timerManager: TimerManager

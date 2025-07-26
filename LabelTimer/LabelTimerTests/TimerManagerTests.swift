@@ -1,12 +1,15 @@
-import Testing
-@testable import LabelTimer
-
 //
 //  TimerManagerTests.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/24/25.
 //
+/// TimerManager의 알림 예약 동작을 검증하는 테스트
+///
+/// - 사용 목적: 타이머 추가 시 NotificationUtils가 올바르게 호출되어 로컬 알림이 예약되는지 확인하기 위한 단위 테스트
+
+import Testing
+@testable import LabelTimer
 
 struct TimerManagerTests {
 

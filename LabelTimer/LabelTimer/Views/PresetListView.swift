@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  PresetListView.swift
 //  LabelTimer
@@ -9,6 +7,9 @@ import SwiftUI
 /// 저장된 프리셋 타이머 목록을 보여주는 뷰
 ///
 /// - 사용 목적: 사용자 또는 앱이 제공한 프리셋 타이머를 리스트 형태로 표시하고, 실행 버튼을 통해 타이머를 즉시 시작할 수 있도록 함.
+
+import SwiftUI
+
 struct PresetListView: View {
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager

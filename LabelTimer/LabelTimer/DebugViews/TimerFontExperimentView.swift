@@ -4,6 +4,10 @@
 //
 //  Created by 이소연 on 7/24/25.
 //
+/// 다양한 타이머 디자인 조합(배경/폰트 색상/굵기)을 실험하는 뷰
+///
+/// - 사용 목적: 텍스트 색상, 배경, 폰트 웨이트 등의 조합을 시각적으로 비교하여 타이머 UI 개선에 참고
+
 import SwiftUI
 
 struct TimerFontExperimentView: View {

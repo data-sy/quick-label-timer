@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  TimerInputStartButton.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import SwiftUI
 /// 타이머 입력 섹션에서 사용하는 시작 버튼
 /// 
 /// 사용 목적: 사용자가 시간과 라벨을 입력한 뒤, 타이머를 시작하도록 트리거하는 액션 버튼
+
+import SwiftUI
 
 struct TimerInputStartButton: View {
     var isDisabled: Bool

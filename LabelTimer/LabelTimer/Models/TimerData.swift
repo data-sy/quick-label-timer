@@ -1,5 +1,3 @@
-import Foundation
-
 //
 //  TimerData.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import Foundation
 /// 타이머 설정 정보를 저장하는 모델
 ///
 /// - 사용 목적: 타이머의 설정 값과 실행 시각, 종료 시각, 실행 여부, 남은 시간 등을 통합 관리함.
+
+import Foundation
 
 enum TimerStatus {
     case running

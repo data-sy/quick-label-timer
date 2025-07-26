@@ -1,5 +1,3 @@
-import UserNotifications
-
 //
 //  NotificationUtils.swift
 //  LabelTimer
@@ -9,8 +7,8 @@ import UserNotifications
 /// 로컬 알림을 요청, 예약, 취소하는 유틸리티
 ///
 /// - 사용 목적: 타이머 종료 시 로컬 알림을 발송하거나 취소하기 위한 로직 모듈화
-/// - 기능: 알림 권한 요청, 알림 예약, 알림 취소
-///
+
+import UserNotifications
 
 enum NotificationUtils {
     

@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  TimerInputView.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import SwiftUI
 /// 타이머를 입력하는 뷰
 ///
 /// - 사용 목적: 사용자가 라벨과 시간을 입력하고 타이머를 시작할 수 있도록 함.
+
+import SwiftUI
 
 struct TimerInputView: View {
     @State private var label = ""

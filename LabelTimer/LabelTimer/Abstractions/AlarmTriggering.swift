@@ -1,5 +1,3 @@
-import Foundation
-
 //
 //  AlarmTriggering.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import Foundation
 /// 사운드 및 진동 알림 기능을 추상화한 프로토콜
 ///
 /// - 사용 목적: 실제 사운드/진동 로직과 테스트용 Mock 구현을 분리하여 테스트 가능하게 함
+
+import Foundation
 
 protocol AlarmTriggering {
     func playSound(for id: UUID)

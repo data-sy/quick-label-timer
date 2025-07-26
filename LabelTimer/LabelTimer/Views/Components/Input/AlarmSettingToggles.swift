@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  AlarmSettingToggles.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import SwiftUI
 /// 타이머 입력 화면에서 사운드 및 진동 알림 설정을 제어하는 토글 컴포넌트
 ///
 /// - 사용 목적: 사용자가 사운드 및 진동 알람 여부를 개별적으로 설정할 수 있도록 제공
+
+import SwiftUI
 
 struct AlarmSettingToggles: View {
     @EnvironmentObject var settings: UserSettings

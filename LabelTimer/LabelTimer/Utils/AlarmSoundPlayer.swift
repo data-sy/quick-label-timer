@@ -1,6 +1,3 @@
-import Foundation
-import AVFoundation
-
 //
 //  AlarmSoundPlayer.swift
 //  LabelTimer
@@ -11,6 +8,9 @@ import AVFoundation
 ///
 /// - 사용 목적: 백그라운드 및 포그라운드에서 반복적으로 울리는 알람 사운드 재생
 /// - 기능: AVAudioSession 설정, 타이머별 알람 사운드 재생 및 정지
+
+import Foundation
+import AVFoundation
 
 final class AlarmSoundPlayer {
     static let shared = AlarmSoundPlayer()

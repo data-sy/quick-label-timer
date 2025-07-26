@@ -1,5 +1,3 @@
-import Foundation
-
 //
 //  TimerPreset.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import Foundation
 /// 타이머 실행을 위한 프리셋 모델
 ///
 /// - 사용 목적: 자주 사용하는 시간과 라벨을 저장해두고 빠르게 실행할 수 있도록 함.
+
+import Foundation
 
 struct TimerPreset: Identifiable, Codable, Hashable {
     let id: UUID
