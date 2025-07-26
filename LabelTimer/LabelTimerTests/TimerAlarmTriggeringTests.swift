@@ -1,6 +1,6 @@
 //
-//  TimerAlarmTriggerTests.swift
-//  LabelTimerTests
+//  TimerAlarmTriggeringTests.swift
+//  LabelTimer
 //
 //  Created by 이소연 on 7/26/25.
 //
@@ -11,7 +11,7 @@
 import XCTest
 @testable import LabelTimer
 
-final class TimerAlarmTriggerTests: XCTestCase {
+final class TimerAlarmTriggeringTests: XCTestCase {
     var timerManager: TimerManager!
     var mockAlarmHandler: MockAlarmHandler!
 

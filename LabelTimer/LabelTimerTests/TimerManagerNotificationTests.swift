@@ -1,5 +1,13 @@
 //
-//  TimerManagerTests.swift
+//  TimerManagerNotificationTests.swift
+//  LabelTimer
+//
+//  Created by 이소연 on 7/26/25.
+//
+
+
+//
+//  TimerManagerNotificationTests.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/24/25.
@@ -11,7 +19,7 @@
 import Testing
 @testable import LabelTimer
 
-struct TimerManagerTests {
+struct TimerManagerNotificationTests {
 
     @Test
     func test_addTimer_schedulesNotification() async throws {
@@ -49,7 +57,9 @@ struct TimerManagerTests {
         let timerID = manager.timers.first!.id
 
         manager.pauseTimer(id: timerID)
-        mockCenter.addedRequests.removeAll()  // 이전 예약 기록 제거
+        #expect(mockCenter.removedIdentifiers.contains(timerID.uuidString))
+ 
+        mockCenter.reset()
 
         manager.resumeTimer(id: timerID)
 
@@ -81,8 +91,10 @@ struct TimerManagerTests {
         let timerID = manager.timers.first!.id
 
         manager.stopTimer(id: timerID)
-        mockCenter.addedRequests.removeAll()
-
+        #expect(mockCenter.removedIdentifiers.contains(timerID.uuidString))
+        
+        mockCenter.reset()
+        
         manager.restartTimer(id: timerID)
 
         #expect(mockCenter.addedRequests.count == 1)

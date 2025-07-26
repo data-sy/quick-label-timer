@@ -14,7 +14,7 @@ import UserNotifications
 final class MockNotificationCenter: NotificationScheduling {
     var addedRequests: [UNNotificationRequest] = []
     var removedIdentifiers: [String] = []
-
+    
     func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
         addedRequests.append(request)
         completionHandler?(nil)
@@ -22,5 +22,10 @@ final class MockNotificationCenter: NotificationScheduling {
 
     func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {
         removedIdentifiers.append(contentsOf: identifiers)
+    }
+    
+    func reset() {
+        addedRequests.removeAll()
+        removedIdentifiers.removeAll()
     }
 }
