@@ -209,7 +209,7 @@ final class TimerManager: ObservableObject {
     func stopAlarmsForExpiredTimers() {
         let expiredTimers = timers.filter { $0.remainingSeconds <= 0 }
         for timer in expiredTimers {
-            AlarmSoundPlayer.shared.stopAlarm(for: timer.id)
+            alarmHandler.stopSound(for: timer.id)
         }
     }
 }

@@ -21,10 +21,13 @@ final class AlarmSoundPlayer {
     private init() {}
 
     /// 특정 타이머에 대한 알람 사운드 재생
-    func playAlarmSound(for id: UUID, named soundFileName: String, withExtension ext: String = "caf", loop: Bool = true) {
-        guard let url = Bundle.main.url(forResource: soundFileName, withExtension: ext) else {
+    func playAlarmSound(for id: UUID, sound: AlarmSound, loop: Bool = true) {
+        let fileName = sound.fileName
+        let fileExtension = sound.fileExtension
+
+        guard let url = Bundle.main.url(forResource: fileName, withExtension: fileExtension) else {
             #if DEBUG
-            print("사운드 파일을 찾을 수 없음: \(soundFileName).\(ext)")
+            print("사운드 파일을 찾을 수 없음: \(fileName).\(fileExtension)")
             #endif
             return
         }
