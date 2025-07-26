@@ -11,15 +11,23 @@
 import Foundation
 
 final class AlarmHandler: AlarmTriggering {
+    private let player: AlarmSoundPlayable
+
+    init(player: AlarmSoundPlayable = AlarmSoundPlayer.shared) {
+        self.player = player
+    }
+
     func playSound(for id: UUID) {
-        AlarmSoundPlayer.shared.playAlarmSound(for: id, sound: .default)
+        player.playAlarmSound(for: id, sound: .default, loop: true)
     }
 
     func stopSound(for id: UUID) {
-        AlarmSoundPlayer.shared.stopAlarm(for: id)
+        player.stopAlarm(for: id)
     }
 
     func vibrate() {
         VibrationUtils.vibrate()
     }
 }
+
+extension AlarmSoundPlayer: AlarmSoundPlayable {}

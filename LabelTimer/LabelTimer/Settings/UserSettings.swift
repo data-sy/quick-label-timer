@@ -21,8 +21,9 @@ final class UserSettings: ObservableObject {
         didSet { UserDefaults.standard.set(isVibrationOn, forKey: "isVibrationOn") }
     }
 
-    private init() {
+    init() {
         self.isSoundOn = UserDefaults.standard.object(forKey: "isSoundOn") as? Bool ?? false
         self.isVibrationOn = UserDefaults.standard.object(forKey: "isVibrationOn") as? Bool ?? true
     }
 }
+

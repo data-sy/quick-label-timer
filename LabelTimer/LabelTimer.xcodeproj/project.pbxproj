@@ -14,19 +14,11 @@
 			remoteGlobalIDString = EB8A19B52E1E773700ADD4F0;
 			remoteInfo = LabelTimer;
 		};
-		EB8A19CF2E1E773800ADD4F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EB8A19AE2E1E773700ADD4F0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = EB8A19B52E1E773700ADD4F0;
-			remoteInfo = LabelTimer;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		EB8A19B62E1E773700ADD4F0 /* LabelTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LabelTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB8A19C42E1E773800ADD4F0 /* LabelTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LabelTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB8A19CE2E1E773800ADD4F0 /* LabelTimerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LabelTimerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -75,13 +67,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EB8A19CB2E1E773800ADD4F0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -100,7 +85,6 @@
 			children = (
 				EB8A19B62E1E773700ADD4F0 /* LabelTimer.app */,
 				EB8A19C42E1E773800ADD4F0 /* LabelTimerTests.xctest */,
-				EB8A19CE2E1E773800ADD4F0 /* LabelTimerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,29 +137,6 @@
 			productReference = EB8A19C42E1E773800ADD4F0 /* LabelTimerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		EB8A19CD2E1E773800ADD4F0 /* LabelTimerUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = EB8A19DE2E1E773800ADD4F0 /* Build configuration list for PBXNativeTarget "LabelTimerUITests" */;
-			buildPhases = (
-				EB8A19CA2E1E773800ADD4F0 /* Sources */,
-				EB8A19CB2E1E773800ADD4F0 /* Frameworks */,
-				EB8A19CC2E1E773800ADD4F0 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				EB8A19D02E1E773800ADD4F0 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				EB8A19D12E1E773800ADD4F0 /* LabelTimerUITests */,
-			);
-			name = LabelTimerUITests;
-			packageProductDependencies = (
-			);
-			productName = LabelTimerUITests;
-			productReference = EB8A19CE2E1E773800ADD4F0 /* LabelTimerUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -190,10 +151,6 @@
 						CreatedOnToolsVersion = 16.4;
 					};
 					EB8A19C32E1E773800ADD4F0 = {
-						CreatedOnToolsVersion = 16.4;
-						TestTargetID = EB8A19B52E1E773700ADD4F0;
-					};
-					EB8A19CD2E1E773800ADD4F0 = {
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = EB8A19B52E1E773700ADD4F0;
 					};
@@ -215,7 +172,6 @@
 			targets = (
 				EB8A19B52E1E773700ADD4F0 /* LabelTimer */,
 				EB8A19C32E1E773800ADD4F0 /* LabelTimerTests */,
-				EB8A19CD2E1E773800ADD4F0 /* LabelTimerUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -229,13 +185,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		EB8A19C22E1E773800ADD4F0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EB8A19CC2E1E773800ADD4F0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -259,13 +208,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EB8A19CA2E1E773800ADD4F0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -273,11 +215,6 @@
 			isa = PBXTargetDependency;
 			target = EB8A19B52E1E773700ADD4F0 /* LabelTimer */;
 			targetProxy = EB8A19C52E1E773800ADD4F0 /* PBXContainerItemProxy */;
-		};
-		EB8A19D02E1E773800ADD4F0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = EB8A19B52E1E773700ADD4F0 /* LabelTimer */;
-			targetProxy = EB8A19CF2E1E773800ADD4F0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -524,50 +461,6 @@
 			};
 			name = Release;
 		};
-		EB8A19DF2E1E773800ADD4F0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4H79F9W5AQ;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.robin.LabelTimerUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = LabelTimer;
-				XROS_DEPLOYMENT_TARGET = 2.5;
-			};
-			name = Debug;
-		};
-		EB8A19E02E1E773800ADD4F0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4H79F9W5AQ;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.robin.LabelTimerUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = LabelTimer;
-				XROS_DEPLOYMENT_TARGET = 2.5;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -594,15 +487,6 @@
 			buildConfigurations = (
 				EB8A19DC2E1E773800ADD4F0 /* Debug */,
 				EB8A19DD2E1E773800ADD4F0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		EB8A19DE2E1E773800ADD4F0 /* Build configuration list for PBXNativeTarget "LabelTimerUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				EB8A19DF2E1E773800ADD4F0 /* Debug */,
-				EB8A19E02E1E773800ADD4F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

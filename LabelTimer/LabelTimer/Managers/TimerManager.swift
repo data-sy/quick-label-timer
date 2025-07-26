@@ -31,7 +31,7 @@ final class TimerManager: ObservableObject {
     
     /// 타이머 로컬 알림 예약
     private func scheduleNotification(for timer: TimerData) {
-        let interval = max(0, timer.endDate.timeIntervalSince(Date()))
+        let interval = max(1, timer.endDate.timeIntervalSince(Date()))
         NotificationUtils.scheduleNotification(
             id: timer.id.uuidString,
             label: timer.label,
