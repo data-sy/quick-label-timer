@@ -27,6 +27,15 @@ struct TimerManagerAlarmTests {
         func vibrate() {
             vibrated = true
         }
+        
+        func playIfNeeded(for timer: TimerData) {
+            if timer.isSoundOn {
+                playSound(for: timer.id)
+            }
+            if timer.isVibrationOn {
+                vibrate()
+            }
+        }
     }
 
     @Test

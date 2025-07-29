@@ -19,24 +19,16 @@ final class TimerAlarmTriggeringTests: XCTestCase {
         super.setUp()
         mockAlarmHandler = MockAlarmHandler()
 
-        // 공유 인스턴스 설정값 초기화
-        UserSettings.shared.isSoundOn = false
-        UserSettings.shared.isVibrationOn = false
-
         let presetManager = PresetManager()
         timerManager = TimerManager(
             presetManager: presetManager,
-            userSettings: UserSettings.shared,
             alarmHandler: mockAlarmHandler
         )
     }
 
     // 🔊✅ 📳✅
     func test_alarmTriggers_whenBothSoundAndVibrationAreOn() {
-        UserSettings.shared.isSoundOn = true
-        UserSettings.shared.isVibrationOn = true
-
-        let expiredTimer = makeExpiredTimer(label: "사운드+진동")
+        let expiredTimer = makeExpiredTimer(label: "사운드+진동", isSoundOn: true, isVibrationOn: true)
         mockAlarmHandler.reset()
         timerManager.timers = [expiredTimer]
 
@@ -48,10 +40,7 @@ final class TimerAlarmTriggeringTests: XCTestCase {
 
     // 🔊✅ 📳❌
     func test_alarmTriggers_onlySoundOn() {
-        UserSettings.shared.isSoundOn = true
-        UserSettings.shared.isVibrationOn = false
-
-        let expiredTimer = makeExpiredTimer(label: "사운드만")
+        let expiredTimer = makeExpiredTimer(label: "사운드만", isSoundOn: true, isVibrationOn: false)
         mockAlarmHandler.reset()
         timerManager.timers = [expiredTimer]
 
@@ -63,10 +52,7 @@ final class TimerAlarmTriggeringTests: XCTestCase {
 
     // 🔊❌ 📳✅
     func test_alarmTriggers_onlyVibrationOn() {
-        UserSettings.shared.isSoundOn = false
-        UserSettings.shared.isVibrationOn = true
-
-        let expiredTimer = makeExpiredTimer(label: "진동만")
+        let expiredTimer = makeExpiredTimer(label: "진동만", isSoundOn: false, isVibrationOn: true)
         mockAlarmHandler.reset()
         timerManager.timers = [expiredTimer]
 
@@ -78,10 +64,7 @@ final class TimerAlarmTriggeringTests: XCTestCase {
 
     // 🔊❌ 📳❌
     func test_alarmTriggers_none_whenAllSettingsOff() {
-        UserSettings.shared.isSoundOn = false
-        UserSettings.shared.isVibrationOn = false
-
-        let expiredTimer = makeExpiredTimer(label: "무음무진동")
+        let expiredTimer = makeExpiredTimer(label: "무음무진동", isSoundOn: false, isVibrationOn: false)
         mockAlarmHandler.reset()
         timerManager.timers = [expiredTimer]
 
@@ -92,12 +75,14 @@ final class TimerAlarmTriggeringTests: XCTestCase {
     }
 
     // 공통 expired Timer 생성기
-    private func makeExpiredTimer(label: String) -> TimerData {
+    private func makeExpiredTimer(label: String, isSoundOn: Bool, isVibrationOn: Bool) -> TimerData {
         return TimerData(
             label: label,
             hours: 0,
             minutes: 0,
             seconds: 3,
+            isSoundOn: isSoundOn,
+            isVibrationOn: isVibrationOn,
             createdAt: Date().addingTimeInterval(-2),
             endDate: Date().addingTimeInterval(1), // 앞으로 1초 남은 상태
             remainingSeconds: 1,                  // 타이머에는 1초 남았다고 표시
