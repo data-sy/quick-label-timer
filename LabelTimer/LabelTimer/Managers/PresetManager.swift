@@ -35,10 +35,12 @@ final class PresetManager: ObservableObject {
     /// 실행 중 타이머를 프리셋으로 추가
     func addPreset(from timer: TimerData) {
         let preset = TimerPreset(
+            label: timer.label,
             hours: timer.hours,
             minutes: timer.minutes,
             seconds: timer.seconds,
-            label: timer.label,
+            isSoundOn: timer.isSoundOn,
+            isVibrationOn: timer.isVibrationOn,
             createdAt: Date()
         )
         userPresets.insert(preset, at: 0) // 최신순을 유지하기 위해 앞에 삽입

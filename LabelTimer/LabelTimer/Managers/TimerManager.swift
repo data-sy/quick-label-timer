@@ -16,15 +16,12 @@ final class TimerManager: ObservableObject {
     @Published var timers: [TimerData] = []
     
     private let presetManager: PresetManager
-    private let userSettings: UserSettings
     private let alarmHandler: AlarmTriggering
 
     private var timer: Timer?
     
-    init(presetManager: PresetManager, userSettings: UserSettings = .shared,
-         alarmHandler: AlarmTriggering = AlarmHandler()) {
+    init(presetManager: PresetManager, alarmHandler: AlarmTriggering = AlarmHandler()) {
         self.presetManager = presetManager
-        self.userSettings = userSettings
         self.alarmHandler = alarmHandler // 테스트용
         startTicking()
     }
@@ -50,10 +47,10 @@ final class TimerManager: ObservableObject {
             let clamped = max(remaining, 0)
 
             if timer.remainingSeconds != clamped, clamped == 0 { // 테스트 하는 과정에서 조건 수정
-                if userSettings.isSoundOn {
+                if timer.isSoundOn {
                     alarmHandler.playSound(for: timer.id)
                 }
-                if userSettings.isVibrationOn {
+                if timer.isVibrationOn {
                     alarmHandler.vibrate()
                 }
             }
@@ -73,8 +70,8 @@ final class TimerManager: ObservableObject {
         RunLoop.main.add(timer!, forMode: .common)
     }
     
-    /// 새 타이머 추가
-    func addTimer(hours: Int, minutes: Int, seconds: Int, label: String) {
+    /// 새 타이머 추가 ( 사용자 입력 기반 )
+    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool) {
         let totalSeconds = hours * 3600 + minutes * 60 + seconds
         guard totalSeconds > 0 else { return }
         
@@ -88,6 +85,8 @@ final class TimerManager: ObservableObject {
             hours: hours,
             minutes: minutes,
             seconds: seconds,
+            isSoundOn: isSoundOn,
+            isVibrationOn: isVibrationOn,
             createdAt: now,
             endDate: end,
             remainingSeconds: totalSeconds,
@@ -111,6 +110,18 @@ final class TimerManager: ObservableObject {
         }
     }
     
+    /// 새 타이머 추가 ( 프리셋 기반 )
+    func addTimer(from preset: TimerPreset) {
+        addTimer(
+            label: preset.label,
+            hours: preset.hours,
+            minutes: preset.minutes,
+            seconds: preset.seconds,
+            isSoundOn: preset.isSoundOn,
+            isVibrationOn: preset.isVibrationOn
+        )
+    }
+    
     /// 실행 중인 타이머를 일시정지
     func pauseTimer(id: UUID) {
         NotificationUtils.cancelScheduledNotification(id: id.uuidString)
@@ -129,17 +140,11 @@ final class TimerManager: ObservableObject {
             let now = Date()
             let newEnd = now.addingTimeInterval(TimeInterval(timer.remainingSeconds))
             
-            let resumed = TimerData(
-                id: timer.id,
-                label: timer.label,
-                hours: timer.hours,
-                minutes: timer.minutes,
-                seconds: timer.seconds,
-                createdAt: timer.createdAt,
+            let resumed = timer.updating(
                 endDate: newEnd,
-                remainingSeconds: timer.remainingSeconds,
                 status: .running
             )
+
             scheduleNotification(for: resumed)
             return resumed
         }
@@ -156,13 +161,7 @@ final class TimerManager: ObservableObject {
             let now = Date()
             let newEnd = now.addingTimeInterval(TimeInterval(total))
             
-            return TimerData(
-                id: timer.id,
-                label: timer.label,
-                hours: timer.hours,
-                minutes: timer.minutes,
-                seconds: timer.seconds,
-                createdAt: timer.createdAt,
+            return timer.updating(
                 endDate: newEnd,
                 remainingSeconds: total,
                 status: .stopped
@@ -179,13 +178,7 @@ final class TimerManager: ObservableObject {
         let now = Date()
         let newEnd = now.addingTimeInterval(TimeInterval(totalSeconds))
         
-        let restarted = TimerData(
-            id: old.id,
-            label: old.label,
-            hours: old.hours,
-            minutes: old.minutes,
-            seconds: old.seconds,
-            createdAt: old.createdAt,
+        let restarted = old.updating(
             endDate: newEnd,
             remainingSeconds: totalSeconds,
             status: .running

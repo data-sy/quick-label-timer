@@ -24,6 +24,9 @@ struct TimerData: Identifiable, Hashable {
     let hours: Int
     let minutes: Int
     let seconds: Int
+    let isSoundOn: Bool
+    let isVibrationOn: Bool
+    
     let createdAt: Date
     
     var totalSeconds: Int {
@@ -42,6 +45,8 @@ struct TimerData: Identifiable, Hashable {
         hours: Int,
         minutes: Int,
         seconds: Int,
+        isSoundOn: Bool = true,
+        isVibrationOn: Bool = true,
         createdAt: Date,
         endDate: Date,
         remainingSeconds: Int,
@@ -52,6 +57,8 @@ struct TimerData: Identifiable, Hashable {
         self.hours = hours
         self.minutes = minutes
         self.seconds = seconds
+        self.isSoundOn = isSoundOn
+        self.isVibrationOn = isVibrationOn
         self.createdAt = createdAt
         self.endDate = endDate
         self.remainingSeconds = remainingSeconds
@@ -60,32 +67,26 @@ struct TimerData: Identifiable, Hashable {
 }
 
 extension TimerData {
-    /// 남은 시간 갱신, 완료 여부 자동 판단
-    func updating(remainingSeconds: Int) -> TimerData {
-        TimerData(
+    /// 여러 필드를 한 번에 업데이트. remainingSeconds가 전달되면 상태 자동 판정
+    func updating(
+        endDate: Date? = nil,
+        remainingSeconds: Int? = nil,
+        status: TimerStatus? = nil
+    ) -> TimerData {
+        let finalRemaining = remainingSeconds ?? self.remainingSeconds
+
+        return TimerData(
             id: self.id,
             label: self.label,
             hours: self.hours,
             minutes: self.minutes,
             seconds: self.seconds,
+            isSoundOn: self.isSoundOn,
+            isVibrationOn: self.isVibrationOn,
             createdAt: self.createdAt,
-            endDate: self.endDate,
-            remainingSeconds: remainingSeconds,
-            status: remainingSeconds > 0 ? .running : .completed // 상태 반영
-        )
-    }
-    /// 상태 변경  (예: 일시정지, 정지, 재시작 등)
-    func updating(status: TimerStatus) -> TimerData {
-        TimerData(
-            id: self.id,
-            label: self.label,
-            hours: self.hours,
-            minutes: self.minutes,
-            seconds: self.seconds,
-            createdAt: self.createdAt,
-            endDate: self.endDate,
-            remainingSeconds: self.remainingSeconds,
-            status: status
+            endDate: endDate ?? self.endDate,
+            remainingSeconds: finalRemaining,
+            status: status ?? (finalRemaining > 0 ? .running : .completed)
         )
     }
 }

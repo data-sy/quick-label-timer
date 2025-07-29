@@ -11,9 +11,8 @@
 import Foundation
 
 let samplePresets: [TimerPreset] = [
-    TimerPreset(hours: 0, minutes: 1, seconds: 0, label: "집중"),
-    TimerPreset(hours: 0, minutes: 3, seconds: 0, label: "양치"),
-    TimerPreset(hours: 0, minutes: 5, seconds: 0, label: "준비"),
-    TimerPreset(hours: 0, minutes: 10, seconds: 0, label: "스트레칭"),
-    TimerPreset(hours: 0, minutes: 20, seconds: 0, label: "짧은 공부")
+    TimerPreset(label: "소리o진동o테스트", hours: 0, minutes: 0, seconds: 5, isSoundOn: true, isVibrationOn: true),
+    TimerPreset(label: "소리o진동x테스트", hours: 0, minutes: 0, seconds: 7, isSoundOn: true, isVibrationOn: false),
+    TimerPreset(label: "소리x진동o테스트", hours: 0, minutes: 0, seconds: 9, isSoundOn: false, isVibrationOn: true),
+    TimerPreset(label: "소리x진동x테스트", hours: 0, minutes: 0, seconds: 11, isSoundOn: false, isVibrationOn: false)
 ]

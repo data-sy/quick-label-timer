@@ -12,22 +12,36 @@ import Foundation
 
 struct TimerPreset: Identifiable, Codable, Hashable {
     let id: UUID
+    
+    let label: String
     let hours: Int
     let minutes: Int
     let seconds: Int
-    let label: String
+    let isSoundOn: Bool
+    let isVibrationOn: Bool
+    
     let createdAt: Date
-
+    
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
     }
     
-    init(hours: Int, minutes: Int, seconds: Int, label: String, createdAt: Date = Date()) {
+    init(
+        label: String,
+        hours: Int,
+        minutes: Int,
+        seconds: Int,
+        isSoundOn: Bool = true,
+        isVibrationOn: Bool = true,
+        createdAt: Date = Date()
+    ) {
         self.id = UUID()
+        self.label = label
         self.hours = hours
         self.minutes = minutes
         self.seconds = seconds
-        self.label = label
+        self.isSoundOn = isSoundOn
+        self.isVibrationOn = isVibrationOn
         self.createdAt = createdAt
     }
 }
