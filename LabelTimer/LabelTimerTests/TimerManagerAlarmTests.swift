@@ -34,11 +34,10 @@ struct TimerManagerAlarmTests {
         let mockHandler = MockAlarmHandler()
         let manager = TimerManager(
             presetManager: PresetManager(),
-            userSettings: .mock(soundOn: true, vibrationOn: true),
             alarmHandler: mockHandler
         )
 
-        manager.addTimer(hours: 0, minutes: 0, seconds: 1, label: "test")
+        manager.addTimer(label: "test", hours: 0, minutes: 0, seconds: 1, isSoundOn: true, isVibrationOn: true)
 
         // 시간이 1초 남은 상태에서 tick() 호출 → 0초로 줄어들며 알람 트리거
         manager.timers[0] = manager.timers[0].updating(remainingSeconds: 1)
