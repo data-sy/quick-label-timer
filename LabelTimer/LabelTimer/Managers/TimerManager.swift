@@ -47,14 +47,9 @@ final class TimerManager: ObservableObject {
             let clamped = max(remaining, 0)
 
             if timer.remainingSeconds != clamped, clamped == 0 { // 테스트 하는 과정에서 조건 수정
-                if timer.isSoundOn {
-                    alarmHandler.playSound(for: timer.id)
-                }
-                if timer.isVibrationOn {
-                    alarmHandler.vibrate()
-                }
+                alarmHandler.playIfNeeded(for: timer)
             }
-
+            
             return timer.updating(remainingSeconds: clamped)
         }
     }

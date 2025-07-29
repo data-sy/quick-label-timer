@@ -28,6 +28,15 @@ final class MockAlarmHandler: AlarmTriggering {
         didVibrate = true
     }
 
+    func playIfNeeded(for timer: TimerData) {
+        if timer.isSoundOn {
+            playSound(for: timer.id)
+        }
+        if timer.isVibrationOn {
+            vibrate()
+        }
+    }
+
     func reset() {
         didPlaySound = false
         didStopSound = false

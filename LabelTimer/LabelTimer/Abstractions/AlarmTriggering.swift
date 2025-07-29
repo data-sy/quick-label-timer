@@ -14,4 +14,5 @@ protocol AlarmTriggering {
     func playSound(for id: UUID)
     func stopSound(for id: UUID)
     func vibrate()
+    func playIfNeeded(for timer: TimerData)
 }
