@@ -11,20 +11,21 @@
 import SwiftUI
 
 struct AlarmSettingToggles: View {
-    @EnvironmentObject var settings: UserSettings
+    @Binding var isSoundOn: Bool
+    @Binding var isVibrationOn: Bool
 
     var body: some View {
         HStack(spacing: 12) {
             ToggleButton(
-                isOn: settings.isSoundOn,
-                iconName: settings.isSoundOn ? "speaker.wave.2.fill" : "speaker.slash.fill",
-                onTap: { settings.isSoundOn.toggle() }
+                isOn: isSoundOn,
+                iconName: isSoundOn ? "speaker.wave.2.fill" : "speaker.slash.fill",
+                onTap: { isSoundOn.toggle() }
             )
 
             ToggleButton(
-                isOn: settings.isVibrationOn,
-                iconName: settings.isVibrationOn ? "iphone.radiowaves.left.and.right" : "iphone.slash",
-                onTap: { settings.isVibrationOn.toggle() }
+                isOn: isVibrationOn,
+                iconName: isVibrationOn ? "iphone.radiowaves.left.and.right" : "iphone.slash",
+                onTap: { isVibrationOn.toggle() }
             )
         }
         .padding(.trailing, 8)
@@ -52,8 +53,10 @@ private struct ToggleButton: View {
     }
 }
 
-//#Preview(traits: .sizeThatFitsLayout) {
-//    AlarmSettingToggles()
-//        .environmentObject(UserSettings.shared)
-//        .padding()
-//}
+#Preview(traits: .sizeThatFitsLayout) {
+    AlarmSettingToggles(
+        isSoundOn: .constant(true),
+        isVibrationOn: .constant(true)
+    )
+    .padding()
+}

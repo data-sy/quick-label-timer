@@ -27,7 +27,6 @@ struct LabelTimerApp: App {
             MainTimerBoardView()
                 .environmentObject(timerManager)
                 .environmentObject(presetManager)
-                .environmentObject(UserSettings.shared)
                 .preferredColorScheme(.dark) // 다크모드
         }
         .onChange(of: scenePhase) {

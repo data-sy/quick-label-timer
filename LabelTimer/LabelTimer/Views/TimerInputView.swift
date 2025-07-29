@@ -15,6 +15,9 @@ struct TimerInputView: View {
     @State private var hours = 0
     @State private var minutes = 0
     @State private var seconds = 0
+    @State private var isSoundOn = true
+    @State private var isVibrationOn = true
+    
     @FocusState private var isLabelFocused: Bool
     
     @EnvironmentObject var timerManager: TimerManager
@@ -26,10 +29,11 @@ struct TimerInputView: View {
 
                 Spacer()
                 
-                AlarmSettingToggles()
+                AlarmSettingToggles(
+                    isSoundOn: $isSoundOn,
+                    isVibrationOn: $isVibrationOn
+                )
             }
-
-
 
             // 입력 필드 + 휠 + 버튼 묶은 내부 박스
             VStack(spacing: 0) {
@@ -52,10 +56,12 @@ struct TimerInputView: View {
                             guard total > 0 else { return }
 
                             timerManager.addTimer(
+                                label: label,
                                 hours: hours,
                                 minutes: minutes,
                                 seconds: seconds,
-                                label: label
+                                isSoundOn: isSoundOn,
+                                isVibrationOn: isVibrationOn
                             )
                             
                             // 입력 초기화
@@ -81,5 +87,4 @@ struct TimerInputView: View {
     let timerManager = TimerManager(presetManager: presetManager)
     return TimerInputView()
         .environmentObject(timerManager)
-        .environmentObject(UserSettings.shared)
 }
