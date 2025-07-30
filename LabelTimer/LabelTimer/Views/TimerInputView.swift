@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  TimerInputView.swift
 //  LabelTimer
@@ -10,18 +8,32 @@ import SwiftUI
 ///
 /// - 사용 목적: 사용자가 라벨과 시간을 입력하고 타이머를 시작할 수 있도록 함.
 
+import SwiftUI
+
 struct TimerInputView: View {
     @State private var label = ""
     @State private var hours = 0
     @State private var minutes = 0
     @State private var seconds = 0
+    @State private var isSoundOn = true
+    @State private var isVibrationOn = true
+    
     @FocusState private var isLabelFocused: Bool
     
     @EnvironmentObject var timerManager: TimerManager
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            SectionTitle(text: "타이머 생성")
+            HStack {
+                SectionTitle(text: "타이머 생성")
+
+                Spacer()
+                
+                AlarmSettingToggles(
+                    isSoundOn: $isSoundOn,
+                    isVibrationOn: $isVibrationOn
+                )
+            }
 
             // 입력 필드 + 휠 + 버튼 묶은 내부 박스
             VStack(spacing: 0) {
@@ -44,10 +56,12 @@ struct TimerInputView: View {
                             guard total > 0 else { return }
 
                             timerManager.addTimer(
+                                label: label,
                                 hours: hours,
                                 minutes: minutes,
                                 seconds: seconds,
-                                label: label
+                                isSoundOn: isSoundOn,
+                                isVibrationOn: isVibrationOn
                             )
                             
                             // 입력 초기화

@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  RunningTimerRowView.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import SwiftUI
 /// 실행 중인 타이머에 대한 UI를 제공하는 래퍼 뷰
 ///
 /// - 사용 목적: 실행 중 타이머의 정보와 동작 버튼(일시정지, 정지 등)을 표시
+
+import SwiftUI
 
 struct RunningTimerRowView: View {
     let timer: TimerData

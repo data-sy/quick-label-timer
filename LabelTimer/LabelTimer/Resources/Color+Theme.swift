@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  Color+Theme.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import SwiftUI
 /// 앱 전역에서 사용하는 공통 색상 및 색상 생성 유틸리티를 정의한 파일
 ///
 /// - 사용 목적: 브랜드 색상(`brandColor`)을 비롯한 공통 컬러를 중앙에서 관리
+
+import SwiftUI
 
 extension Color {
     static let brandColor = Color(hex: "#FF6F00")

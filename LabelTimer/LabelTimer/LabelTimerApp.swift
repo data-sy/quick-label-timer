@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  LabelTimerApp.swift
 //  LabelTimer
@@ -7,8 +5,12 @@ import SwiftUI
 //  Created by 이소연 on 7/9/25.
 //
 
+import SwiftUI
+
 @main
 struct LabelTimerApp: App {
+    @Environment(\.scenePhase) private var scenePhase
+    
     @StateObject private var presetManager = PresetManager()
     @StateObject private var timerManager : TimerManager
     
@@ -17,6 +19,7 @@ struct LabelTimerApp: App {
         let preset = PresetManager()
         _presetManager = StateObject(wrappedValue: preset)
         _timerManager = StateObject(wrappedValue: TimerManager(presetManager: preset))
+        NotificationUtils.requestAuthorization()
     }
     
     var body: some Scene {
@@ -25,9 +28,11 @@ struct LabelTimerApp: App {
                 .environmentObject(timerManager)
                 .environmentObject(presetManager)
                 .preferredColorScheme(.dark) // 다크모드
-                .onAppear {
-                    NotificationUtils.requestAuthorization()
-                }
+        }
+        .onChange(of: scenePhase) {
+            if scenePhase == .active {
+                timerManager.stopAlarmsForExpiredTimers()
+            }
         }
     }
 }

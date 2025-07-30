@@ -1,6 +1,6 @@
 //
 //  LabelTimerTests.swift
-//  LabelTimerTests
+//  LabelTimer
 //
 //  Created by 이소연 on 7/9/25.
 //

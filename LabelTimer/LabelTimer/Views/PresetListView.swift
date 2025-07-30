@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  PresetListView.swift
 //  LabelTimer
@@ -9,6 +7,9 @@ import SwiftUI
 /// 저장된 프리셋 타이머 목록을 보여주는 뷰
 ///
 /// - 사용 목적: 사용자 또는 앱이 제공한 프리셋 타이머를 리스트 형태로 표시하고, 실행 버튼을 통해 타이머를 즉시 시작할 수 있도록 함.
+
+import SwiftUI
+
 struct PresetListView: View {
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager
@@ -51,10 +52,12 @@ struct PresetListView: View {
         switch action {
         case .play:
             timerManager.addTimer(
+                label: preset.label,
                 hours: preset.hours,
                 minutes: preset.minutes,
                 seconds: preset.seconds,
-                label: preset.label
+                isSoundOn: preset.isSoundOn,
+                isVibrationOn: preset.isVibrationOn // 에러 안 나라고 잠시 넣은 것. 리팩토링 될 예정
             )
             presetManager.deletePreset(preset)
 
@@ -73,9 +76,9 @@ struct PresetListView_Previews: PreviewProvider {
     static var previews: some View {
         let presetManager = PresetManager()
         presetManager.setPresets([
-            TimerPreset(hours: 0, minutes: 25, seconds: 0, label: "집중"),
-            TimerPreset(hours: 0, minutes: 5, seconds: 0, label: "짧은 휴식"),
-            TimerPreset(hours: 0, minutes: 15, seconds: 0, label: "긴 휴식")
+            TimerPreset(label: "집중", hours: 0, minutes: 25, seconds: 0, isSoundOn: true, isVibrationOn: true),
+            TimerPreset(label: "짧은 휴식", hours: 0, minutes: 5, seconds: 0, isSoundOn: false, isVibrationOn: true),
+            TimerPreset(label: "긴 휴식", hours: 0, minutes: 15, seconds: 0, isSoundOn: true, isVibrationOn: false)
         ])
 
         let timerManager = TimerManager(presetManager: presetManager)

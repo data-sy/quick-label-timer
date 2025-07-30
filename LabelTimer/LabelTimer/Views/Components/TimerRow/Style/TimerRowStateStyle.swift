@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  TimerRowStateStyle.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import SwiftUI
 /// 타이머 상태에 따라 배경색, 텍스트 색상을 설정하는 ViewModifier
 ///
 /// - 사용 목적: 실행 중, 일시정지, 정지 등의 상태에 따라 TimerRowView에 일관된 스타일을 적용
+
+import SwiftUI
 
 struct TimerRowStateStyle: ViewModifier {
     let state: TimerInteractionState

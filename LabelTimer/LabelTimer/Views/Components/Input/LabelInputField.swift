@@ -1,5 +1,3 @@
-import SwiftUI
-
 //
 //  LabelInputField.swift
 //  LabelTimer
@@ -9,6 +7,8 @@ import SwiftUI
 /// 타이머 입력 섹션에서 사용하는 라벨 입력 필드
 /// 
 /// 사용 목적: 사용자가 타이머의 목적이나 제목을 텍스트로 입력할 수 있도록 제공
+
+import SwiftUI
 
 struct LabelInputField: View {
     @Binding var label: String
