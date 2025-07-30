@@ -15,7 +15,7 @@ enum AlarmSound: CaseIterable, Identifiable {
 
     var fileName: String {
         switch self {
-        case .default: return "default_alarm" // 실제 리소스 이름 (확장자 제외)
+        case .default: return "test-alarm01"
         }
     }
 
