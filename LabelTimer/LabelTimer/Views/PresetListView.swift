@@ -17,16 +17,27 @@ struct PresetListView: View {
     @State private var presetToDelete: TimerPreset? = nil
     @State private var showingDeleteAlert: Bool = false
 
+    @State private var isEditing = false
+    @State private var editingPreset: TimerPreset? = nil
+    @State private var editingLabel = ""
+    @State private var editingHours = 0
+    @State private var editingMinutes = 0
+    @State private var editingSeconds = 0
+    @State private var editingSoundOn = true
+    @State private var editingVibrationOn = true
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             SectionTitle(text: "타이머 목록")
-
             List {
                 ForEach(presetManager.allPresets, id: \.id) { preset in
                     PresetTimerRowView(
                         preset: preset,
                         onAction: { action in
                             handleAction(action, preset: preset)
+                        },
+                        onTap: {
+                            startEdit(for: preset)
                         }
                     )
                 }
@@ -47,7 +58,46 @@ struct PresetListView: View {
                    }
                }
         )
+        .sheet(isPresented: $isEditing) {
+            if let preset = editingPreset {
+                EditPresetView(
+                    label: $editingLabel,
+                    hours: $editingHours,
+                    minutes: $editingMinutes,
+                    seconds: $editingSeconds,
+                    isSoundOn: $editingSoundOn,
+                    isVibrationOn: $editingVibrationOn,
+                    onSave: {
+//                        presetManager.updatePreset( // 함수 만들 예정
+//                            preset,
+//                            label: editingLabel,
+//                            hours: editingHours,
+//                            minutes: editingMinutes,
+//                            seconds: editingSeconds,
+//                            isSoundOn: editingSoundOn,
+//                            isVibrationOn: editingVibrationOn
+//                        )
+                    },
+                    onDelete: {
+                        presetManager.deletePreset(preset)
+                    },
+                    onStart: {
+                        timerManager.addTimer(
+                            label: editingLabel,
+                            hours: editingHours,
+                            minutes: editingMinutes,
+                            seconds: editingSeconds,
+                            isSoundOn: editingSoundOn,
+                            isVibrationOn: editingVibrationOn
+                        )
+                        // 필요하다면 프리셋 삭제 등 후처리
+                    }
+                )
+                .presentationDetents([.medium])
+            }
+        }
     }
+    
     private func handleAction(_ action: TimerButtonType, preset: TimerPreset) {
         switch action {
         case .play:
@@ -57,7 +107,7 @@ struct PresetListView: View {
                 minutes: preset.minutes,
                 seconds: preset.seconds,
                 isSoundOn: preset.isSoundOn,
-                isVibrationOn: preset.isVibrationOn // 에러 안 나라고 잠시 넣은 것. 리팩토링 될 예정
+                isVibrationOn: preset.isVibrationOn
             )
             presetManager.deletePreset(preset)
 
@@ -68,6 +118,17 @@ struct PresetListView: View {
         default:
             break
         }
+    }
+    private func startEdit(for preset: TimerPreset) {
+        editingPreset = preset
+        editingPreset = preset
+        editingLabel = preset.label
+        editingHours = preset.hours
+        editingMinutes = preset.minutes
+        editingSeconds = preset.seconds
+        editingSoundOn = preset.isSoundOn
+        editingVibrationOn = preset.isVibrationOn
+        isEditing = true
     }
 }
 
@@ -91,4 +152,3 @@ struct PresetListView_Previews: PreviewProvider {
     }
 }
 #endif
-

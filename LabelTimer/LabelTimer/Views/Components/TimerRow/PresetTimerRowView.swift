@@ -13,6 +13,7 @@ import SwiftUI
 struct PresetTimerRowView: View {
     let preset: TimerPreset
     let onAction: (TimerButtonType) -> Void
+    var onTap: (() -> Void)? = nil
     
     /// 전체 시간을 포맷된 문자열로 반환
     private var formattedTotalTime: String {
@@ -46,5 +47,9 @@ struct PresetTimerRowView: View {
             ),
             state: TimerInteractionState.waiting
         )
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onTap?()
+        }
     }
 }
