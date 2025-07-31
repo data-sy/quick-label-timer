@@ -18,7 +18,7 @@ struct MainTimerBoardView: View {
 //                TimerFontExperimentView()
   
                 // 기존 뷰
-                TimerInputView()
+                AddTimerView()
                 RunningTimersView()
                 PresetListView()
                     .frame(height: 400) // ScrollView 내 List높이 0 방지용 고정 height
