@@ -27,6 +27,13 @@ struct EditPresetView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            HStack {
+                Button("삭제", role: .destructive, action: onDelete)
+                Spacer()
+                Button("저장", action: onSave)
+            }
+            .padding(.horizontal, 24)
+            Spacer().frame(height: 24)
             TimerInputForm(
                 sectionTitle: "타이머 수정",
                 label: $label,
@@ -37,24 +44,8 @@ struct EditPresetView: View {
                 isVibrationOn: $isVibrationOn,
                 isLabelFocused: $isLabelFocused,
                 isStartDisabled: (hours + minutes + seconds) == 0,
-                onStart: {
-                    onStart()
-                    dismiss()
-                }
+                onStart: onStart
             )
-            Spacer().frame(height: 24)
-            HStack {
-                Button("삭제", role: .destructive) {
-                    onDelete()
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                Button("저장") {
-                    onSave()
-                    dismiss()
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-            }
-            .padding(.horizontal)
         }
     }
 }

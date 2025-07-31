@@ -75,6 +75,7 @@ struct PresetListView: View {
                             isSoundOn: editingSoundOn,
                             isVibrationOn: editingVibrationOn
                         )
+                        isEditing = false
                     },
                     onDelete: {
                         showingEditDeleteAlert = true
