@@ -23,7 +23,7 @@ struct TimePickerGroup: View {
             .pickerStyle(.wheel)
             .frame(width: 55)
 
-            Text("시")
+            Text("시간")
                 .font(.caption2)
                 .foregroundColor(.gray)
 
