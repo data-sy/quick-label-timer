@@ -13,7 +13,7 @@ import SwiftUI
 struct PresetListView: View {
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager
-    
+
     @State private var presetToDelete: TimerPreset? = nil
     @State private var showingDeleteAlert: Bool = false
 
@@ -25,7 +25,8 @@ struct PresetListView: View {
     @State private var editingSeconds = 0
     @State private var editingSoundOn = true
     @State private var editingVibrationOn = true
-    
+    @State private var showingEditDeleteAlert: Bool = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             SectionTitle(text: "타이머 목록")
@@ -45,19 +46,16 @@ struct PresetListView: View {
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
         }
-//        .border(Color.green)
-        .alert("\(presetToDelete?.label.isEmpty == false ? "“\(presetToDelete!.label)”" : "이") 타이머를 삭제하시겠습니까?",
-               isPresented: $showingDeleteAlert,
-               actions: {
-                   Button("취소", role: .cancel) { }
-                   Button("삭제", role: .destructive) {
-                       if let preset = presetToDelete {
-                           presetManager.deletePreset(preset)
-                           presetToDelete = nil
-                       }
-                   }
-               }
-        )
+        .deleteAlert(
+            isPresented: $showingDeleteAlert,
+            itemName: presetToDelete?.label ?? "",
+            deleteLabel: "타이머"
+        ) {
+            if let preset = presetToDelete {
+                presetManager.deletePreset(preset)
+                presetToDelete = nil
+            }
+        }
         .sheet(isPresented: $isEditing) {
             if let preset = editingPreset {
                 EditPresetView(
@@ -79,7 +77,7 @@ struct PresetListView: View {
                         )
                     },
                     onDelete: {
-                        presetManager.deletePreset(preset)
+                        showingEditDeleteAlert = true
                     },
                     onStart: {
                         timerManager.addTimer(
@@ -90,14 +88,35 @@ struct PresetListView: View {
                             isSoundOn: editingSoundOn,
                             isVibrationOn: editingVibrationOn
                         )
-                        // 필요하다면 프리셋 삭제 등 후처리
+                        isEditing = false
                     }
                 )
+                .deleteAlert(
+                    isPresented: $showingEditDeleteAlert,
+                    itemName: editingLabel,
+                    deleteLabel: "타이머"
+                ) {
+                    if let preset = editingPreset {
+                        presetManager.deletePreset(preset)
+                        isEditing = false
+                    }
+                }
                 .presentationDetents([.medium])
             }
         }
     }
-    
+
+    private func startEdit(for preset: TimerPreset) {
+        editingPreset = preset
+        editingLabel = preset.label
+        editingHours = preset.hours
+        editingMinutes = preset.minutes
+        editingSeconds = preset.seconds
+        editingSoundOn = preset.isSoundOn
+        editingVibrationOn = preset.isVibrationOn
+        isEditing = true
+    }
+
     private func handleAction(_ action: TimerButtonType, preset: TimerPreset) {
         switch action {
         case .play:
@@ -118,17 +137,6 @@ struct PresetListView: View {
         default:
             break
         }
-    }
-    private func startEdit(for preset: TimerPreset) {
-        editingPreset = preset
-        editingPreset = preset
-        editingLabel = preset.label
-        editingHours = preset.hours
-        editingMinutes = preset.minutes
-        editingSeconds = preset.seconds
-        editingSoundOn = preset.isSoundOn
-        editingVibrationOn = preset.isVibrationOn
-        isEditing = true
     }
 }
 

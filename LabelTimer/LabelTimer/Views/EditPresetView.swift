@@ -46,7 +46,6 @@ struct EditPresetView: View {
             HStack {
                 Button("삭제", role: .destructive) {
                     onDelete()
-                    dismiss()
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 Button("저장") {
