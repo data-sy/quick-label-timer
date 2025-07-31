@@ -26,6 +26,7 @@ struct TimerPreset: Identifiable, Codable, Hashable {
         hours * 3600 + minutes * 60 + seconds
     }
     
+    // 1. id 없이 생성할 때(새 프리셋 생성)
     init(
         label: String,
         hours: Int,
@@ -36,6 +37,27 @@ struct TimerPreset: Identifiable, Codable, Hashable {
         createdAt: Date = Date()
     ) {
         self.id = UUID()
+        self.label = label
+        self.hours = hours
+        self.minutes = minutes
+        self.seconds = seconds
+        self.isSoundOn = isSoundOn
+        self.isVibrationOn = isVibrationOn
+        self.createdAt = createdAt
+    }
+    
+    // 2. id 포함 생성자(복사/업데이트/디코딩 등)
+    init(
+        id: UUID = UUID(),
+        label: String,
+        hours: Int,
+        minutes: Int,
+        seconds: Int,
+        isSoundOn: Bool,
+        isVibrationOn: Bool,
+        createdAt: Date = Date()
+    ) {
+        self.id = id
         self.label = label
         self.hours = hours
         self.minutes = minutes

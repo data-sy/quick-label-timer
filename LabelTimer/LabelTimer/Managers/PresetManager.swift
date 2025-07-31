@@ -24,9 +24,13 @@ final class PresetManager: ObservableObject {
     init() {
         loadPresets()
     }
+    
+    /// 전체 프리셋 목록 (기본 + 사용자)
+    var allPresets: [TimerPreset] {
+        userPresets
+    }
 
     /// 사용자 프리셋 추가
-    /// - Parameter preset: 새로 추가할 프리셋
     func addPreset(_ preset: TimerPreset) {
         userPresets.append(preset)
         savePresets()
@@ -47,16 +51,36 @@ final class PresetManager: ObservableObject {
         savePresets()
     }
 
-    /// 사용자 프리셋 삭제
-    /// - Parameter preset: 삭제할 프리셋
-    func deletePreset(_ preset: TimerPreset) {
-        userPresets.removeAll { $0.id == preset.id }
+    /// 프리셋 수정
+    func updatePreset(
+        _ preset: TimerPreset,
+        label: String,
+        hours: Int,
+        minutes: Int,
+        seconds: Int,
+        isSoundOn: Bool,
+        isVibrationOn: Bool
+    ) {
+        guard let index = userPresets.firstIndex(where: { $0.id == preset.id }) else { return }
+        // 기존 id와 createdAt(필요시)만 유지, 나머지는 새로 생성
+        let updated = TimerPreset(
+            id: preset.id,
+            label: label,
+            hours: hours,
+            minutes: minutes,
+            seconds: seconds,
+            isSoundOn: isSoundOn,
+            isVibrationOn: isVibrationOn,
+            createdAt: preset.createdAt // 있으면 유지
+        )
+        userPresets[index] = updated
         savePresets()
     }
 
-    /// 전체 프리셋 목록 (기본 + 사용자)
-    var allPresets: [TimerPreset] {
-        userPresets
+    /// 사용자 프리셋 삭제
+    func deletePreset(_ preset: TimerPreset) {
+        userPresets.removeAll { $0.id == preset.id }
+        savePresets()
     }
 
     /// 프리셋 불러오기 (최초 실행 시에는 기본 프리셋 저장)

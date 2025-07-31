@@ -68,15 +68,15 @@ struct PresetListView: View {
                     isSoundOn: $editingSoundOn,
                     isVibrationOn: $editingVibrationOn,
                     onSave: {
-//                        presetManager.updatePreset( // 함수 만들 예정
-//                            preset,
-//                            label: editingLabel,
-//                            hours: editingHours,
-//                            minutes: editingMinutes,
-//                            seconds: editingSeconds,
-//                            isSoundOn: editingSoundOn,
-//                            isVibrationOn: editingVibrationOn
-//                        )
+                        presetManager.updatePreset(
+                            preset,
+                            label: editingLabel,
+                            hours: editingHours,
+                            minutes: editingMinutes,
+                            seconds: editingSeconds,
+                            isSoundOn: editingSoundOn,
+                            isVibrationOn: editingVibrationOn
+                        )
                     },
                     onDelete: {
                         presetManager.deletePreset(preset)
