@@ -37,7 +37,10 @@ struct EditPresetView: View {
                 isVibrationOn: $isVibrationOn,
                 isLabelFocused: $isLabelFocused,
                 isStartDisabled: (hours + minutes + seconds) == 0,
-                onStart: onStart
+                onStart: {
+                    onStart()
+                    dismiss()
+                }
             )
             Spacer().frame(height: 24)
             HStack {
