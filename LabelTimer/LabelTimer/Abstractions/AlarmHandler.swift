@@ -35,7 +35,7 @@ final class AlarmHandler: AlarmTriggering {
     
     func playIfNeeded(for timer: TimerData) {
         if timer.isSoundOn {
-            playSound(for: timer.id)
+            playDefaultSound(for: timer.id)
         }
         if timer.isVibrationOn {
             vibrate()
