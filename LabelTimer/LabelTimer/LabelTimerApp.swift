@@ -24,7 +24,7 @@ struct LabelTimerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTimerBoardView()
+            MainView()
                 .environmentObject(timerManager)
                 .environmentObject(presetManager)
                 .preferredColorScheme(.dark) // 다크모드

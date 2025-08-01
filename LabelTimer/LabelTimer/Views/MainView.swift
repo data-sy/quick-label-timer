@@ -1,5 +1,5 @@
 //
-//  MainTimerBoardView.swift
+//  MainView.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/14/25.
@@ -10,8 +10,13 @@
 
 import SwiftUI
 
-struct MainTimerBoardView: View {
+struct MainView: View {
+    @State private var showSettings = false
+    
     var body: some View {
+        MainHeaderView {
+            showSettings = true
+        }
         ScrollView {
             VStack(spacing: 24) {
 //                // (실험용) 폰트 비교 뷰
@@ -25,14 +30,16 @@ struct MainTimerBoardView: View {
             }
             .padding()
         }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
     }
 }
 
 #Preview {
     let presetManager = PresetManager()
     let timerManager = TimerManager(presetManager: presetManager)
-    return MainTimerBoardView()
+    return MainView()
         .environmentObject(timerManager)
         .environmentObject(presetManager)
 }
-
