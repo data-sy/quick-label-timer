@@ -32,7 +32,7 @@ struct SettingsView: View {
                     }
 
                     NavigationLink("기본 사운드") {
-                        Text("기본 사운드 선택 화면") // TODO: 연결 예정
+                        SoundPickerView()
                     }
 
                     Toggle("다크 모드", isOn: $isDarkMode)
