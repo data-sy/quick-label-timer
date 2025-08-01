@@ -11,6 +11,7 @@
 import Foundation
 
 protocol AlarmSoundPlayable {
-    func playAlarmSound(for id: UUID, sound: AlarmSound, loop: Bool)
+    func playAlarm(for id: UUID, sound: AlarmSound, loop: Bool)
+    func playDefaultAlarm(for id: UUID, loop: Bool)
     func stopAlarm(for id: UUID)
 }
