@@ -15,8 +15,8 @@ struct SettingsView: View {
     @AppStorage("isAutoSaveEnabled") private var isAutoSaveEnabled = true
     @AppStorage("isDarkMode") private var isDarkMode = true
 
-    @State private var notificationStatus: UNAuthorizationStatus = .notDetermined
-
+    @StateObject private var viewModel = SettingsViewModel()
+    
     var body: some View {
         NavigationView {
             Form {
@@ -43,18 +43,14 @@ struct SettingsView: View {
                     HStack {
                         Text("현재 상태")
                         Spacer()
-                        Text(notificationStatusText)
+                        Text(viewModel.notificationStatusText)
                             .foregroundColor(.gray)
                     }
-                    Button("설정에서 알림 허용하기") {
-                        openSystemSettings()
+                    if viewModel.notificationStatus != .authorized {
+                        Button("설정에서 알림 허용하기") {
+                            viewModel.openSystemSettings()
+                        }
                     }
-                    // 개발 중에는 조건 없이 
-//                    if notificationStatus != .authorized {
-//                        Button("설정에서 알림 허용하기") {
-//                            openSystemSettings()
-//                        }
-//                    }
                 }
 
                 // MARK: - 지원
@@ -85,34 +81,9 @@ struct SettingsView: View {
                 .padding(.vertical, 12)
             }
             .onAppear {
-                fetchNotificationStatus()
+                viewModel.fetchNotificationStatus()
             }
         }
-    }
-
-    // MARK: - 알림 권한 확인
-    private func fetchNotificationStatus() {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            DispatchQueue.main.async {
-                self.notificationStatus = settings.authorizationStatus
-            }
-        }
-    }
-
-    private var notificationStatusText: String {
-        switch notificationStatus {
-        case .authorized: return "허용됨"
-        case .denied: return "거부됨"
-        case .notDetermined: return "미요청"
-        case .provisional: return "임시 허용"
-        case .ephemeral: return "일시적 세션"
-        @unknown default: return "알 수 없음"
-        }
-    }
-
-    private func openSystemSettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        UIApplication.shared.open(url)
     }
 }
 
