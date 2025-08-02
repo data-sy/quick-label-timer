@@ -12,10 +12,20 @@ import SwiftUI
 import UserNotifications
 
 struct SettingsView: View {
+    private let githubUsername = "data-sy"
+    private let repoName = "label-timer"
+
+    @StateObject private var viewModel = SettingsViewModel()
+
     @AppStorage("isAutoSaveEnabled") private var isAutoSaveEnabled = true
     @AppStorage("isDarkMode") private var isDarkMode = true
     
-    @StateObject private var viewModel = SettingsViewModel()
+    private var privacyPolicyURL: URL {
+        URL(string: "https://\(githubUsername).github.io/\(repoName)/privacy-policy")!
+    }
+    private var privacyPolicyURL_en: URL {
+        URL(string: "https://\(githubUsername).github.io/\(repoName)/privacy-policy-en")!
+    }
     
     var body: some View {
         NavigationView {
@@ -64,7 +74,11 @@ struct SettingsView: View {
 
                     Link("의견 보내기", destination: URL(string: "https://forms.gle/your-google-form-id")!) // TODO: 구글 폼 연결 예정
 
-                    Link("개인정보 처리방침", destination: URL(string: "https://your.notion.site/privacy")!)
+                    if Locale.current.language.languageCode?.identifier == "ko" {
+                        Link("개인정보 처리방침", destination: privacyPolicyURL)
+                    } else {
+                        Link("Privacy Policy", destination: privacyPolicyURL_en)
+                    }
                 }
             }
             .navigationTitle("설정")
