@@ -16,23 +16,24 @@ struct PresetTimerRowView: View {
     var onTap: (() -> Void)? = nil
     
     /// 전체 시간을 포맷된 문자열로 반환
-    private var formattedTotalTime: String {
-        let total = preset.totalSeconds
-        let hours = total / 3600
-        let minutes = (total % 3600) / 60
-        let seconds = total % 60
-
-        if hours > 0 {
-            return String(format: "%01d:%02d:%02d", hours, minutes, seconds)
-        } else {
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
+    private var tempTimer: TimerData {
+        TimerData(
+            label: preset.label,
+            hours: preset.hours,
+            minutes: preset.minutes,
+            seconds: preset.seconds,
+            isSoundOn: preset.isSoundOn,
+            isVibrationOn: preset.isVibrationOn,
+            createdAt: Date(),
+            endDate: Date(),
+            remainingSeconds: preset.totalSeconds,
+            status: .completed
+        )
     }
 
     var body: some View {
         TimerRowView(
-            label: preset.label,
-            timeText: formattedTotalTime,
+            timer: tempTimer,
             leftButton: AnyView(
                 TimerActionButton(type: .delete) {
                     onAction(.delete)

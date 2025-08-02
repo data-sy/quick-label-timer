@@ -37,6 +37,7 @@ struct TimerData: Identifiable, Hashable {
     var endDate: Date
     var remainingSeconds: Int
     var status: TimerStatus
+    let completedAt: Date?
 
     // 명시적 생성자 (id는 기본값으로 자동 생성 가능)
     init(
@@ -50,7 +51,8 @@ struct TimerData: Identifiable, Hashable {
         createdAt: Date,
         endDate: Date,
         remainingSeconds: Int,
-        status: TimerStatus
+        status: TimerStatus,
+        completedAt: Date? = nil
     ) {
         self.id = id
         self.label = label
@@ -63,6 +65,7 @@ struct TimerData: Identifiable, Hashable {
         self.endDate = endDate
         self.remainingSeconds = remainingSeconds
         self.status = status
+        self.completedAt = completedAt
     }
 }
 
@@ -71,10 +74,22 @@ extension TimerData {
     func updating(
         endDate: Date? = nil,
         remainingSeconds: Int? = nil,
-        status: TimerStatus? = nil
+        status: TimerStatus? = nil,
+        completedAt: Date? = nil
     ) -> TimerData {
         let finalRemaining = remainingSeconds ?? self.remainingSeconds
+        let finalStatus = status ?? (finalRemaining > 0 ? .running : .completed)
 
+        let newCompletedAt: Date? = {
+            if finalStatus == .completed, self.status != .completed {
+                return Date()
+            }
+            if completedAt != nil {
+                return completedAt
+            }
+            return self.completedAt
+        }()
+        
         return TimerData(
             id: self.id,
             label: self.label,
@@ -86,7 +101,21 @@ extension TimerData {
             createdAt: self.createdAt,
             endDate: endDate ?? self.endDate,
             remainingSeconds: finalRemaining,
-            status: status ?? (finalRemaining > 0 ? .running : .completed)
+            status: finalStatus,
+            completedAt: newCompletedAt
         )
+    }
+    
+    /// 현재 remainingSeconds를 "00:00" 또는 "00:00:00"으로 반환
+    var formattedTime: String {
+        let remaining = max(self.remainingSeconds, 0)
+        let hours = remaining / 3600
+        let minutes = (remaining % 3600) / 60
+        let seconds = remaining % 60
+        if hours > 0 {
+            return String(format: "%01d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            return String(format: "%02d:%02d", minutes, seconds)
+        }
     }
 }

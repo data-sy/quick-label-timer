@@ -11,18 +11,24 @@
 import SwiftUI
 
 struct TimerRowView: View {
-    let label: String
-    let timeText: String
+    let timer: TimerData
     let leftButton: AnyView?
     let rightButton: AnyView?
     let state: TimerInteractionState
+    
+    // 남은 자동 삭제 카운트다운 (0~60)
+    private var autoRemoveCountdown: Int? {
+        guard timer.status == .completed, let completedAt = timer.completedAt else { return nil }
+        let elapsed = Int(Date().timeIntervalSince(completedAt))
+        return max(0, 60 - elapsed)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(alignment: .firstTextBaseline, spacing: 6) {
-                        Text(label)
+                        Text(timer.label)
                             .font(.headline)
                         if let statusText = statusText(for: state) {
                             Text(statusText)
@@ -30,7 +36,7 @@ struct TimerRowView: View {
                                 .foregroundColor(.gray.opacity(0.7))
                         }
                     }
-                    Text(timeText)
+                    Text(timer.formattedTime)
                         .font(.system(size: 44, weight: .light))
                 }
                 Spacer()
@@ -39,9 +45,16 @@ struct TimerRowView: View {
                     if let rightButton = rightButton { rightButton }
                 }
             }
-            .padding()
-            .timerRowStateStyle(for: state)
+            if let countdown = autoRemoveCountdown, countdown > 0 {
+                Text("\(countdown)초 후 타이머가 목록으로 이동합니다.")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .padding(.leading, 8)
+                    .padding(.bottom, 6)
+            }
         }
+        .padding()
+        .timerRowStateStyle(for: state)
     }
 
     // 상태별로 보여줄 서브텍스트

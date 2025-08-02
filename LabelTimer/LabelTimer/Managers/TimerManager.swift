@@ -36,21 +36,39 @@ final class TimerManager: ObservableObject {
         )
     }
 
-    /// 타이머 상태를 현재 시각 기준으로 1초 업데이트하고 알람 조건을 확인
+    /// 1초마다 전체 타이머 상태 업데이트 및 자동 삭제 체크
     func tick() {
+        updateTimerStates()
+        removeExpiredTimers()
+    }
+        
+    /// 모든 실행 중 타이머의 남은 시간을 1초 단위로 갱신 & 알람 조건 확인
+    private func updateTimerStates() {
         let now = Date()
-
         self.timers = self.timers.map { timer in
             guard timer.status == .running else { return timer }
-
             let remaining = Int(timer.endDate.timeIntervalSince(now))
             let clamped = max(remaining, 0)
-
             if timer.remainingSeconds != clamped, clamped == 0 {
                 alarmHandler.playIfNeeded(for: timer)
             }
-            
             return timer.updating(remainingSeconds: clamped)
+        }
+    }
+    
+    /// 60초 이상 지난 완료 타이머를 자동 삭제 및 프리셋으로 변환
+    private func removeExpiredTimers() {
+        let now = Date()
+        let expiredTimers = timers.filter { timer in
+            timer.status == .completed &&
+            timer.completedAt != nil &&
+            now.timeIntervalSince(timer.completedAt!) >= 60
+        }
+        for timer in expiredTimers {
+            _ = removeTimer(id: timer.id)
+            presetManager.addPreset(from: timer)
+            // [추가] 필요시 알림 로그 남기기
+            print("[AUTO REMOVE] 타이머 \(timer.label) 종료 후 60초 경과 → 삭제 및 프리셋 전환")
         }
     }
 
