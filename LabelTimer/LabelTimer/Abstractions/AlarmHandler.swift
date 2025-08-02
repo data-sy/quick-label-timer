@@ -18,7 +18,11 @@ final class AlarmHandler: AlarmTriggering {
     }
 
     func playSound(for id: UUID) {
-        player.playAlarmSound(for: id, sound: .default, loop: true)
+        player.playAlarm(for: id, sound: .default, loop: true)
+    }
+    
+    func playDefaultSound(for id: UUID) {
+        player.playDefaultAlarm(for: id, loop: true)
     }
 
     func stopSound(for id: UUID) {
@@ -31,7 +35,7 @@ final class AlarmHandler: AlarmTriggering {
     
     func playIfNeeded(for timer: TimerData) {
         if timer.isSoundOn {
-            playSound(for: timer.id)
+            playDefaultSound(for: timer.id)
         }
         if timer.isVibrationOn {
             vibrate()

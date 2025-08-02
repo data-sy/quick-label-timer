@@ -22,7 +22,7 @@ final class TimerManager: ObservableObject {
     
     init(presetManager: PresetManager, alarmHandler: AlarmTriggering = AlarmHandler()) {
         self.presetManager = presetManager
-        self.alarmHandler = alarmHandler // 테스트용
+        self.alarmHandler = alarmHandler
         startTicking()
     }
     

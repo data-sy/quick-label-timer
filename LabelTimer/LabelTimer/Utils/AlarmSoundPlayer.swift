@@ -19,9 +19,16 @@ final class AlarmSoundPlayer {
     private let session = AVAudioSession.sharedInstance()
 
     private init() {}
+    
+    /// 저장된 사용자 기본 사운드로 알람 재생
+    func playDefaultAlarm(for id: UUID, loop: Bool = true) {
+        let soundID = UserDefaults.standard.string(forKey: "defaultSound") ?? AlarmSound.lowBuzz.id
+        let sound = AlarmSound.from(id: soundID)
+        playAlarm(for: id, sound: sound, loop: loop)
+    }
 
     /// 특정 타이머에 대한 알람 사운드 재생
-    func playAlarmSound(for id: UUID, sound: AlarmSound, loop: Bool = true) {
+    func playAlarm(for id: UUID, sound: AlarmSound, loop: Bool = true) {
         let fileName = sound.fileName
         let fileExtension = sound.fileExtension
 

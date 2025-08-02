@@ -12,19 +12,6 @@ import XCTest
 @testable import LabelTimer
 
 final class AlarmHandlerTests: XCTestCase {
-    final class MockSoundPlayer: AlarmSoundPlayable {
-        var playedSoundId: UUID?
-        var stoppedSoundId: UUID?
-
-        func playAlarmSound(for id: UUID, sound: AlarmSound, loop: Bool) {
-            playedSoundId = id
-        }
-
-        func stopAlarm(for id: UUID) {
-            stoppedSoundId = id
-        }
-    }
-
     func test_playSound_callsPlayerWithCorrectId() {
         let mockPlayer = MockSoundPlayer()
         let handler = AlarmHandler(player: mockPlayer)
@@ -35,6 +22,23 @@ final class AlarmHandlerTests: XCTestCase {
         XCTAssertEqual(mockPlayer.playedSoundId, testId)
     }
 
+    func test_playDefaultSound_usesCurrentDefaultSound() {
+        // given
+        let mockPlayer = MockSoundPlayer()
+        let handler = AlarmHandler(player: mockPlayer)
+        let testId = UUID()
+
+        // 현재 설정을 lowBuzz로 지정
+        UserDefaults.standard.set("low-buzz", forKey: "defaultSound")
+
+        // when
+        handler.playDefaultSound(for: testId)
+
+        // then
+        XCTAssertEqual(mockPlayer.playedSound, AlarmSound.lowBuzz)
+    }
+
+    
     func test_stopSound_callsPlayerWithCorrectId() {
         let mockPlayer = MockSoundPlayer()
         let handler = AlarmHandler(player: mockPlayer)
