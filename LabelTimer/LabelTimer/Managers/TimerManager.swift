@@ -46,7 +46,7 @@ final class TimerManager: ObservableObject {
             let remaining = Int(timer.endDate.timeIntervalSince(now))
             let clamped = max(remaining, 0)
 
-            if timer.remainingSeconds != clamped, clamped == 0 { // 테스트 하는 과정에서 조건 수정
+            if timer.remainingSeconds != clamped, clamped == 0 {
                 alarmHandler.playIfNeeded(for: timer)
             }
             

@@ -18,33 +18,44 @@ struct TimerRowView: View {
     let state: TimerInteractionState
 
     var body: some View {
-        let style = TimerRowStateStyle(state: state)
-
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(label)
-                        .font(style.labelFont)
-
+                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+                        Text(label)
+                            .font(.headline)
+                        if let statusText = statusText(for: state) {
+                            Text(statusText)
+                                .font(.subheadline)
+                                .foregroundColor(.gray.opacity(0.7))
+                        }
+                    }
                     Text(timeText)
-                        .font(style.timeFont)
+                        .font(.system(size: 44, weight: .light))
                 }
-
                 Spacer()
-
                 HStack(spacing: 12) {
-                    if let leftButton = leftButton {
-                        leftButton
-                    }
-
-                    if let rightButton = rightButton {
-                        rightButton
-                    }
+                    if let leftButton = leftButton { leftButton }
+                    if let rightButton = rightButton { rightButton }
                 }
             }
             .padding()
-            .modifier(style) // 배경색 및 텍스트 색 적용
+            .timerRowStateStyle(for: state)
         }
+    }
 
+    // 상태별로 보여줄 서브텍스트
+    private func statusText(for state: TimerInteractionState) -> String? {
+        switch state {
+        case .paused:
+            return "일시정지"
+        case .stopped:
+            return "정지"
+        case .completed:
+            return "종료"
+        default:
+            return nil
+        }
     }
 }
+

@@ -45,7 +45,7 @@ struct PresetTimerRowView: View {
                 }
                 .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
             ),
-            state: TimerInteractionState.waiting
+            state: TimerInteractionState.preset
         )
         .contentShape(Rectangle())
         .onTapGesture {
