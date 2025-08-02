@@ -83,6 +83,9 @@ struct SettingsView: View {
             .onAppear {
                 viewModel.fetchNotificationStatus()
             }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                viewModel.fetchNotificationStatus()
+            }
         }
     }
 }
