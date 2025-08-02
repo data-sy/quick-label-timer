@@ -21,14 +21,17 @@ struct SettingsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = true
     
     private var privacyPolicyURL: URL {
-        URL(string: "https://\(githubUsername).github.io/\(repoName)/privacy-policy")!
+        URL(string: "https://\(githubUsername).github.io/\(repoName)/privacy-policy-kr")!
     }
     private var privacyPolicyURL_en: URL {
         URL(string: "https://\(githubUsername).github.io/\(repoName)/privacy-policy-en")!
     }
     
     var body: some View {
-        NavigationView {
+        let preferredLanguage = Locale.preferredLanguages.first ?? "en"
+        let languageCode = preferredLanguage.components(separatedBy: "-").first ?? "en"
+        
+        return NavigationView {
             Form {
                 // MARK: - 알림 설정
                 Section(header: Text("알림 설정")) {
@@ -74,7 +77,7 @@ struct SettingsView: View {
 
                     Link("의견 보내기", destination: URL(string: "https://forms.gle/your-google-form-id")!) // TODO: 구글 폼 연결 예정
 
-                    if Locale.current.language.languageCode?.identifier == "ko" {
+                    if languageCode == "ko" {
                         Link("개인정보 처리방침", destination: privacyPolicyURL)
                     } else {
                         Link("Privacy Policy", destination: privacyPolicyURL_en)
@@ -91,6 +94,10 @@ struct SettingsView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
+            }
+            .onAppear {
+                let languageCode = Locale.current.language.languageCode?.identifier ?? "en"
+                print("Detected language code: \(languageCode)")
             }
             .onAppear {
                 viewModel.fetchNotificationStatus()
