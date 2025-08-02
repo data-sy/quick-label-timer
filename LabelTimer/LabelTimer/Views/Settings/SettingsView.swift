@@ -59,15 +59,10 @@ struct SettingsView: View {
                 // MARK: - 지원
                 Section(header: Text("지원")) {
                     NavigationLink("도움말") {
-                        Text("앱 사용법 작성 예정 화면") // TODO: 연결 예정
+                        Text("앱 사용법 작성 예정 화면") // TODO: 작성 예정
                     }
 
-                    NavigationLink("문의하기") {
-                        Text("문의하기 화면") // TODO: 메일 보내기 + 태그 선택 예정
-//셋팅에서 문의하기는 의견보내기로 바꿀까? 알라미 앱 참고하기
-
-
-                    }
+                    Link("의견 보내기", destination: URL(string: "https://forms.gle/your-google-form-id")!) // TODO: 구글 폼 연결 예정
 
                     Link("개인정보 처리방침", destination: URL(string: "https://your.notion.site/privacy")!)
                 }
