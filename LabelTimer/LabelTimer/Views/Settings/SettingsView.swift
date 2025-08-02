@@ -35,14 +35,14 @@ struct SettingsView: View {
             Form {
                 // MARK: - 알림 설정
                 Section(header: Text("알림 설정")) {
-                    Toggle(isOn: $isAutoSaveEnabled) {
-                        VStack(alignment: .leading) {
-                            Text("타이머 자동 저장")
-                            Text("타이머 종료 시 자동으로 [타이머 목록]에 저장됩니다.")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                    }
+//                    Toggle(isOn: $isAutoSaveEnabled) {
+//                        VStack(alignment: .leading) {
+//                            Text("타이머 자동 저장")
+//                            Text("타이머 종료 시 자동으로 [타이머 목록]에 저장됩니다.")
+//                                .font(.caption)
+//                                .foregroundColor(.gray)
+//                        }
+//                    }
 
                     NavigationLink("기본 사운드") {
                         SoundPickerView()
@@ -71,11 +71,11 @@ struct SettingsView: View {
 
                 // MARK: - 지원
                 Section(header: Text("지원")) {
-                    NavigationLink("도움말") {
-                        Text("앱 사용법 작성 예정 화면") // TODO: 작성 예정
-                    }
-
-                    Link("의견 보내기", destination: URL(string: "https://forms.gle/your-google-form-id")!) // TODO: 구글 폼 연결 예정
+//                    NavigationLink("도움말") {
+//                        Text("앱 사용법 작성 예정 화면") // TODO: 작성 예정
+//                    }
+//
+//                    Link("의견 보내기", destination: URL(string: "https://forms.gle/your-google-form-id")!) // TODO: 구글 폼 연결 예정
 
                     if languageCode == "ko" {
                         Link("개인정보 처리방침", destination: privacyPolicyURL)
@@ -94,10 +94,6 @@ struct SettingsView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
-            }
-            .onAppear {
-                let languageCode = Locale.current.language.languageCode?.identifier ?? "en"
-                print("Detected language code: \(languageCode)")
             }
             .onAppear {
                 viewModel.fetchNotificationStatus()
