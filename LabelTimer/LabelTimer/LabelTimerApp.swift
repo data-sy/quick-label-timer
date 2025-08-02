@@ -14,6 +14,8 @@ struct LabelTimerApp: App {
     @StateObject private var presetManager = PresetManager()
     @StateObject private var timerManager : TimerManager
     
+    @AppStorage("isDarkMode") private var isDarkMode = true
+    
     // 지연 초기화(deferred init)
     init() {
         let preset = PresetManager()
@@ -27,7 +29,7 @@ struct LabelTimerApp: App {
             MainView()
                 .environmentObject(timerManager)
                 .environmentObject(presetManager)
-                .preferredColorScheme(.dark) // 다크모드
+                .preferredColorScheme(isDarkMode ? .dark : .light)
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {

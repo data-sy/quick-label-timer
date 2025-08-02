@@ -14,7 +14,7 @@ import UserNotifications
 struct SettingsView: View {
     @AppStorage("isAutoSaveEnabled") private var isAutoSaveEnabled = true
     @AppStorage("isDarkMode") private var isDarkMode = true
-
+    
     @StateObject private var viewModel = SettingsViewModel()
     
     var body: some View {
@@ -35,7 +35,10 @@ struct SettingsView: View {
                         SoundPickerView()
                     }
 
-                    Toggle("다크 모드", isOn: $isDarkMode)
+                    Toggle("다크 모드", isOn: $viewModel.isDarkMode)
+                        .onChange(of: viewModel.isDarkMode) { _ in
+                            viewModel.applyAppearance()
+                        }
                 }
 
                 // MARK: - 알림 권한
@@ -87,6 +90,7 @@ struct SettingsView: View {
                 viewModel.fetchNotificationStatus()
             }
         }
+        .preferredColorScheme(isDarkMode ? .dark : .light)
     }
 }
 
