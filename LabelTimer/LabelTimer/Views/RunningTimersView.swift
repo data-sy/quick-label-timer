@@ -32,7 +32,6 @@ struct RunningTimersView: View {
             }
         }
         .padding()
-//        .border(Color.red)
     }
 
     /// 버튼 액션 처리
