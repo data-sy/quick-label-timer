@@ -15,10 +15,7 @@ struct SettingsView: View {
     private let githubUsername = "data-sy"
     private let repoName = "label-timer"
 
-    @StateObject private var viewModel = SettingsViewModel()
-
-    @AppStorage("isAutoSaveEnabled") private var isAutoSaveEnabled = true
-    @AppStorage("isDarkMode") private var isDarkMode = true
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
     
     private var privacyPolicyURL: URL {
         URL(string: "https://\(githubUsername).github.io/\(repoName)/privacy-policy-kr")!
@@ -35,22 +32,13 @@ struct SettingsView: View {
             Form {
                 // MARK: - 알림 설정
                 Section(header: Text("알림 설정")) {
-//                    Toggle(isOn: $isAutoSaveEnabled) {
-//                        VStack(alignment: .leading) {
-//                            Text("타이머 자동 저장")
-//                            Text("타이머 종료 시 자동으로 [타이머 목록]에 저장됩니다.")
-//                                .font(.caption)
-//                                .foregroundColor(.gray)
-//                        }
-//                    }
-
                     NavigationLink("기본 사운드") {
                         SoundPickerView()
                     }
 
-                    Toggle("다크 모드", isOn: $viewModel.isDarkMode)
-                        .onChange(of: viewModel.isDarkMode) { _ in
-                            viewModel.applyAppearance()
+                    Toggle("다크 모드", isOn: $settingsViewModel.isDarkMode)
+                        .onChange(of: settingsViewModel.isDarkMode) { _ in
+                            settingsViewModel.applyAppearance()
                         }
                 }
 
@@ -59,12 +47,12 @@ struct SettingsView: View {
                     HStack {
                         Text("현재 상태")
                         Spacer()
-                        Text(viewModel.notificationStatusText)
+                        Text(settingsViewModel.notificationStatusText)
                             .foregroundColor(.gray)
                     }
-                    if viewModel.notificationStatus != .authorized {
+                    if settingsViewModel.notificationStatus != .authorized {
                         Button("설정에서 알림 허용하기") {
-                            viewModel.openSystemSettings()
+                            settingsViewModel.openSystemSettings()
                         }
                     }
                 }
@@ -96,13 +84,13 @@ struct SettingsView: View {
                 .padding(.vertical, 12)
             }
             .onAppear {
-                viewModel.fetchNotificationStatus()
+                settingsViewModel.fetchNotificationStatus()
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                viewModel.fetchNotificationStatus()
+                settingsViewModel.fetchNotificationStatus()
             }
         }
-        .preferredColorScheme(isDarkMode ? .dark : .light)
+        .preferredColorScheme(settingsViewModel.isDarkMode ? .dark : .light)
     }
 }
 
