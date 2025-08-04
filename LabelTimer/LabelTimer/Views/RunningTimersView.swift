@@ -25,7 +25,7 @@ struct RunningTimersView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             } else {
                 ForEach(timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt })) { timer in
-                    RunningTimerRowView(timer: timer) { action in
+                    RunningTimerRowView(timer: timer, deleteCountdownSeconds: timerManager.deleteCountdownSeconds) { action in
                         handleAction(action, for: timer)
                     }
                 }
@@ -46,8 +46,7 @@ struct RunningTimersView: View {
         case .restart:
             timerManager.restartTimer(id: timer.id)
         case .delete:
-            timerManager.removeTimer(id: timer.id)
-            presetManager.addPreset(from: timer)
+            timerManager.convertTimerToPreset(timerId: timer.id)
         }
     }
 }

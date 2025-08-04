@@ -37,8 +37,8 @@ struct TimerData: Identifiable, Hashable {
     var endDate: Date
     var remainingSeconds: Int
     var status: TimerStatus
-    let completedAt: Date?
-
+    var pendingDeletionAt: Date? = nil // 삭제 종료 예정 시간
+    
     // 명시적 생성자 (id는 기본값으로 자동 생성 가능)
     init(
         id: UUID = UUID(),
@@ -52,7 +52,7 @@ struct TimerData: Identifiable, Hashable {
         endDate: Date,
         remainingSeconds: Int,
         status: TimerStatus,
-        completedAt: Date? = nil
+        pendingDeletionAt: Date? = nil
     ) {
         self.id = id
         self.label = label
@@ -65,7 +65,7 @@ struct TimerData: Identifiable, Hashable {
         self.endDate = endDate
         self.remainingSeconds = remainingSeconds
         self.status = status
-        self.completedAt = completedAt
+        self.pendingDeletionAt = pendingDeletionAt
     }
 }
 
@@ -75,20 +75,10 @@ extension TimerData {
         endDate: Date? = nil,
         remainingSeconds: Int? = nil,
         status: TimerStatus? = nil,
-        completedAt: Date? = nil
+        pendingDeletionAt: Date?? = nil
     ) -> TimerData {
         let finalRemaining = remainingSeconds ?? self.remainingSeconds
         let finalStatus = status ?? (finalRemaining > 0 ? .running : .completed)
-
-        let newCompletedAt: Date? = {
-            if finalStatus == .completed, self.status != .completed {
-                return Date()
-            }
-            if completedAt != nil {
-                return completedAt
-            }
-            return self.completedAt
-        }()
         
         return TimerData(
             id: self.id,
@@ -102,7 +92,7 @@ extension TimerData {
             endDate: endDate ?? self.endDate,
             remainingSeconds: finalRemaining,
             status: finalStatus,
-            completedAt: newCompletedAt
+            pendingDeletionAt: pendingDeletionAt ?? self.pendingDeletionAt
         )
     }
     
@@ -117,5 +107,12 @@ extension TimerData {
         } else {
             return String(format: "%02d:%02d", minutes, seconds)
         }
+    }
+    
+    /// n초 기준 자동 삭제 카운트다운 반환
+    func autoRemoveCountdown(seconds n: Int) -> Int? {
+        guard let pending = pendingDeletionAt else { return nil }
+        let remaining = Int(pending.timeIntervalSince(Date()))
+        return (remaining > 0 && remaining <= n) ? remaining : nil
     }
 }

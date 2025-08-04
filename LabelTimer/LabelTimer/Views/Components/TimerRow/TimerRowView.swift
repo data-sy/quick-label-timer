@@ -15,12 +15,23 @@ struct TimerRowView: View {
     let leftButton: AnyView?
     let rightButton: AnyView?
     let state: TimerInteractionState
-    
-    // 남은 자동 삭제 카운트다운 (0~60)
-    private var autoRemoveCountdown: Int? {
-        guard timer.status == .completed, let completedAt = timer.completedAt else { return nil }
-        let elapsed = Int(Date().timeIntervalSince(completedAt))
-        return max(0, 60 - elapsed)
+    let statusText: String?
+    let deleteCountdown: Int?
+
+    init(
+        timer: TimerData,
+        leftButton: AnyView? = nil,
+        rightButton: AnyView? = nil,
+        state: TimerInteractionState,
+        statusText: String? = nil,
+        deleteCountdown: Int? = nil
+    ) {
+        self.timer = timer
+        self.leftButton = leftButton
+        self.rightButton = rightButton
+        self.state = state
+        self.statusText = statusText
+        self.deleteCountdown = deleteCountdown
     }
 
     var body: some View {
@@ -29,7 +40,7 @@ struct TimerRowView: View {
                 Text(timer.label)
                     .font(.headline)
 
-                if let statusText = statusText(for: state) {
+                if let statusText = statusText {
                     Text(statusText)
                         .font(.subheadline)
                         .foregroundColor(.gray.opacity(0.7))
@@ -47,30 +58,18 @@ struct TimerRowView: View {
                     if let rightButton = rightButton { rightButton }
                 }
             }
-
-            if let countdown = autoRemoveCountdown, countdown > 0 {
-                Text("\(countdown)초 후 타이머가 목록으로 이동합니다.")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                    .padding(.leading, 8)
-                    .padding(.bottom, 6)
-            }
+            if let deleteCountdown, deleteCountdown > 0 {
+                 HStack {
+                     Text("\(deleteCountdown)초 후 타이머가 삭제됩니다.")
+                         .font(.caption)
+                         .foregroundColor(.gray)
+                         .padding(.leading, 8)
+                         .padding(.bottom, 6)
+                 }
+             }
         }
         .padding()
         .timerRowStateStyle(for: state)
     }
 
-    // 상태별로 보여줄 서브텍스트
-    private func statusText(for state: TimerInteractionState) -> String? {
-        switch state {
-        case .paused:
-            return "일시정지"
-        case .stopped:
-            return "정지"
-        case .completed:
-            return "종료"
-        default:
-            return nil
-        }
-    }
 }
