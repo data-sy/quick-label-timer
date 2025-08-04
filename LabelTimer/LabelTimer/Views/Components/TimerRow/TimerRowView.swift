@@ -25,26 +25,29 @@ struct TimerRowView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(alignment: .firstTextBaseline, spacing: 6) {
-                        Text(timer.label)
-                            .font(.headline)
-                        if let statusText = statusText(for: state) {
-                            Text(statusText)
-                                .font(.subheadline)
-                                .foregroundColor(.gray.opacity(0.7))
-                        }
-                    }
-                    Text(timer.formattedTime)
-                        .font(.system(size: 44, weight: .light))
+            HStack(alignment: .center, spacing: 6) {
+                Text(timer.label)
+                    .font(.headline)
+
+                if let statusText = statusText(for: state) {
+                    Text(statusText)
+                        .font(.subheadline)
+                        .foregroundColor(.gray.opacity(0.7))
                 }
                 Spacer()
+            }
+            HStack {
+                Text(timer.formattedTime)
+                    .font(.system(size: 44, weight: .light))
+
+                Spacer()
+
                 HStack(spacing: 12) {
                     if let leftButton = leftButton { leftButton }
                     if let rightButton = rightButton { rightButton }
                 }
             }
+
             if let countdown = autoRemoveCountdown, countdown > 0 {
                 Text("\(countdown)초 후 타이머가 목록으로 이동합니다.")
                     .font(.caption)
@@ -71,4 +74,3 @@ struct TimerRowView: View {
         }
     }
 }
-
