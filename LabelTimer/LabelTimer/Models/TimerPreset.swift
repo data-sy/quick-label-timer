@@ -19,8 +19,9 @@ struct TimerPreset: Identifiable, Codable, Hashable {
     let seconds: Int
     let isSoundOn: Bool
     let isVibrationOn: Bool
-    
     let createdAt: Date
+
+    var isHiddenInList: Bool = false
     
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
@@ -34,7 +35,8 @@ struct TimerPreset: Identifiable, Codable, Hashable {
         seconds: Int,
         isSoundOn: Bool = true,
         isVibrationOn: Bool = true,
-        createdAt: Date = Date()
+        createdAt: Date = Date(),
+        isHiddenInList: Bool = false
     ) {
         self.id = UUID()
         self.label = label
@@ -44,6 +46,7 @@ struct TimerPreset: Identifiable, Codable, Hashable {
         self.isSoundOn = isSoundOn
         self.isVibrationOn = isVibrationOn
         self.createdAt = createdAt
+        self.isHiddenInList = isHiddenInList
     }
     
     // 2. id 포함 생성자(복사/업데이트/디코딩 등)
@@ -55,7 +58,8 @@ struct TimerPreset: Identifiable, Codable, Hashable {
         seconds: Int,
         isSoundOn: Bool,
         isVibrationOn: Bool,
-        createdAt: Date = Date()
+        createdAt: Date = Date(),
+        isHiddenInList: Bool = false
     ) {
         self.id = id
         self.label = label
@@ -65,5 +69,6 @@ struct TimerPreset: Identifiable, Codable, Hashable {
         self.isSoundOn = isSoundOn
         self.isVibrationOn = isVibrationOn
         self.createdAt = createdAt
+        self.isHiddenInList = isHiddenInList
     }
 }

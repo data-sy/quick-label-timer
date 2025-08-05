@@ -86,7 +86,7 @@ final class TimerManager: ObservableObject {
     }
     
     /// 새 타이머 추가 ( 사용자 입력 기반 )
-    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool) {
+    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID? = nil) {
         let totalSeconds = hours * 3600 + minutes * 60 + seconds
         guard totalSeconds > 0 else { return }
         
@@ -106,11 +106,14 @@ final class TimerManager: ObservableObject {
             endDate: end,
             remainingSeconds: totalSeconds,
             status: .running,
-            pendingDeletionAt: nil
+            pendingDeletionAt: nil,
+            presetId: presetId
         )
         
         timers.append(newTimer)
         scheduleNotification(for: newTimer)
+        // 디버깅: 추가된 타이머 정보 출력
+        print("[DEBUG] 타이머 추가됨 → label: \(finalLabel), presetId: \(String(describing: presetId))")
     }
     
     /// 레이블이 비어 있을 경우 중복되지 않는 자동 레이블("타이머N") 생성
@@ -136,6 +139,21 @@ final class TimerManager: ObservableObject {
         )
     }
     
+    /// 새 타이머 추가 + 프리셋 숨김 처리
+    func runTimer(from preset: TimerPreset, presetManager: PresetManager) {
+        addTimer(
+            label: preset.label,
+            hours: preset.hours,
+            minutes: preset.minutes,
+            seconds: preset.seconds,
+            isSoundOn: preset.isSoundOn,
+            isVibrationOn: preset.isVibrationOn,
+            presetId: preset.id
+        )
+        presetManager.hidePreset(withId: preset.id)
+        print("[DEBUG] 프리셋 실행 → preset.label: \(preset.label), presetId: \(preset.id)")
+    }
+
     /// 새 타이머 추가 ( 프리셋 기반 )
     func addTimer(from preset: TimerPreset) {
         addTimer(
@@ -144,7 +162,8 @@ final class TimerManager: ObservableObject {
             minutes: preset.minutes,
             seconds: preset.seconds,
             isSoundOn: preset.isSoundOn,
-            isVibrationOn: preset.isVibrationOn
+            isVibrationOn: preset.isVibrationOn,
+            presetId: preset.id
         )
     }
     

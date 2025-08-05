@@ -31,7 +31,7 @@ struct PresetListView: View {
         VStack(alignment: .leading, spacing: 0) {
             SectionTitle(text: "타이머 목록")
             List {
-                ForEach(presetManager.allPresets, id: \.id) { preset in
+                ForEach(presetManager.allPresets.filter { !$0.isHiddenInList }, id: \.id) { preset in
                     PresetTimerRowView(
                         preset: preset,
                         onAction: { action in
@@ -81,14 +81,18 @@ struct PresetListView: View {
                         showingEditDeleteAlert = true
                     },
                     onStart: {
-                        timerManager.addTimer(
-                            label: editingLabel,
-                            hours: editingHours,
-                            minutes: editingMinutes,
-                            seconds: editingSeconds,
-                            isSoundOn: editingSoundOn,
-                            isVibrationOn: editingVibrationOn
-                        )
+                        if let preset = editingPreset {
+                            timerManager.runTimer(from: preset, presetManager: presetManager)
+                        } else {
+                            timerManager.addTimer(
+                                label: editingLabel,
+                                hours: editingHours,
+                                minutes: editingMinutes,
+                                seconds: editingSeconds,
+                                isSoundOn: editingSoundOn,
+                                isVibrationOn: editingVibrationOn
+                            )
+                        }
                         isEditing = false
                     }
                 )
@@ -121,15 +125,7 @@ struct PresetListView: View {
     private func handleAction(_ action: TimerButtonType, preset: TimerPreset) {
         switch action {
         case .play:
-            timerManager.addTimer(
-                label: preset.label,
-                hours: preset.hours,
-                minutes: preset.minutes,
-                seconds: preset.seconds,
-                isSoundOn: preset.isSoundOn,
-                isVibrationOn: preset.isVibrationOn
-            )
-            presetManager.deletePreset(preset)
+            timerManager.runTimer(from: preset, presetManager: presetManager)
 
         case .delete:
             presetToDelete = preset

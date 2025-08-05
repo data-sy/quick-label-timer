@@ -26,8 +26,10 @@ struct TimerData: Identifiable, Hashable {
     let seconds: Int
     let isSoundOn: Bool
     let isVibrationOn: Bool
-    
     let createdAt: Date
+
+    /// 프리셋 기반 실행일 경우 해당 프리셋의 id, 즉석 타이머는 nil
+    let presetId: UUID?
     
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
@@ -52,7 +54,8 @@ struct TimerData: Identifiable, Hashable {
         endDate: Date,
         remainingSeconds: Int,
         status: TimerStatus,
-        pendingDeletionAt: Date? = nil
+        pendingDeletionAt: Date? = nil,
+        presetId: UUID? = nil
     ) {
         self.id = id
         self.label = label
@@ -66,6 +69,7 @@ struct TimerData: Identifiable, Hashable {
         self.remainingSeconds = remainingSeconds
         self.status = status
         self.pendingDeletionAt = pendingDeletionAt
+        self.presetId = presetId
     }
 }
 
@@ -75,7 +79,8 @@ extension TimerData {
         endDate: Date? = nil,
         remainingSeconds: Int? = nil,
         status: TimerStatus? = nil,
-        pendingDeletionAt: Date?? = nil
+        pendingDeletionAt: Date?? = nil,
+        presetId: UUID? = nil
     ) -> TimerData {
         let finalRemaining = remainingSeconds ?? self.remainingSeconds
         let finalStatus = status ?? (finalRemaining > 0 ? .running : .completed)
@@ -92,7 +97,8 @@ extension TimerData {
             endDate: endDate ?? self.endDate,
             remainingSeconds: finalRemaining,
             status: finalStatus,
-            pendingDeletionAt: pendingDeletionAt ?? self.pendingDeletionAt
+            pendingDeletionAt: pendingDeletionAt ?? self.pendingDeletionAt,
+            presetId: presetId ?? self.presetId
         )
     }
     
