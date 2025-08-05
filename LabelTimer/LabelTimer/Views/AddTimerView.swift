@@ -53,10 +53,3 @@ struct AddTimerView: View {
         }
     }
 }
-
-#Preview {
-    let presetManager = PresetManager()
-    let timerManager = TimerManager(presetManager: presetManager)
-    return AddTimerView()
-        .environmentObject(timerManager)
-}

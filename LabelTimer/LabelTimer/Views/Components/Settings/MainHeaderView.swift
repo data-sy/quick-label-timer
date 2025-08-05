@@ -32,9 +32,3 @@ struct MainHeaderView: View {
         .padding(.top, 12)
     }
 }
-
-#Preview {
-    MainHeaderView {
-        print("⚙️ 설정 버튼 탭됨")
-    }
-}

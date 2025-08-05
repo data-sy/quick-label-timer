@@ -140,24 +140,3 @@ struct PresetListView: View {
         }
     }
 }
-
-#if DEBUG
-struct PresetListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let presetManager = PresetManager()
-        presetManager.setPresets([
-            TimerPreset(label: "집중", hours: 0, minutes: 25, seconds: 0, isSoundOn: true, isVibrationOn: true),
-            TimerPreset(label: "짧은 휴식", hours: 0, minutes: 5, seconds: 0, isSoundOn: false, isVibrationOn: true),
-            TimerPreset(label: "긴 휴식", hours: 0, minutes: 15, seconds: 0, isSoundOn: true, isVibrationOn: false)
-        ])
-
-        let timerManager = TimerManager(presetManager: presetManager)
-
-        return PresetListView()
-            .environmentObject(presetManager)
-            .environmentObject(timerManager)
-            .previewLayout(.sizeThatFits)
-            .padding()
-    }
-}
-#endif

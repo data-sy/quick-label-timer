@@ -19,10 +19,6 @@ struct MainView: View {
         }
         ScrollView {
             VStack(spacing: 24) {
-//                // (실험용) 폰트 비교 뷰
-//                TimerFontExperimentView()
-  
-                // 기존 뷰
                 AddTimerView()
                 RunningTimersView()
                 PresetListView()
@@ -34,12 +30,4 @@ struct MainView: View {
             SettingsView()
         }
     }
-}
-
-#Preview {
-    let presetManager = PresetManager()
-    let timerManager = TimerManager(presetManager: presetManager)
-    return MainView()
-        .environmentObject(timerManager)
-        .environmentObject(presetManager)
 }

@@ -11,7 +11,7 @@ import SwiftUI
 
 @main
 struct LabelTimerApp: App {
-    static let deleteCountdownSeconds = 5
+    static let deleteCountdownSeconds = 10
     
     @Environment(\.scenePhase) private var scenePhase
     

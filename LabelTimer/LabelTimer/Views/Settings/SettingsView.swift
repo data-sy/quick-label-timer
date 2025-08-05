@@ -93,7 +93,3 @@ struct SettingsView: View {
         .preferredColorScheme(settingsViewModel.isDarkMode ? .dark : .light)
     }
 }
-
-//#Preview {
-//    SettingsView()
-//}

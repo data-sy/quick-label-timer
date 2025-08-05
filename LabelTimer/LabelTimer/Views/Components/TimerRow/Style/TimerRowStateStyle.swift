@@ -51,4 +51,3 @@ extension View {
         self.modifier(TimerRowStateStyle(state: state))
     }
 }
-

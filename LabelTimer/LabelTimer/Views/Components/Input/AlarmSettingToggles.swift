@@ -52,11 +52,3 @@ private struct ToggleButton: View {
         .buttonStyle(.plain)
     }
 }
-
-#Preview(traits: .sizeThatFitsLayout) {
-    AlarmSettingToggles(
-        isSoundOn: .constant(true),
-        isVibrationOn: .constant(true)
-    )
-    .padding()
-}
