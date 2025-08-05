@@ -31,6 +31,9 @@ struct TimerData: Identifiable, Hashable {
     /// 프리셋 기반 실행일 경우 해당 프리셋의 id, 즉석 타이머는 nil
     let presetId: UUID?
     
+    /// 즐겨찾기(프리셋화) 여부. 프리셋 기반 타이머는 true, 즉석 타이머는 기본 false.
+    var isFavorite: Bool
+    
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
     }
@@ -55,7 +58,8 @@ struct TimerData: Identifiable, Hashable {
         remainingSeconds: Int,
         status: TimerStatus,
         pendingDeletionAt: Date? = nil,
-        presetId: UUID? = nil
+        presetId: UUID? = nil,
+        isFavorite: Bool = false
     ) {
         self.id = id
         self.label = label
@@ -70,6 +74,7 @@ struct TimerData: Identifiable, Hashable {
         self.status = status
         self.pendingDeletionAt = pendingDeletionAt
         self.presetId = presetId
+        self.isFavorite = isFavorite
     }
 }
 
@@ -80,7 +85,8 @@ extension TimerData {
         remainingSeconds: Int? = nil,
         status: TimerStatus? = nil,
         pendingDeletionAt: Date?? = nil,
-        presetId: UUID? = nil
+        presetId: UUID? = nil,
+        isFavorite: Bool? = nil
     ) -> TimerData {
         let finalRemaining = remainingSeconds ?? self.remainingSeconds
         let finalStatus = status ?? (finalRemaining > 0 ? .running : .completed)
@@ -98,7 +104,8 @@ extension TimerData {
             remainingSeconds: finalRemaining,
             status: finalStatus,
             pendingDeletionAt: pendingDeletionAt ?? self.pendingDeletionAt,
-            presetId: presetId ?? self.presetId
+            presetId: presetId ?? self.presetId,
+            isFavorite: isFavorite ?? self.isFavorite
         )
     }
     

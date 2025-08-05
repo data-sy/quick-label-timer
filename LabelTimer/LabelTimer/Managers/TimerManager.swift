@@ -23,6 +23,8 @@ final class TimerManager: ObservableObject {
 
     private var timer: Timer?
     
+    // MARK: - Init
+
     init(presetManager: PresetManager, deleteCountdownSeconds: Int, alarmHandler: AlarmTriggering = AlarmHandler()) {
         self.presetManager = presetManager
         self.deleteCountdownSeconds = deleteCountdownSeconds
@@ -30,10 +32,7 @@ final class TimerManager: ObservableObject {
         startTicking()
     }
     
-    /// ScenePhase(.active/.inactive/.background 등) 상태 업데이트
-    func updateScenePhase(_ phase: ScenePhase) {
-        self.scenePhase = phase
-    }
+    // MARK: - Tick 메인 루프 & 상태 업데이트
     
     /// 매초마다 타이머 상태 업데이트 (매초마다 tick()을 반복 실행)
     func startTicking() {
@@ -85,8 +84,10 @@ final class TimerManager: ObservableObject {
         }
     }
     
+    // MARK: - CRUD (타이머 생성, 실행, 삭제, 프리셋 전환)
+    
     /// 새 타이머 추가 ( 사용자 입력 기반 )
-    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID? = nil) {
+    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID? = nil, isFavorite: Bool = false) {
         let totalSeconds = hours * 3600 + minutes * 60 + seconds
         guard totalSeconds > 0 else { return }
         
@@ -107,13 +108,14 @@ final class TimerManager: ObservableObject {
             remainingSeconds: totalSeconds,
             status: .running,
             pendingDeletionAt: nil,
-            presetId: presetId
+            presetId: presetId,
+            isFavorite: isFavorite
         )
         
         timers.append(newTimer)
         scheduleNotification(for: newTimer)
         // 디버깅: 추가된 타이머 정보 출력
-        print("[DEBUG] 타이머 추가됨 → label: \(finalLabel), presetId: \(String(describing: presetId))")
+        print("[DEBUG] 타이머 추가됨 → label: \(finalLabel), presetId: \(String(describing: presetId)), isFavorite: \(isFavorite)")
     }
     
     /// 레이블이 비어 있을 경우 중복되지 않는 자동 레이블("타이머N") 생성
@@ -148,7 +150,8 @@ final class TimerManager: ObservableObject {
             seconds: preset.seconds,
             isSoundOn: preset.isSoundOn,
             isVibrationOn: preset.isVibrationOn,
-            presetId: preset.id
+            presetId: preset.id,
+            isFavorite: true
         )
         presetManager.hidePreset(withId: preset.id)
         print("[DEBUG] 프리셋 실행 → preset.label: \(preset.label), presetId: \(preset.id)")
@@ -163,9 +166,29 @@ final class TimerManager: ObservableObject {
             seconds: preset.seconds,
             isSoundOn: preset.isSoundOn,
             isVibrationOn: preset.isVibrationOn,
-            presetId: preset.id
+            presetId: preset.id,
+            isFavorite: true
         )
     }
+    
+    /// 타이머 삭제
+    @discardableResult
+    func removeTimer(id: UUID) -> TimerData? {
+        NotificationUtils.cancelScheduledNotification(id: id.uuidString)
+        
+        guard let index = timers.firstIndex(where: { $0.id == id }) else { return nil }
+        let removed = timers.remove(at: index)
+        return removed
+    }
+    
+    /// 타이머를 프리셋으로 전환 (실행중 타이머 삭제 + 프리셋 추가)
+    func convertTimerToPreset(timerId: UUID) {
+        if let timer = removeTimer(id: timerId) {
+            presetManager.addPreset(from: timer)
+        }
+    }
+    
+    // MARK: - 타이머 상태 제어
     
     /// 실행 중인 타이머를 일시정지
     func pauseTimer(id: UUID) {
@@ -233,24 +256,34 @@ final class TimerManager: ObservableObject {
         scheduleNotification(for: restarted)
     }
     
-    /// 타이머 삭제
-    @discardableResult
-    func removeTimer(id: UUID) -> TimerData? {
-        NotificationUtils.cancelScheduledNotification(id: id.uuidString)
-        
-        guard let index = timers.firstIndex(where: { $0.id == id }) else { return nil }
-        let removed = timers.remove(at: index)
-        return removed
-    }
-    
-    
-    /// 타이머를 프리셋으로 전환 (실행중 타이머 삭제 + 프리셋 추가)
-    func convertTimerToPreset(timerId: UUID) {
-        if let timer = removeTimer(id: timerId) {
-            presetManager.addPreset(from: timer)
+    // MARK: - 즐겨찾기 (isFavorite)
+
+    /// 실행 중인 타이머의 isFavorite 값을 토글
+    func toggleFavorite(for id: UUID) {
+        timers = timers.map { timer in
+            guard timer.id == id else { return timer }
+            return timer.updating(isFavorite: !timer.isFavorite)
+        }
+        // 디버깅
+        if let timer = timers.first(where: { $0.id == id }) {
+            print("[DEBUG] 타이머 isFavorite 토글됨 → label: \(timer.label), isFavorite: \(timer.isFavorite)")
         }
     }
 
+    /// 실행 중인 타이머의 isFavorite 값을 특정 값으로 설정
+    func setFavorite(for id: UUID, to value: Bool) {
+        timers = timers.map { timer in
+            guard timer.id == id else { return timer }
+            return timer.updating(isFavorite: value)
+        }
+        // 디버깅
+        if let timer = timers.first(where: { $0.id == id }) {
+            print("[DEBUG] 타이머 isFavorite 변경됨 → label: \(timer.label), isFavorite: \(timer.isFavorite)")
+        }
+    }
+
+    // MARK: - 완료/삭제 관련 유틸
+    
     /// (inactive/background에서 완료된) 아직 삭제 예약이 안 된 타이머에 pendingDeletionAt을 세팅
     /// - 사용 목적: 앱이 포그라운드(.active)로 돌아올 때, 타이머에 삭제 카운트다운 시작
     func markCompletedTimersForDeletion(n: Int) {
@@ -268,5 +301,12 @@ final class TimerManager: ObservableObject {
         for timer in expiredTimers {
             alarmHandler.stopSound(for: timer.id)
         }
+    }
+    
+    // MARK: - Scene 관리
+    
+    /// ScenePhase(.active/.inactive/.background 등) 상태 업데이트
+    func updateScenePhase(_ phase: ScenePhase) {
+        self.scenePhase = phase
     }
 }

@@ -13,6 +13,7 @@ import SwiftUI
 struct PresetTimerRowView: View {
     let preset: TimerPreset
     let onAction: (TimerButtonType) -> Void
+    let onToggleFavorite: (() -> Void)?
     var onTap: (() -> Void)? = nil
     
     /// 전체 시간을 포맷된 문자열로 반환
@@ -27,7 +28,10 @@ struct PresetTimerRowView: View {
             createdAt: Date(),
             endDate: Date(),
             remainingSeconds: preset.totalSeconds,
-            status: .completed
+            status: .completed,
+            pendingDeletionAt: nil,
+            presetId: preset.id,
+            isFavorite: true
         )
     }
 
@@ -46,7 +50,8 @@ struct PresetTimerRowView: View {
                 }
                 .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
             ),
-            state: TimerInteractionState.preset
+            state: TimerInteractionState.preset,
+            onToggleFavorite: onToggleFavorite
         )
         .contentShape(Rectangle())
         .onTapGesture {

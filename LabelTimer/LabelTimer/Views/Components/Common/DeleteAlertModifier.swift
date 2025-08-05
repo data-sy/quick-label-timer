@@ -8,6 +8,8 @@
 ///
 /// - 사용 목적: 여러 뷰에서 일관된 삭제 확인 얼럿을 쉽게 적용할 수 있도록 공통 컴포넌트화
 
+// TODO: 네이밍 리팩토링 (숨김/삭제 등 범용 얼럿에 맞게 이름 변경 예정)
+
 import SwiftUI
 
 struct DeleteAlertModifier: ViewModifier {

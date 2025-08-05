@@ -17,6 +17,10 @@ struct PresetListView: View {
     @State private var presetToDelete: TimerPreset? = nil
     @State private var showingDeleteAlert: Bool = false
 
+    @State private var presetToHide: TimerPreset? = nil
+    @State private var showingHideAlert: Bool = false
+
+    // 수정
     @State private var isEditing = false
     @State private var editingPreset: TimerPreset? = nil
     @State private var editingLabel = ""
@@ -37,6 +41,10 @@ struct PresetListView: View {
                         onAction: { action in
                             handleAction(action, preset: preset)
                         },
+                        onToggleFavorite: {
+                            presetToHide = preset  // 얼럿 등 필요하면 상태 세팅
+                            showingHideAlert = true
+                        },
                         onTap: {
                             startEdit(for: preset)
                         }
@@ -56,6 +64,17 @@ struct PresetListView: View {
                 presetToDelete = nil
             }
         }
+        .deleteAlert(
+            isPresented: $showingHideAlert,
+            itemName: presetToHide?.label ?? "",
+            deleteLabel: "즐겨찾기",
+            onDelete: {
+                if let preset = presetToHide {
+                    presetManager.hidePreset(withId: preset.id)
+                    presetToHide = nil
+                }
+            }
+        )
         .sheet(isPresented: $isEditing) {
             if let preset = editingPreset {
                 EditPresetView(
@@ -90,7 +109,9 @@ struct PresetListView: View {
                                 minutes: editingMinutes,
                                 seconds: editingSeconds,
                                 isSoundOn: editingSoundOn,
-                                isVibrationOn: editingVibrationOn
+                                isVibrationOn: editingVibrationOn,
+                                presetId: preset.id,
+                                isFavorite: true
                             )
                         }
                         isEditing = false

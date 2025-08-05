@@ -17,6 +17,7 @@ struct TimerRowView: View {
     let state: TimerInteractionState
     let statusText: String?
     let deleteCountdown: Int?
+    let onToggleFavorite: (() -> Void)?
 
     init(
         timer: TimerData,
@@ -24,7 +25,8 @@ struct TimerRowView: View {
         rightButton: AnyView? = nil,
         state: TimerInteractionState,
         statusText: String? = nil,
-        deleteCountdown: Int? = nil
+        deleteCountdown: Int? = nil,
+        onToggleFavorite: (() -> Void)? = nil
     ) {
         self.timer = timer
         self.leftButton = leftButton
@@ -32,11 +34,17 @@ struct TimerRowView: View {
         self.state = state
         self.statusText = statusText
         self.deleteCountdown = deleteCountdown
+        self.onToggleFavorite = onToggleFavorite
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .center, spacing: 6) {
+                FavoriteToggleButton(
+                    isFavorite: timer.isFavorite,
+                    onToggle: { onToggleFavorite?() }
+                )
+                
                 Text(timer.label)
                     .font(.headline)
 
