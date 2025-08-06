@@ -122,10 +122,10 @@ extension TimerData {
         }
     }
     
-    /// n초 기준 자동 삭제 카운트다운 반환
-    func autoRemoveCountdown(seconds n: Int) -> Int? {
-        guard let pending = pendingDeletionAt else { return nil }
-        let remaining = Int(pending.timeIntervalSince(Date()))
-        return (remaining > 0 && remaining <= n) ? remaining : nil
-    }
+//    /// n초 기준 자동 삭제 카운트다운 반환
+//    func autoRemoveCountdown(seconds n: Int) -> Int? {
+//        guard let pending = pendingDeletionAt else { return nil }
+//        let remaining = Int(pending.timeIntervalSince(Date()))
+//        return (remaining > 0 && remaining <= n) ? remaining : nil
+//    }
 }

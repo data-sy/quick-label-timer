@@ -16,7 +16,6 @@ struct TimerRowView: View {
     let rightButton: AnyView?
     let state: TimerInteractionState
     let statusText: String?
-    let deleteCountdown: Int?
     let onToggleFavorite: (() -> Void)?
 
     init(
@@ -25,7 +24,6 @@ struct TimerRowView: View {
         rightButton: AnyView? = nil,
         state: TimerInteractionState,
         statusText: String? = nil,
-        deleteCountdown: Int? = nil,
         onToggleFavorite: (() -> Void)? = nil
     ) {
         self.timer = timer
@@ -33,7 +31,6 @@ struct TimerRowView: View {
         self.rightButton = rightButton
         self.state = state
         self.statusText = statusText
-        self.deleteCountdown = deleteCountdown
         self.onToggleFavorite = onToggleFavorite
     }
 
@@ -66,15 +63,6 @@ struct TimerRowView: View {
                     if let rightButton = rightButton { rightButton }
                 }
             }
-            if let deleteCountdown, deleteCountdown > 0 {
-                 HStack {
-                     Text("\(deleteCountdown)초 후 타이머가 삭제됩니다.")
-                         .font(.caption)
-                         .foregroundColor(.gray)
-                         .padding(.leading, 8)
-                         .padding(.bottom, 6)
-                 }
-             }
         }
         .padding()
         .timerRowStateStyle(for: state)

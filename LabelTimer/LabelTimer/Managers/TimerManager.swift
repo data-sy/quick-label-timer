@@ -16,7 +16,6 @@ import AVFoundation
 final class TimerManager: ObservableObject {
     @Published var timers: [TimerData] = []
     @Published private(set) var scenePhase: ScenePhase = .active
-    @Published var statusMessages: [UUID: String] = [:] 
     
     private let presetManager: PresetManager
     private let alarmHandler: AlarmTriggering
@@ -315,7 +314,6 @@ final class TimerManager: ObservableObject {
             // 즉석 타이머
             if timer.isFavorite {
                 print("[DEBUG] 즉석 타이머 & isFavorite: true → n초 후 프리셋으로 저장")
-                self.statusMessages[timer.id] = "\(n)초 후 즐겨찾기로 저장됩니다"
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
                     self.presetManager.addPreset(from: timer)
@@ -323,7 +321,6 @@ final class TimerManager: ObservableObject {
                 }
             } else {
                 print("[DEBUG] 즉석 타이머 & isFavorite: false → n초 후 삭제")
-                self.statusMessages[timer.id] = "\(n)초 후 삭제됩니다"
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
                     self.removeTimer(id: timer.id)
@@ -333,7 +330,6 @@ final class TimerManager: ObservableObject {
             // 프리셋 기반
             if timer.isFavorite {
                 print("[DEBUG] 프리셋 기반 타이머 & isFavorite: true → n초 후 프리셋 복원")
-                self.statusMessages[timer.id] = "\(n)초 후 즐겨찾기로 돌아갑니다"
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
                     if let presetId = timer.presetId {

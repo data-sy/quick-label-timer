@@ -13,7 +13,7 @@ import SwiftUI
 struct RunningTimersView: View {
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var presetManager: PresetManager
-
+        
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             SectionTitle(text: "실행중인 타이머")
@@ -25,9 +25,16 @@ struct RunningTimersView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             } else {
                 ForEach(timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt })) { timer in
-                    RunningTimerRowView(timer: timer, deleteCountdownSeconds: timerManager.deleteCountdownSeconds) { action in
-                        handleAction(action, for: timer)
-                    }
+                    RunningTimerRowView(
+                        timer: timer,
+                        deleteCountdownSeconds: timerManager.deleteCountdownSeconds,
+                        onAction: { action in
+                            handleAction(action, for: timer)
+                        },
+                        onToggleFavorite: {
+                            timerManager.toggleFavorite(for: timer.id)
+                        },
+                    )
                 }
             }
         }
