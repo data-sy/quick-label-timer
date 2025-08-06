@@ -16,6 +16,7 @@ import AVFoundation
 final class TimerManager: ObservableObject {
     @Published var timers: [TimerData] = []
     @Published private(set) var scenePhase: ScenePhase = .active
+    @Published var statusMessages: [UUID: String] = [:] 
     
     private let presetManager: PresetManager
     private let alarmHandler: AlarmTriggering
@@ -63,11 +64,15 @@ final class TimerManager: ObservableObject {
                 let deletionTime: Date? = (scenePhase == .active)
                     ? Date().addingTimeInterval(TimeInterval(deleteCountdownSeconds))
                     : nil
-                return timer.updating(
+                let completedTimer = timer.updating(
                     remainingSeconds: clamped,
                     status: .completed,
                     pendingDeletionAt: deletionTime
                 )
+                if scenePhase == .active {
+                    handleTimerCompletion(completedTimer)
+                }
+                return completedTimer
             }
             return timer.updating(remainingSeconds: clamped)
         }
@@ -286,11 +291,59 @@ final class TimerManager: ObservableObject {
     
     /// (inactive/background에서 완료된) 아직 삭제 예약이 안 된 타이머에 pendingDeletionAt을 세팅
     /// - 사용 목적: 앱이 포그라운드(.active)로 돌아올 때, 타이머에 삭제 카운트다운 시작
-    func markCompletedTimersForDeletion(n: Int) {
+    /// - onMarked: 방금 예약된 타이머만 콜백으로 전달
+    func markCompletedTimersForDeletion(
+        n: Int,
+        onMarked: ((TimerData) -> Void)? = nil
+    ) {
         let now = Date()
         for i in timers.indices {
             if timers[i].status == .completed && timers[i].pendingDeletionAt == nil {
                 timers[i].pendingDeletionAt = now.addingTimeInterval(TimeInterval(n))
+                print("[DEBUG] pendingDeletionAt 마킹: \(timers[i].label)")
+                onMarked?(timers[i])
+            }
+        }
+    }
+    
+    /// 타이머 완료 시, 상태 별 분기 처리
+    func handleTimerCompletion(_ timer: TimerData) {
+        print("[DEBUG] handleTimerCompletion 진입 → label: \(timer.label), id: \(timer.id), presetId: \(String(describing: timer.presetId)), isFavorite: \(timer.isFavorite)")
+        let n = self.deleteCountdownSeconds
+
+        if timer.presetId == nil {
+            // 즉석 타이머
+            if timer.isFavorite {
+                print("[DEBUG] 즉석 타이머 & isFavorite: true → n초 후 프리셋으로 저장")
+                self.statusMessages[timer.id] = "\(n)초 후 즐겨찾기로 저장됩니다"
+                scheduleAfter(seconds: n) { [weak self] in
+                    guard let self else { return }
+                    self.presetManager.addPreset(from: timer)
+                    self.removeTimer(id: timer.id)
+                }
+            } else {
+                print("[DEBUG] 즉석 타이머 & isFavorite: false → n초 후 삭제")
+                self.statusMessages[timer.id] = "\(n)초 후 삭제됩니다"
+                scheduleAfter(seconds: n) { [weak self] in
+                    guard let self else { return }
+                    self.removeTimer(id: timer.id)
+                }
+            }
+        } else {
+            // 프리셋 기반
+            if timer.isFavorite {
+                print("[DEBUG] 프리셋 기반 타이머 & isFavorite: true → n초 후 프리셋 복원")
+                self.statusMessages[timer.id] = "\(n)초 후 즐겨찾기로 돌아갑니다"
+                scheduleAfter(seconds: n) { [weak self] in
+                    guard let self else { return }
+                    if let presetId = timer.presetId {
+                        self.presetManager.showPreset(withId: presetId)
+                    }
+                    self.removeTimer(id: timer.id)
+                }
+            } else {
+                // 정상 로직상 진입 불가, 혹시나 데이터 꼬임 방지용
+                    assertionFailure("Preset 기반 타이머에서 isFavorite: false는 발생하지 않아야 함")
             }
         }
     }
