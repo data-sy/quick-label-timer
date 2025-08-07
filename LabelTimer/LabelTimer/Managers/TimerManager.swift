@@ -338,8 +338,15 @@ final class TimerManager: ObservableObject {
                     self.removeTimer(id: timer.id)
                 }
             } else {
-                // 정상 로직상 진입 불가, 혹시나 데이터 꼬임 방지용
-                    assertionFailure("Preset 기반 타이머에서 isFavorite: false는 발생하지 않아야 함")
+                // 프리셋 기반인데 isFavorite: false (= 실행 중에 즐겨찾기 해제)
+                print("[DEBUG] 프리셋 기반 타이머 & isFavorite: false → 프리셋 하이드, n초 후 타이머 삭제")
+                if let presetId = timer.presetId {
+                    presetManager.hidePreset(withId: presetId)
+                }
+                scheduleAfter(seconds: n) { [weak self] in
+                    guard let self else { return }
+                    self.removeTimer(id: timer.id)
+                }
             }
         }
     }
