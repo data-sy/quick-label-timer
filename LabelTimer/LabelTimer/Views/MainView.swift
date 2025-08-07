@@ -12,6 +12,8 @@ import SwiftUI
 
 struct MainView: View {
     @State private var showSettings = false
+    @EnvironmentObject var timerManager: TimerManager
+    @EnvironmentObject var presetManager: PresetManager
     
     var body: some View {
         MainHeaderView {
@@ -20,7 +22,7 @@ struct MainView: View {
         ScrollView {
             VStack(spacing: 24) {
                 AddTimerView()
-                RunningTimersView()
+                RunningTimersView(timerManager: timerManager, presetManager: presetManager)
                 PresetListView()
                     .frame(height: 400) // ScrollView 내 List높이 0 방지용 고정 height
             }

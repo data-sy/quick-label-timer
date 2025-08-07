@@ -13,7 +13,16 @@ import SwiftUI
 struct RunningTimersView: View {
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var presetManager: PresetManager
+    
+    @StateObject private var viewModel: RunningTimerListViewModel
         
+    init(timerManager: TimerManager, presetManager: PresetManager) {
+        _viewModel = StateObject(wrappedValue: RunningTimerListViewModel(
+            timerManager: timerManager,
+            presetManager: presetManager
+        ))
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             SectionTitle(text: "실행중인 타이머")
@@ -27,33 +36,17 @@ struct RunningTimersView: View {
                 ForEach(timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt })) { timer in
                     RunningTimerRowView(
                         timer: timer,
-                        deleteCountdownSeconds: timerManager.deleteCountdownSeconds,
+                        deleteCountdownSeconds: viewModel.deleteCountdownSeconds,
                         onAction: { action in
-                            handleAction(action, for: timer)
+                            viewModel.handleAction(action, for: timer)
                         },
                         onToggleFavorite: {
-                            timerManager.toggleFavorite(for: timer.id)
+                            viewModel.toggleFavorite(for: timer.id)
                         },
                     )
                 }
             }
         }
         .padding()
-    }
-
-    /// 버튼 액션 처리
-    private func handleAction(_ action: TimerButtonType, for timer: TimerData) {
-        switch action {
-        case .pause:
-            timerManager.pauseTimer(id: timer.id)
-        case .play:
-            timerManager.resumeTimer(id: timer.id)
-        case .stop:
-            timerManager.stopTimer(id: timer.id)
-        case .restart:
-            timerManager.restartTimer(id: timer.id)
-        case .delete:
-            timerManager.convertTimerToPreset(timerId: timer.id)
-        }
     }
 }

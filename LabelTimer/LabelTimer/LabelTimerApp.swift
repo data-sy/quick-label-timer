@@ -15,9 +15,9 @@ struct LabelTimerApp: App {
     
     @Environment(\.scenePhase) private var scenePhase
     
-    @StateObject private var presetManager = PresetManager()
-    @StateObject private var timerManager : TimerManager
-    @StateObject private var settingsViewModel = SettingsViewModel()
+    @StateObject private var presetManager: PresetManager
+    @StateObject private var timerManager: TimerManager
+    @StateObject private var settingsViewModel: SettingsViewModel
     
     
     // 지연 초기화(deferred init)
@@ -30,6 +30,7 @@ struct LabelTimerApp: App {
                 deleteCountdownSeconds: Self.deleteCountdownSeconds
             )
         )
+        _settingsViewModel = StateObject(wrappedValue: SettingsViewModel())
         NotificationUtils.requestAuthorization()
     }
     
