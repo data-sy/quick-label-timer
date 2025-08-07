@@ -12,14 +12,16 @@
 import SwiftUI
 
 struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
-    let title: String
+    let title: String?
     let items: [Item]
     let emptyMessage: String
     let rowContent: (Item) -> RowContent
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            SectionTitle(text: title)
+            if let title {
+                SectionTitle(text: title)
+            }
             if items.isEmpty {
                 Text(emptyMessage)
                     .foregroundColor(.gray)

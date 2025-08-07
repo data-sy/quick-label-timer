@@ -13,13 +13,28 @@ import SwiftUI
 struct TimerView: View {
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var presetManager: PresetManager
-        
+
+    @State private var showSettings = false
+
     var body: some View {
-        VStack(spacing: 24) {
-            AddTimerView()
-            RunningListView(timerManager: timerManager, presetManager: presetManager)
-            Spacer()
+        NavigationStack {
+            VStack(spacing: 24) {
+                AddTimerView()
+                RunningListView(timerManager: timerManager, presetManager: presetManager)
+                Spacer()
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showSettings = true }) {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+            }
+            .navigationTitle("타이머 실행")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .padding()
     }
 }

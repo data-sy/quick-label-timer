@@ -15,18 +15,12 @@ struct MainTabView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            MainHeaderView{
-                showSettings = true
-            }
             TabView {
                 TimerView()
                     .tabItem { Label("타이머", systemImage: "timer") }
                 FavoritesView()
                     .tabItem { Label("즐겨찾기", systemImage: "star.fill") }
             }
-        }
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
         }
     }
 }

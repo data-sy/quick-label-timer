@@ -31,64 +31,51 @@ struct FavoritesView: View {
     @State private var editingVibrationOn = true
     @State private var showingEditDeleteAlert: Bool = false
 
+    @State private var showSettings = false
+
     var body: some View {
-        TimerListContainerView(
-            title: "즐겨찾기",
-            items: presetManager.allPresets.filter { !$0.isHiddenInList },
-            emptyMessage: "저장된 즐겨찾기가 없습니다."
-        ) { preset in
-            PresetTimerRowView(
-                preset: preset,
-                onAction: { action in
-                    handleAction(action, preset: preset)
-                },
-                onToggleFavorite: {
-                    presetToHide = preset
-                    showingHideAlert = true
-                },
-                onTap: {
-                    startEdit(for: preset)
+        NavigationStack {
+            TimerListContainerView(
+                title: nil,
+                items: presetManager.allPresets.filter { !$0.isHiddenInList },
+                emptyMessage: "저장된 즐겨찾기가 없습니다."
+            ) { preset in
+                PresetTimerRowView(
+                    preset: preset,
+                    onAction: { action in
+                        handleAction(action, preset: preset)
+                    },
+                    onToggleFavorite: {
+                        presetToHide = preset
+                        showingHideAlert = true
+                    },
+                    onTap: {
+                        startEdit(for: preset)
+                    }
+                )
+            }
+            .padding()
+            .deleteAlert(
+                isPresented: $showingHideAlert,
+                itemName: presetToHide?.label ?? "",
+                deleteLabel: "즐겨찾기",
+                onDelete: {
+                    if let preset = presetToHide {
+                        presetManager.hidePreset(withId: preset.id)
+                        presetToHide = nil
+                    }
                 }
             )
-        }
-        .padding()
-        .deleteAlert(
-            isPresented: $showingHideAlert,
-            itemName: presetToHide?.label ?? "",
-            deleteLabel: "즐겨찾기",
-            onDelete: {
-                if let preset = presetToHide {
-                    presetManager.hidePreset(withId: preset.id)
-                    presetToHide = nil
-                }
-            }
-        )
-        .sheet(isPresented: $isEditing) {
-            if let preset = editingPreset {
-                EditPresetView(
-                    label: $editingLabel,
-                    hours: $editingHours,
-                    minutes: $editingMinutes,
-                    seconds: $editingSeconds,
-                    isSoundOn: $editingSoundOn,
-                    isVibrationOn: $editingVibrationOn,
-                    onSave: {
-                        presetManager.updatePreset(
-                            preset,
-                            label: editingLabel,
-                            hours: editingHours,
-                            minutes: editingMinutes,
-                            seconds: editingSeconds,
-                            isSoundOn: editingSoundOn,
-                            isVibrationOn: editingVibrationOn
-                        )
-                        isEditing = false
-                    },
-                    onDelete: {
-                        showingEditDeleteAlert = true
-                    },
-                    onStart: {
-                        if let preset = editingPreset {
+            .sheet(isPresented: $isEditing) {
+                if let preset = editingPreset {
+                    EditPresetView(
+                        label: $editingLabel,
+                        hours: $editingHours,
+                        minutes: $editingMinutes,
+                        seconds: $editingSeconds,
+                        isSoundOn: $editingSoundOn,
+                        isVibrationOn: $editingVibrationOn,
+                        onSave: {
                             presetManager.updatePreset(
                                 preset,
                                 label: editingLabel,
@@ -98,36 +85,65 @@ struct FavoritesView: View {
                                 isSoundOn: editingSoundOn,
                                 isVibrationOn: editingVibrationOn
                             )
-                            if let updated = presetManager.userPresets.first(where: { $0.id == preset.id }) {
-                                timerManager.runTimer(from: updated, presetManager: presetManager)
+                            isEditing = false
+                        },
+                        onDelete: {
+                            showingEditDeleteAlert = true
+                        },
+                        onStart: {
+                            if let preset = editingPreset {
+                                presetManager.updatePreset(
+                                    preset,
+                                    label: editingLabel,
+                                    hours: editingHours,
+                                    minutes: editingMinutes,
+                                    seconds: editingSeconds,
+                                    isSoundOn: editingSoundOn,
+                                    isVibrationOn: editingVibrationOn
+                                )
+                                if let updated = presetManager.userPresets.first(where: { $0.id == preset.id }) {
+                                    timerManager.runTimer(from: updated, presetManager: presetManager)
+                                }
+                            } else {
+                                timerManager.addTimer(
+                                    label: editingLabel,
+                                    hours: editingHours,
+                                    minutes: editingMinutes,
+                                    seconds: editingSeconds,
+                                    isSoundOn: editingSoundOn,
+                                    isVibrationOn: editingVibrationOn,
+                                    presetId: preset.id,
+                                    isFavorite: true
+                                )
                             }
-                        } else {
-                            timerManager.addTimer(
-                                label: editingLabel,
-                                hours: editingHours,
-                                minutes: editingMinutes,
-                                seconds: editingSeconds,
-                                isSoundOn: editingSoundOn,
-                                isVibrationOn: editingVibrationOn,
-                                presetId: preset.id,
-                                isFavorite: true
-                            )
+                            isEditing = false
                         }
-                        isEditing = false
+                    )
+                    .deleteAlert(
+                        isPresented: $showingEditDeleteAlert,
+                        itemName: editingLabel,
+                        deleteLabel: "타이머"
+                    ) {
+                        if let preset = editingPreset {
+                            presetManager.deletePreset(preset)
+                            isEditing = false
+                        }
                     }
-                )
-                .deleteAlert(
-                    isPresented: $showingEditDeleteAlert,
-                    itemName: editingLabel,
-                    deleteLabel: "타이머"
-                ) {
-                    if let preset = editingPreset {
-                        presetManager.deletePreset(preset)
-                        isEditing = false
+                    .presentationDetents([.medium])
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showSettings = true }) {
+                        Image(systemName: "gearshape")
                     }
                 }
-                .presentationDetents([.medium])
             }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+            }
+            .navigationTitle("즐겨찾기")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 
