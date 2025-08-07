@@ -1,5 +1,5 @@
 //
-//  PresetListView.swift
+//  FavoritesView.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/14/25.
@@ -10,7 +10,7 @@
 
 import SwiftUI
 
-struct PresetListView: View {
+struct FavoritesView: View {
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager
 
@@ -51,6 +51,7 @@ struct PresetListView: View {
                 }
             )
         }
+        .padding()
         .deleteAlert(
             isPresented: $showingHideAlert,
             itemName: presetToHide?.label ?? "",
