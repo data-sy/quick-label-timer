@@ -10,7 +10,7 @@
 
 import Foundation
 
-final class PresetManager: ObservableObject {
+final class PresetManager: ObservableObject {    
     /// 사용자 정의 프리셋 목록 (최초 실행 시 기본 프리셋 포함)
     @Published var userPresets: [TimerPreset] = []
 
@@ -19,16 +19,22 @@ final class PresetManager: ObservableObject {
 
     /// 최초 실행 여부 확인 키
     private let didInitializeKey = "did_initialize_presets"
+    
+    // MARK: - Init
 
     /// 초기화 시: UserDefaults에서 프리셋 불러오거나 기본 프리셋 저장
     init() {
         loadPresets()
     }
     
+    // MARK: - Preset 목록
+    
     /// 전체 프리셋 목록 (기본 + 사용자)
     var allPresets: [TimerPreset] {
         userPresets
     }
+    
+    // MARK: - CRUD
 
     /// 사용자 프리셋 추가
     func addPreset(_ preset: TimerPreset) {
@@ -71,7 +77,8 @@ final class PresetManager: ObservableObject {
             seconds: seconds,
             isSoundOn: isSoundOn,
             isVibrationOn: isVibrationOn,
-            createdAt: preset.createdAt // 있으면 유지
+            createdAt: preset.createdAt, // 있으면 유지
+            isHiddenInList: preset.isHiddenInList
         )
         userPresets[index] = updated
         savePresets()
@@ -83,6 +90,26 @@ final class PresetManager: ObservableObject {
         savePresets()
     }
 
+    // MARK: - 숨김/표시 상태 관리
+    
+    /// 프리셋 숨기기
+    func hidePreset(withId id: UUID) {
+        if let idx = userPresets.firstIndex(where: { $0.id == id }) {
+            userPresets[idx].isHiddenInList = true
+            savePresets()
+        }
+    }
+
+    /// 프리셋 다시 보이기
+    func showPreset(withId id: UUID) {
+        if let idx = userPresets.firstIndex(where: { $0.id == id }) {
+            userPresets[idx].isHiddenInList = false
+            savePresets()
+        }
+    }
+    
+    // MARK: - Persistence
+    
     /// 프리셋 불러오기 (최초 실행 시에는 기본 프리셋 저장)
     private func loadPresets() {
         let defaults = UserDefaults.standard
@@ -100,7 +127,7 @@ final class PresetManager: ObservableObject {
             userPresets = decoded
         }
     }
-
+    
     /// 프리셋 저장
     private func savePresets() {
         if let data = try? JSONEncoder().encode(userPresets) {

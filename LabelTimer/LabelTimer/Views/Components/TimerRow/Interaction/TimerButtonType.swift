@@ -12,7 +12,7 @@
 import SwiftUI
 
 enum TimerButtonType {
-    case play, pause, restart, stop, delete
+    case play, pause, restart, stop, moveToPreset
 
     var iconName: String {
         switch self {
@@ -20,7 +20,7 @@ enum TimerButtonType {
         case .pause: return "pause.fill"
         case .restart: return "gobackward"
         case .stop: return "stop.fill"
-        case .delete: return "xmark"
+        case .moveToPreset: return "arrow.down.to.line"
         }
     }
 
@@ -30,7 +30,7 @@ enum TimerButtonType {
         case .pause: return .orange
         case .restart: return .blue
         case .stop: return .red
-        case .delete: return .gray
+        case .moveToPreset: return .gray
         }
     }
 }

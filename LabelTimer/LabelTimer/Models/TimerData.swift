@@ -26,8 +26,13 @@ struct TimerData: Identifiable, Hashable {
     let seconds: Int
     let isSoundOn: Bool
     let isVibrationOn: Bool
-    
     let createdAt: Date
+
+    /// 프리셋 기반 실행일 경우 해당 프리셋의 id, 즉석 타이머는 nil
+    let presetId: UUID?
+    
+    /// 즐겨찾기(프리셋화) 여부. 프리셋 기반 타이머는 true, 즉석 타이머는 기본 false.
+    var isFavorite: Bool
     
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
@@ -37,7 +42,8 @@ struct TimerData: Identifiable, Hashable {
     var endDate: Date
     var remainingSeconds: Int
     var status: TimerStatus
-
+    var pendingDeletionAt: Date? = nil // 삭제 종료 예정 시간
+    
     // 명시적 생성자 (id는 기본값으로 자동 생성 가능)
     init(
         id: UUID = UUID(),
@@ -50,7 +56,10 @@ struct TimerData: Identifiable, Hashable {
         createdAt: Date,
         endDate: Date,
         remainingSeconds: Int,
-        status: TimerStatus
+        status: TimerStatus,
+        pendingDeletionAt: Date? = nil,
+        presetId: UUID? = nil,
+        isFavorite: Bool = false
     ) {
         self.id = id
         self.label = label
@@ -63,18 +72,25 @@ struct TimerData: Identifiable, Hashable {
         self.endDate = endDate
         self.remainingSeconds = remainingSeconds
         self.status = status
+        self.pendingDeletionAt = pendingDeletionAt
+        self.presetId = presetId
+        self.isFavorite = isFavorite
     }
 }
 
 extension TimerData {
-    /// 여러 필드를 한 번에 업데이트. remainingSeconds가 전달되면 상태 자동 판정
+    /// 여러 프로퍼티를 한 번에 업데이트. remainingSeconds가 전달되면 상태 자동 판정
     func updating(
         endDate: Date? = nil,
         remainingSeconds: Int? = nil,
-        status: TimerStatus? = nil
+        status: TimerStatus? = nil,
+        pendingDeletionAt: Date?? = nil,
+        presetId: UUID? = nil,
+        isFavorite: Bool? = nil
     ) -> TimerData {
         let finalRemaining = remainingSeconds ?? self.remainingSeconds
-
+        let finalStatus = status ?? (finalRemaining > 0 ? .running : .completed)
+        
         return TimerData(
             id: self.id,
             label: self.label,
@@ -86,7 +102,23 @@ extension TimerData {
             createdAt: self.createdAt,
             endDate: endDate ?? self.endDate,
             remainingSeconds: finalRemaining,
-            status: status ?? (finalRemaining > 0 ? .running : .completed)
+            status: finalStatus,
+            pendingDeletionAt: pendingDeletionAt ?? self.pendingDeletionAt,
+            presetId: presetId ?? self.presetId,
+            isFavorite: isFavorite ?? self.isFavorite
         )
+    }
+    
+    /// 현재 remainingSeconds를 "00:00" 또는 "00:00:00"으로 반환
+    var formattedTime: String {
+        let remaining = max(self.remainingSeconds, 0)
+        let hours = remaining / 3600
+        let minutes = (remaining % 3600) / 60
+        let seconds = remaining % 60
+        if hours > 0 {
+            return String(format: "%01d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            return String(format: "%02d:%02d", minutes, seconds)
+        }
     }
 }

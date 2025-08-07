@@ -11,8 +11,20 @@
 import SwiftUI
 
 struct RunningTimersView: View {
+    let namespace: Namespace.ID
+    
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var presetManager: PresetManager
+    
+    @StateObject private var viewModel: RunningTimerListViewModel
+        
+    init(timerManager: TimerManager, presetManager: PresetManager, namespace: Namespace.ID) {
+        _viewModel = StateObject(wrappedValue: RunningTimerListViewModel(
+            timerManager: timerManager,
+            presetManager: presetManager
+        ))
+        self.namespace = namespace
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -25,30 +37,20 @@ struct RunningTimersView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             } else {
                 ForEach(timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt })) { timer in
-                    RunningTimerRowView(timer: timer) { action in
-                        handleAction(action, for: timer)
-                    }
+                    RunningTimerRowView(
+                        timer: timer,
+                        deleteCountdownSeconds: viewModel.deleteCountdownSeconds,
+                        onAction: { action in
+                            viewModel.handleAction(action, for: timer)
+                        },
+                        onToggleFavorite: {
+                            viewModel.toggleFavorite(for: timer.id)
+                        },
+                        namespace: namespace
+                    )
                 }
             }
         }
         .padding()
-//        .border(Color.red)
-    }
-
-    /// 버튼 액션 처리
-    private func handleAction(_ action: TimerButtonType, for timer: TimerData) {
-        switch action {
-        case .pause:
-            timerManager.pauseTimer(id: timer.id)
-        case .play:
-            timerManager.resumeTimer(id: timer.id)
-        case .stop:
-            timerManager.stopTimer(id: timer.id)
-        case .restart:
-            timerManager.restartTimer(id: timer.id)
-        case .delete:
-            timerManager.removeTimer(id: timer.id)
-            presetManager.addPreset(from: timer)
-        }
     }
 }

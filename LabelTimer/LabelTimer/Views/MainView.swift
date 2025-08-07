@@ -12,6 +12,10 @@ import SwiftUI
 
 struct MainView: View {
     @State private var showSettings = false
+    @EnvironmentObject var timerManager: TimerManager
+    @EnvironmentObject var presetManager: PresetManager
+    
+    @Namespace private var moveNamespace
     
     var body: some View {
         MainHeaderView {
@@ -19,13 +23,11 @@ struct MainView: View {
         }
         ScrollView {
             VStack(spacing: 24) {
-//                // (실험용) 폰트 비교 뷰
-//                TimerFontExperimentView()
-  
-                // 기존 뷰
                 AddTimerView()
-                RunningTimersView()
-                PresetListView()
+                RunningTimersView(timerManager: timerManager, presetManager: presetManager, namespace: moveNamespace)
+                Divider()
+                    .padding(.vertical, 10)
+                PresetListView(namespace: moveNamespace)
                     .frame(height: 400) // ScrollView 내 List높이 0 방지용 고정 height
             }
             .padding()
@@ -34,12 +36,4 @@ struct MainView: View {
             SettingsView()
         }
     }
-}
-
-#Preview {
-    let presetManager = PresetManager()
-    let timerManager = TimerManager(presetManager: presetManager)
-    return MainView()
-        .environmentObject(timerManager)
-        .environmentObject(presetManager)
 }

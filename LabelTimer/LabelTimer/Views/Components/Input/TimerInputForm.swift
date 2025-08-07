@@ -54,31 +54,3 @@ struct TimerInputForm: View {
         .padding(.horizontal)
     }
 }
-
-#Preview {
-    struct PreviewWrapper: View {
-        @State var label = "공부"
-        @State var hours = 1
-        @State var minutes = 30
-        @State var seconds = 0
-        @State var isSoundOn = true
-        @State var isVibrationOn = false
-        @FocusState var isLabelFocused: Bool
-
-        var body: some View {
-            TimerInputForm(
-                sectionTitle: "타이머 생성",
-                label: $label,
-                hours: $hours,
-                minutes: $minutes,
-                seconds: $seconds,
-                isSoundOn: $isSoundOn,
-                isVibrationOn: $isVibrationOn,
-                isLabelFocused: $isLabelFocused,
-                isStartDisabled: false,
-                onStart: { }
-            )
-        }
-    }
-    return PreviewWrapper()
-}

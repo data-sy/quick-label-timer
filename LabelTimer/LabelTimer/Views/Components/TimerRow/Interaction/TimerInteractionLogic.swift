@@ -13,39 +13,37 @@ import Foundation
 
 /// 상태에 따라 보여줄 버튼 세트
 struct TimerButtonSet {
-    let left: TimerButtonType
+    let left: TimerButtonType?
     let right: TimerButtonType
 }
 
 /// 현재 상태에 따라 버튼 세트를 반환
 func buttonSet(for state: TimerInteractionState) -> TimerButtonSet {
     switch state {
-    case .waiting:
-        return TimerButtonSet(left: .delete, right: .play)
+    case .preset:
+        return TimerButtonSet(left: nil, right: .play)
     case .running:
         return TimerButtonSet(left: .stop, right: .pause)
     case .paused:
-        return TimerButtonSet(left: .delete, right: .play)
-    case .stopped:
-        return TimerButtonSet(left: .delete, right: .restart)
+        return TimerButtonSet(left: .moveToPreset, right: .play)
+    case .stopped, .completed:
+        return TimerButtonSet(left: .moveToPreset, right: .restart)
     }
 }
 
 /// 현재 상태와 누른 버튼에 따라 다음 상태를 반환
 func nextState(from current: TimerInteractionState, button: TimerButtonType) -> TimerInteractionState {
     switch (current, button) {
-    case (.running, .stop):
-        return .stopped
+    case (.preset, .play):
+        return .running
     case (.running, .pause):
         return .paused
+    case (.running, .stop):
+        return .stopped
     case (.paused, .play):
         return .running
-    case (.paused, .delete):
-        return .stopped
-    case (.stopped, .restart):
+    case (.stopped, .restart), (.completed, .restart):
         return .running
-    case (.stopped, .delete):
-        return .stopped
     default:
         return current
     }

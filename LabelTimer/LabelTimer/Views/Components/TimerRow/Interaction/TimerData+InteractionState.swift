@@ -17,8 +17,10 @@ extension TimerData {
             return .running
         case .paused:
             return .paused
-        case .completed, .stopped:
+        case .stopped:
             return .stopped
+        case .completed:
+            return .completed
         }
     }
 }

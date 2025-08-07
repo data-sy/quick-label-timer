@@ -23,6 +23,5 @@ struct TimerInputStartButton: View {
                 .background(Circle().fill(Color.accentColor))
         }
         .disabled(isDisabled)
-//        .border(Color.green)
     }
 }

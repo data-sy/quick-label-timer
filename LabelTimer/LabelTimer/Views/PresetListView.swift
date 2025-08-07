@@ -11,12 +11,18 @@
 import SwiftUI
 
 struct PresetListView: View {
+    let namespace: Namespace.ID
+
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager
 
     @State private var presetToDelete: TimerPreset? = nil
     @State private var showingDeleteAlert: Bool = false
 
+    @State private var presetToHide: TimerPreset? = nil
+    @State private var showingHideAlert: Bool = false
+
+    // 수정
     @State private var isEditing = false
     @State private var editingPreset: TimerPreset? = nil
     @State private var editingLabel = ""
@@ -29,17 +35,22 @@ struct PresetListView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            SectionTitle(text: "타이머 목록")
+            SectionTitle(text: "즐겨찾기")
             List {
-                ForEach(presetManager.allPresets, id: \.id) { preset in
+                ForEach(presetManager.allPresets.filter { !$0.isHiddenInList }, id: \.id) { preset in
                     PresetTimerRowView(
                         preset: preset,
                         onAction: { action in
                             handleAction(action, preset: preset)
                         },
+                        onToggleFavorite: {
+                            presetToHide = preset
+                            showingHideAlert = true
+                        },
                         onTap: {
                             startEdit(for: preset)
-                        }
+                        },
+                        namespace: namespace
                     )
                 }
             }
@@ -47,15 +58,16 @@ struct PresetListView: View {
             .scrollContentBackground(.hidden)
         }
         .deleteAlert(
-            isPresented: $showingDeleteAlert,
-            itemName: presetToDelete?.label ?? "",
-            deleteLabel: "타이머"
-        ) {
-            if let preset = presetToDelete {
-                presetManager.deletePreset(preset)
-                presetToDelete = nil
+            isPresented: $showingHideAlert,
+            itemName: presetToHide?.label ?? "",
+            deleteLabel: "즐겨찾기",
+            onDelete: {
+                if let preset = presetToHide {
+                    presetManager.hidePreset(withId: preset.id)
+                    presetToHide = nil
+                }
             }
-        }
+        )
         .sheet(isPresented: $isEditing) {
             if let preset = editingPreset {
                 EditPresetView(
@@ -81,14 +93,31 @@ struct PresetListView: View {
                         showingEditDeleteAlert = true
                     },
                     onStart: {
-                        timerManager.addTimer(
-                            label: editingLabel,
-                            hours: editingHours,
-                            minutes: editingMinutes,
-                            seconds: editingSeconds,
-                            isSoundOn: editingSoundOn,
-                            isVibrationOn: editingVibrationOn
-                        )
+                        if let preset = editingPreset {
+                            presetManager.updatePreset(
+                                preset,
+                                label: editingLabel,
+                                hours: editingHours,
+                                minutes: editingMinutes,
+                                seconds: editingSeconds,
+                                isSoundOn: editingSoundOn,
+                                isVibrationOn: editingVibrationOn
+                            )
+                            if let updated = presetManager.userPresets.first(where: { $0.id == preset.id }) {
+                                timerManager.runTimer(from: updated, presetManager: presetManager)
+                            }
+                        } else {
+                            timerManager.addTimer(
+                                label: editingLabel,
+                                hours: editingHours,
+                                minutes: editingMinutes,
+                                seconds: editingSeconds,
+                                isSoundOn: editingSoundOn,
+                                isVibrationOn: editingVibrationOn,
+                                presetId: preset.id,
+                                isFavorite: true
+                            )
+                        }
                         isEditing = false
                     }
                 )
@@ -121,43 +150,10 @@ struct PresetListView: View {
     private func handleAction(_ action: TimerButtonType, preset: TimerPreset) {
         switch action {
         case .play:
-            timerManager.addTimer(
-                label: preset.label,
-                hours: preset.hours,
-                minutes: preset.minutes,
-                seconds: preset.seconds,
-                isSoundOn: preset.isSoundOn,
-                isVibrationOn: preset.isVibrationOn
-            )
-            presetManager.deletePreset(preset)
-
-        case .delete:
-            presetToDelete = preset
-            showingDeleteAlert = true
+            timerManager.runTimer(from: preset, presetManager: presetManager)
 
         default:
             break
         }
     }
 }
-
-#if DEBUG
-struct PresetListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let presetManager = PresetManager()
-        presetManager.setPresets([
-            TimerPreset(label: "집중", hours: 0, minutes: 25, seconds: 0, isSoundOn: true, isVibrationOn: true),
-            TimerPreset(label: "짧은 휴식", hours: 0, minutes: 5, seconds: 0, isSoundOn: false, isVibrationOn: true),
-            TimerPreset(label: "긴 휴식", hours: 0, minutes: 15, seconds: 0, isSoundOn: true, isVibrationOn: false)
-        ])
-
-        let timerManager = TimerManager(presetManager: presetManager)
-
-        return PresetListView()
-            .environmentObject(presetManager)
-            .environmentObject(timerManager)
-            .previewLayout(.sizeThatFits)
-            .padding()
-    }
-}
-#endif

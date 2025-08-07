@@ -15,8 +15,8 @@ struct AddTimerView: View {
     @State private var hours = 0
     @State private var minutes = 0
     @State private var seconds = 0
-    @State private var isSoundOn = true
-    @State private var isVibrationOn = true
+    @State private var isSoundOn = false
+    @State private var isVibrationOn = false
     @FocusState private var isLabelFocused: Bool
 
     @EnvironmentObject var timerManager: TimerManager
@@ -52,11 +52,4 @@ struct AddTimerView: View {
             )
         }
     }
-}
-
-#Preview {
-    let presetManager = PresetManager()
-    let timerManager = TimerManager(presetManager: presetManager)
-    return AddTimerView()
-        .environmentObject(timerManager)
 }

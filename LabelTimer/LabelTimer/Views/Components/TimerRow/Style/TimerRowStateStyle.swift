@@ -12,47 +12,30 @@ import SwiftUI
 
 struct TimerRowStateStyle: ViewModifier {
     let state: TimerInteractionState
+    @Environment(\.colorScheme) private var colorScheme
 
-    var labelFont: Font {
-        .headline
-    }
-    
-    var timeFont: Font {
-        switch state {
-        case .waiting:
-            return .system(size: 44, weight: .light)
-        case .running:
-            return .system(size: 44, weight: .semibold)
-        case .paused:
-            return .system(size: 44, weight: .semibold)
-        case .stopped:
-            return .system(size: 44, weight: .semibold)
-        }
-    }
-    
     private var textColor: Color {
         switch state {
-        case .waiting:
-            return .white
         case .running:
-            return .black
-        case .paused, .stopped:
+            return colorScheme == .dark ? .black : .white
+        case .preset:
+            return colorScheme == .dark ? .white : .black
+        case .paused, .stopped, .completed:
             return .gray
         }
     }
-    
+
     private var backgroundColor: Color {
         switch state {
-        case .waiting:
-            return .black
-        case .running, .paused:
-            return .white
-        case .stopped:
+        case .running:
+            return colorScheme == .dark ? .white : .black
+        case .preset:
+            return colorScheme == .dark ? .black : .white
+        case .paused, .stopped, .completed:
             return Color(.systemGray6)
         }
     }
 
-    
     func body(content: Content) -> some View {
         content
             .background(
@@ -61,12 +44,9 @@ struct TimerRowStateStyle: ViewModifier {
             )
             .foregroundColor(textColor)
     }
-
-    
 }
 
 extension View {
-    /// 타이머 상태에 따라 배경색/텍스트 색상을 적용하는 Modifier
     func timerRowStateStyle(for state: TimerInteractionState) -> some View {
         self.modifier(TimerRowStateStyle(state: state))
     }

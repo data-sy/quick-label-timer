@@ -11,8 +11,8 @@
 import SwiftUI
 import UserNotifications
 
-class SettingsViewModel: ObservableObject {
-    @AppStorage("isDarkMode") var isDarkMode = true
+final class SettingsViewModel: ObservableObject {
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
     
     @Published var notificationStatus: UNAuthorizationStatus = .notDetermined
     

@@ -47,7 +47,6 @@ struct TimePickerGroup: View {
                 .font(.caption2)
                 .foregroundColor(.gray)
         }
-        .frame(height: 96)
-//        .border(Color.red)
+        .frame(height: 128)
     }
 }
