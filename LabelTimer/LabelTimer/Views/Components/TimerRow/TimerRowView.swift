@@ -33,6 +33,24 @@ struct TimerRowView: View {
         self.statusText = statusText
         self.onToggleFavorite = onToggleFavorite
     }
+    
+    var dynamicMessage: String? {
+        guard let pendingAt = timer.pendingDeletionAt else { return nil }
+        let remaining = Int(pendingAt.timeIntervalSince(Date()))
+        guard remaining > 0 else { return nil }
+        // 분기별 메시지 조합
+        if timer.presetId == nil {
+            return timer.isFavorite
+                ? "\(remaining)초 후 즐겨찾기로 저장됩니다"
+                : "\(remaining)초 후 삭제됩니다"
+        } else {
+            if timer.isFavorite {
+                return "\(remaining)초 후 즐겨찾기로 돌아갑니다"
+            } else {
+                return "\(remaining)초 후 삭제됩니다"
+            }
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -62,6 +80,12 @@ struct TimerRowView: View {
                     if let leftButton = leftButton { leftButton }
                     if let rightButton = rightButton { rightButton }
                 }
+            }
+            if let msg = dynamicMessage {
+                Text(msg)
+                    .font(.caption)
+                    .foregroundColor(.red)
+                    .padding(.top, 2)
             }
         }
         .padding()
