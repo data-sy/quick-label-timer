@@ -13,7 +13,7 @@ import Foundation
 
 /// 상태에 따라 보여줄 버튼 세트
 struct TimerButtonSet {
-    let left: TimerButtonType
+    let left: TimerButtonType?
     let right: TimerButtonType
 }
 
@@ -21,13 +21,13 @@ struct TimerButtonSet {
 func buttonSet(for state: TimerInteractionState) -> TimerButtonSet {
     switch state {
     case .preset:
-        return TimerButtonSet(left: .delete, right: .play)
+        return TimerButtonSet(left: nil, right: .play)
     case .running:
         return TimerButtonSet(left: .stop, right: .pause)
     case .paused:
-        return TimerButtonSet(left: .delete, right: .play)
+        return TimerButtonSet(left: .moveToPreset, right: .play)
     case .stopped, .completed:
-        return TimerButtonSet(left: .delete, right: .restart)
+        return TimerButtonSet(left: .moveToPreset, right: .restart)
     }
 }
 

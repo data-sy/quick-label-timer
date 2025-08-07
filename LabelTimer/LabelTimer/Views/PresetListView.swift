@@ -42,7 +42,7 @@ struct PresetListView: View {
                             handleAction(action, preset: preset)
                         },
                         onToggleFavorite: {
-                            presetToHide = preset  // 얼럿 등 필요하면 상태 세팅
+                            presetToHide = preset
                             showingHideAlert = true
                         },
                         onTap: {
@@ -54,16 +54,16 @@ struct PresetListView: View {
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
         }
-        .deleteAlert(
-            isPresented: $showingDeleteAlert,
-            itemName: presetToDelete?.label ?? "",
-            deleteLabel: "타이머"
-        ) {
-            if let preset = presetToDelete {
-                presetManager.deletePreset(preset)
-                presetToDelete = nil
-            }
-        }
+//        .deleteAlert(
+//            isPresented: $showingDeleteAlert,
+//            itemName: presetToDelete?.label ?? "",
+//            deleteLabel: "타이머"
+//        ) {
+//            if let preset = presetToDelete {
+//                presetManager.deletePreset(preset)
+//                presetToDelete = nil
+//            }
+//        }
         .deleteAlert(
             isPresented: $showingHideAlert,
             itemName: presetToHide?.label ?? "",
@@ -147,10 +147,6 @@ struct PresetListView: View {
         switch action {
         case .play:
             timerManager.runTimer(from: preset, presetManager: presetManager)
-
-        case .delete:
-            presetToDelete = preset
-            showingDeleteAlert = true
 
         default:
             break

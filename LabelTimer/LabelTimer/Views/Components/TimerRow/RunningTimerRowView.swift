@@ -43,11 +43,13 @@ struct RunningTimerRowView: View {
         VStack(alignment: .leading, spacing: 4) {
             TimerRowView(
                 timer: timer,
-                leftButton: AnyView(
-                    TimerActionButton(type: buttons.left) {
-                        onAction(buttons.left)
-                    }
-                ),
+                leftButton: buttons.left.map { leftType in
+                    AnyView(
+                        TimerActionButton(type: leftType) {
+                            onAction(leftType)
+                        }
+                    )
+                },
                 rightButton: AnyView(
                     TimerActionButton(type: buttons.right) {
                         onAction(buttons.right)
