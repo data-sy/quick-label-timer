@@ -45,7 +45,6 @@ struct EditPresetView: View {
                 isLabelFocused: $isLabelFocused,
                 isStartDisabled: (hours + minutes + seconds) == 0,
                 onStart: onStart
-                }
             )
         }
     }

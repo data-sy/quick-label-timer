@@ -36,7 +36,7 @@ struct LabelTimerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainTabView()
                 .environmentObject(timerManager)
                 .environmentObject(presetManager)
                 .environmentObject(settingsViewModel)
