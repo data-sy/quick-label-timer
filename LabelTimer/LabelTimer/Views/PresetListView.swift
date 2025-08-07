@@ -104,7 +104,18 @@ struct PresetListView: View {
                     },
                     onStart: {
                         if let preset = editingPreset {
-                            timerManager.runTimer(from: preset, presetManager: presetManager)
+                            presetManager.updatePreset(
+                                preset,
+                                label: editingLabel,
+                                hours: editingHours,
+                                minutes: editingMinutes,
+                                seconds: editingSeconds,
+                                isSoundOn: editingSoundOn,
+                                isVibrationOn: editingVibrationOn
+                            )
+                            if let updated = presetManager.userPresets.first(where: { $0.id == preset.id }) {
+                                timerManager.runTimer(from: updated, presetManager: presetManager)
+                            }
                         } else {
                             timerManager.addTimer(
                                 label: editingLabel,

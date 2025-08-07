@@ -253,8 +253,10 @@ final class TimerManager: ObservableObject {
         let restarted = old.updating(
             endDate: newEnd,
             remainingSeconds: totalSeconds,
-            status: .running
+            status: .running,
+            pendingDeletionAt: .some(nil)
         )
+        print("재시작 후 pendingDeletionAt: \(String(describing: restarted.pendingDeletionAt))")
         
         timers[index] = restarted
         scheduleNotification(for: restarted)
