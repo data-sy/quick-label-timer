@@ -15,8 +15,7 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
     let title: String
     let items: [Item]
     let emptyMessage: String
-    let namespace: Namespace.ID
-    let rowContent: (Item, Namespace.ID) -> RowContent
+    let rowContent: (Item) -> RowContent
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -28,7 +27,7 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             } else {
                 List(items) { item in
-                    rowContent(item, namespace)
+                    rowContent(item)
                 }
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)

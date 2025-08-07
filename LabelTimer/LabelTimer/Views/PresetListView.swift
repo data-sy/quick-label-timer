@@ -11,8 +11,6 @@
 import SwiftUI
 
 struct PresetListView: View {
-    let namespace: Namespace.ID
-
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager
 
@@ -37,9 +35,8 @@ struct PresetListView: View {
         TimerListContainerView(
             title: "즐겨찾기",
             items: presetManager.allPresets.filter { !$0.isHiddenInList },
-            emptyMessage: "저장된 즐겨찾기가 없습니다.",
-            namespace: namespace
-        ) { preset, namespace in
+            emptyMessage: "저장된 즐겨찾기가 없습니다."
+        ) { preset in
             PresetTimerRowView(
                 preset: preset,
                 onAction: { action in
@@ -51,8 +48,7 @@ struct PresetListView: View {
                 },
                 onTap: {
                     startEdit(for: preset)
-                },
-                namespace: namespace
+                }
             )
         }
         .deleteAlert(

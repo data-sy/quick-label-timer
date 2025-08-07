@@ -1,5 +1,5 @@
 //
-//  RunningTimersView.swift
+//  RunningListView.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/14/25.
@@ -10,20 +10,17 @@
 
 import SwiftUI
 
-struct RunningTimersView: View {
-    let namespace: Namespace.ID
-    
+struct RunningListView: View {
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var presetManager: PresetManager
     
     @StateObject private var viewModel: RunningTimerListViewModel
         
-    init(timerManager: TimerManager, presetManager: PresetManager, namespace: Namespace.ID) {
+    init(timerManager: TimerManager, presetManager: PresetManager) {
         _viewModel = StateObject(wrappedValue: RunningTimerListViewModel(
             timerManager: timerManager,
             presetManager: presetManager
         ))
-        self.namespace = namespace
     }
 
     var body: some View {
@@ -31,8 +28,7 @@ struct RunningTimersView: View {
             title: "실행중인 타이머",
             items: timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt }),
             emptyMessage: "아직 실행 중인 타이머가 없습니다.",
-            namespace: namespace
-        ) { timer, namespace in
+        ) { timer in
             RunningTimerRowView(
                 timer: timer,
                 deleteCountdownSeconds: viewModel.deleteCountdownSeconds,
@@ -41,8 +37,7 @@ struct RunningTimersView: View {
                 },
                 onToggleFavorite: {
                     viewModel.toggleFavorite(for: timer.id)
-                },
-                namespace: namespace
+                }
             )
         }
     }

@@ -303,10 +303,8 @@ final class TimerManager: ObservableObject {
             if timer.isFavorite {
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
-                    withAnimation(.spring()) {
-                        self.presetManager.addPreset(from: timer)
-                        self.removeTimer(id: timer.id)
-                    }
+                    self.presetManager.addPreset(from: timer)
+                    self.removeTimer(id: timer.id)
                 }
             } else {
                 scheduleAfter(seconds: n) { [weak self] in
@@ -319,12 +317,10 @@ final class TimerManager: ObservableObject {
             if timer.isFavorite {
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
-                    withAnimation(.spring()) {
-                        if let presetId = timer.presetId {
-                            self.presetManager.showPreset(withId: presetId)
-                        }
-                        self.removeTimer(id: timer.id)
+                    if let presetId = timer.presetId {
+                        self.presetManager.showPreset(withId: presetId)
                     }
+                    self.removeTimer(id: timer.id)
                 }
             } else {
                 // 프리셋 기반인데 isFavorite: false (= 실행 중에 즐겨찾기 해제)

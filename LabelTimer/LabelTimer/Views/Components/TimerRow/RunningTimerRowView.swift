@@ -15,7 +15,6 @@ struct RunningTimerRowView: View {
     let deleteCountdownSeconds: Int
     let onAction: (TimerButtonType) -> Void
     let onToggleFavorite: (() -> Void)?
-    let namespace: Namespace.ID
 
     var body: some View {
         let buttons = buttonSet(for: timer.interactionState)
@@ -27,13 +26,7 @@ struct RunningTimerRowView: View {
                 leftButton: buttons.left.map { leftType in
                     AnyView(
                         TimerActionButton(type: leftType) {
-                            if leftType == .moveToPreset {
-                                withAnimation(.spring()) {
-                                    onAction(leftType)
-                                }
-                            } else {
-                                onAction(leftType)
-                            }
+                            onAction(leftType)
                         }
                     )
                 },
@@ -46,7 +39,6 @@ struct RunningTimerRowView: View {
                 statusText: statusText,
                 onToggleFavorite: onToggleFavorite
             )
-            .matchedGeometryEffect(id: timer.presetId, in: namespace)
         }
         .id(timer.id) // 삭제 후 뷰 리프레시 보장
     }

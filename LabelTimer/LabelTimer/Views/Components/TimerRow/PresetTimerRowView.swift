@@ -15,7 +15,6 @@ struct PresetTimerRowView: View {
     let onAction: (TimerButtonType) -> Void
     let onToggleFavorite: (() -> Void)?
     var onTap: (() -> Void)? = nil
-    let namespace: Namespace.ID
     
     /// 전체 시간을 포맷된 문자열로 반환
     private var tempTimer: TimerData {
@@ -42,9 +41,7 @@ struct PresetTimerRowView: View {
             leftButton: nil,
             rightButton: AnyView(
                 TimerActionButton(type: .play) {
-                    withAnimation(.spring()) {
                         onAction(.play)
-                    }
                 }
                 .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
             ),
@@ -55,6 +52,5 @@ struct PresetTimerRowView: View {
         .onTapGesture {
             onTap?()
         }
-        .matchedGeometryEffect(id: preset.id, in: namespace)
     }
 }
