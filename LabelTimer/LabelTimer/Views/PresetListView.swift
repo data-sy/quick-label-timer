@@ -57,16 +57,6 @@ struct PresetListView: View {
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
         }
-//        .deleteAlert(
-//            isPresented: $showingDeleteAlert,
-//            itemName: presetToDelete?.label ?? "",
-//            deleteLabel: "타이머"
-//        ) {
-//            if let preset = presetToDelete {
-//                presetManager.deletePreset(preset)
-//                presetToDelete = nil
-//            }
-//        }
         .deleteAlert(
             isPresented: $showingHideAlert,
             itemName: presetToHide?.label ?? "",

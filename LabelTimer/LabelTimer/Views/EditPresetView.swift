@@ -53,31 +53,3 @@ struct EditPresetView: View {
         }
     }
 }
-
-#Preview {
-    struct PreviewWrapper: View {
-        @State var label = "운동"
-        @State var hours = 0
-        @State var minutes = 25
-        @State var seconds = 0
-        @State var isSoundOn = true
-        @State var isVibrationOn = true
-        @FocusState var isLabelFocused: Bool
-
-        var body: some View {
-            EditPresetView(
-                label: $label,
-                hours: $hours,
-                minutes: $minutes,
-                seconds: $seconds,
-                isSoundOn: $isSoundOn,
-                isVibrationOn: $isVibrationOn,
-                onSave: { print("저장") },
-                onDelete: { print("삭제") },
-                onStart: { print("실행") }
-            )
-        }
-    }
-    return PreviewWrapper()
-}
-

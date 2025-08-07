@@ -118,8 +118,6 @@ final class TimerManager: ObservableObject {
         
         timers.append(newTimer)
         scheduleNotification(for: newTimer)
-        // 디버깅: 추가된 타이머 정보 출력
-        print("[DEBUG] 타이머 추가됨 → label: \(finalLabel), presetId: \(String(describing: presetId)), isFavorite: \(isFavorite)")
     }
     
     /// 레이블이 비어 있을 경우 중복되지 않는 자동 레이블("타이머N") 생성
@@ -158,7 +156,6 @@ final class TimerManager: ObservableObject {
             isFavorite: true
         )
         presetManager.hidePreset(withId: preset.id)
-        print("[DEBUG] 프리셋 실행 → preset.label: \(preset.label), presetId: \(preset.id)")
     }
 
     /// 새 타이머 추가 ( 프리셋 기반 )
@@ -256,7 +253,6 @@ final class TimerManager: ObservableObject {
             status: .running,
             pendingDeletionAt: .some(nil)
         )
-        print("재시작 후 pendingDeletionAt: \(String(describing: restarted.pendingDeletionAt))")
         
         timers[index] = restarted
         scheduleNotification(for: restarted)
@@ -270,10 +266,6 @@ final class TimerManager: ObservableObject {
             guard timer.id == id else { return timer }
             return timer.updating(isFavorite: !timer.isFavorite)
         }
-        // 디버깅
-        if let timer = timers.first(where: { $0.id == id }) {
-            print("[DEBUG] 타이머 isFavorite 토글됨 → label: \(timer.label), isFavorite: \(timer.isFavorite)")
-        }
     }
 
     /// 실행 중인 타이머의 isFavorite 값을 특정 값으로 설정
@@ -281,10 +273,6 @@ final class TimerManager: ObservableObject {
         timers = timers.map { timer in
             guard timer.id == id else { return timer }
             return timer.updating(isFavorite: value)
-        }
-        // 디버깅
-        if let timer = timers.first(where: { $0.id == id }) {
-            print("[DEBUG] 타이머 isFavorite 변경됨 → label: \(timer.label), isFavorite: \(timer.isFavorite)")
         }
     }
 
@@ -301,7 +289,6 @@ final class TimerManager: ObservableObject {
         for i in timers.indices {
             if timers[i].status == .completed && timers[i].pendingDeletionAt == nil {
                 timers[i].pendingDeletionAt = now.addingTimeInterval(TimeInterval(n))
-                print("[DEBUG] pendingDeletionAt 마킹: \(timers[i].label)")
                 onMarked?(timers[i])
             }
         }
@@ -309,13 +296,11 @@ final class TimerManager: ObservableObject {
     
     /// 타이머 완료 시, 상태 별 분기 처리
     func handleTimerCompletion(_ timer: TimerData) {
-        print("[DEBUG] handleTimerCompletion 진입 → label: \(timer.label), id: \(timer.id), presetId: \(String(describing: timer.presetId)), isFavorite: \(timer.isFavorite)")
         let n = self.deleteCountdownSeconds
 
         if timer.presetId == nil {
             // 즉석 타이머
             if timer.isFavorite {
-                print("[DEBUG] 즉석 타이머 & isFavorite: true → n초 후 프리셋으로 저장")
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
                     withAnimation(.spring()) {
@@ -324,7 +309,6 @@ final class TimerManager: ObservableObject {
                     }
                 }
             } else {
-                print("[DEBUG] 즉석 타이머 & isFavorite: false → n초 후 삭제")
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
                     self.removeTimer(id: timer.id)
@@ -333,7 +317,6 @@ final class TimerManager: ObservableObject {
         } else {
             // 프리셋 기반
             if timer.isFavorite {
-                print("[DEBUG] 프리셋 기반 타이머 & isFavorite: true → n초 후 프리셋 복원")
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
                     withAnimation(.spring()) {
@@ -345,7 +328,6 @@ final class TimerManager: ObservableObject {
                 }
             } else {
                 // 프리셋 기반인데 isFavorite: false (= 실행 중에 즐겨찾기 해제)
-                print("[DEBUG] 프리셋 기반 타이머 & isFavorite: false → 프리셋 하이드, n초 후 타이머 삭제")
                 if let presetId = timer.presetId {
                     presetManager.hidePreset(withId: presetId)
                 }

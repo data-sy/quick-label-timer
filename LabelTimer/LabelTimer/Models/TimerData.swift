@@ -79,7 +79,7 @@ struct TimerData: Identifiable, Hashable {
 }
 
 extension TimerData {
-    /// 여러 필드를 한 번에 업데이트. remainingSeconds가 전달되면 상태 자동 판정
+    /// 여러 프로퍼티를 한 번에 업데이트. remainingSeconds가 전달되면 상태 자동 판정
     func updating(
         endDate: Date? = nil,
         remainingSeconds: Int? = nil,
@@ -121,11 +121,4 @@ extension TimerData {
             return String(format: "%02d:%02d", minutes, seconds)
         }
     }
-    
-//    /// n초 기준 자동 삭제 카운트다운 반환
-//    func autoRemoveCountdown(seconds n: Int) -> Int? {
-//        guard let pending = pendingDeletionAt else { return nil }
-//        let remaining = Int(pending.timeIntervalSince(Date()))
-//        return (remaining > 0 && remaining <= n) ? remaining : nil
-//    }
 }

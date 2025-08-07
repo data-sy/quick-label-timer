@@ -10,7 +10,7 @@
 
 import Foundation
 
-final class PresetManager: ObservableObject {
+final class PresetManager: ObservableObject {    
     /// 사용자 정의 프리셋 목록 (최초 실행 시 기본 프리셋 포함)
     @Published var userPresets: [TimerPreset] = []
 
@@ -82,7 +82,6 @@ final class PresetManager: ObservableObject {
         )
         userPresets[index] = updated
         savePresets()
-        print("[DEBUG] 프리셋 수정됨 → label: \(label), isHiddenInList: \(updated.isHiddenInList)")
     }
 
     /// 사용자 프리셋 삭제
