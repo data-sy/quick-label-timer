@@ -33,7 +33,7 @@ struct PresetListView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            SectionTitle(text: "타이머 목록")
+            SectionTitle(text: "즐겨찾기")
             List {
                 ForEach(presetManager.allPresets.filter { !$0.isHiddenInList }, id: \.id) { preset in
                     PresetTimerRowView(
