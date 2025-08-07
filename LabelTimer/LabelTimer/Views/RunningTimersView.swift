@@ -11,16 +11,19 @@
 import SwiftUI
 
 struct RunningTimersView: View {
+    let namespace: Namespace.ID
+    
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var presetManager: PresetManager
     
     @StateObject private var viewModel: RunningTimerListViewModel
         
-    init(timerManager: TimerManager, presetManager: PresetManager) {
+    init(timerManager: TimerManager, presetManager: PresetManager, namespace: Namespace.ID) {
         _viewModel = StateObject(wrappedValue: RunningTimerListViewModel(
             timerManager: timerManager,
             presetManager: presetManager
         ))
+        self.namespace = namespace
     }
 
     var body: some View {
@@ -43,6 +46,7 @@ struct RunningTimersView: View {
                         onToggleFavorite: {
                             viewModel.toggleFavorite(for: timer.id)
                         },
+                        namespace: namespace
                     )
                 }
             }

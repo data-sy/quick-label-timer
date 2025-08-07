@@ -11,6 +11,8 @@
 import SwiftUI
 
 struct PresetListView: View {
+    let namespace: Namespace.ID
+
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager
 
@@ -47,7 +49,8 @@ struct PresetListView: View {
                         },
                         onTap: {
                             startEdit(for: preset)
-                        }
+                        },
+                        namespace: namespace
                     )
                 }
             }

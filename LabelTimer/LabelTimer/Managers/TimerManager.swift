@@ -316,8 +316,10 @@ final class TimerManager: ObservableObject {
                 print("[DEBUG] 즉석 타이머 & isFavorite: true → n초 후 프리셋으로 저장")
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
-                    self.presetManager.addPreset(from: timer)
-                    self.removeTimer(id: timer.id)
+                    withAnimation(.spring()) {
+                        self.presetManager.addPreset(from: timer)
+                        self.removeTimer(id: timer.id)
+                    }
                 }
             } else {
                 print("[DEBUG] 즉석 타이머 & isFavorite: false → n초 후 삭제")
@@ -332,10 +334,12 @@ final class TimerManager: ObservableObject {
                 print("[DEBUG] 프리셋 기반 타이머 & isFavorite: true → n초 후 프리셋 복원")
                 scheduleAfter(seconds: n) { [weak self] in
                     guard let self else { return }
-                    if let presetId = timer.presetId {
-                        self.presetManager.showPreset(withId: presetId)
+                    withAnimation(.spring()) {
+                        if let presetId = timer.presetId {
+                            self.presetManager.showPreset(withId: presetId)
+                        }
+                        self.removeTimer(id: timer.id)
                     }
-                    self.removeTimer(id: timer.id)
                 }
             } else {
                 // 프리셋 기반인데 isFavorite: false (= 실행 중에 즐겨찾기 해제)

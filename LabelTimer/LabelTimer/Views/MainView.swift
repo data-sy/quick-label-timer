@@ -15,6 +15,8 @@ struct MainView: View {
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var presetManager: PresetManager
     
+    @Namespace private var moveNamespace
+    
     var body: some View {
         MainHeaderView {
             showSettings = true
@@ -22,8 +24,10 @@ struct MainView: View {
         ScrollView {
             VStack(spacing: 24) {
                 AddTimerView()
-                RunningTimersView(timerManager: timerManager, presetManager: presetManager)
-                PresetListView()
+                RunningTimersView(timerManager: timerManager, presetManager: presetManager, namespace: moveNamespace)
+                Divider()
+                    .padding(.vertical, 10)
+                PresetListView(namespace: moveNamespace)
                     .frame(height: 400) // ScrollView 내 List높이 0 방지용 고정 height
             }
             .padding()

@@ -44,7 +44,11 @@ struct EditPresetView: View {
                 isVibrationOn: $isVibrationOn,
                 isLabelFocused: $isLabelFocused,
                 isStartDisabled: (hours + minutes + seconds) == 0,
-                onStart: onStart
+                onStart: {
+                    withAnimation(.spring()) {
+                        onStart()
+                    }
+                }
             )
         }
     }
