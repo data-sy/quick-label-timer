@@ -34,28 +34,26 @@ struct PresetListView: View {
     @State private var showingEditDeleteAlert: Bool = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            SectionTitle(text: "즐겨찾기")
-            List {
-                ForEach(presetManager.allPresets.filter { !$0.isHiddenInList }, id: \.id) { preset in
-                    PresetTimerRowView(
-                        preset: preset,
-                        onAction: { action in
-                            handleAction(action, preset: preset)
-                        },
-                        onToggleFavorite: {
-                            presetToHide = preset
-                            showingHideAlert = true
-                        },
-                        onTap: {
-                            startEdit(for: preset)
-                        },
-                        namespace: namespace
-                    )
-                }
-            }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
+        TimerListContainerView(
+            title: "즐겨찾기",
+            items: presetManager.allPresets.filter { !$0.isHiddenInList },
+            emptyMessage: "저장된 즐겨찾기가 없습니다.",
+            namespace: namespace
+        ) { preset, namespace in
+            PresetTimerRowView(
+                preset: preset,
+                onAction: { action in
+                    handleAction(action, preset: preset)
+                },
+                onToggleFavorite: {
+                    presetToHide = preset
+                    showingHideAlert = true
+                },
+                onTap: {
+                    startEdit(for: preset)
+                },
+                namespace: namespace
+            )
         }
         .deleteAlert(
             isPresented: $showingHideAlert,

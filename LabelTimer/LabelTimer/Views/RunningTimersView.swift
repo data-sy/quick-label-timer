@@ -27,30 +27,23 @@ struct RunningTimersView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            SectionTitle(text: "실행중인 타이머")
-
-            if timerManager.timers.isEmpty {
-                Text("아직 실행 중인 타이머가 없습니다.")
-                    .foregroundColor(.gray)
-                    .padding(.top, 8)
-                    .frame(maxWidth: .infinity, alignment: .center)
-            } else {
-                ForEach(timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt })) { timer in
-                    RunningTimerRowView(
-                        timer: timer,
-                        deleteCountdownSeconds: viewModel.deleteCountdownSeconds,
-                        onAction: { action in
-                            viewModel.handleAction(action, for: timer)
-                        },
-                        onToggleFavorite: {
-                            viewModel.toggleFavorite(for: timer.id)
-                        },
-                        namespace: namespace
-                    )
-                }
-            }
+        TimerListContainerView(
+            title: "실행중인 타이머",
+            items: timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt }),
+            emptyMessage: "아직 실행 중인 타이머가 없습니다.",
+            namespace: namespace
+        ) { timer, namespace in
+            RunningTimerRowView(
+                timer: timer,
+                deleteCountdownSeconds: viewModel.deleteCountdownSeconds,
+                onAction: { action in
+                    viewModel.handleAction(action, for: timer)
+                },
+                onToggleFavorite: {
+                    viewModel.toggleFavorite(for: timer.id)
+                },
+                namespace: namespace
+            )
         }
-        .padding()
     }
 }
