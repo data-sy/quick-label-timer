@@ -49,6 +49,7 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
                 List {
                     ForEach(items) { item in
                         row(for: item)
+                            .listRowSeparator(.visible)
                     }
                 }
                 .listStyle(.plain)
@@ -68,28 +69,23 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
                     .padding(.vertical, 4)
                     .padding(.horizontal)
             )
-            .listRowSeparator(.hidden)
     }
 
     private func textColor(for state: TimerInteractionState) -> Color {
         switch state {
-        case .running:
-            return colorScheme == .dark ? .black : .white
-        case .preset:
-            return colorScheme == .dark ? .white : .black
         case .paused, .stopped, .completed:
-            return .gray
+            return .secondary
+        default:
+            return .primary
         }
     }
 
     private func backgroundColor(for state: TimerInteractionState) -> Color {
         switch state {
-        case .running:
-            return colorScheme == .dark ? .white : .black
-        case .preset:
-            return Color(.secondarySystemGroupedBackground)
         case .paused, .stopped, .completed:
             return Color(.systemGray5)
+        default:
+            return Color(.secondarySystemGroupedBackground)
         }
     }
 }
