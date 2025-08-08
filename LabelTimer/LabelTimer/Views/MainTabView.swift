@@ -17,9 +17,17 @@ enum Tab {
 
 struct MainTabView: View {
     @State private var selectedTab: Tab = .timer
+    
+    @StateObject private var runningListVM: RunningListViewModel
     @StateObject private var favoriteListVM: FavoriteListViewModel
     
     init(presetManager: PresetManager, timerManager: TimerManager) {
+        _runningListVM = StateObject(
+            wrappedValue: RunningListViewModel(
+                timerManager: timerManager,
+                presetManager: presetManager
+            )
+        )
         _favoriteListVM = StateObject(
             wrappedValue: FavoriteListViewModel(
                 presetManager: presetManager,
@@ -31,7 +39,7 @@ struct MainTabView: View {
     // 슬라이드 방식
     var body: some View {
         TabView(selection: $selectedTab) {
-            TimerView()
+            TimerView(runningListVM: runningListVM)
                 .tag(Tab.timer)
             
             FavoriteListView(viewModel: favoriteListVM)

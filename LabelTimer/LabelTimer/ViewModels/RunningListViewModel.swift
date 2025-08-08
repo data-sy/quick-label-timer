@@ -12,7 +12,8 @@ import Foundation
 import Combine
 
 final class RunningListViewModel: ObservableObject {
-    @Published var timers: [TimerData] = []
+    @Published var sortedTimers: [TimerData] = []
+    
     let deleteCountdownSeconds = LabelTimerApp.deleteCountdownSeconds
     private let timerManager: TimerManager
     private let presetManager: PresetManager
@@ -23,10 +24,12 @@ final class RunningListViewModel: ObservableObject {
         self.timerManager = timerManager
         self.presetManager = presetManager
         
-        // 타이머 매니저의 상태를 실시간으로 구독하여 동기화
         timerManager.$timers
             .receive(on: RunLoop.main)
-            .assign(to: &$timers)
+            .map { timers in
+                timers.sorted(by: { $0.createdAt > $1.createdAt })
+            }
+            .assign(to: &$sortedTimers)
     }
     
     /// 버튼 액션 처리

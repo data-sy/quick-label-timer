@@ -11,9 +11,8 @@
 import SwiftUI
 
 struct TimerView: View {
-    @EnvironmentObject var timerManager: TimerManager
-    @EnvironmentObject var presetManager: PresetManager
-
+    @ObservedObject var runningListVM: RunningListViewModel
+    
     @State private var showSettings = false
 
     var body: some View {
@@ -24,7 +23,7 @@ struct TimerView: View {
                 }
                 Divider()
                 SectionContainerView{
-                    RunningListView(timerManager: timerManager, presetManager: presetManager)
+                    RunningListView(viewModel: runningListVM)
                 }
                 Spacer()
             }
