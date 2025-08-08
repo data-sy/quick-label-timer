@@ -14,20 +14,28 @@ struct RunningListView: View {
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var presetManager: PresetManager
     
-    @StateObject private var viewModel: RunningTimerListViewModel
-        
+    @StateObject private var viewModel: RunningListViewModel
+            
     init(timerManager: TimerManager, presetManager: PresetManager) {
-        _viewModel = StateObject(wrappedValue: RunningTimerListViewModel(
+        _viewModel = StateObject(wrappedValue: RunningListViewModel(
             timerManager: timerManager,
             presetManager: presetManager
         ))
     }
 
+    // 화면에 표시될 타이머 목록
+    private var sortedTimers: [TimerData] {
+        timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt })
+    }
+    
     var body: some View {
         TimerListContainerView(
             title: "실행중인 타이머",
-            items: timerManager.timers.sorted(by: { $0.createdAt > $1.createdAt }),
+            items: sortedTimers,
             emptyMessage: "아직 실행 중인 타이머가 없습니다.",
+            stateProvider: { timer in
+                return timer.interactionState
+            }
         ) { timer in
             RunningTimerRowView(
                 timer: timer,

@@ -88,8 +88,7 @@ struct TimerRowView: View {
                     .padding(.top, 2)
             }
         }
-        .padding()
-        .timerRowStateStyle(for: state)
+        .padding(.horizontal)
+        .padding(.vertical, 8)
     }
-
 }

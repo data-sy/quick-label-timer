@@ -18,7 +18,7 @@ struct MainTabView: View {
             TabView {
                 TimerView()
                     .tabItem { Label("타이머", systemImage: "timer") }
-                FavoritesView()
+                FavoriteListView()
                     .tabItem { Label("즐겨찾기", systemImage: "star.fill") }
             }
         }

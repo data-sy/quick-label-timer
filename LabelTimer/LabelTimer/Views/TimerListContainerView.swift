@@ -12,28 +12,84 @@
 import SwiftUI
 
 struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     let title: String?
     let items: [Item]
     let emptyMessage: String
+    let stateProvider: (Item) -> TimerInteractionState
     let rowContent: (Item) -> RowContent
+    
+    init(
+        title: String?,
+        items: [Item],
+        emptyMessage: String,
+        stateProvider: @escaping (Item) -> TimerInteractionState,
+        @ViewBuilder rowContent: @escaping (Item) -> RowContent
+    ) {
+        self.title = title
+        self.items = items
+        self.emptyMessage = emptyMessage
+        self.stateProvider = stateProvider
+        self.rowContent = rowContent
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let title {
                 SectionTitle(text: title)
+                    .padding([.horizontal, .top])
+                    .padding(.bottom, 8)
             }
             if items.isEmpty {
                 Text(emptyMessage)
                     .foregroundColor(.gray)
-                    .padding(.top, 8)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(maxWidth: .infinity, minHeight: 100, alignment: .center)
             } else {
-                List(items) { item in
-                    rowContent(item)
+                List {
+                    ForEach(items) { item in
+                        row(for: item)
+                    }
                 }
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
             }
+        }
+    }
+    
+    /// 리스트에 표시될 개별 행을 생성하고 공통 스타일(배경, 색상 등)을 적용하는 헬퍼 뷰
+    @ViewBuilder
+    private func row(for item: Item) -> some View {
+        rowContent(item)
+            .foregroundColor(textColor(for: stateProvider(item)))
+            .listRowBackground(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(backgroundColor(for: stateProvider(item)))
+                    .padding(.vertical, 4)
+                    .padding(.horizontal)
+            )
+            .listRowSeparator(.hidden)
+    }
+
+    private func textColor(for state: TimerInteractionState) -> Color {
+        switch state {
+        case .running:
+            return colorScheme == .dark ? .black : .white
+        case .preset:
+            return colorScheme == .dark ? .white : .black
+        case .paused, .stopped, .completed:
+            return .gray
+        }
+    }
+
+    private func backgroundColor(for state: TimerInteractionState) -> Color {
+        switch state {
+        case .running:
+            return colorScheme == .dark ? .white : .black
+        case .preset:
+            return Color(.secondarySystemGroupedBackground)
+        case .paused, .stopped, .completed:
+            return Color(.systemGray5)
         }
     }
 }

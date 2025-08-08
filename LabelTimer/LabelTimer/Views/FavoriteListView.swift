@@ -1,5 +1,5 @@
 //
-//  FavoritesView.swift
+//  FavoriteListView.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/14/25.
@@ -10,17 +10,14 @@
 
 import SwiftUI
 
-struct FavoritesView: View {
+struct FavoriteListView: View {
     @EnvironmentObject var presetManager: PresetManager
     @EnvironmentObject var timerManager: TimerManager
-
-    @State private var presetToDelete: TimerPreset? = nil
-    @State private var showingDeleteAlert: Bool = false
 
     @State private var presetToHide: TimerPreset? = nil
     @State private var showingHideAlert: Bool = false
 
-    // 수정
+    // 수정용
     @State private var isEditing = false
     @State private var editingPreset: TimerPreset? = nil
     @State private var editingLabel = ""
@@ -32,33 +29,51 @@ struct FavoritesView: View {
     @State private var showingEditDeleteAlert: Bool = false
 
     @State private var showSettings = false
+    
+    // 화면에 표시될 프리셋 목록
+    private var visiblePresets: [TimerPreset] {
+        presetManager.allPresets.filter { !$0.isHiddenInList }
+    }
 
     var body: some View {
         NavigationStack {
-            TimerListContainerView(
-                title: nil,
-                items: presetManager.allPresets.filter { !$0.isHiddenInList },
-                emptyMessage: "저장된 즐겨찾기가 없습니다."
-            ) { preset in
-                PresetTimerRowView(
-                    preset: preset,
-                    onAction: { action in
-                        handleAction(action, preset: preset)
-                    },
-                    onToggleFavorite: {
-                        presetToHide = preset
-                        showingHideAlert = true
-                    },
-                    onTap: {
-                        startEdit(for: preset)
+            SectionContainerView {
+                TimerListContainerView(
+                    title: nil,
+                    items: visiblePresets,
+                    emptyMessage: "저장된 즐겨찾기가 없습니다.",
+                    stateProvider: { _ in
+                        return .preset
                     }
-                )
+                ) { preset in
+                    PresetTimerRowView(
+                        preset: preset,
+                        onAction: { action in
+                            handleAction(action, preset: preset)
+                        },
+                        onToggleFavorite: {
+                            requestToHide(preset)
+                        },
+                        onTap: {
+                            startEdit(for: preset)
+                        }
+                    )
+                }
             }
-            .padding()
+            .padding(.horizontal)
+            .navigationTitle("즐겨찾기")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showSettings = true }) {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            }
             .deleteAlert(
                 isPresented: $showingHideAlert,
                 itemName: presetToHide?.label ?? "",
-                deleteLabel: "즐겨찾기",
+                deleteLabel: "즐겨찾기에서 숨김",
                 onDelete: {
                     if let preset = presetToHide {
                         presetManager.hidePreset(withId: preset.id)
@@ -132,19 +147,15 @@ struct FavoritesView: View {
                     .presentationDetents([.medium])
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showSettings = true }) {
-                        Image(systemName: "gearshape")
-                    }
-                }
-            }
             .sheet(isPresented: $showSettings) {
                 SettingsView()
             }
-            .navigationTitle("즐겨찾기")
-            .navigationBarTitleDisplayMode(.large)
         }
+    }
+
+    private func requestToHide(_ preset: TimerPreset) {
+        presetToHide = preset
+        showingHideAlert = true
     }
 
     private func startEdit(for preset: TimerPreset) {
