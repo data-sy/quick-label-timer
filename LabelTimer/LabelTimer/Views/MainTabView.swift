@@ -10,8 +10,13 @@
 
 import SwiftUI
 
+enum Tab {
+    case timer
+    case favorites
+}
+
 struct MainTabView: View {
-    @State private var showSettings = false
+    @State private var selectedTab: Tab = .timer
     @StateObject private var favoriteListVM: FavoriteListViewModel
     
     init(presetManager: PresetManager, timerManager: TimerManager) {
@@ -23,20 +28,20 @@ struct MainTabView: View {
         )
     }
     
-    // 탭뷰 방식
+    // 슬라이드 방식
     var body: some View {
-        VStack(spacing: 0) {
-            TabView {
-                TimerView()
-                    .tabItem { Label("타이머", systemImage: "timer") }
-                FavoriteListView(viewModel: favoriteListVM)
-                    .tabItem { Label("즐겨찾기", systemImage: "star.fill") }
-            }
-            .onReceive(favoriteListVM.timerDidRunPublisher) { _ in
-                    selectedTab = .timer
+        TabView(selection: $selectedTab) {
+            TimerView()
+                .tag(Tab.timer)
+            
+            FavoriteListView(viewModel: favoriteListVM)
+                .tag(Tab.favorites)
+        }
+        .tabViewStyle(.page(indexDisplayMode: .automatic))
+        .onReceive(favoriteListVM.timerDidRunPublisher) { _ in
+            withAnimation(.easeInOut) {
+                self.selectedTab = .timer
             }
         }
     }
-    
-
 }

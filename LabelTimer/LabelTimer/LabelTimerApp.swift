@@ -31,6 +31,11 @@ struct LabelTimerApp: App {
             )
         )
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel())
+        
+        // 페이지 인디케이터 색상 설정
+        UIPageControl.appearance().currentPageIndicatorTintColor = .label
+        UIPageControl.appearance().pageIndicatorTintColor = UIColor.systemGray4
+        
         NotificationUtils.requestAuthorization()
     }
     
