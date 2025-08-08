@@ -49,8 +49,5 @@ struct TimerInputForm: View {
             }
         }
         .padding()
-        .background(Color(.secondarySystemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .padding(.horizontal)
     }
 }

@@ -19,10 +19,16 @@ struct TimerView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
-                AddTimerView()
-                RunningListView(timerManager: timerManager, presetManager: presetManager)
+                SectionContainerView{
+                    AddTimerView()
+                }
+                Divider()
+                SectionContainerView{
+                    RunningListView(timerManager: timerManager, presetManager: presetManager)
+                }
                 Spacer()
             }
+            .padding(.horizontal)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showSettings = true }) {
