@@ -121,7 +121,7 @@ private enum FontSampleGroup: CaseIterable {
         case .whiteOnBlack, .whiteLabelOrangeTime:
             return .white
         case .orangeOnWhite, .orangeOnBlack, .orangeLabelBlackTime, .orangeLabelWhiteTime:
-            return .brandColor
+            return .orange
         }
     }
 
@@ -134,7 +134,7 @@ private enum FontSampleGroup: CaseIterable {
         case .whiteOnBlack, .orangeLabelWhiteTime:
             return .white
         case .orangeOnWhite, .orangeOnBlack, .blackLabelOrangeTime, .whiteLabelOrangeTime:
-            return .brandColor
+            return .orange
         }
     }
 

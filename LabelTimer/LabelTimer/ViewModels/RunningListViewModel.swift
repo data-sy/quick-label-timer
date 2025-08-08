@@ -1,5 +1,5 @@
 //
-//  RunningTimerListViewModel.swift
+//  RunningListViewModel.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 8/7/25.
@@ -11,7 +11,7 @@
 import Foundation
 import Combine
 
-final class RunningTimerListViewModel: ObservableObject {
+final class RunningListViewModel: ObservableObject {
     @Published var timers: [TimerData] = []
     let deleteCountdownSeconds = LabelTimerApp.deleteCountdownSeconds
     private let timerManager: TimerManager
@@ -58,8 +58,13 @@ final class RunningTimerListViewModel: ObservableObject {
         }
     }
 
-    /// 
+    /// 타이머의 즐겨찾기 상태를 토글
     func toggleFavorite(for id: UUID) {
         timerManager.toggleFavorite(for: id)
+    }
+    
+    /// 특정 타이머를 삭제
+    func deleteTimer(_ timer: TimerData) {
+        timerManager.removeTimer(id: timer.id)
     }
 }

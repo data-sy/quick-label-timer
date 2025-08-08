@@ -11,9 +11,13 @@
 import Foundation
 
 let samplePresets: [TimerPreset] = [
-    TimerPreset(label: "액션테스트용소리진동없음", hours: 0, minutes: 0, seconds: 7, isSoundOn: false, isVibrationOn: false),
-    TimerPreset(label: "소리o진동o테스트", hours: 0, minutes: 0, seconds: 5, isSoundOn: true, isVibrationOn: true),
-    TimerPreset(label: "소리o진동x테스트", hours: 0, minutes: 0, seconds: 7, isSoundOn: true, isVibrationOn: false),
-    TimerPreset(label: "소리x진동o테스트", hours: 0, minutes: 0, seconds: 9, isSoundOn: false, isVibrationOn: true),
-    TimerPreset(label: "소리x진동x테스트", hours: 0, minutes: 0, seconds: 11, isSoundOn: false, isVibrationOn: false)
+    TimerPreset(label: "1 소리진동없음", hours: 0, minutes: 0, seconds: 3, isSoundOn: false, isVibrationOn: false),
+    TimerPreset(label: "2 소리진동없음", hours: 0, minutes: 0, seconds: 7, isSoundOn: false, isVibrationOn: false),
+    TimerPreset(label: "3 소리진동없음", hours: 0, minutes: 0, seconds: 10, isSoundOn: false, isVibrationOn: false),
+    TimerPreset(label: "4 소리진동없음", hours: 0, minutes: 0, seconds: 5, isSoundOn: false, isVibrationOn: false),
+    TimerPreset(label: "5 소리진동없음", hours: 0, minutes: 0, seconds: 8, isSoundOn: false, isVibrationOn: false),
+//    TimerPreset(label: "소리o진동o테스트", hours: 0, minutes: 0, seconds: 5, isSoundOn: true, isVibrationOn: true),
+//    TimerPreset(label: "소리o진동x테스트", hours: 0, minutes: 0, seconds: 7, isSoundOn: true, isVibrationOn: false),
+//    TimerPreset(label: "소리x진동o테스트", hours: 0, minutes: 0, seconds: 9, isSoundOn: false, isVibrationOn: true),
+//    TimerPreset(label: "소리x진동x테스트", hours: 0, minutes: 0, seconds: 11, isSoundOn: false, isVibrationOn: false)
 ]
