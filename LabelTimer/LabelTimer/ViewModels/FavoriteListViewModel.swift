@@ -1,0 +1,70 @@
+//
+//  FavoriteListViewModel.swift
+//  LabelTimer
+//
+//  Created by 이소연 on 8/8/25.
+//
+/// FavoriteListView의 상태와 비즈니스 로직을 관리하는 ViewModel
+///
+/// - 사용 목적: View로부터 이벤트(버튼 클릭 등)를 받아 로직을 처리하고, View에 표시될 데이터를 @Published 프로퍼티로 제공
+
+import SwiftUI
+import Combine
+
+class FavoriteListViewModel: ObservableObject {
+    let presetManager: PresetManager
+    let timerManager: TimerManager
+    let timerDidRunPublisher = PassthroughSubject<Void, Never>()
+    
+    private var cancellables = Set<AnyCancellable>()
+
+    @Published var visiblePresets: [TimerPreset] = []
+    @Published var presetToHide: TimerPreset?
+    @Published var isShowingHideAlert: Bool = false
+    
+    @Published var editingPreset: TimerPreset?
+    @Published var isEditing: Bool = false
+    
+    init(presetManager: PresetManager, timerManager: TimerManager) {
+        self.presetManager = presetManager
+        self.timerManager = timerManager
+        
+        presetManager.$userPresets
+            .map { presets in
+                presets.filter { !$0.isHiddenInList }
+            }
+            .assign(to: &$visiblePresets)
+    }
+        
+    /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
+    func runTimer(from preset: TimerPreset) {
+        timerManager.runTimer(from: preset, presetManager: presetManager)
+        timerDidRunPublisher.send()
+    }
+    
+    /// 즐겨찾기 삭제 확인창 띄우기
+    func requestToHide(_ preset: TimerPreset) {
+        presetToHide = preset
+        isShowingHideAlert = true
+    }
+    
+    /// 즐겨찾기 삭제
+    func confirmHide() {
+        if let preset = presetToHide {
+            presetManager.hidePreset(withId: preset.id)
+        }
+        presetToHide = nil // 상태 초기화
+    }
+    
+    /// 프리셋 수정화면 열기
+    func startEditing(for preset: TimerPreset) {
+        editingPreset = preset
+        isEditing = true
+    }
+    
+    /// 프리셋 수정화면 닫기
+    func stopEditing() {
+        editingPreset = nil
+        isEditing = false
+    }
+}

@@ -36,11 +36,14 @@ struct LabelTimerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView()
-                .environmentObject(timerManager)
-                .environmentObject(presetManager)
-                .environmentObject(settingsViewModel)
-                .preferredColorScheme(settingsViewModel.isDarkMode ? .dark : .light)
+            MainTabView(
+                presetManager: presetManager,
+                timerManager: timerManager
+            )
+            .environmentObject(timerManager)
+            .environmentObject(presetManager)
+            .environmentObject(settingsViewModel)
+            .preferredColorScheme(settingsViewModel.isDarkMode ? .dark : .light)
         }
         .onChange(of: scenePhase) { newPhase in
             timerManager.updateScenePhase(newPhase)

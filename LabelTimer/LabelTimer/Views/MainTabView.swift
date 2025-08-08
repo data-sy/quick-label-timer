@@ -12,15 +12,31 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var showSettings = false
+    @StateObject private var favoriteListVM: FavoriteListViewModel
     
+    init(presetManager: PresetManager, timerManager: TimerManager) {
+        _favoriteListVM = StateObject(
+            wrappedValue: FavoriteListViewModel(
+                presetManager: presetManager,
+                timerManager: timerManager
+            )
+        )
+    }
+    
+    // 탭뷰 방식
     var body: some View {
         VStack(spacing: 0) {
             TabView {
                 TimerView()
                     .tabItem { Label("타이머", systemImage: "timer") }
-                FavoriteListView()
+                FavoriteListView(viewModel: favoriteListVM)
                     .tabItem { Label("즐겨찾기", systemImage: "star.fill") }
+            }
+            .onReceive(favoriteListVM.timerDidRunPublisher) { _ in
+                    selectedTab = .timer
             }
         }
     }
+    
+
 }

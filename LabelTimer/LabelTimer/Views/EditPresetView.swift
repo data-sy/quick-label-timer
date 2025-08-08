@@ -11,41 +11,82 @@
 import SwiftUI
 
 struct EditPresetView: View {
-    @Binding var label: String
-    @Binding var hours: Int
-    @Binding var minutes: Int
-    @Binding var seconds: Int
-    @Binding var isSoundOn: Bool
-    @Binding var isVibrationOn: Bool
+    @StateObject private var viewModel: EditPresetViewModel
+    
     @FocusState private var isLabelFocused: Bool
-
-    var onSave: () -> Void
-    var onDelete: () -> Void
-    var onStart: () -> Void
-
     @Environment(\.dismiss) private var dismiss
 
+    init(preset: TimerPreset, presetManager: PresetManager, timerManager: TimerManager) {
+        _viewModel = StateObject(wrappedValue: EditPresetViewModel(
+            preset: preset,
+            presetManager: presetManager,
+            timerManager: timerManager
+        ))
+    }
+
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Button("삭제", role: .destructive, action: onDelete)
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 0) {
+                SectionContainerView {
+                    VStack(spacing: 0) {
+                        TimerInputForm(
+                            sectionTitle: "",
+                            label: $viewModel.label,
+                            hours: $viewModel.hours,
+                            minutes: $viewModel.minutes,
+                            seconds: $viewModel.seconds,
+                            isSoundOn: $viewModel.isSoundOn,
+                            isVibrationOn: $viewModel.isVibrationOn,
+                            isLabelFocused: $isLabelFocused,
+                            isStartDisabled: (viewModel.hours + viewModel.minutes + viewModel.seconds) == 0,
+                            onStart: {
+                                viewModel.start()
+                                dismiss()
+                            }
+                        )
+                    }
+                }
+                .padding()
                 Spacer()
-                Button("저장", action: onSave)
+                Button(role: .destructive) {
+                    viewModel.isShowingHideAlert = true
+                } label: {
+                    Text("삭제")
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                }
+                .buttonStyle(.bordered)
+                .tint(.red)
+                .padding(.horizontal)
             }
-            .padding(.horizontal, 24)
-            Spacer().frame(height: 24)
-            TimerInputForm(
-                sectionTitle: "타이머 수정",
-                label: $label,
-                hours: $hours,
-                minutes: $minutes,
-                seconds: $seconds,
-                isSoundOn: $isSoundOn,
-                isVibrationOn: $isVibrationOn,
-                isLabelFocused: $isLabelFocused,
-                isStartDisabled: (hours + minutes + seconds) == 0,
-                onStart: onStart
-            )
+            .padding()
+            .navigationTitle("타이머 수정")
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Color(.systemGroupedBackground))
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("취소") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("저장") {
+                        viewModel.save()
+                        dismiss()
+                    }
+                    // 저장 버튼은 시간이 0이 아닐 때만 활성화
+                    .disabled((viewModel.hours + viewModel.minutes + viewModel.seconds) == 0)
+                }
+            }
+            // ViewModel의 상태와 연결된 삭제 확인 알림창입니다.
+            .deleteAlert(
+                isPresented: $viewModel.isShowingHideAlert,
+                itemName: viewModel.label,
+                deleteLabel: ""
+            ) {
+                viewModel.hide()
+                dismiss()
+            }
         }
     }
 }
