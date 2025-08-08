@@ -11,6 +11,11 @@
 import SwiftUI
 
 struct FavoriteListView: View {
+    @Environment(\.editMode) private var editMode
+    private var isEditing: Bool {
+        editMode?.wrappedValue.isEditing ?? false
+    }
+
     @ObservedObject var viewModel: FavoriteListViewModel
     
     @State private var showSettings = false
@@ -23,7 +28,8 @@ struct FavoriteListView: View {
                 emptyMessage: "저장된 즐겨찾기가 없습니다.",
                 stateProvider: { _ in
                     return .preset
-                }
+                },
+                onDelete: viewModel.hidePreset(at:)
             ) { preset in
                 PresetTimerRowView(
                     preset: preset,
@@ -42,6 +48,15 @@ struct FavoriteListView: View {
             .navigationTitle("즐겨찾기")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        withAnimation {
+                            editMode?.wrappedValue = isEditing ? .inactive : .active
+                        }
+                    } label: {
+                        Text(isEditing ? "완료" : "삭제")
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showSettings = true }) {
                         Image(systemName: "gearshape")

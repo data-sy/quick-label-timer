@@ -11,6 +11,11 @@
 import SwiftUI
 
 struct TimerView: View {
+    @Environment(\.editMode) private var editMode
+    private var isEditing: Bool {
+        editMode?.wrappedValue.isEditing ?? false
+    }
+
     @ObservedObject var runningListVM: RunningListViewModel
     
     @State private var showSettings = false
@@ -29,6 +34,15 @@ struct TimerView: View {
             }
             .padding(.horizontal)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        withAnimation {
+                            editMode?.wrappedValue = isEditing ? .inactive : .active
+                        }
+                    } label: {
+                        Text(isEditing ? "완료" : "삭제")
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showSettings = true }) {
                         Image(systemName: "gearshape")

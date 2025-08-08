@@ -19,6 +19,7 @@ class FavoriteListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     @Published var visiblePresets: [TimerPreset] = []
+    
     @Published var presetToHide: TimerPreset?
     @Published var isShowingHideAlert: Bool = false
     
@@ -48,12 +49,20 @@ class FavoriteListViewModel: ObservableObject {
         isShowingHideAlert = true
     }
     
-    /// 즐겨찾기 삭제
+    /// 확인창에서의 즐겨찾기 삭제
     func confirmHide() {
         if let preset = presetToHide {
             presetManager.hidePreset(withId: preset.id)
         }
         presetToHide = nil // 상태 초기화
+    }
+    
+    /// 편집모드에서의 즐겨찾기 삭제
+    func hidePreset(at offsets: IndexSet) {
+        let presetsToHide = offsets.map { visiblePresets[$0] }
+        for preset in presetsToHide {
+            presetManager.hidePreset(withId: preset.id)
+        }
     }
     
     /// 프리셋 수정화면 열기

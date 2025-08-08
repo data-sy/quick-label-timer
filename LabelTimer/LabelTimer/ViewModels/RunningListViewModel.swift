@@ -66,6 +66,14 @@ final class RunningListViewModel: ObservableObject {
         timerManager.toggleFavorite(for: id)
     }
     
+    /// 타이머 삭제 (편집 모드)
+    func deleteTimer(at offsets: IndexSet) {
+        let timersToDelete = offsets.map { sortedTimers[$0] }
+        for timer in timersToDelete {
+            timerManager.removeTimer(id: timer.id)
+        }
+    }
+    
     /// 특정 타이머를 삭제
     func deleteTimer(_ timer: TimerData) {
         timerManager.removeTimer(id: timer.id)

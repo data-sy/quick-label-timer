@@ -13,11 +13,16 @@ import SwiftUI
 
 struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
     @Environment(\.colorScheme) private var colorScheme
-
+    @Environment(\.editMode) private var editMode
+    private var isEditing: Bool {
+        editMode?.wrappedValue.isEditing ?? false
+    }
+    
     let title: String?
     let items: [Item]
     let emptyMessage: String
     let stateProvider: (Item) -> TimerInteractionState
+    let onDelete: ((IndexSet) -> Void)?
     let rowContent: (Item) -> RowContent
     
     init(
@@ -25,12 +30,14 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
         items: [Item],
         emptyMessage: String,
         stateProvider: @escaping (Item) -> TimerInteractionState,
+        onDelete: ((IndexSet) -> Void)? = nil,
         @ViewBuilder rowContent: @escaping (Item) -> RowContent
     ) {
         self.title = title
         self.items = items
         self.emptyMessage = emptyMessage
         self.stateProvider = stateProvider
+        self.onDelete = onDelete
         self.rowContent = rowContent
     }
 
@@ -51,6 +58,7 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
                         row(for: item)
                             .listRowSeparator(.visible)
                     }
+                    .onDelete(perform: onDelete)
                 }
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
@@ -68,6 +76,8 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
                     .fill(backgroundColor(for: stateProvider(item)))
                     .padding(.vertical, 4)
                     .padding(.horizontal)
+                    .offset(x: isEditing ? 40 : 0)
+                    .animation(.default, value: isEditing)
             )
     }
 
