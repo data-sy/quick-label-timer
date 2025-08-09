@@ -22,65 +22,75 @@ struct FavoriteListView: View {
     
     var body: some View {
         NavigationStack {
-            TimerListContainerView(
-                title: nil,
-                items: viewModel.visiblePresets,
-                emptyMessage: "저장된 즐겨찾기가 없습니다.",
-                stateProvider: { _ in
-                    return .preset
-                },
-                onDelete: viewModel.hidePreset(at:)
-            ) { preset in
-                PresetTimerRowView(
-                    preset: preset,
-                    onAction: { action in
-                        viewModel.runTimer(from: preset)
+            ZStack {
+                Color(.systemGroupedBackground)
+                    .ignoresSafeArea()
+                
+                TimerListContainerView(
+                    title: nil,
+                    items: viewModel.visiblePresets,
+                    emptyMessage: "저장된 즐겨찾기가 없습니다.",
+                    stateProvider: { _ in
+                        return .preset
                     },
-                    onToggleFavorite: {
-                        viewModel.requestToHide(preset)
-                    },
-                    onTap: {
-                        viewModel.startEditing(for: preset)
-                    }
-                )
-            }
-            .padding(.horizontal)
-            .navigationTitle("즐겨찾기")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        withAnimation {
-                            editMode?.wrappedValue = isEditing ? .inactive : .active
-                        }
-                    } label: {
-                        Text(isEditing ? "완료" : "삭제")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showSettings = true }) {
-                        Image(systemName: "gearshape")
-                    }
-                }
-            }
-            .deleteAlert(
-                isPresented: $viewModel.isShowingHideAlert,
-                itemName: viewModel.presetToHide?.label ?? "",
-                deleteLabel: "즐겨찾기에서 숨김",
-                onDelete: viewModel.confirmHide
-            )
-            .sheet(isPresented: $viewModel.isEditing, onDismiss: viewModel.stopEditing) {
-                if let preset = viewModel.editingPreset {
-                    EditPresetView(
+                    onDelete: viewModel.hidePreset(at:)
+                ) { preset in
+                    PresetTimerRowView(
                         preset: preset,
-                        presetManager: viewModel.presetManager,
-                        timerManager: viewModel.timerManager
+                        onAction: { action in
+                            viewModel.runTimer(from: preset)
+                        },
+                        onToggleFavorite: {
+                            viewModel.requestToHide(preset)
+                        },
+                        onTap: {
+                            viewModel.startEditing(for: preset)
+                        }
                     )
-                    .presentationDetents([.medium])
                 }
-            }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
+                .padding(.horizontal)
+                .navigationTitle("즐겨찾기")
+                .navigationBarTitleDisplayMode(.large)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            withAnimation {
+                                editMode?.wrappedValue = isEditing ? .inactive : .active
+                            }
+                        } label: {
+                            Text(isEditing ? "완료" : "삭제")
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: { showSettings = true }) {
+                            Image(systemName: "gearshape")
+                        }
+                    }
+                }
+                .deleteAlert(
+                    isPresented: $viewModel.isShowingHideAlert,
+                    itemName: viewModel.presetToHide?.label ?? "",
+                    deleteLabel: "즐겨찾기에서 숨김",
+                    onDelete: viewModel.confirmHide
+                )
+                .sheet(isPresented: $viewModel.isEditing, onDismiss: viewModel.stopEditing) {
+                    if let preset = viewModel.editingPreset {
+                        EditPresetView(
+                            preset: preset,
+                            presetManager: viewModel.presetManager,
+                            timerManager: viewModel.timerManager
+                        )
+                        .presentationDetents([.medium])
+                    }
+                }
+                .sheet(isPresented: $showSettings) {
+                    SettingsView()
+                }
+                .toolbarBackground(
+                    Color(.systemGroupedBackground),
+                    for: .navigationBar
+                )
+                .toolbarBackground(.visible, for: .navigationBar)
             }
         }
     }

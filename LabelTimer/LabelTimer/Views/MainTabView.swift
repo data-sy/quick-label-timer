@@ -16,6 +16,7 @@ enum Tab {
 }
 
 struct MainTabView: View {
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
     @State private var selectedTab: Tab = .timer
     
     @StateObject private var runningListVM: RunningListViewModel
@@ -47,8 +48,10 @@ struct MainTabView: View {
         }
         .tabViewStyle(.page(indexDisplayMode: .automatic))
         .animation(.easeInOut, value: selectedTab)
+        .background(Color(.systemGroupedBackground))
         .onReceive(favoriteListVM.timerDidRunPublisher.receive(on: RunLoop.main)) { _ in
             selectedTab = .timer
         }
+        .id(settingsViewModel.isDarkMode)
     }
 }

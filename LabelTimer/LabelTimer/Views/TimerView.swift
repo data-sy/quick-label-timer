@@ -22,38 +22,48 @@ struct TimerView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 24) {
-                SectionContainerView{
-                    AddTimerView()
+            ZStack {
+                Color(.systemGroupedBackground)
+                    .ignoresSafeArea()
+                
+                VStack(spacing: 24) {
+                    SectionContainerView{
+                        AddTimerView()
+                    }
+                    Divider()
+                    SectionContainerView{
+                        RunningListView(viewModel: runningListVM)
+                    }
+                    Spacer()
                 }
-                Divider()
-                SectionContainerView{
-                    RunningListView(viewModel: runningListVM)
-                }
-                Spacer()
-            }
-            .padding(.horizontal)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        withAnimation {
-                            editMode?.wrappedValue = isEditing ? .inactive : .active
+                .padding(.horizontal)
+                .navigationTitle("타이머 실행")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            withAnimation {
+                                editMode?.wrappedValue = isEditing ? .inactive : .active
+                            }
+                        } label: {
+                            Text(isEditing ? "완료" : "삭제")
                         }
-                    } label: {
-                        Text(isEditing ? "완료" : "삭제")
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: { showSettings = true }) {
+                            Image(systemName: "gearshape")
+                        }
                     }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showSettings = true }) {
-                        Image(systemName: "gearshape")
-                    }
+                .sheet(isPresented: $showSettings) {
+                    SettingsView()
                 }
+                .toolbarBackground(
+                    Color(.systemGroupedBackground),
+                    for: .navigationBar
+                )
+                .toolbarBackground(.visible, for: .navigationBar)
             }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
-            }
-            .navigationTitle("타이머 실행")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

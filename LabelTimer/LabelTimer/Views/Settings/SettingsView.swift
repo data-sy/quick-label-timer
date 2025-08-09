@@ -37,9 +37,6 @@ struct SettingsView: View {
                     }
 
                     Toggle("다크 모드", isOn: $settingsViewModel.isDarkMode)
-                        .onChange(of: settingsViewModel.isDarkMode) { _ in
-                            settingsViewModel.applyAppearance()
-                        }
                 }
 
                 // MARK: - 알림 권한
