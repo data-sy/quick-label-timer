@@ -62,7 +62,7 @@ struct EditPresetView: View {
             .padding()
             .navigationTitle("타이머 수정")
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color(.systemGroupedBackground))
+            .background(AppTheme.contentBackground)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("취소") {

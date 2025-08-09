@@ -48,7 +48,7 @@ struct MainTabView: View {
         }
         .tabViewStyle(.page(indexDisplayMode: .automatic))
         .animation(.easeInOut, value: selectedTab)
-        .background(Color(.systemGroupedBackground))
+        .background(AppTheme.pageBackground)
         .onReceive(favoriteListVM.timerDidRunPublisher.receive(on: RunLoop.main)) { _ in
             selectedTab = .timer
         }

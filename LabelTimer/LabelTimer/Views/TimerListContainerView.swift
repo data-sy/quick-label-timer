@@ -95,7 +95,7 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
         case .paused, .stopped, .completed:
             return Color(.systemGray5)
         default:
-            return Color(.secondarySystemGroupedBackground)
+            return AppTheme.contentBackground
         }
     }
 }

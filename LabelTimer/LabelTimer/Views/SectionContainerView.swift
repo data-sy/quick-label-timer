@@ -18,8 +18,7 @@ struct SectionContainerView<Content: View>: View {
         VStack(spacing: 0) { // 내부 요소들은 여백 없이 꽉 차게
             content
         }
-        // iOS 시스템의 그룹화된 배경색을 사용 (라이트/다크 모드 자동 대응)
-        .background(Color(.secondarySystemGroupedBackground))
+        .background(AppTheme.contentBackground)
         .cornerRadius(12) // 부드러운 코너 반경
     }
 }
