@@ -58,7 +58,8 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
                         row(for: item)
                             .listRowSeparator(.visible)
                     }
-                    .onDelete(perform: onDelete)
+                    .onDelete(perform: onDelete) // Edit모드에서 사용하므로 삭제X
+                    .deleteDisabled(!isEditing)
                 }
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
