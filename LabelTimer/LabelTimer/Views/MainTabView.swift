@@ -46,10 +46,9 @@ struct MainTabView: View {
                 .tag(Tab.favorites)
         }
         .tabViewStyle(.page(indexDisplayMode: .automatic))
-        .onReceive(favoriteListVM.timerDidRunPublisher) { _ in
-            withAnimation(.easeInOut) {
-                self.selectedTab = .timer
-            }
+        .animation(.easeInOut, value: selectedTab)
+        .onReceive(favoriteListVM.timerDidRunPublisher.receive(on: RunLoop.main)) { _ in
+            selectedTab = .timer
         }
     }
 }
