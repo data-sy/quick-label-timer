@@ -80,8 +80,8 @@ private struct TimerFontSample: View {
                 Spacer()
 
                 HStack(spacing: 12) {
-                    TimerActionButton(type: .stop) {}
-                    TimerActionButton(type: .play) {}
+//                    TimerActionButton(type: .stop) {}
+//                    TimerActionButton(type: .play) {}
                 }
             }
             .padding()
