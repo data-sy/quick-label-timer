@@ -24,11 +24,10 @@ func makeButtonSet(for state: TimerInteractionState, isFavorite: Bool) -> TimerB
         return .init(left: .stop, right: .pause)
 
     case .paused:
-        return .init(left: isFavorite ? .moveToFavorite : .delete,
-                     right: .play)
+        return .init(left: .stop, right: .play)
 
     case .stopped, .completed:
-        return .init(left: isFavorite ? .moveToFavorite : .none,
+        return .init(left: isFavorite ? .moveToFavorite : .delete,
                      right: .restart)
     }
 }

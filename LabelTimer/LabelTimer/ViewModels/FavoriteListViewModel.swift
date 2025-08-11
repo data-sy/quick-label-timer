@@ -36,12 +36,28 @@ class FavoriteListViewModel: ObservableObject {
             }
             .assign(to: &$visiblePresets)
     }
+
+    // MARK: - Actions (Left / Right)
+
+    /// Left 버튼 액션 처리
+    func handleLeft(for preset: TimerPreset) {
+        // 프리셋 편집 버튼 추가 예정
+    }
+
+    /// Right 버튼 액션 처리
+    func handleRight(for preset: TimerPreset) {
+        runTimer(from: preset)
+    }
+    
+    // MARK: - Business
         
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
     func runTimer(from preset: TimerPreset) {
         timerManager.runTimer(from: preset, presetManager: presetManager)
         timerDidRunPublisher.send()
     }
+    
+    // MARK: - Hide (즐겨찾기 제거 흐름)
     
     /// 즐겨찾기 삭제 확인창 띄우기
     func requestToHide(_ preset: TimerPreset) {
@@ -64,6 +80,8 @@ class FavoriteListViewModel: ObservableObject {
             presetManager.hidePreset(withId: preset.id)
         }
     }
+    
+    // MARK: - Edit
     
     /// 프리셋 수정화면 열기
     func startEditing(for preset: TimerPreset) {

@@ -32,21 +32,37 @@ final class RunningListViewModel: ObservableObject {
             .assign(to: &$sortedTimers)
     }
     
-    /// 버튼 액션 처리
-    func handleAction(_ action: TimerButtonType, for timer: TimerData) {
-        switch action {
-        case .pause:
-            timerManager.pauseTimer(id: timer.id)
-        case .play:
-            timerManager.resumeTimer(id: timer.id)
+    /// Left 버튼 액션 처리
+    func handleLeft(for timer: TimerData) {
+        let set = makeButtonSet(for: timer.interactionState, isFavorite: timer.isFavorite)
+        switch set.left {
+        case .none:
+            break
+
         case .stop:
             timerManager.stopTimer(id: timer.id)
-        case .restart:
-            timerManager.restartTimer(id: timer.id)
-        case .moveToPreset:
+
+        case .moveToFavorite:
             handleMoveToPreset(for: timer)
+            // 화면 이동은 할까 말까?
+
+        case .delete:
+            deleteTimer(timer)
         }
     }
+
+    /// Right 버튼 액션 처리
+    func handleRight(for timer: TimerData) {
+        let set = makeButtonSet(for: timer.interactionState, isFavorite: timer.isFavorite)
+        switch set.right {
+        case .play:
+            timerManager.resumeTimer(id: timer.id)
+        case .pause:
+            timerManager.pauseTimer(id: timer.id)
+        case .restart:
+            timerManager.restartTimer(id: timer.id)
+        }
+    }    
     
     /// 실행 중인 타이머를 프리셋으로 이동/복구
     func handleMoveToPreset(for timer: TimerData) {
