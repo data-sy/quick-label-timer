@@ -29,10 +29,15 @@ class FavoriteListViewModel: ObservableObject {
         self.presetManager = presetManager
         self.timerManager = timerManager
         
-        presetManager.$userPresets
+        presetManager.userPresetsPublisher // Publisher에 접근 (PresetManager에 정의 필요)
             .map { presets in
-                presets.filter { !$0.isHiddenInList }
+                // 1. 숨겨진 프리셋을 먼저 필터링합니다.
+                let visible = presets.filter { !$0.isHiddenInList }
+                
+                // 2. 그 다음, lastUsedAt을 기준으로 내림차순 정렬합니다.
+                return visible.sorted { $0.lastUsedAt > $1.lastUsedAt }
             }
+            .receive(on: DispatchQueue.main) // UI 업데이트는 메인 스레드에서
             .assign(to: &$visiblePresets)
     }
 
@@ -52,8 +57,8 @@ class FavoriteListViewModel: ObservableObject {
         
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
     func runTimer(from preset: TimerPreset) {
-        timerManager.runTimer(from: preset)
-
+        presetManager.updateLastUsed(for: preset.id)
+        (timerManager as? TimerManager)?.runTimer(from: preset)
     }
     
     // MARK: - Hide (즐겨찾기 제거 흐름)

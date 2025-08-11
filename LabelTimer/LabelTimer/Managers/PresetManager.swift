@@ -9,7 +9,7 @@
 /// - 사용 목적: 앱 최초 실행 시 기본 프리셋을 등록하고, 사용자 프리셋을 UserDefaults에 저장/관리함.
 
 import Foundation
-
+import Combine
 
 // MARK: - Protocol Definition
 protocol PresetManagerProtocol {
@@ -17,6 +17,8 @@ protocol PresetManagerProtocol {
     func showPreset(withId id: UUID)
     func hidePreset(withId id: UUID)
     var allPresets: [TimerPreset] { get }
+    func updateLastUsed(for presetId: UUID)
+    var userPresetsPublisher: AnyPublisher<[TimerPreset], Never> { get }
 }
 
 // MARK: - PresetManager Class
@@ -37,6 +39,11 @@ final class PresetManager: ObservableObject, PresetManagerProtocol {
         userPresets
     }
     
+    // Publisher
+    var userPresetsPublisher: AnyPublisher<[TimerPreset], Never> {
+        $userPresets.eraseToAnyPublisher()
+    }
+    
     // MARK: - CRUD
     
     /// 사용자 프리셋 추가
@@ -47,6 +54,7 @@ final class PresetManager: ObservableObject, PresetManagerProtocol {
     
     /// 실행 중 타이머를 프리셋으로 추가
     func addPreset(from timer: TimerData) {
+        let now = Date()
         let preset = TimerPreset(
             label: timer.label,
             hours: timer.hours,
@@ -54,7 +62,8 @@ final class PresetManager: ObservableObject, PresetManagerProtocol {
             seconds: timer.seconds,
             isSoundOn: timer.isSoundOn,
             isVibrationOn: timer.isVibrationOn,
-            createdAt: Date()
+            createdAt: now,
+            lastUsedAt: now
         )
         userPresets.insert(preset, at: 0)
         savePresets()
@@ -72,10 +81,19 @@ final class PresetManager: ObservableObject, PresetManagerProtocol {
             isSoundOn: isSoundOn,
             isVibrationOn: isVibrationOn,
             createdAt: preset.createdAt,
+            lastUsedAt: preset.lastUsedAt,
             isHiddenInList: preset.isHiddenInList
         )
         userPresets[index] = updated
         savePresets()
+    }
+    
+    // 마지막 사용 시간 업데이트
+    func updateLastUsed(for presetId: UUID) {
+        if let index = userPresets.firstIndex(where: { $0.id == presetId }) {
+            userPresets[index].lastUsedAt = Date()
+            savePresets()
+        }
     }
 
     /// 사용자 프리셋 삭제
@@ -98,6 +116,7 @@ final class PresetManager: ObservableObject, PresetManagerProtocol {
     func showPreset(withId id: UUID) {
         if let idx = userPresets.firstIndex(where: { $0.id == id }) {
             userPresets[idx].isHiddenInList = false
+            userPresets[idx].lastUsedAt = Date()
             savePresets()
         }
     }
@@ -110,7 +129,7 @@ final class PresetManager: ObservableObject, PresetManagerProtocol {
         let didInitialize = defaults.bool(forKey: didInitializeKey)
 
         if !didInitialize {
-            // userPresets = samplePresets // 실제 프로젝트의 샘플 데이터 사용
+            userPresets = samplePresets
             savePresets()
             defaults.set(true, forKey: didInitializeKey)
             return

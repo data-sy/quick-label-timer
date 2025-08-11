@@ -151,6 +151,7 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
             presetId: preset.id,
             isFavorite: true
         )
+        presetManager.updateLastUsed(for: preset.id)
         presetManager.hidePreset(withId: preset.id)
         didStart.send()
     }
