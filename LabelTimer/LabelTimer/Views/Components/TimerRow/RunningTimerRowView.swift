@@ -12,34 +12,21 @@ import SwiftUI
 
 struct RunningTimerRowView: View {
     let timer: TimerData
-    let deleteCountdownSeconds: Int
-    let onAction: (TimerButtonType) -> Void
     let onToggleFavorite: (() -> Void)?
+    let onLeftTap: (() -> Void)?
+    let onRightTap: (() -> Void)?
 
     var body: some View {
-        let buttons = buttonSet(for: timer.interactionState)
         let statusText = self.statusText(for: timer.interactionState)
 
         VStack(alignment: .leading, spacing: 4) {
             TimerRowView(
                 timer: timer,
-                leftButton: buttons.left.map { leftType in
-                    AnyView(
-                        TimerActionButton(type: leftType) {
-                            onAction(leftType)
-                        }
-                        .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
-                    )
-                },
-                rightButton: AnyView(
-                    TimerActionButton(type: buttons.right) {
-                        onAction(buttons.right)
-                    }
-                    .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
-                ),
                 state: timer.interactionState,
                 statusText: statusText,
-                onToggleFavorite: onToggleFavorite
+                onToggleFavorite: onToggleFavorite,
+                onLeftTap: onLeftTap,
+                onRightTap: onRightTap
             )
         }
         .id(timer.id) // 삭제 후 뷰 리프레시 보장

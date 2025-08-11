@@ -12,28 +12,29 @@ import SwiftUI
 
 struct TimerRowView: View {
     let timer: TimerData
-    let leftButton: AnyView?
-    let rightButton: AnyView?
     let state: TimerInteractionState
     let statusText: String?
     let onToggleFavorite: (() -> Void)?
+    let onLeftTap: (() -> Void)?
+    let onRightTap: (() -> Void)?
 
     init(
         timer: TimerData,
-        leftButton: AnyView? = nil,
-        rightButton: AnyView? = nil,
         state: TimerInteractionState,
         statusText: String? = nil,
-        onToggleFavorite: (() -> Void)? = nil
+        onToggleFavorite: (() -> Void)? = nil,
+        onLeftTap: (() -> Void)? = nil,
+        onRightTap: (() -> Void)? = nil,
     ) {
         self.timer = timer
-        self.leftButton = leftButton
-        self.rightButton = rightButton
         self.state = state
         self.statusText = statusText
         self.onToggleFavorite = onToggleFavorite
+        self.onLeftTap = onLeftTap
+        self.onRightTap = onRightTap
     }
     
+    /// 완료 후 n초 카운트다운 안내 메시지
     var dynamicMessage: String? {
         guard let pendingAt = timer.pendingDeletionAt else { return nil }
         let remaining = Int(pendingAt.timeIntervalSince(Date()))
@@ -50,6 +51,11 @@ struct TimerRowView: View {
                 return "\(remaining)초 후 삭제됩니다"
             }
         }
+    }
+    
+    /// 상태 × 즐겨찾기 → 좌/우 버튼 타입
+    private var buttonTypes: TimerButtonSet {
+        makeButtonSet(for: state, isFavorite: timer.isFavorite)
     }
 
     var body: some View {
@@ -71,14 +77,22 @@ struct TimerRowView: View {
                 Spacer()
             }
             HStack {
-                Text(timer.formattedTime)
-                    .font(.system(size: 44, weight: .light))
-
+                VStack(alignment: .leading, spacing: 0){
+                    Text(timer.formattedTime)
+                        .font(.system(size: 44, weight: .light))
+                }
+                
                 Spacer()
 
                 HStack(spacing: 12) {
-                    if let leftButton = leftButton { leftButton }
-                    if let rightButton = rightButton { rightButton }
+                    if buttonTypes.left != .none {
+                        TimerLeftButtonView(type: buttonTypes.left) {
+                            onLeftTap?()
+                        }
+                    }
+                    TimerRightButtonView(type: buttonTypes.right) {
+                        onRightTap?()
+                    }
                 }
             }
             if let msg = dynamicMessage {

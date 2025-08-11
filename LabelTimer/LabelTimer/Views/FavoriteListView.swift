@@ -29,16 +29,16 @@ struct FavoriteListView: View {
                     },
                     onDelete: viewModel.hidePreset(at:)
                 ) { preset in
-                    PresetTimerRowView(
+                    FavoritePresetRowView(
                         preset: preset,
-                        onAction: { action in
-                            viewModel.runTimer(from: preset)
-                        },
                         onToggleFavorite: {
                             viewModel.requestToHide(preset)
                         },
-                        onTap: {
-                            viewModel.startEditing(for: preset)
+                        onLeftTap: {
+                            viewModel.handleLeft(for: preset)
+                        },
+                        onRightTap: {
+                            viewModel.handleRight(for: preset)
                         }
                     )
                 }

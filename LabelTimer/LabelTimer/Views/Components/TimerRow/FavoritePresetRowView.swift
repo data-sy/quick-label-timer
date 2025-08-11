@@ -1,5 +1,5 @@
 //
-//  PresetTimerRowView.swift
+//  FavoritePresetRowView.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/14/25.
@@ -10,11 +10,11 @@
 
 import SwiftUI
 
-struct PresetTimerRowView: View {
+struct FavoritePresetRowView: View {
     let preset: TimerPreset
-    let onAction: (TimerButtonType) -> Void
     let onToggleFavorite: (() -> Void)?
-    var onTap: (() -> Void)? = nil
+    let onLeftTap: (() -> Void)?
+    let onRightTap: (() -> Void)?
     
     /// 전체 시간을 포맷된 문자열로 반환
     private var tempTimer: TimerData {
@@ -28,7 +28,7 @@ struct PresetTimerRowView: View {
             createdAt: Date(),
             endDate: Date(),
             remainingSeconds: preset.totalSeconds,
-            status: .completed,
+            status: .stopped,
             pendingDeletionAt: nil,
             presetId: preset.id,
             isFavorite: true
@@ -38,19 +38,10 @@ struct PresetTimerRowView: View {
     var body: some View {
         TimerRowView(
             timer: tempTimer,
-            leftButton: nil,
-            rightButton: AnyView(
-                TimerActionButton(type: .play) {
-                        onAction(.play)
-                }
-                .buttonStyle(.plain) // 셀 전체 터치 방지용 (List + Button 이슈)
-            ),
             state: TimerInteractionState.preset,
-            onToggleFavorite: onToggleFavorite
+            onToggleFavorite: onToggleFavorite,
+            onLeftTap: onLeftTap,
+            onRightTap: onRightTap,
         )
-        .contentShape(Rectangle())
-        .onTapGesture {
-            onTap?()
-        }
     }
 }

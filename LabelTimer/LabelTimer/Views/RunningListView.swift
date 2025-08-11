@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct RunningListView: View {
-    @StateObject var viewModel: RunningListViewModel
+    @ObservedObject var viewModel: RunningListViewModel
                 
     var body: some View {
         TimerListContainerView(
@@ -25,14 +25,17 @@ struct RunningListView: View {
         ) { timer in
             RunningTimerRowView(
                 timer: timer,
-                deleteCountdownSeconds: viewModel.deleteCountdownSeconds,
-                onAction: { action in
-                    viewModel.handleAction(action, for: timer)
-                },
                 onToggleFavorite: {
                     viewModel.toggleFavorite(for: timer.id)
+                },
+                onLeftTap: {
+                    viewModel.handleLeft(for: timer)
+                },
+                onRightTap: {
+                    viewModel.handleRight(for: timer)
                 }
             )
+            .id(timer.id)
         }
     }
 }
