@@ -20,6 +20,7 @@ final class TimerManager: ObservableObject {
     private let presetManager: PresetManager
     private let alarmHandler: AlarmTriggering
     let deleteCountdownSeconds: Int
+    let didStart = PassthroughSubject<Void, Never>()
 
     private var timer: Timer?
     
@@ -156,6 +157,7 @@ final class TimerManager: ObservableObject {
             isFavorite: true
         )
         presetManager.hidePreset(withId: preset.id)
+        didStart.send()
     }
 
     /// 새 타이머 추가 ( 프리셋 기반 )

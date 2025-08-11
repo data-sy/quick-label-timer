@@ -14,7 +14,6 @@ import Combine
 class FavoriteListViewModel: ObservableObject {
     let presetManager: PresetManager
     let timerManager: TimerManager
-    let timerDidRunPublisher = PassthroughSubject<Void, Never>()
     
     private var cancellables = Set<AnyCancellable>()
 
@@ -54,7 +53,6 @@ class FavoriteListViewModel: ObservableObject {
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
     func runTimer(from preset: TimerPreset) {
         timerManager.runTimer(from: preset, presetManager: presetManager)
-        timerDidRunPublisher.send()
     }
     
     // MARK: - Hide (즐겨찾기 제거 흐름)
