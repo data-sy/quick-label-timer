@@ -58,7 +58,7 @@ class EditPresetViewModel: ObservableObject {
     func start() {
         save()
         if let updatedPreset = presetManager.allPresets.first(where: { $0.id == preset.id }) {
-            timerManager.runTimer(from: updatedPreset, presetManager: presetManager)
+            timerManager.runTimer(from: updatedPreset)
         }
     }
 }

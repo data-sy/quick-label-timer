@@ -52,15 +52,6 @@ struct LabelTimerApp: App {
         }
         .onChange(of: scenePhase) { newPhase in
             timerManager.updateScenePhase(newPhase)
-            if newPhase == .active {
-                /// 만료된 타이머 알람 강제 중지 (추후 구조 변경 시 불필요해질 수 있음)
-                timerManager.stopAlarmsForExpiredTimers()
-                /// 완료된 타이머들에 삭제 예정 시각 세팅(자동 삭제 카운트다운 시작)
-                /// 예약된 타이머에 대해 상태별 분기 처리 및 안내 메시지 표시
-                timerManager.markCompletedTimersForDeletion(n: Self.deleteCountdownSeconds) { timer in
-                    timerManager.handleTimerCompletion(timer)
-                }
-            }
         }
     }
 }

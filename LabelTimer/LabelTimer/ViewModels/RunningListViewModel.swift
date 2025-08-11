@@ -12,7 +12,9 @@ import Foundation
 import Combine
 
 final class RunningListViewModel: ObservableObject {
-    @Published var sortedTimers: [TimerData] = []
+    var sortedTimers: [TimerData] {
+        timerManager.timers.sorted { $0.createdAt > $1.createdAt }
+    }
     
     let deleteCountdownSeconds = LabelTimerApp.deleteCountdownSeconds
     private let timerManager: TimerManager
@@ -24,12 +26,13 @@ final class RunningListViewModel: ObservableObject {
         self.timerManager = timerManager
         self.presetManager = presetManager
         
-        timerManager.$timers
-            .receive(on: RunLoop.main)
-            .map { timers in
-                timers.sorted(by: { $0.createdAt > $1.createdAt })
+        // TimerManager의 변경 신호를 View에 중계
+        timerManager.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
             }
-            .assign(to: &$sortedTimers)
+            .store(in: &cancellables)
     }
     
     /// Left 버튼 액션 처리

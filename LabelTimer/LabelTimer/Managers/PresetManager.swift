@@ -10,19 +10,22 @@
 
 import Foundation
 
-final class PresetManager: ObservableObject {    
-    /// 사용자 정의 프리셋 목록 (최초 실행 시 기본 프리셋 포함)
+
+// MARK: - Protocol Definition
+protocol PresetManagerProtocol {
+    func addPreset(from timer: TimerData)
+    func showPreset(withId id: UUID)
+    func hidePreset(withId id: UUID)
+    var allPresets: [TimerPreset] { get }
+}
+
+// MARK: - PresetManager Class
+final class PresetManager: ObservableObject, PresetManagerProtocol {
     @Published var userPresets: [TimerPreset] = []
 
-    /// UserDefaults 저장 키
     private let userDefaultsKey = "user_presets"
-
-    /// 최초 실행 여부 확인 키
     private let didInitializeKey = "did_initialize_presets"
     
-    // MARK: - Init
-
-    /// 초기화 시: UserDefaults에서 프리셋 불러오거나 기본 프리셋 저장
     init() {
         loadPresets()
     }
@@ -35,7 +38,7 @@ final class PresetManager: ObservableObject {
     }
     
     // MARK: - CRUD
-
+    
     /// 사용자 프리셋 추가
     func addPreset(_ preset: TimerPreset) {
         userPresets.append(preset)
@@ -53,22 +56,13 @@ final class PresetManager: ObservableObject {
             isVibrationOn: timer.isVibrationOn,
             createdAt: Date()
         )
-        userPresets.insert(preset, at: 0) // 최신순을 유지하기 위해 앞에 삽입
+        userPresets.insert(preset, at: 0)
         savePresets()
     }
 
     /// 프리셋 수정
-    func updatePreset(
-        _ preset: TimerPreset,
-        label: String,
-        hours: Int,
-        minutes: Int,
-        seconds: Int,
-        isSoundOn: Bool,
-        isVibrationOn: Bool
-    ) {
+    func updatePreset(_ preset: TimerPreset, label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool) {
         guard let index = userPresets.firstIndex(where: { $0.id == preset.id }) else { return }
-        // 기존 id와 createdAt(필요시)만 유지, 나머지는 새로 생성
         let updated = TimerPreset(
             id: preset.id,
             label: label,
@@ -77,7 +71,7 @@ final class PresetManager: ObservableObject {
             seconds: seconds,
             isSoundOn: isSoundOn,
             isVibrationOn: isVibrationOn,
-            createdAt: preset.createdAt, // 있으면 유지
+            createdAt: preset.createdAt,
             isHiddenInList: preset.isHiddenInList
         )
         userPresets[index] = updated
@@ -91,7 +85,7 @@ final class PresetManager: ObservableObject {
     }
 
     // MARK: - 숨김/표시 상태 관리
-    
+
     /// 프리셋 숨기기
     func hidePreset(withId id: UUID) {
         if let idx = userPresets.firstIndex(where: { $0.id == id }) {
@@ -109,14 +103,14 @@ final class PresetManager: ObservableObject {
     }
     
     // MARK: - Persistence
-    
+
     /// 프리셋 불러오기 (최초 실행 시에는 기본 프리셋 저장)
     private func loadPresets() {
         let defaults = UserDefaults.standard
         let didInitialize = defaults.bool(forKey: didInitializeKey)
 
         if !didInitialize {
-            userPresets = samplePresets
+            // userPresets = samplePresets // 실제 프로젝트의 샘플 데이터 사용
             savePresets()
             defaults.set(true, forKey: didInitializeKey)
             return
@@ -135,11 +129,3 @@ final class PresetManager: ObservableObject {
         }
     }
 }
-
-#if DEBUG
-extension PresetManager {
-    func setPresets(_ presets: [TimerPreset]) {
-        self.userPresets = presets
-    }
-}
-#endif

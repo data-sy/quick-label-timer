@@ -52,7 +52,8 @@ class FavoriteListViewModel: ObservableObject {
         
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
     func runTimer(from preset: TimerPreset) {
-        timerManager.runTimer(from: preset, presetManager: presetManager)
+        timerManager.runTimer(from: preset)
+
     }
     
     // MARK: - Hide (즐겨찾기 제거 흐름)
