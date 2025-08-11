@@ -18,7 +18,7 @@ import Foundation
 func makeButtonSet(for state: TimerInteractionState, isFavorite: Bool) -> TimerButtonSet {
     switch state {
     case .preset:
-        return .init(left: .none, right: .play)
+        return .init(left: .edit, right: .play)
 
     case .running:
         return .init(left: .stop, right: .pause)

@@ -38,16 +38,16 @@ final class RunningListViewModel: ObservableObject {
         switch set.left {
         case .none:
             break
-
         case .stop:
             timerManager.stopTimer(id: timer.id)
-
         case .moveToFavorite:
             handleMoveToPreset(for: timer)
-            // 화면 이동은 할까 말까?
-
         case .delete:
             deleteTimer(timer)
+        case .edit:
+            // Running에선 등장하지 않아야 함
+            assertionFailure("Left .edit should not appear for running timers")
+            break
         }
     }
 

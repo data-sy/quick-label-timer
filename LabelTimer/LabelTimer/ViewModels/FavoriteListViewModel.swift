@@ -41,7 +41,7 @@ class FavoriteListViewModel: ObservableObject {
 
     /// Left 버튼 액션 처리
     func handleLeft(for preset: TimerPreset) {
-        // 프리셋 편집 버튼 추가 예정
+        startEditing(for: preset)
     }
 
     /// Right 버튼 액션 처리

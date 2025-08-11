@@ -14,8 +14,10 @@ public enum TimerLeftButtonType: Equatable {
     case none
     /// 실행 중 타이머 강제 종료
     case stop
-    /// 프리셋(즐겨찾기)으로 이동
+    /// 실행 중 타이머 즐겨찾기로 이동
     case moveToFavorite
-    /// 완료되지 않은 일반 타이머 삭제
+    /// 타이머 삭제
     case delete
+    /// 즐겨찾기(프리셋) 편집
+    case edit
 }

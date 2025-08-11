@@ -43,6 +43,13 @@ func ui(for type: TimerLeftButtonType) -> TimerButtonUI? {
             role: .destructive,
             accessibilityLabel: "삭제"
         )
+    case .edit:
+        return .init(
+            systemImage: "pencil",
+            tint: .teal,
+            role: nil,
+            accessibilityLabel: "편집"
+        )
     }
 }
 
@@ -72,4 +79,3 @@ func ui(for type: TimerRightButtonType) -> TimerButtonUI {
         )
     }
 }
-
