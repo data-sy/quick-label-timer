@@ -17,15 +17,10 @@ struct TimerRightButtonView: View {
     var body: some View {
         let m = ui(for: type)
         return Button(role: m.role, action: action) {
-            if m.showsTitle {
-                Label(m.title, systemImage: m.systemImage)
-            } else {
-                Image(systemName: m.systemImage)
-                    .imageScale(.large)
-            }
+            Image(systemName: m.systemImage)
+                .imageScale(.large)
         }
-        .tint(m.tint)
-        .timerButton(emphasis: m.emphasis, size: m.size, color: m.tint, shape: m.shape)
-        .accessibilityLabel(m.title)
+        .timerButton(color: m.tint)
+        .accessibilityLabel(m.accessibilityLabel)
     }
 }

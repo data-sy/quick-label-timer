@@ -15,19 +15,15 @@ struct TimerLeftButtonView: View {
     let action: () -> Void
 
     var body: some View {
-        guard let m = ui(for: type) else { return AnyView(EmptyView()) }
-        return AnyView(
+        if let m = ui(for: type) {
             Button(role: m.role, action: action) {
-                if m.showsTitle {
-                    Label(m.title, systemImage: m.systemImage)
-                } else {
-                    Image(systemName: m.systemImage)
-                        .imageScale(.large)
-                }
+                Image(systemName: m.systemImage)
+                    .imageScale(.large)
             }
-            .tint(m.tint)
-            .timerButton(emphasis: m.emphasis, size: m.size, color: m.tint, shape: m.shape )
-            .accessibilityLabel(m.title)
-        )
+            .timerButton(color: m.tint)
+            .accessibilityLabel(m.accessibilityLabel)
+        } else {
+            EmptyView()
+        }
     }
 }

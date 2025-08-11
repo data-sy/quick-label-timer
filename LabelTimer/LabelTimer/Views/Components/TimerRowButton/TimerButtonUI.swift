@@ -11,74 +11,65 @@
 import SwiftUI
 
 struct TimerButtonUI {
-    let title: String
     let systemImage: String
     let tint: Color
     let role: ButtonRole?
-    let emphasis: TimerButtonEmphasis
-    let size: TimerButtonSize
-    let shape: TimerButtonShape
-    let showsTitle: Bool
+    let accessibilityLabel: String
 }
 
-// Left
+// MARK: - Left
 func ui(for type: TimerLeftButtonType) -> TimerButtonUI? {
     switch type {
     case .none:
         return nil
     case .stop:
-        return .init(title: "정지",
-                     systemImage: "stop.fill",
-                     tint: .red,
-                     role: .destructive,
-                     emphasis: .secondary,
-                     size: .regular,
-                     shape: .circle, showsTitle: false)
+        return .init(
+            systemImage: "stop.fill",
+            tint: .red,
+            role: .destructive,
+            accessibilityLabel: "정지"
+        )
     case .moveToFavorite:
-        return .init(title: "즐겨찾기 이동",
-                     systemImage: "arrow.right",
-                     tint: .gray,
-                     role: nil,
-                     emphasis: .secondary,
-                     size: .regular,
-                     shape: .circle, showsTitle: true)
+        return .init(
+            systemImage: "chevron.right",
+            tint: .yellow,
+            role: nil,
+            accessibilityLabel: "즐겨찾기로 이동"
+        )
     case .delete:
-        return .init(title: "삭제",
-                     systemImage: "trash.fill",
-                     tint: .red,
-                     role: .destructive,
-                     emphasis: .secondary,
-                     size: .regular,
-                     shape: .circle, showsTitle: false)
+        return .init(
+            systemImage: "xmark",
+            tint: .gray,
+            role: .destructive,
+            accessibilityLabel: "삭제"
+        )
     }
 }
 
-// Right
+// MARK: - Right
 func ui(for type: TimerRightButtonType) -> TimerButtonUI {
     switch type {
     case .play:
-        return .init(title: "재생",
-                     systemImage: "play.fill",
-                     tint: Color.accentColor,
-                     role: nil,
-                     emphasis: .primary,
-                     size: .regular,
-                     shape: .circle, showsTitle: true)
+        return .init(
+            systemImage: "play.fill",
+            tint: .accentColor,
+            role: nil,
+            accessibilityLabel: "재생"
+        )
     case .pause:
-        return .init(title: "일시정지",
-                     systemImage: "pause.fill",
-                     tint: .gray,
-                     role: nil,
-                     emphasis: .secondary,
-                     size: .regular,
-                     shape: .circle, showsTitle: true)
+        return .init(
+            systemImage: "pause.fill",
+            tint: .orange,
+            role: nil,
+            accessibilityLabel: "일시정지"
+        )
     case .restart:
-        return .init(title: "재시작",
-                     systemImage: "gobackward",
-                     tint: .accentColor,
-                     role: nil,
-                     emphasis: .primary,
-                     size: .regular,
-                     shape: .circle, showsTitle: true)
+        return .init(
+            systemImage: "gobackward",
+            tint: .accentColor,
+            role: nil,
+            accessibilityLabel: "재시작"
+        )
     }
 }
+
