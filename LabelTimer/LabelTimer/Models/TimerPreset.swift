@@ -20,15 +20,16 @@ struct TimerPreset: Identifiable, Codable, Hashable {
     let isSoundOn: Bool
     let isVibrationOn: Bool
     let createdAt: Date
-
-    var isHiddenInList: Bool = false
     
+    var lastUsedAt: Date
+    var isHiddenInList: Bool = false
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
     }
     
-    // 1. id 없이 생성할 때(새 프리셋 생성)
+    /// id 없이 생성할 때(새 프리셋 생성)
     init(
+        id: UUID = UUID(),
         label: String,
         hours: Int,
         minutes: Int,
@@ -36,31 +37,10 @@ struct TimerPreset: Identifiable, Codable, Hashable {
         isSoundOn: Bool = true,
         isVibrationOn: Bool = true,
         createdAt: Date = Date(),
+        lastUsedAt: Date? = nil,
         isHiddenInList: Bool = false
     ) {
-        self.id = UUID()
-        self.label = label
-        self.hours = hours
-        self.minutes = minutes
-        self.seconds = seconds
-        self.isSoundOn = isSoundOn
-        self.isVibrationOn = isVibrationOn
-        self.createdAt = createdAt
-        self.isHiddenInList = isHiddenInList
-    }
-    
-    // 2. id 포함 생성자(복사/업데이트/디코딩 등)
-    init(
-        id: UUID = UUID(),
-        label: String,
-        hours: Int,
-        minutes: Int,
-        seconds: Int,
-        isSoundOn: Bool,
-        isVibrationOn: Bool,
-        createdAt: Date = Date(),
-        isHiddenInList: Bool = false
-    ) {
+        let now = createdAt
         self.id = id
         self.label = label
         self.hours = hours
@@ -68,7 +48,29 @@ struct TimerPreset: Identifiable, Codable, Hashable {
         self.seconds = seconds
         self.isSoundOn = isSoundOn
         self.isVibrationOn = isVibrationOn
-        self.createdAt = createdAt
+        self.createdAt = now
+        self.lastUsedAt = lastUsedAt ?? createdAt
         self.isHiddenInList = isHiddenInList
     }
+    
+    /// id 포함 생성자 (복사/업데이트/디코딩 등)
+    // Codable을 통해 UserDefaults에서 데이터를 디코딩(불러오기)할 때 사용되는 초기화 함수
+       init(from decoder: Decoder) throws {
+           let container = try decoder.container(keyedBy: CodingKeys.self)
+           
+           id = try container.decode(UUID.self, forKey: .id)
+           createdAt = try container.decode(Date.self, forKey: .createdAt)
+           label = try container.decode(String.self, forKey: .label)
+           hours = try container.decode(Int.self, forKey: .hours)
+           minutes = try container.decode(Int.self, forKey: .minutes)
+           seconds = try container.decode(Int.self, forKey: .seconds)
+           isSoundOn = try container.decode(Bool.self, forKey: .isSoundOn)
+           isVibrationOn = try container.decode(Bool.self, forKey: .isVibrationOn)
+           isHiddenInList = try container.decode(Bool.self, forKey: .isHiddenInList)
+                      
+           // lastUsedAt 디코딩 (데이터 마이그레이션 처리)
+           let decodedLastUsedAt = try container.decodeIfPresent(Date.self, forKey: .lastUsedAt)
+           // 가져온 값이 nil이면(옛날 데이터), createdAt 값을 대신 사용
+           lastUsedAt = decodedLastUsedAt ?? createdAt
+       }
 }

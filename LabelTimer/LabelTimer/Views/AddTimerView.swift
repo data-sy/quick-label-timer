@@ -35,21 +35,27 @@ struct AddTimerView: View {
                 isLabelFocused: $isLabelFocused,
                 isStartDisabled: (hours + minutes + seconds) == 0,
                 onStart: {
-                    timerManager.addTimer(
-                        label: label,
-                        hours: hours,
-                        minutes: minutes,
-                        seconds: seconds,
-                        isSoundOn: isSoundOn,
-                        isVibrationOn: isVibrationOn
-                    )
-                    // 입력 초기화
-                    label = ""
-                    hours = 0
-                    minutes = 0
-                    seconds = 0
+                    if isLabelFocused { isLabelFocused = false }
+
+                    DispatchQueue.main.async {
+                        timerManager.addTimer(
+                            label: label,
+                            hours: hours,
+                            minutes: minutes,
+                            seconds: seconds,
+                            isSoundOn: isSoundOn,
+                            isVibrationOn: isVibrationOn
+                        )
+                        // 입력 초기화
+                        label = ""
+                        hours = 0
+                        minutes = 0
+                        seconds = 0
+                    }
                 }
             )
         }
+        .onSubmit { isLabelFocused = false }
+        .submitLabel(.done)
     }
 }

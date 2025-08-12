@@ -12,41 +12,22 @@ import SwiftUI
 
 struct RunningTimerRowView: View {
     let timer: TimerData
-    let deleteCountdownSeconds: Int
-    let onAction: (TimerButtonType) -> Void
     let onToggleFavorite: (() -> Void)?
-    let namespace: Namespace.ID
+    let onLeftTap: (() -> Void)?
+    let onRightTap: (() -> Void)?
 
     var body: some View {
-        let buttons = buttonSet(for: timer.interactionState)
         let statusText = self.statusText(for: timer.interactionState)
 
         VStack(alignment: .leading, spacing: 4) {
             TimerRowView(
                 timer: timer,
-                leftButton: buttons.left.map { leftType in
-                    AnyView(
-                        TimerActionButton(type: leftType) {
-                            if leftType == .moveToPreset {
-                                withAnimation(.spring()) {
-                                    onAction(leftType)
-                                }
-                            } else {
-                                onAction(leftType)
-                            }
-                        }
-                    )
-                },
-                rightButton: AnyView(
-                    TimerActionButton(type: buttons.right) {
-                        onAction(buttons.right)
-                    }
-                ),
                 state: timer.interactionState,
                 statusText: statusText,
-                onToggleFavorite: onToggleFavorite
+                onToggleFavorite: onToggleFavorite,
+                onLeftTap: onLeftTap,
+                onRightTap: onRightTap
             )
-            .matchedGeometryEffect(id: timer.presetId, in: namespace)
         }
         .id(timer.id) // 삭제 후 뷰 리프레시 보장
     }

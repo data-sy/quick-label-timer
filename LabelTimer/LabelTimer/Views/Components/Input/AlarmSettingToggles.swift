@@ -46,7 +46,7 @@ private struct ToggleButton: View {
                 .padding(8)
                 .background(
                     Circle()
-                        .fill(isOn ? Color.brandColor.opacity(0.75) : Color(UIColor.systemGray5))
+                        .fill(isOn ? Color(UIColor.blue).opacity(0.75) : Color(UIColor.systemGray5))
                 )
         }
         .buttonStyle(.plain)

@@ -15,15 +15,6 @@ final class SettingsViewModel: ObservableObject {
     @AppStorage("isDarkMode") var isDarkMode: Bool = false
     
     @Published var notificationStatus: UNAuthorizationStatus = .notDetermined
-    
-    /// 다크/라이트모드 전환
-    func applyAppearance() {
-        let style: UIUserInterfaceStyle = isDarkMode ? .dark : .light
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = windowScene.windows.first {
-            window.overrideUserInterfaceStyle = style
-        }
-    }
 
     /// 알림 권한 상태 조회
     func fetchNotificationStatus() {
