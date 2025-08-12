@@ -32,11 +32,3 @@ struct FavoriteToggleButton: View {
         // 접근성 라벨 등 추가 가능
     }
 }
-
-#Preview {
-    VStack(spacing: 24) {
-        FavoriteToggleButton(isFavorite: true, onToggle: {})
-        FavoriteToggleButton(isFavorite: false, onToggle: {})
-    }
-    .padding()
-}
