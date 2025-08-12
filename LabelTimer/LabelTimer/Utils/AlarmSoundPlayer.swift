@@ -12,13 +12,30 @@
 import Foundation
 import AVFoundation
 
-final class AlarmSoundPlayer {
+protocol AlarmSoundPlayable {
+    func playAlarm(for id: UUID, sound: AlarmSound, loop: Bool)
+    func playDefaultAlarm(for id: UUID, loop: Bool)
+    func stopAlarm(for id: UUID)
+    func stopAll()
+}
+
+final class AlarmSoundPlayer: AlarmSoundPlayable {
     static let shared = AlarmSoundPlayer()
 
     private var players: [UUID: AVAudioPlayer] = [:]
     private let session = AVAudioSession.sharedInstance()
 
-    private init() {}
+    private init() {
+        // 오디오 세션 설정 (초기화 시점에 한 번 설정함으로써, 백그라운드 전환 등의 상황에서도 오디오 재생이 가능하도록 앱이 항상 준비됨)
+        do {
+            try session.setCategory(.playback, options: [.duckOthers, .mixWithOthers])
+            try session.setActive(true)
+        } catch {
+            #if DEBUG
+            print("오디오 세션 초기화 실패: \(error)")
+            #endif
+        }
+    }
     
     /// 저장된 사용자 기본 사운드로 알람 재생
     func playDefaultAlarm(for id: UUID, loop: Bool = true) {
@@ -40,9 +57,6 @@ final class AlarmSoundPlayer {
         }
 
         do {
-            try session.setCategory(.playback, options: [.duckOthers])
-            try session.setActive(true)
-
             let player = try AVAudioPlayer(contentsOf: url)
             player.numberOfLoops = loop ? -1 : 0
             player.volume = 1.0
@@ -63,10 +77,6 @@ final class AlarmSoundPlayer {
             player.stop()
             players.removeValue(forKey: id)
         }
-
-        if players.isEmpty {
-            try? session.setActive(false)
-        }
     }
 
     /// 모든 타이머의 사운드 정지
@@ -75,7 +85,6 @@ final class AlarmSoundPlayer {
             player.stop()
         }
         players.removeAll()
-        try? session.setActive(false)
     }
 
     /// 현재 재생 중인지 확인 (옵션)

@@ -4,11 +4,19 @@
 //
 //  Created by 이소연 on 7/26/25.
 //
-/// 실제 사운드 및 진동 기능을 수행하는 클래스
+/// 타이머의 알람(소리/진동)과 관련된 모든 동작을 중계하는 클래스
 ///
-/// - 사용 목적: AlarmTriggering 프로토콜을 채택하여 실제 알람 기능을 캡슐화하고, 테스트 시 Mock과 교체 가능하게 함
+/// - 사용 목적: TimerManager 등 앱의 다른 부분에서는 이 핸들러를 통해서만 알람 기능을 사용하도록 하여,
+///             실제 재생 로직(AlarmSoundPlayer)과의 의존성을 분리하고 코드를 단순화함
 
 import Foundation
+
+protocol AlarmTriggering {
+    func playIfNeeded(for timer: TimerData)
+    func stopSound(for id: UUID)
+    func vibrate()
+    func stopAllSounds()
+}
 
 final class AlarmHandler: AlarmTriggering {
     private let player: AlarmSoundPlayable
@@ -28,6 +36,10 @@ final class AlarmHandler: AlarmTriggering {
     func stopSound(for id: UUID) {
         player.stopAlarm(for: id)
     }
+    
+    func stopAllSounds() {
+        player.stopAll()
+    }
 
     func vibrate() {
         VibrationUtils.vibrate()
@@ -42,5 +54,3 @@ final class AlarmHandler: AlarmTriggering {
         }
     }
 }
-
-extension AlarmSoundPlayer: AlarmSoundPlayable {}
