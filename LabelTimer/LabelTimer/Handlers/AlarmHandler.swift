@@ -13,9 +13,8 @@ import Foundation
 
 protocol AlarmTriggering {
     func playIfNeeded(for timer: TimerData)
-    func stopSound(for id: UUID)
-    func vibrate()
-    func stopAllSounds()
+    func stop(for id: UUID)
+    func stopAll()
 }
 
 final class AlarmHandler: AlarmTriggering {
@@ -25,32 +24,21 @@ final class AlarmHandler: AlarmTriggering {
         self.player = player
     }
 
-    func playSound(for id: UUID) {
-        player.playAlarm(for: id, sound: .default, loop: true)
-    }
-    
-    func playDefaultSound(for id: UUID) {
-        player.playDefaultAlarm(for: id, loop: true)
-    }
-
-    func stopSound(for id: UUID) {
-        player.stopAlarm(for: id)
-    }
-    
-    func stopAllSounds() {
-        player.stopAll()
-    }
-
-    func vibrate() {
-        VibrationUtils.vibrate()
-    }
-    
+    /// 타이머 설정에 따라 소리/진동 재생
     func playIfNeeded(for timer: TimerData) {
-        if timer.isSoundOn {
-            playDefaultSound(for: timer.id)
+        if timer.isSoundOn || timer.isVibrationOn {
+             let sound = timer.isSoundOn ? AlarmSound.current : .none // .none 케이스 필요
+             player.play(for: timer.id, sound: sound, needsVibration: timer.isVibrationOn)
         }
-        if timer.isVibrationOn {
-            vibrate()
-        }
+    }
+    
+    /// 특정 타이머의 알람 중지
+    func stop(for id: UUID) {
+        player.stop(for: id)
+    }
+    
+    /// 모든 타이머의 알람 중지
+    func stopAll() {
+        player.stopAll()
     }
 }

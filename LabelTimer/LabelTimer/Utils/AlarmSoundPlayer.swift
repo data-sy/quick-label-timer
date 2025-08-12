@@ -4,18 +4,18 @@
 //
 //  Created by 이소연 on 7/25/25.
 //
-/// 타이머 종료 시 반복 알람 소리를 재생하는 클래스
+/// 타이머 종료 시 반복 알람(소리,진동)을 재생하는 클래스
 ///
-/// - 사용 목적: 백그라운드 및 포그라운드에서 반복적으로 울리는 알람 사운드 재생
-/// - 기능: AVAudioSession 설정, 타이머별 알람 사운드 재생 및 정지
+/// - 사용 목적: 백그라운드에서 반복적으로 울리는 알람 소리/진동 재생
 
 import Foundation
 import AVFoundation
+import AudioToolbox
 
 protocol AlarmSoundPlayable {
-    func playAlarm(for id: UUID, sound: AlarmSound, loop: Bool)
-    func playDefaultAlarm(for id: UUID, loop: Bool)
-    func stopAlarm(for id: UUID)
+    func play(for id: UUID, sound: AlarmSound, needsVibration: Bool)
+    func playDefault(for id: UUID, needsVibration: Bool)
+    func stop(for id: UUID)
     func stopAll()
 }
 
@@ -23,6 +23,8 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
     static let shared = AlarmSoundPlayer()
 
     private var players: [UUID: AVAudioPlayer] = [:]
+    private var vibrationTimers: [UUID: Timer] = [:]
+    
     private let session = AVAudioSession.sharedInstance()
 
     private init() {
@@ -38,57 +40,77 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
     }
     
     /// 저장된 사용자 기본 사운드로 알람 재생
-    func playDefaultAlarm(for id: UUID, loop: Bool = true) {
+    func playDefault(for id: UUID, needsVibration: Bool) {
         let soundID = UserDefaults.standard.string(forKey: "defaultSound") ?? AlarmSound.lowBuzz.id
         let sound = AlarmSound.from(id: soundID)
-        playAlarm(for: id, sound: sound, loop: loop)
+        play(for: id, sound: sound, needsVibration: needsVibration)
     }
 
-    /// 특정 타이머에 대한 알람 사운드 재생
-    func playAlarm(for id: UUID, sound: AlarmSound, loop: Bool = true) {
-        let fileName = sound.fileName
-        let fileExtension = sound.fileExtension
-
-        guard let url = Bundle.main.url(forResource: fileName, withExtension: fileExtension) else {
-            #if DEBUG
-            print("사운드 파일을 찾을 수 없음: \(fileName).\(fileExtension)")
-            #endif
-            return
+    /// 특정 타이머에 대한 알람(소리/진동) 재생
+    func play(for id: UUID, sound: AlarmSound, needsVibration: Bool) {
+        // 사운드 재생 시도
+        if sound != .none {
+            let fileName = sound.fileName
+            let fileExtension = sound.fileExtension
+            // 사운드 파일이 존재하는 경우에만 재생 로직 실행
+            if let url = Bundle.main.url(forResource: fileName, withExtension: fileExtension) {
+                do {
+                    let player = try AVAudioPlayer(contentsOf: url)
+                    player.numberOfLoops = -1
+                    player.play()
+                    players[id] = player
+                } catch {
+                    #if DEBUG
+                    print("사운드 재생 실패: \(error)")
+                    #endif
+                }
+            } else {
+                #if DEBUG
+                print("사운드 파일을 찾을 수 없음: \(fileName).\(fileExtension)")
+                #endif
+            }
         }
-
-        do {
-            let player = try AVAudioPlayer(contentsOf: url)
-            player.numberOfLoops = loop ? -1 : 0
-            player.volume = 1.0
-            player.prepareToPlay()
-            player.play()
-
-            players[id] = player
-        } catch {
-            #if DEBUG
-            print("사운드 재생 실패: \(error)")
-            #endif
-        }
-    }
-
-    /// 특정 타이머의 사운드 정지
-    func stopAlarm(for id: UUID) {
-        if let player = players[id] {
-            player.stop()
-            players.removeValue(forKey: id)
+        // 진동 재생 시도 (사운드 재생 성공 여부와 독립적으로 실행)
+        if needsVibration {
+            startVibration(for: id)
         }
     }
 
-    /// 모든 타이머의 사운드 정지
+    /// 특정 타이머의 알람(소리/진동) 정지
+    func stop(for id: UUID) {
+        // 사운드 정지
+        players[id]?.stop()
+        players.removeValue(forKey: id)
+        // 진동 타이머 정지
+        stopVibration(for: id)
+    }
+
+    /// 모든 알람(소리/진동) 정지
     func stopAll() {
-        for (_, player) in players {
-            player.stop()
-        }
+        // 모든 사운드 정지
+        players.values.forEach { $0.stop() }
         players.removeAll()
+        // 모든 진동 타이머 정지
+        vibrationTimers.values.forEach { $0.invalidate() }
+        vibrationTimers.removeAll()
     }
-
-    /// 현재 재생 중인지 확인 (옵션)
-    func isPlaying(for id: UUID) -> Bool {
-        return players[id]?.isPlaying ?? false
+    
+    // MARK: - Private Vibration Helpers
+    
+    /// 반복적인 진동을 시작하는 private 함수
+    private func startVibration(for id: UUID) {
+        guard vibrationTimers[id] == nil else { return } // 이미 진동 중이면 중복 실행 방지
+        
+        // 2초마다 진동을 실행하는 타이머 생성
+        let timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        }
+        vibrationTimers[id] = timer
+    }
+    
+    /// 진동을 멈추는 private 함수
+    private func stopVibration(for id: UUID) {
+        vibrationTimers[id]?.invalidate() // 타이머 무효화
+        vibrationTimers.removeValue(forKey: id)
     }
 }

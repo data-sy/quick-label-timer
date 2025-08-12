@@ -161,7 +161,7 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
         completionHandler.cancelPendingAction(for: id)
         NotificationUtils.cancelScheduledNotification(id: id.uuidString)
         
-        alarmHandler.stopSound(for: id)
+        alarmHandler.stop(for: id)
         
         guard let index = timers.firstIndex(where: { $0.id == id }) else { return nil }
         return timers.remove(at: index)
@@ -195,7 +195,7 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
         completionHandler.cancelPendingAction(for: id)
         NotificationUtils.cancelScheduledNotification(id: id.uuidString)
         
-        alarmHandler.stopSound(for: id)
+        alarmHandler.stop(for: id)
 
         guard let index = timers.firstIndex(where: { $0.id == id }) else { return }
         
@@ -240,7 +240,7 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
     func updateScenePhase(_ phase: ScenePhase) {
         self.scenePhase = phase
         if phase == .active {
-            alarmHandler.stopAllSounds()
+            alarmHandler.stopAll()
             markCompletedTimersForDeletion(n: deleteCountdownSeconds) { [weak self] markedTimer in
                 self?.startCompletionProcess(for: markedTimer)
             }
