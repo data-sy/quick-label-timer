@@ -29,36 +29,39 @@ final class AlarmHandlerTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func test_playSound_callsPlayerWithCorrectId() {
-        let testId = UUID()
-        handler.playSound(for: testId)
-        XCTAssertEqual(mockPlayer.playedSoundId, testId)
-    }
-
-    func test_playDefaultSound_usesCurrentDefaultSound() {
+    // 진동이 켜져 있을 때, player의 진동 시작 로직이 호출되는지 검증
+    func test_playIfNeeded_whenVibrationIsOn_startsVibration() {
         // given
-        let testId = UUID()
-        UserDefaults.standard.set("low-buzz", forKey: "defaultSound")
-
+        let timer = TimerData.testData(isVibrationOn: true) // 진동 ON
+        
         // when
-        handler.playDefaultSound(for: testId)
-
+        handler.playIfNeeded(for: timer)
+        
         // then
-        XCTAssertEqual(mockPlayer.playedSound, .siren)
+        XCTAssertTrue(mockPlayer.vibrationStartedForIDs.contains(timer.id))
     }
     
-    func test_stopSound_callsPlayerWithCorrectId() {
+    // 진동이 꺼져 있을 때, player의 진동 시작 로직이 호출되지 않는지 검증
+    func test_playIfNeeded_whenVibrationIsOff_doesNotStartVibration() {
+        // given
+        let timer = TimerData.testData(isVibrationOn: false) // 진동 OFF
+        
+        // when
+        handler.playIfNeeded(for: timer)
+        
+        // then
+        XCTAssertFalse(mockPlayer.vibrationStartedForIDs.contains(timer.id))
+    }
+    
+    // 변경된 메서드 이름으로 테스트를 업데이트
+    func test_stop_callsPlayerWithCorrectId() {
         let testId = UUID()
-        handler.stopSound(for: testId)
-        XCTAssertEqual(mockPlayer.stoppedSoundId, testId)
+        handler.stop(for: testId)
+        XCTAssertEqual(mockPlayer.lastStoppedID, testId)
     }
     
-    // [추가] stopAllSounds가 player의 stopAll을 호출하는지 검증하는 새로운 테스트입니다.
-    func test_stopAllSounds_callsPlayerStopAll() {
-        // when: 핸들러의 stopAllSounds 메서드를 호출하면
-        handler.stopAllSounds()
-
-        // then: 내부의 mockPlayer의 stopAllCallCount가 1 증가해야 합니다.
-        XCTAssertEqual(mockPlayer.stopAllCallCount, 1, "stopAll() should be called exactly once")
+    func test_stopAll_callsPlayerStopAll() {
+        handler.stopAll()
+        XCTAssertEqual(mockPlayer.stopAllCallCount, 1)
     }
 }

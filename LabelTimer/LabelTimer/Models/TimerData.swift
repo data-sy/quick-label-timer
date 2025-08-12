@@ -122,3 +122,10 @@ extension TimerData {
         }
     }
 }
+
+// 테스트에 필요한 최소한의 파라미터로 TimerData 생성
+extension TimerData {
+    static func testData(isSoundOn: Bool = true, isVibrationOn: Bool = true) -> TimerData {
+        return .init(label: "test", hours: 0, minutes: 0, seconds: 1, isSoundOn: isSoundOn, isVibrationOn: isVibrationOn, createdAt: Date(), endDate: Date(), remainingSeconds: 1, status: .running, presetId: nil, isFavorite: false)
+    }
+}
