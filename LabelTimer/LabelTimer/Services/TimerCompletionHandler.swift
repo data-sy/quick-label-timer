@@ -21,15 +21,15 @@ enum CompletionActionType {
 final class TimerCompletionHandler {
     private var countdownTasks: [UUID: Task<Void, Never>] = [:]
     private let timerManager: TimerManagerProtocol
-    private let presetManager: PresetManagerProtocol
+    private let presetRepository: PresetRepositoryProtocol
     /// 1초마다 카운트다운이 진행될 때 호출되는 클로저 ( TimerManager가 objectWillChange를 호출하여 View 갱신)
     var onTick: ((_ timerId: UUID) -> Void)?
     // 카운트다운이 완전히 끝나거나 취소되었을 때 호출되는 클로저 (TimerManager가 카운트다운 UI를 숨기는 등의 정리 작업 수행)
     var onComplete: ((_ timerId: UUID) -> Void)?
 
-    init(timerManager: TimerManagerProtocol, presetManager: PresetManagerProtocol) {
+    init(timerManager: TimerManagerProtocol, presetRepository: PresetRepositoryProtocol) {
         self.timerManager = timerManager
-        self.presetManager = presetManager
+        self.presetRepository = presetRepository
     }
 
     /// 이 객체가 메모리에서 해제될 때 호출됨
@@ -103,11 +103,11 @@ final class TimerCompletionHandler {
         // 최종 결정된 Action 실행
         switch finalAction {
         case .saveAsPreset:
-            presetManager.addPreset(from: latestTimer)
+            presetRepository.addPreset(from: latestTimer)
             timerManager.removeTimer(id: timerId)
         case .showPreset:
             guard let presetId = latestTimer.presetId else { return }
-            presetManager.showPreset(withId: presetId)
+            presetRepository.showPreset(withId: presetId)
             timerManager.removeTimer(id: timerId)
         case .deleteOnly:
             timerManager.removeTimer(id: timerId)
