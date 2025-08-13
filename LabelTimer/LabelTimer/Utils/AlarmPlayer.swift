@@ -1,5 +1,5 @@
 //
-//  AlarmSoundPlayer.swift
+//  AlarmPlayer.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/25/25.
@@ -12,15 +12,15 @@ import Foundation
 import AVFoundation
 import AudioToolbox
 
-protocol AlarmSoundPlayable {
+protocol AlarmPlayable {
     func play(for id: UUID, sound: AlarmSound, needsVibration: Bool)
     func playDefault(for id: UUID, needsVibration: Bool)
     func stop(for id: UUID)
     func stopAll()
 }
 
-final class AlarmSoundPlayer: AlarmSoundPlayable {
-    static let shared = AlarmSoundPlayer()
+final class AlarmPlayer: AlarmPlayable {
+    static let shared = AlarmPlayer()
 
     private var players: [UUID: AVAudioPlayer] = [:]
     private var vibrationTimers: [UUID: Timer] = [:]
@@ -41,7 +41,7 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
     /// 특정 타이머에 대한 알람(소리/진동) 재생
     func play(for id: UUID, sound: AlarmSound, needsVibration: Bool) {
         func ts() -> String { ISO8601DateFormatter().string(from: Date()) }
-        print("[\(ts())][AlarmSoundPlayer][play] id=\(id.uuidString) sound=\(sound) needsVibration=\(needsVibration)")
+        print("[\(ts())][AlarmPlayer][play] id=\(id.uuidString) sound=\(sound) needsVibration=\(needsVibration)")
 
         // 1. 소리가 '없음'이 아닐 경우에만 재생 로직 실행
         if sound != .none {
@@ -52,7 +52,7 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
                 urlToPlay = primaryUrl
             } else {
                 // 3. 파일이 없다면, 경고를 출력하고 '대체 사운드'로 전환
-                print("[\(ts())][AlarmSoundPlayer][play][WARN] 주 사운드 파일(\(sound.fileName))을 찾을 수 없어 대체 사운드를 재생합니다.")
+                print("[\(ts())][AlarmPlayer][play][WARN] 주 사운드 파일(\(sound.fileName))을 찾을 수 없어 대체 사운드를 재생합니다.")
                 urlToPlay = Bundle.main.url(forResource: AlarmSound.fallback.fileName, withExtension: AlarmSound.fallback.fileExtension)
             }
 
@@ -64,33 +64,33 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
                     
                     if player.play() {
                         players[id] = player
-                        print("[\(ts())][AlarmSoundPlayer][play] AVAudioPlayer started=true")
+                        print("[\(ts())][AlarmPlayer][play] AVAudioPlayer started=true")
                         let task = schedule(after: autoStopInterval) { [weak self] in
                             print("⏰ 15분이 지나 알람을 자동으로 끕니다: \(id)")
                             self?.stop(for: id)
                         }
                         autoStopTasks[id] = task
                     } else {
-                        print("[\(ts())][AlarmSoundPlayer][play] AVAudioPlayer started=false. Playback failed.")
+                        print("[\(ts())][AlarmPlayer][play] AVAudioPlayer started=false. Playback failed.")
                         // 5. 재생 실패 시, 로컬의 사운드 알람 기능 사용 (예) 다른 사운드 재생 중)
                         // TODO: 추가 예정
                     }
                 } catch {
-                    print("[\(ts())][AlarmSoundPlayer][play][ERROR] 세션 설정 또는 플레이어 초기화 실패: \(error)")
+                    print("[\(ts())][AlarmPlayer][play][ERROR] 세션 설정 또는 플레이어 초기화 실패: \(error)")
                 }
             } else {
-                print("[\(ts())][AlarmSoundPlayer][play][FATAL] 대체 사운드 파일마저 찾을 수 없습니다.")
+                print("[\(ts())][AlarmPlayer][play][FATAL] 대체 사운드 파일마저 찾을 수 없습니다.")
             }
         } else {
-            print("[\(ts())][AlarmSoundPlayer][play] sound is .none → skip sound")
+            print("[\(ts())][AlarmPlayer][play] sound is .none → skip sound")
         }
          
         // 진동 재생 시도 (사운드 재생 성공 여부와 독립적으로 실행)
         if needsVibration {
-            print("[\(ts())][AlarmSoundPlayer][play] starting vibration for id=\(id.uuidString)")
+            print("[\(ts())][AlarmPlayer][play] starting vibration for id=\(id.uuidString)")
             startVibration(for: id)
         } else {
-            print("[\(ts())][AlarmSoundPlayer][play] vibration disabled")
+            print("[\(ts())][AlarmPlayer][play] vibration disabled")
         }
     }
 

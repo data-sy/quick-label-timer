@@ -6,7 +6,7 @@
 //
 /// AlarmHandlerTests
 ///
-/// - 사용 목적: AlarmHandler가 AlarmSoundPlayable 프로토콜을 통해 사운드 재생/정지 요청을 정상 위임하는지 검증
+/// - 사용 목적: AlarmHandler가 AlarmPlayable 프로토콜을 통해 사운드 재생/정지 요청을 정상 위임하는지 검증
 
 import XCTest
 @testable import LabelTimer

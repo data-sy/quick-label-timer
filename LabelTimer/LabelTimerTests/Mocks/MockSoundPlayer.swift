@@ -4,14 +4,14 @@
 //
 //  Created by 이소연 on 8/1/25.
 //
-/// AlarmSoundPlayable을 구현한 Mock 객체
+/// AlarmPlayable을 구현한 Mock 객체
 ///
 /// - 사용 목적: AlarmHandler 테스트에서 사운드 재생/정지 관련 호출을 검증
 
 import Foundation
 @testable import LabelTimer
 
-final class MockSoundPlayer: AlarmSoundPlayable {
+final class MockSoundPlayer: AlarmPlayable {
     // MARK: - Sound Tracking Properties
     private(set) var playedSound: AlarmSound?
     private(set) var lastPlayedID: UUID?
