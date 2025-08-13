@@ -25,19 +25,8 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
     private var players: [UUID: AVAudioPlayer] = [:]
     private var vibrationTimers: [UUID: Timer] = [:]
     
-    private let session = AVAudioSession.sharedInstance()
-
-    private init() {
-        // 오디오 세션 설정 (초기화 시점에 한 번 설정함으로써, 백그라운드 전환 등의 상황에서도 오디오 재생이 가능하도록 앱이 항상 준비됨)
-        do {
-            try session.setCategory(.playback, options: [.duckOthers, .mixWithOthers])
-            try session.setActive(true)
-        } catch {
-            #if DEBUG
-            print("오디오 세션 초기화 실패: \(error)")
-            #endif
-        }
-    }
+    // 싱글톤 패턴을 위한 기본 private init
+    private init() {}
     
     /// 저장된 사용자 기본 사운드로 알람 재생
     func playDefault(for id: UUID, needsVibration: Bool) {
@@ -48,31 +37,52 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
 
     /// 특정 타이머에 대한 알람(소리/진동) 재생
     func play(for id: UUID, sound: AlarmSound, needsVibration: Bool) {
-        // 사운드 재생 시도
+        func ts() -> String { ISO8601DateFormatter().string(from: Date()) }
+        print("[\(ts())][AlarmSoundPlayer][play] id=\(id.uuidString) sound=\(sound) needsVibration=\(needsVibration)")
+
+        // 1. 소리가 '없음'이 아닐 경우에만 재생 로직 실행
         if sound != .none {
-            let fileName = sound.fileName
-            let fileExtension = sound.fileExtension
-            // 사운드 파일이 존재하는 경우에만 재생 로직 실행
-            if let url = Bundle.main.url(forResource: fileName, withExtension: fileExtension) {
-                do {
-                    let player = try AVAudioPlayer(contentsOf: url)
+            var urlToPlay: URL?
+            
+            // 2. 사용자가 선택한 사운드 파일이 있는지 먼저 확인
+            if let primaryUrl = Bundle.main.url(forResource: sound.fileName, withExtension: sound.fileExtension) {
+                urlToPlay = primaryUrl
+            } else {
+                // 3. 파일이 없다면, 경고를 출력하고 '대체 사운드'로 전환
+                print("[\(ts())][AlarmSoundPlayer][play][WARN] 주 사운드 파일(\(sound.fileName))을 찾을 수 없어 대체 사운드를 재생합니다.")
+                urlToPlay = Bundle.main.url(forResource: AlarmSound.fallback.fileName, withExtension: AlarmSound.fallback.fileExtension)
+            }
+
+            // 4. 재생할 최종 URL이 확정되었다면 재생 시도
+            if let finalUrl = urlToPlay {
+                do {                    
+                    let player = try AVAudioPlayer(contentsOf: finalUrl)
                     player.numberOfLoops = -1
-                    player.play()
-                    players[id] = player
+                    
+                    if player.play() {
+                        players[id] = player
+                        print("[\(ts())][AlarmSoundPlayer][play] AVAudioPlayer started=true")
+                    } else {
+                        print("[\(ts())][AlarmSoundPlayer][play] AVAudioPlayer started=false. Playback failed.")
+                        // 5. 재생 실패 시, 로컬의 사운드 알람 기능 사용 (예) 다른 사운드 재생 중)
+                        // TODO: 추가 예정
+                    }
                 } catch {
-                    #if DEBUG
-                    print("사운드 재생 실패: \(error)")
-                    #endif
+                    print("[\(ts())][AlarmSoundPlayer][play][ERROR] 세션 설정 또는 플레이어 초기화 실패: \(error)")
                 }
             } else {
-                #if DEBUG
-                print("사운드 파일을 찾을 수 없음: \(fileName).\(fileExtension)")
-                #endif
+                print("[\(ts())][AlarmSoundPlayer][play][FATAL] 대체 사운드 파일마저 찾을 수 없습니다.")
             }
+        } else {
+            print("[\(ts())][AlarmSoundPlayer][play] sound is .none → skip sound")
         }
+         
         // 진동 재생 시도 (사운드 재생 성공 여부와 독립적으로 실행)
         if needsVibration {
+            print("[\(ts())][AlarmSoundPlayer][play] starting vibration for id=\(id.uuidString)")
             startVibration(for: id)
+        } else {
+            print("[\(ts())][AlarmSoundPlayer][play] vibration disabled")
         }
     }
 

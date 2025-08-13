@@ -43,6 +43,9 @@ enum AlarmSound: CaseIterable, Identifiable {
     }
 
     static var `default`: AlarmSound { .lowBuzz }
+    
+    /// 사운드 파일 누락 시 사용할 대체(Fallback) 사운드
+    static var fallback: AlarmSound { .lowBuzz }
 
     static var current: AlarmSound {
         let id = UserDefaults.standard.string(forKey: "defaultSound") ?? AlarmSound.default.id
