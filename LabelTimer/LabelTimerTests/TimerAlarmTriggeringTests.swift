@@ -19,9 +19,9 @@ final class TimerAlarmTriggeringTests: XCTestCase {
         super.setUp()
         mockAlarmHandler = MockAlarmHandler()
 
-        let presetManager = PresetManager()
+        let presetRepository = PresetRepository()
         timerManager = TimerManager(
-            presetManager: presetManager,
+            presetRepository: presetRepository,
             alarmHandler: mockAlarmHandler
         )
     }

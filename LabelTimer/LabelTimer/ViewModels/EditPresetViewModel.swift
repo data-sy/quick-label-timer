@@ -12,7 +12,7 @@ import SwiftUI
 
 class EditPresetViewModel: ObservableObject {
     private let preset: TimerPreset
-    private let presetManager: PresetManager
+    private let presetRepository: PresetRepository
     private let timerManager: TimerManager
     
     @Published var label: String
@@ -23,9 +23,9 @@ class EditPresetViewModel: ObservableObject {
     @Published var isVibrationOn: Bool
     @Published var isShowingHideAlert = false
     
-    init(preset: TimerPreset, presetManager: PresetManager, timerManager: TimerManager) {
+    init(preset: TimerPreset, presetRepository: PresetRepository, timerManager: TimerManager) {
         self.preset = preset
-        self.presetManager = presetManager
+        self.presetRepository = presetRepository
         self.timerManager = timerManager
         
         self.label = preset.label
@@ -38,7 +38,7 @@ class EditPresetViewModel: ObservableObject {
         
     /// 변경된 내용 저장
     func save() {
-        presetManager.updatePreset(
+        presetRepository.updatePreset(
             preset,
             label: label,
             hours: hours,
@@ -51,13 +51,13 @@ class EditPresetViewModel: ObservableObject {
     
     /// 프리셋 삭제
     func hide() {
-        presetManager.hidePreset(withId: preset.id)
+        presetRepository.hidePreset(withId: preset.id)
     }
     
     /// 변경된 내용으로 타이머 시작
     func start() {
         save()
-        if let updatedPreset = presetManager.allPresets.first(where: { $0.id == preset.id }) {
+        if let updatedPreset = presetRepository.allPresets.first(where: { $0.id == preset.id }) {
             timerManager.runTimer(from: updatedPreset)
         }
     }

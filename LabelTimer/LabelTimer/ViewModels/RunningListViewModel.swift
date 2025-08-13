@@ -18,13 +18,13 @@ final class RunningListViewModel: ObservableObject {
     
     let deleteCountdownSeconds = LabelTimerApp.deleteCountdownSeconds
     private let timerManager: TimerManager
-    private let presetManager: PresetManager
+    private let presetRepository: PresetRepository
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(timerManager: TimerManager, presetManager: PresetManager) {
+    init(timerManager: TimerManager, presetRepository: PresetRepository) {
         self.timerManager = timerManager
-        self.presetManager = presetManager
+        self.presetRepository = presetRepository
         
         // TimerManager의 변경 신호를 View에 중계
         timerManager.objectWillChange
@@ -70,9 +70,9 @@ final class RunningListViewModel: ObservableObject {
     /// 실행 중인 타이머를 프리셋으로 이동/복구
     func handleMoveToPreset(for timer: TimerData) {
         if let presetId = timer.presetId,
-           let preset = presetManager.userPresets.first(where: { $0.id == presetId }) {
+           let preset = presetRepository.userPresets.first(where: { $0.id == presetId }) {
             // 기존 프리셋에서 실행된 타이머였다면 프리셋을 다시 보이게 처리 후 타이머 삭제
-            presetManager.showPreset(withId: preset.id)
+            presetRepository.showPreset(withId: preset.id)
             timerManager.removeTimer(id: timer.id)
         } else {
             // 사용자 생성 타이머라면 새 프리셋으로 변환

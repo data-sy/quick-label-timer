@@ -26,7 +26,7 @@ struct TimerManagerNotificationTests {
         let mockCenter = MockNotificationCenter()
         NotificationUtils.center = mockCenter
 
-        let manager = TimerManager(presetManager: PresetManager())
+        let manager = TimerManager(presetRepository: PresetRepository())
         manager.addTimer(label: "Test", hours: 0, minutes: 0, seconds: 5, isSoundOn: true, isVibrationOn: true)
 
         #expect(mockCenter.addedRequests.count == 1)
@@ -39,7 +39,7 @@ struct TimerManagerNotificationTests {
         let mockCenter = MockNotificationCenter()
         NotificationUtils.center = mockCenter
 
-        let manager = TimerManager(presetManager: PresetManager())
+        let manager = TimerManager(presetRepository: PresetRepository())
         manager.addTimer(label: "Test", hours: 0, minutes: 0, seconds: 5, isSoundOn: true, isVibrationOn: true)
         let timerID = manager.timers.first!.id
 
@@ -54,7 +54,7 @@ struct TimerManagerNotificationTests {
         let mockCenter = MockNotificationCenter()
         NotificationUtils.center = mockCenter
 
-        let manager = TimerManager(presetManager: PresetManager())
+        let manager = TimerManager(presetRepository: PresetRepository())
         manager.addTimer(label: "Test", hours: 0, minutes: 0, seconds: 5, isSoundOn: true, isVibrationOn: true) // 에러 때문에 잠시 넣음. 리팩토링 예정
         let timerID = manager.timers.first!.id
 
@@ -74,7 +74,7 @@ struct TimerManagerNotificationTests {
         let mockCenter = MockNotificationCenter()
         NotificationUtils.center = mockCenter
 
-        let manager = TimerManager(presetManager: PresetManager())
+        let manager = TimerManager(presetRepository: PresetRepository())
         manager.addTimer(label: "Test", hours: 0, minutes: 0, seconds: 5, isSoundOn: true, isVibrationOn: true)
 
         let timerID = manager.timers.first!.id
@@ -90,7 +90,7 @@ struct TimerManagerNotificationTests {
         let mockCenter = MockNotificationCenter()
         NotificationUtils.center = mockCenter
 
-        let manager = TimerManager(presetManager: PresetManager())
+        let manager = TimerManager(presetRepository: PresetRepository())
         manager.addTimer(label: "Test", hours: 0, minutes: 0, seconds: 5, isSoundOn: true, isVibrationOn: true)
 
         let timerID = manager.timers.first!.id
@@ -111,7 +111,7 @@ struct TimerManagerNotificationTests {
         let mockCenter = MockNotificationCenter()
         NotificationUtils.center = mockCenter
 
-        let manager = TimerManager(presetManager: PresetManager())
+        let manager = TimerManager(presetRepository: PresetRepository())
         manager.addTimer(label: "Test", hours: 0, minutes: 0, seconds: 5, isSoundOn: true, isVibrationOn: true)
 
         let timerID = manager.timers.first!.id

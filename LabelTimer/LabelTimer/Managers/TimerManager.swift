@@ -27,14 +27,14 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
     @Published var timers: [TimerData] = []
     @Published private(set) var scenePhase: ScenePhase = .active
     
-    private let presetManager: PresetManagerProtocol
+    private let presetRepository: PresetRepositoryProtocol
     private let alarmHandler: AlarmTriggering
     let deleteCountdownSeconds: Int
     let didStart = PassthroughSubject<Void, Never>()
 
     // --- 완료 로직을 전담할 Handler ---
     private lazy var completionHandler: TimerCompletionHandler = {
-        let handler = TimerCompletionHandler(timerManager: self, presetManager: self.presetManager)
+        let handler = TimerCompletionHandler(timerManager: self, presetRepository: self.presetRepository)
         
         handler.onTick = { [weak self] _ in
             self?.objectWillChange.send()
@@ -50,8 +50,8 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
     
     private var timer: Timer?
     
-    init(presetManager: PresetManagerProtocol, deleteCountdownSeconds: Int, alarmHandler: AlarmTriggering = AlarmHandler()) {
-        self.presetManager = presetManager
+    init(presetRepository: PresetRepositoryProtocol, deleteCountdownSeconds: Int, alarmHandler: AlarmTriggering = AlarmHandler()) {
+        self.presetRepository = presetRepository
         self.deleteCountdownSeconds = deleteCountdownSeconds
         self.alarmHandler = alarmHandler
         startTicking()
@@ -151,8 +151,8 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
             presetId: preset.id,
             isFavorite: true
         )
-        presetManager.updateLastUsed(for: preset.id)
-        presetManager.hidePreset(withId: preset.id)
+        presetRepository.updateLastUsed(for: preset.id)
+        presetRepository.hidePreset(withId: preset.id)
         didStart.send()
     }
     
@@ -169,7 +169,7 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
     
     func convertTimerToPreset(timerId: UUID) {
         if let timer = removeTimer(id: timerId) {
-            presetManager.addPreset(from: timer)
+            presetRepository.addPreset(from: timer)
         }
     }
     
@@ -261,7 +261,7 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
     // MARK: - Private Helpers
     
     private func generateAutoLabel() -> String {
-        let existingLabels = timers.map(\.label) + presetManager.allPresets.map(\.label)
+        let existingLabels = timers.map(\.label) + presetRepository.allPresets.map(\.label)
         var index = 1
         while true {
             let candidate = "타이머\(index)"

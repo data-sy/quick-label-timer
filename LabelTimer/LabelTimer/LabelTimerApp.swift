@@ -15,7 +15,7 @@ struct LabelTimerApp: App {
     
     @Environment(\.scenePhase) private var scenePhase
     
-    @StateObject private var presetManager: PresetManager
+    @StateObject private var presetRepository: PresetRepository
     @StateObject private var timerManager: TimerManager
     @StateObject private var settingsViewModel: SettingsViewModel
 
@@ -23,11 +23,11 @@ struct LabelTimerApp: App {
     
     // 지연 초기화(deferred init)
     init() {
-        let preset = PresetManager()
-        _presetManager = StateObject(wrappedValue: preset)
+        let preset = PresetRepository()
+        _presetRepository = StateObject(wrappedValue: preset)
         _timerManager = StateObject(
             wrappedValue: TimerManager(
-                presetManager: preset,
+                presetRepository: preset,
                 deleteCountdownSeconds: Self.deleteCountdownSeconds
             )
         )
@@ -37,11 +37,11 @@ struct LabelTimerApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView(
-                presetManager: presetManager,
+                presetRepository: presetRepository,
                 timerManager: timerManager
             )
             .environmentObject(timerManager)
-            .environmentObject(presetManager)
+            .environmentObject(presetRepository)
             .environmentObject(settingsViewModel)
             .preferredColorScheme(settingsViewModel.isDarkMode ? .dark : .light)
         }

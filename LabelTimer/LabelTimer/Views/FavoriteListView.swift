@@ -58,7 +58,7 @@ struct FavoriteListView: View {
                     if let preset = viewModel.editingPreset {
                         EditPresetView(
                             preset: preset,
-                            presetManager: viewModel.presetManager,
+                            presetRepository: viewModel.presetRepository,
                             timerManager: viewModel.timerManager
                         )
                         .presentationDetents([.medium])

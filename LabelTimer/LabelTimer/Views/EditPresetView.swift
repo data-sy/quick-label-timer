@@ -16,10 +16,10 @@ struct EditPresetView: View {
     @FocusState private var isLabelFocused: Bool
     @Environment(\.dismiss) private var dismiss
 
-    init(preset: TimerPreset, presetManager: PresetManager, timerManager: TimerManager) {
+    init(preset: TimerPreset, presetRepository: PresetRepository, timerManager: TimerManager) {
         _viewModel = StateObject(wrappedValue: EditPresetViewModel(
             preset: preset,
-            presetManager: presetManager,
+            presetRepository: presetRepository,
             timerManager: timerManager
         ))
     }

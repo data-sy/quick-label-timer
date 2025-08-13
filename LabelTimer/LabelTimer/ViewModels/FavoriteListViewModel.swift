@@ -12,7 +12,7 @@ import SwiftUI
 import Combine
 
 class FavoriteListViewModel: ObservableObject {
-    let presetManager: PresetManager
+    let presetRepository: PresetRepository
     let timerManager: TimerManager
     
     private var cancellables = Set<AnyCancellable>()
@@ -25,11 +25,11 @@ class FavoriteListViewModel: ObservableObject {
     @Published var editingPreset: TimerPreset?
     @Published var isEditing: Bool = false
     
-    init(presetManager: PresetManager, timerManager: TimerManager) {
-        self.presetManager = presetManager
+    init(presetRepository: PresetRepository, timerManager: TimerManager) {
+        self.presetRepository = presetRepository
         self.timerManager = timerManager
         
-        presetManager.userPresetsPublisher // Publisher에 접근 (PresetManager에 정의 필요)
+        presetRepository.userPresetsPublisher // Publisher에 접근 (PresetRepository에 정의 필요)
             .map { presets in
                 // 1. 숨겨진 프리셋을 먼저 필터링합니다.
                 let visible = presets.filter { !$0.isHiddenInList }
@@ -57,7 +57,7 @@ class FavoriteListViewModel: ObservableObject {
         
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
     func runTimer(from preset: TimerPreset) {
-        presetManager.updateLastUsed(for: preset.id)
+        presetRepository.updateLastUsed(for: preset.id)
         (timerManager as? TimerManager)?.runTimer(from: preset)
     }
     
@@ -72,7 +72,7 @@ class FavoriteListViewModel: ObservableObject {
     /// 확인창에서의 즐겨찾기 삭제
     func confirmHide() {
         if let preset = presetToHide {
-            presetManager.hidePreset(withId: preset.id)
+            presetRepository.hidePreset(withId: preset.id)
         }
         presetToHide = nil // 상태 초기화
     }
@@ -81,7 +81,7 @@ class FavoriteListViewModel: ObservableObject {
     func hidePreset(at offsets: IndexSet) {
         let presetsToHide = offsets.map { visiblePresets[$0] }
         for preset in presetsToHide {
-            presetManager.hidePreset(withId: preset.id)
+            presetRepository.hidePreset(withId: preset.id)
         }
     }
     
