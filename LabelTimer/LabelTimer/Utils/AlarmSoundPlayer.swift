@@ -25,6 +25,9 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
     private var players: [UUID: AVAudioPlayer] = [:]
     private var vibrationTimers: [UUID: Timer] = [:]
     
+    private var autoStopTasks: [UUID: DispatchWorkItem] = [:]
+    private let autoStopInterval: TimeInterval = 900 // 15분 (900초)
+    
     // 싱글톤 패턴을 위한 기본 private init
     private init() {}
     
@@ -62,6 +65,11 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
                     if player.play() {
                         players[id] = player
                         print("[\(ts())][AlarmSoundPlayer][play] AVAudioPlayer started=true")
+                        let task = schedule(after: autoStopInterval) { [weak self] in
+                            print("⏰ 15분이 지나 알람을 자동으로 끕니다: \(id)")
+                            self?.stop(for: id)
+                        }
+                        autoStopTasks[id] = task
                     } else {
                         print("[\(ts())][AlarmSoundPlayer][play] AVAudioPlayer started=false. Playback failed.")
                         // 5. 재생 실패 시, 로컬의 사운드 알람 기능 사용 (예) 다른 사운드 재생 중)
@@ -88,6 +96,10 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
 
     /// 특정 타이머의 알람(소리/진동) 정지
     func stop(for id: UUID) {
+        if let task = autoStopTasks.removeValue(forKey: id) {
+            cancel(task: task)
+            print("🚫 '자동 끄기' 예약을 취소합니다: \(id)")
+        }
         // 사운드 정지
         players[id]?.stop()
         players.removeValue(forKey: id)
@@ -97,6 +109,9 @@ final class AlarmSoundPlayer: AlarmSoundPlayable {
 
     /// 모든 알람(소리/진동) 정지
     func stopAll() {
+        autoStopTasks.values.forEach { cancel(task: $0) }
+        autoStopTasks.removeAll()
+        print("🚫 모든 '자동 끄기' 예약을 취소합니다.")
         // 모든 사운드 정지
         players.values.forEach { $0.stop() }
         players.removeAll()
