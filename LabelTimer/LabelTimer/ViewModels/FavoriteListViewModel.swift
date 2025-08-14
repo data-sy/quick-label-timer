@@ -12,8 +12,8 @@ import SwiftUI
 import Combine
 
 class FavoriteListViewModel: ObservableObject {
-    let presetRepository: PresetRepository
-    let timerManager: TimerManager
+    let presetRepository: PresetRepositoryProtocol
+    let timerService: TimerServiceProtocol
     
     private var cancellables = Set<AnyCancellable>()
 
@@ -25,16 +25,13 @@ class FavoriteListViewModel: ObservableObject {
     @Published var editingPreset: TimerPreset?
     @Published var isEditing: Bool = false
     
-    init(presetRepository: PresetRepository, timerManager: TimerManager) {
+    init(presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol) {
         self.presetRepository = presetRepository
-        self.timerManager = timerManager
+        self.timerService = timerService
         
-        presetRepository.userPresetsPublisher // Publisher에 접근 (PresetRepository에 정의 필요)
+        presetRepository.userPresetsPublisher
             .map { presets in
-                // 1. 숨겨진 프리셋을 먼저 필터링합니다.
                 let visible = presets.filter { !$0.isHiddenInList }
-                
-                // 2. 그 다음, lastUsedAt을 기준으로 내림차순 정렬합니다.
                 return visible.sorted { $0.lastUsedAt > $1.lastUsedAt }
             }
             .receive(on: DispatchQueue.main) // UI 업데이트는 메인 스레드에서
@@ -58,7 +55,7 @@ class FavoriteListViewModel: ObservableObject {
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
     func runTimer(from preset: TimerPreset) {
         presetRepository.updateLastUsed(for: preset.id)
-        (timerManager as? TimerManager)?.runTimer(from: preset)
+        timerService.runTimer(from: preset)
     }
     
     // MARK: - Hide (즐겨찾기 제거 흐름)

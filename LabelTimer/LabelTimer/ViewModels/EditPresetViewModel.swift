@@ -12,8 +12,8 @@ import SwiftUI
 
 class EditPresetViewModel: ObservableObject {
     private let preset: TimerPreset
-    private let presetRepository: PresetRepository
-    private let timerManager: TimerManager
+    private let presetRepository: PresetRepositoryProtocol
+    private let timerService: TimerServiceProtocol
     
     @Published var label: String
     @Published var hours: Int
@@ -23,10 +23,10 @@ class EditPresetViewModel: ObservableObject {
     @Published var isVibrationOn: Bool
     @Published var isShowingHideAlert = false
     
-    init(preset: TimerPreset, presetRepository: PresetRepository, timerManager: TimerManager) {
+    init(preset: TimerPreset, presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol) {
         self.preset = preset
         self.presetRepository = presetRepository
-        self.timerManager = timerManager
+        self.timerService = timerService
         
         self.label = preset.label
         self.hours = preset.hours
@@ -58,7 +58,7 @@ class EditPresetViewModel: ObservableObject {
     func start() {
         save()
         if let updatedPreset = presetRepository.allPresets.first(where: { $0.id == preset.id }) {
-            timerManager.runTimer(from: updatedPreset)
+            timerService.runTimer(from: updatedPreset)
         }
     }
 }
