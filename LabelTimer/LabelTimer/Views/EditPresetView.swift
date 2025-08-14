@@ -16,12 +16,8 @@ struct EditPresetView: View {
     @FocusState private var isLabelFocused: Bool
     @Environment(\.dismiss) private var dismiss
 
-    init(preset: TimerPreset, presetRepository: PresetRepository, timerManager: TimerManager) {
-        _viewModel = StateObject(wrappedValue: EditPresetViewModel(
-            preset: preset,
-            presetRepository: presetRepository,
-            timerManager: timerManager
-        ))
+    init(viewModel: EditPresetViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -78,7 +74,6 @@ struct EditPresetView: View {
                     .disabled((viewModel.hours + viewModel.minutes + viewModel.seconds) == 0)
                 }
             }
-            // ViewModel의 상태와 연결된 삭제 확인 알림창입니다.
             .deleteAlert(
                 isPresented: $viewModel.isShowingHideAlert,
                 itemName: viewModel.label,
