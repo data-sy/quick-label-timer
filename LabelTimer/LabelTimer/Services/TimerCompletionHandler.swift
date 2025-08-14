@@ -6,7 +6,7 @@
 //
 ///
 /// 타이머가 '완료'된 후의 모든 비동기 로직을 전담하는 클래스
-/// 사용 목적: TimerManager가 타이머의 '실행'에만 집중하도록, '완료 후'의 복잡한 로직을 위임받아 책임을 분리함
+/// 사용 목적: TimerService가 타이머의 '실행'에만 집중하도록, '완료 후'의 복잡한 로직을 위임받아 책임을 분리함
 
 import Foundation
 
@@ -20,15 +20,15 @@ enum CompletionActionType {
 // MARK: - Timer Completion Handler
 final class TimerCompletionHandler {
     private var countdownTasks: [UUID: Task<Void, Never>] = [:]
-    private let timerManager: TimerManagerProtocol
+    private let timerService: TimerServiceProtocol
     private let presetRepository: PresetRepositoryProtocol
-    /// 1초마다 카운트다운이 진행될 때 호출되는 클로저 ( TimerManager가 objectWillChange를 호출하여 View 갱신)
+    /// 1초마다 카운트다운이 진행될 때 호출되는 클로저
     var onTick: ((_ timerId: UUID) -> Void)?
-    // 카운트다운이 완전히 끝나거나 취소되었을 때 호출되는 클로저 (TimerManager가 카운트다운 UI를 숨기는 등의 정리 작업 수행)
+    // 카운트다운이 완전히 끝나거나 취소되었을 때 호출되는 클로저 (Service가 정리 작업 수행)
     var onComplete: ((_ timerId: UUID) -> Void)?
 
-    init(timerManager: TimerManagerProtocol, presetRepository: PresetRepositoryProtocol) {
-        self.timerManager = timerManager
+    init(timerService: TimerServiceProtocol, presetRepository: PresetRepositoryProtocol) {
+        self.timerService = timerService
         self.presetRepository = presetRepository
     }
 
@@ -89,7 +89,7 @@ final class TimerCompletionHandler {
     @MainActor
     private func handle(timerId: UUID) {
         // '최신' TimerData 가져오기 (완료 후의 즐겨찾기 토글 적용)
-        guard let latestTimer = timerManager.getTimer(byId: timerId) else {
+        guard let latestTimer = timerService.getTimer(byId: timerId) else {
             onComplete?(timerId)
             return
         }
@@ -104,13 +104,13 @@ final class TimerCompletionHandler {
         switch finalAction {
         case .saveAsPreset:
             presetRepository.addPreset(from: latestTimer)
-            timerManager.removeTimer(id: timerId)
+            timerService.removeTimer(id: timerId)
         case .showPreset:
             guard let presetId = latestTimer.presetId else { return }
             presetRepository.showPreset(withId: presetId)
-            timerManager.removeTimer(id: timerId)
+            timerService.removeTimer(id: timerId)
         case .deleteOnly:
-            timerManager.removeTimer(id: timerId)
+            timerService.removeTimer(id: timerId)
         }
         
         onComplete?(timerId)
