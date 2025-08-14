@@ -25,19 +25,26 @@ struct MainTabView: View {
     @StateObject private var runningListVM: RunningListViewModel
     @StateObject private var favoriteListVM: FavoriteListViewModel
     
-    init(presetRepository: PresetRepository, timerManager: TimerManager) {
-        self.timerDidStart = timerManager.didStart.eraseToAnyPublisher()
+    init(
+        timerService: TimerServiceProtocol,
+        timerRepository: TimerRepositoryProtocol,
+        presetRepository: PresetRepositoryProtocol
+    ) {
+        
+        self.timerDidStart = timerService.didStart.eraseToAnyPublisher()
         
         _runningListVM = StateObject(
             wrappedValue: RunningListViewModel(
-                timerManager: timerManager,
+                timerService: timerService,
+                timerRepository: timerRepository,
                 presetRepository: presetRepository
             )
         )
+        
         _favoriteListVM = StateObject(
             wrappedValue: FavoriteListViewModel(
                 presetRepository: presetRepository,
-                timerManager: timerManager
+                timerService: timerService
             )
         )
     }

@@ -14,39 +14,46 @@ struct LabelTimerApp: App {
     static let deleteCountdownSeconds = 10
     
     @Environment(\.scenePhase) private var scenePhase
-    
+
+    @StateObject private var timerRepository: TimerRepository
     @StateObject private var presetRepository: PresetRepository
-    @StateObject private var timerManager: TimerManager
+    @StateObject private var timerService: TimerService
     @StateObject private var settingsViewModel: SettingsViewModel
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     // 지연 초기화(deferred init)
     init() {
-        let preset = PresetRepository()
-        _presetRepository = StateObject(wrappedValue: preset)
-        _timerManager = StateObject(
-            wrappedValue: TimerManager(
-                presetRepository: preset,
-                deleteCountdownSeconds: Self.deleteCountdownSeconds
-            )
+        let timerRepository = TimerRepository()
+        let presetRepository = PresetRepository()
+        let timerService = TimerService(
+            timerRepository: timerRepository,
+            presetRepository: presetRepository,
+            deleteCountdownSeconds: Self.deleteCountdownSeconds
         )
+        
+        //@StateObject 속성들을 초기화
+        _timerRepository = StateObject(wrappedValue: timerRepository)
+        _presetRepository = StateObject(wrappedValue: presetRepository)
+        _timerService = StateObject(wrappedValue: timerService)
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel())
     }
     
     var body: some Scene {
         WindowGroup {
             MainTabView(
-                presetRepository: presetRepository,
-                timerManager: timerManager
+                timerService: timerService,
+                timerRepository: timerRepository,
+                presetRepository: presetRepository
             )
-            .environmentObject(timerManager)
+            .environmentObject(timerService)
+            .environmentObject(timerRepository)
             .environmentObject(presetRepository)
             .environmentObject(settingsViewModel)
             .preferredColorScheme(settingsViewModel.isDarkMode ? .dark : .light)
         }
         .onChange(of: scenePhase) { newPhase in
-            timerManager.updateScenePhase(newPhase)
+            timerService.updateScenePhase(newPhase)
         }
     }
 }
