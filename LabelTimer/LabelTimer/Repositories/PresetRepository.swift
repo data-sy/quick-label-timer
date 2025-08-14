@@ -13,10 +13,12 @@ import Combine
 
 // MARK: - Protocol Definition
 protocol PresetRepositoryProtocol {
+    func getPreset(byId id: UUID) -> TimerPreset?
     func addPreset(from timer: TimerData)
     func showPreset(withId id: UUID)
     func hidePreset(withId id: UUID)
     var allPresets: [TimerPreset] { get }
+    func updatePreset(_ preset: TimerPreset, label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool)
     func updateLastUsed(for presetId: UUID)
     var userPresetsPublisher: AnyPublisher<[TimerPreset], Never> { get }
 }
@@ -45,6 +47,11 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     }
     
     // MARK: - CRUD
+    
+    /// ID로 특정 프리셋 객체 반환
+    func getPreset(byId id: UUID) -> TimerPreset? {
+        userPresets.first { $0.id == id }
+    }
     
     /// 사용자 프리셋 추가
     func addPreset(_ preset: TimerPreset) {
