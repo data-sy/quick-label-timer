@@ -1,5 +1,5 @@
 //
-//  PresetManager.swift
+//  PresetRepository.swift
 //  LabelTimer
 //
 //  Created by 이소연 on 7/14/25.
@@ -12,17 +12,19 @@ import Foundation
 import Combine
 
 // MARK: - Protocol Definition
-protocol PresetManagerProtocol {
+protocol PresetRepositoryProtocol {
+    func getPreset(byId id: UUID) -> TimerPreset?
     func addPreset(from timer: TimerData)
     func showPreset(withId id: UUID)
     func hidePreset(withId id: UUID)
     var allPresets: [TimerPreset] { get }
+    func updatePreset(_ preset: TimerPreset, label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool)
     func updateLastUsed(for presetId: UUID)
     var userPresetsPublisher: AnyPublisher<[TimerPreset], Never> { get }
 }
 
-// MARK: - PresetManager Class
-final class PresetManager: ObservableObject, PresetManagerProtocol {
+// MARK: - PresetRepository Class
+final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     @Published var userPresets: [TimerPreset] = []
 
     private let userDefaultsKey = "user_presets"
@@ -45,6 +47,11 @@ final class PresetManager: ObservableObject, PresetManagerProtocol {
     }
     
     // MARK: - CRUD
+    
+    /// ID로 특정 프리셋 객체 반환
+    func getPreset(byId id: UUID) -> TimerPreset? {
+        userPresets.first { $0.id == id }
+    }
     
     /// 사용자 프리셋 추가
     func addPreset(_ preset: TimerPreset) {

@@ -56,11 +56,12 @@ struct FavoriteListView: View {
                 )
                 .sheet(isPresented: $viewModel.isEditing, onDismiss: viewModel.stopEditing) {
                     if let preset = viewModel.editingPreset {
-                        EditPresetView(
+                        let editViewModel = EditPresetViewModel(
                             preset: preset,
-                            presetManager: viewModel.presetManager,
-                            timerManager: viewModel.timerManager
+                            presetRepository: viewModel.presetRepository,
+                            timerService: viewModel.timerService
                         )
+                        EditPresetView(viewModel: editViewModel)
                         .presentationDetents([.medium])
                     }
                 }

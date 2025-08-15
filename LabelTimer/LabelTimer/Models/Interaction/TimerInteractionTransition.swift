@@ -6,7 +6,7 @@
 //
 /// UI 상호작용 상태 전이 로직
 /// - 사용 목적: 현재 UI 상태와 눌린 버튼 타입에 따라 다음 UI 상태를 결정
-///   (실제 타이머 동작은 ViewModel → TimerManager가 수행)
+///   (실제 타이머 동작은 ViewModel → TimerService가 수행)
 
 import Foundation
 

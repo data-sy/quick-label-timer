@@ -19,7 +19,7 @@ struct AddTimerView: View {
     @State private var isVibrationOn = false
     @FocusState private var isLabelFocused: Bool
 
-    @EnvironmentObject var timerManager: TimerManager
+    @EnvironmentObject var timerService: TimerService
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -38,7 +38,7 @@ struct AddTimerView: View {
                     if isLabelFocused { isLabelFocused = false }
 
                     DispatchQueue.main.async {
-                        timerManager.addTimer(
+                        timerService.addTimer(
                             label: label,
                             hours: hours,
                             minutes: minutes,

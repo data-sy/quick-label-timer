@@ -38,7 +38,7 @@ struct TimerManagerAlarmTests {
     func test_tick_triggersPlayIfNeededWhenTimerEnds() {
         // given
         let mockHandler = MockAlarmHandler()
-        let manager = TimerManager(presetManager: PresetManager(), deleteCountdownSeconds: 10, alarmHandler: mockHandler)
+        let manager = TimerManager(presetRepository: PresetRepository(), deleteCountdownSeconds: 10, alarmHandler: mockHandler)
         manager.addTimer(label: "test", hours: 0, minutes: 0, seconds: 1, isSoundOn: true, isVibrationOn: true)
         
         // when
@@ -52,7 +52,7 @@ struct TimerManagerAlarmTests {
     @Test("Scene이 Active가 되면 stopAll이 호출되는지 검증")
     func test_updateScenePhase_toActive_stopsAllAlarms() {
         let mockHandler = MockAlarmHandler()
-        let manager = TimerManager(presetManager: PresetManager(), deleteCountdownSeconds: 10, alarmHandler: mockHandler)
+        let manager = TimerManager(presetRepository: PresetRepository(), deleteCountdownSeconds: 10, alarmHandler: mockHandler)
 
         manager.updateScenePhase(.active)
 
@@ -62,7 +62,7 @@ struct TimerManagerAlarmTests {
     @Test("타이머 삭제 시 stop이 호출되는지 검증")
     func test_removeTimer_stopsAlarmForThatTimer() {
         let mockHandler = MockAlarmHandler()
-        let manager = TimerManager(presetManager: PresetManager(), deleteCountdownSeconds: 10, alarmHandler: mockHandler)
+        let manager = TimerManager(presetRepository: PresetRepository(), deleteCountdownSeconds: 10, alarmHandler: mockHandler)
         manager.addTimer(label: "test", hours: 0, minutes: 0, seconds: 1, isSoundOn: true, isVibrationOn: true)
         let timerId = manager.timers[0].id
 
@@ -75,7 +75,7 @@ struct TimerManagerAlarmTests {
     @Test("타이머 정지 시 stop이 호출되는지 검증")
     func test_stopTimer_stopsAlarmForThatTimer() {
         let mockHandler = MockAlarmHandler()
-        let manager = TimerManager(presetManager: PresetManager(), deleteCountdownSeconds: 10, alarmHandler: mockHandler)
+        let manager = TimerManager(presetRepository: PresetRepository(), deleteCountdownSeconds: 10, alarmHandler: mockHandler)
         manager.addTimer(label: "test", hours: 0, minutes: 0, seconds: 1, isSoundOn: true, isVibrationOn: true)
         let timerId = manager.timers[0].id
 

@@ -34,25 +34,6 @@ struct TimerRowView: View {
         self.onRightTap = onRightTap
     }
     
-    /// 완료 후 n초 카운트다운 안내 메시지
-    var dynamicMessage: String? {
-        guard let pendingAt = timer.pendingDeletionAt else { return nil }
-        let remaining = Int(pendingAt.timeIntervalSince(Date()))
-        guard remaining > 0 else { return nil }
-        // 분기별 메시지 조합
-        if timer.presetId == nil {
-            return timer.isFavorite
-                ? "\(remaining)초 후 즐겨찾기로 저장됩니다"
-                : "\(remaining)초 후 삭제됩니다"
-        } else {
-            if timer.isFavorite {
-                return "\(remaining)초 후 즐겨찾기로 돌아갑니다"
-            } else {
-                return "\(remaining)초 후 삭제됩니다"
-            }
-        }
-    }
-    
     /// 상태 × 즐겨찾기 → 좌/우 버튼 타입
     private var buttonTypes: TimerButtonSet {
         makeButtonSet(for: state, isFavorite: timer.isFavorite)
@@ -95,12 +76,11 @@ struct TimerRowView: View {
                     }
                 }
             }
-            if let msg = dynamicMessage {
-                Text(msg)
-                    .font(.caption)
-                    .foregroundColor(.red)
-                    .padding(.top, 2)
-            }
+            CountdownMessageView(
+                pendingAt: timer.pendingDeletionAt,
+                isFavorite: timer.isFavorite,
+                presetId: timer.presetId
+            )
         }
         .padding(.horizontal)
         .padding(.vertical, 8)

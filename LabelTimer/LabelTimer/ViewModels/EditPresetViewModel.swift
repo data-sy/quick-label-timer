@@ -12,8 +12,8 @@ import SwiftUI
 
 class EditPresetViewModel: ObservableObject {
     private let preset: TimerPreset
-    private let presetManager: PresetManager
-    private let timerManager: TimerManager
+    private let presetRepository: PresetRepositoryProtocol
+    private let timerService: TimerServiceProtocol
     
     @Published var label: String
     @Published var hours: Int
@@ -23,10 +23,10 @@ class EditPresetViewModel: ObservableObject {
     @Published var isVibrationOn: Bool
     @Published var isShowingHideAlert = false
     
-    init(preset: TimerPreset, presetManager: PresetManager, timerManager: TimerManager) {
+    init(preset: TimerPreset, presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol) {
         self.preset = preset
-        self.presetManager = presetManager
-        self.timerManager = timerManager
+        self.presetRepository = presetRepository
+        self.timerService = timerService
         
         self.label = preset.label
         self.hours = preset.hours
@@ -38,7 +38,7 @@ class EditPresetViewModel: ObservableObject {
         
     /// 변경된 내용 저장
     func save() {
-        presetManager.updatePreset(
+        presetRepository.updatePreset(
             preset,
             label: label,
             hours: hours,
@@ -51,14 +51,14 @@ class EditPresetViewModel: ObservableObject {
     
     /// 프리셋 삭제
     func hide() {
-        presetManager.hidePreset(withId: preset.id)
+        presetRepository.hidePreset(withId: preset.id)
     }
     
     /// 변경된 내용으로 타이머 시작
     func start() {
         save()
-        if let updatedPreset = presetManager.allPresets.first(where: { $0.id == preset.id }) {
-            timerManager.runTimer(from: updatedPreset)
+        if let updatedPreset = presetRepository.allPresets.first(where: { $0.id == preset.id }) {
+            timerService.runTimer(from: updatedPreset)
         }
     }
 }
