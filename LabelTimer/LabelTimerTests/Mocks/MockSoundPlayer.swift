@@ -6,35 +6,49 @@
 //
 /// AlarmSoundPlayable을 구현한 Mock 객체
 ///
-/// - 사용 목적: AlarmHandler 테스트에서 사운드 재생 호출 여부 검증
+/// - 사용 목적: AlarmHandler 테스트에서 사운드 재생/정지 관련 호출을 검증
 
 import Foundation
 @testable import LabelTimer
 
 final class MockSoundPlayer: AlarmSoundPlayable {
-    private(set) var playedSoundId: UUID?
-    private(set) var playedDefaultSoundId: UUID?
+    // MARK: - Sound Tracking Properties
     private(set) var playedSound: AlarmSound?
-    private(set) var stoppedSoundId: UUID?
+    private(set) var lastPlayedID: UUID?
+    private(set) var lastStoppedID: UUID?
+    // MARK: - Vibration Tracking Properties
+    private(set) var vibrationStartedForIDs: [UUID] = []
+    // MARK: - General Tracking Properties
+    private(set) var stopAllCallCount = 0
 
-    func playAlarm(for id: UUID, sound: AlarmSound, loop: Bool) {
-        playedSoundId = id
-        playedSound = sound
+    func play(for id: UUID, sound: AlarmSound, needsVibration: Bool) {
+        lastPlayedID = id
+        
+        if sound != .none {
+            self.playedSound = sound
+        }
+        if needsVibration {
+            vibrationStartedForIDs.append(id)
+        }
     }
 
-    func playDefaultAlarm(for id: UUID, loop: Bool) {
-        playedDefaultSoundId = id
-        playAlarm(for: id, sound: AlarmSound.current, loop: loop)
+    func playDefault(for id: UUID, needsVibration: Bool) {
+        play(for: id, sound: .current, needsVibration: needsVibration)
     }
 
-    func stopAlarm(for id: UUID) {
-        stoppedSoundId = id
+    func stop(for id: UUID) {
+        lastStoppedID = id
     }
 
+    func stopAll() {
+        stopAllCallCount += 1
+    }
+    
     func reset() {
-        playedSoundId = nil
-        playedDefaultSoundId = nil
         playedSound = nil
-        stoppedSoundId = nil
+        lastPlayedID = nil
+        lastStoppedID = nil
+        vibrationStartedForIDs.removeAll()
+        stopAllCallCount = 0
     }
 }

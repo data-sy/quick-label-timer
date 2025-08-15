@@ -37,7 +37,7 @@ enum NotificationUtils {
         let content = UNMutableNotificationContent()
         content.title = "⏰ 타이머 종료"
         content.body = label.isEmpty ? "타이머가 끝났습니다." : label
-        content.sound = .default
+        content.sound = nil
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
 

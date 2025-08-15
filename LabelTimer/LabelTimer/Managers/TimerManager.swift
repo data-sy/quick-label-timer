@@ -161,6 +161,8 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
         completionHandler.cancelPendingAction(for: id)
         NotificationUtils.cancelScheduledNotification(id: id.uuidString)
         
+        alarmHandler.stop(for: id)
+        
         guard let index = timers.firstIndex(where: { $0.id == id }) else { return nil }
         return timers.remove(at: index)
     }
@@ -176,6 +178,7 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
     func pauseTimer(id: UUID) {
         guard let index = timers.firstIndex(where: { $0.id == id }), timers[index].status == .running else { return }
         NotificationUtils.cancelScheduledNotification(id: id.uuidString)
+                
         timers[index].status = .paused
     }
     
@@ -191,6 +194,8 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
     func stopTimer(id: UUID) {
         completionHandler.cancelPendingAction(for: id)
         NotificationUtils.cancelScheduledNotification(id: id.uuidString)
+        
+        alarmHandler.stop(for: id)
 
         guard let index = timers.firstIndex(where: { $0.id == id }) else { return }
         
@@ -235,12 +240,13 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
     func updateScenePhase(_ phase: ScenePhase) {
         self.scenePhase = phase
         if phase == .active {
-            stopAlarmsForExpiredTimers()
+            alarmHandler.stopAll()
             markCompletedTimersForDeletion(n: deleteCountdownSeconds) { [weak self] markedTimer in
                 self?.startCompletionProcess(for: markedTimer)
             }
         }
     }
+    
     
     private func markCompletedTimersForDeletion(n: Int, onMarked: ((TimerData) -> Void)? = nil) {
         let now = Date()
@@ -249,13 +255,6 @@ final class TimerManager: ObservableObject, TimerManagerProtocol {
                 timers[i].pendingDeletionAt = now.addingTimeInterval(TimeInterval(n))
                 onMarked?(timers[i])
             }
-        }
-    }
-    
-    private func stopAlarmsForExpiredTimers() {
-        let expiredTimers = timers.filter { $0.remainingSeconds <= 0 }
-        for timer in expiredTimers {
-            // alarmHandler.stopSound(for: timer.id) // 실제 AlarmHandler에 구현 필요
         }
     }
     
