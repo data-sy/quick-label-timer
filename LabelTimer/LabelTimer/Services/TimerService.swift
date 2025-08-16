@@ -53,25 +53,16 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
     // --- 완료 로직을 전담할 Handler ---
     private lazy var completionHandler: TimerCompletionHandler = {
-        // 1. 이제 'self'(TimerService)를 주입합니다.
         let handler = TimerCompletionHandler(
             timerService: self,
             presetRepository: self.presetRepository
         )
-        
-        // 2. onTick은 더 이상 필요 없으므로 삭제합니다.
-        //    UI 업데이트는 이제 Repository의 @Published 속성이 담당합니다.
-        
-        // 3. onComplete는 Repository를 통해 타이머 상태를 변경합니다.
         handler.onComplete = { [weak self] timerId in
-            // Repository에서 최신 타이머 정보를 가져옵니다.
             guard var timerToUpdate = self?.timerRepository.getTimer(byId: timerId) else { return }
             
-            // 상태를 변경하고 다시 Repository에 업데이트를 요청합니다.
             timerToUpdate.pendingDeletionAt = nil
             self?.timerRepository.updateTimer(timerToUpdate)
         }
-        
         return handler
     }()
     
@@ -111,7 +102,9 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
                 if remaining == 0 {
                     timer.status = .completed
-                    alarmHandler.playIfNeeded(for: timer)
+                    if scenePhase != .active {
+                        alarmHandler.playIfNeeded(for: timer)
+                    }
 
                     if scenePhase == .active {
                         startCompletionProcess(for: timer)

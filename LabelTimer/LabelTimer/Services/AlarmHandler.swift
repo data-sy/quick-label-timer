@@ -13,6 +13,7 @@ import Foundation
 
 protocol AlarmTriggering {
     func playIfNeeded(for timer: TimerData)
+    func playSystemFeedback(for timer: TimerData)
     func stop(for id: UUID)
     func stopAll()
 }
@@ -29,6 +30,16 @@ final class AlarmHandler: AlarmTriggering {
         if timer.isSoundOn || timer.isVibrationOn {
              let sound = timer.isSoundOn ? AlarmSound.current : .none // .none 케이스 필요
              player.play(for: timer.id, sound: sound, needsVibration: timer.isVibrationOn)
+        }
+    }
+    
+    /// [포그라운드용] 1회성 시스템 피드백 재생
+    func playSystemFeedback(for timer: TimerData) {
+        if timer.isSoundOn {
+            player.playSystemSound()
+        }
+        if timer.isVibrationOn {
+            player.playSingleVibration()
         }
     }
     

@@ -14,6 +14,9 @@ import UserNotifications
 class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     
     static let shared = NotificationDelegate()
+    
+    var timerService: TimerServiceProtocol?
+    var alarmHandler: AlarmTriggering?
 
     private override init() {
         super.init()
@@ -24,6 +27,16 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler:
                                 @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner])
+        guard let timerID = UUID(uuidString: notification.request.identifier),
+              let timer = timerService?.getTimer(byId: timerID) else {
+            completionHandler([.banner, .list, .badge])
+            return
+        }
+        
+        // 1회성 피드백(소리/진동) 재생
+        alarmHandler?.playSystemFeedback(for: timer)
+        
+        // 원본 알림의 소리는 끈 채, 시각적인 요소만 표시
+        completionHandler([.banner, .list, .badge])
     }
 }

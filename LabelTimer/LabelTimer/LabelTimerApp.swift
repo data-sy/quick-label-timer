@@ -26,12 +26,17 @@ struct LabelTimerApp: App {
     init() {
         let timerRepository = TimerRepository()
         let presetRepository = PresetRepository()
+        let alarmHandler = AlarmHandler()
         let timerService = TimerService(
             timerRepository: timerRepository,
             presetRepository: presetRepository,
-            deleteCountdownSeconds: Self.deleteCountdownSeconds
+            deleteCountdownSeconds: Self.deleteCountdownSeconds,
+            alarmHandler: alarmHandler
         )
         
+        NotificationDelegate.shared.timerService = timerService
+        NotificationDelegate.shared.alarmHandler = alarmHandler
+
         //@StateObject 속성들을 초기화
         _timerRepository = StateObject(wrappedValue: timerRepository)
         _presetRepository = StateObject(wrappedValue: presetRepository)

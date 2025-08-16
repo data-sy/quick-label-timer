@@ -15,6 +15,8 @@ import AudioToolbox
 protocol AlarmPlayable {
     func play(for id: UUID, sound: AlarmSound, needsVibration: Bool)
     func playDefault(for id: UUID, needsVibration: Bool)
+    func playSystemSound()
+    func playSingleVibration()
     func stop(for id: UUID)
     func stopAll()
 }
@@ -23,8 +25,8 @@ final class AlarmPlayer: AlarmPlayable {
     static let shared = AlarmPlayer()
 
     private var players: [UUID: AVAudioPlayer] = [:]
+    private var feedbackPlayers: [UUID: AVAudioPlayer] = [:]
     private var vibrationTimers: [UUID: Timer] = [:]
-    
     private var autoStopTasks: [UUID: DispatchWorkItem] = [:]
     private let autoStopInterval: TimeInterval = 900 // 15분 (900초)
     
@@ -38,7 +40,7 @@ final class AlarmPlayer: AlarmPlayable {
         play(for: id, sound: sound, needsVibration: needsVibration)
     }
 
-    /// 특정 타이머에 대한 알람(소리/진동) 재생
+    /// [백그라운드용] 특정 타이머에 대한 커스텀 알람(소리/진동) 재생
     func play(for id: UUID, sound: AlarmSound, needsVibration: Bool) {
         func ts() -> String { ISO8601DateFormatter().string(from: Date()) }
         print("[\(ts())][AlarmPlayer][play] id=\(id.uuidString) sound=\(sound) needsVibration=\(needsVibration)")
@@ -92,6 +94,37 @@ final class AlarmPlayer: AlarmPlayable {
         } else {
             print("[\(ts())][AlarmPlayer][play] vibration disabled")
         }
+    }
+    
+    /// 1회성 시스템 사운드 재생
+    func playSystemSound() {
+        // TODO: .feedback 음원 추가 시 교체
+        let feedbackSound: AlarmSound = .lowBuzz
+        
+        guard let url = Bundle.main.url(forResource: feedbackSound.fileName, withExtension: feedbackSound.fileExtension) else {
+            print("[AlarmPlayer][playSystemSound] 피드백 사운드 파일을 찾을 수 없습니다.")
+            return
+        }
+        
+        do {
+            let player = try AVAudioPlayer(contentsOf: url)
+            player.numberOfLoops = 0
+            player.play()
+            
+            let tempID = UUID()
+            feedbackPlayers[tempID] = player
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + player.duration) { [weak self] in
+                self?.feedbackPlayers.removeValue(forKey: tempID)
+            }
+        } catch {
+            print("[AlarmPlayer][playSystemSound] 피드백 플레이어 생성 실패: \(error)")
+        }
+    }
+    
+    /// '1회성' 기본 진동을 재생
+    func playSingleVibration() {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }
 
     /// 특정 타이머의 알람(소리/진동) 정지
