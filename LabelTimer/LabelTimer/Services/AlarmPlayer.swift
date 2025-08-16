@@ -13,8 +13,8 @@ import AVFoundation
 import AudioToolbox
 
 protocol AlarmPlayable {
-    func play(for id: UUID, sound: AlarmSound, needsVibration: Bool)
-    func playDefault(for id: UUID, needsVibration: Bool)
+    func playCustomSound(for id: UUID, sound: AlarmSound)
+    func startContinuousVibration(for id: UUID)
     func playSystemSound()
     func playSingleVibration()
     func stop(for id: UUID)
@@ -33,17 +33,12 @@ final class AlarmPlayer: AlarmPlayable {
     // 싱글톤 패턴을 위한 기본 private init
     private init() {}
     
-    /// 저장된 사용자 기본 사운드로 알람 재생
-    func playDefault(for id: UUID, needsVibration: Bool) {
-        let soundID = UserDefaults.standard.string(forKey: "defaultSound") ?? AlarmSound.lowBuzz.id
-        let sound = AlarmSound.from(id: soundID)
-        play(for: id, sound: sound, needsVibration: needsVibration)
-    }
+    // MARK: - Public Play Sound Methods
 
     /// [백그라운드용] 특정 타이머에 대한 커스텀 알람(소리/진동) 재생
-    func play(for id: UUID, sound: AlarmSound, needsVibration: Bool) {
+    func playCustomSound(for id: UUID, sound: AlarmSound) {
         func ts() -> String { ISO8601DateFormatter().string(from: Date()) }
-        print("[\(ts())][AlarmPlayer][play] id=\(id.uuidString) sound=\(sound) needsVibration=\(needsVibration)")
+        print("[\(ts())][AlarmPlayer][play] id=\(id.uuidString) sound=\(sound)")
 
         // 1. 소리가 '없음'이 아닐 경우에만 재생 로직 실행
         if sound != .none {
@@ -86,14 +81,6 @@ final class AlarmPlayer: AlarmPlayable {
         } else {
             print("[\(ts())][AlarmPlayer][play] sound is .none → skip sound")
         }
-         
-        // 진동 재생 시도 (사운드 재생 성공 여부와 독립적으로 실행)
-        if needsVibration {
-            print("[\(ts())][AlarmPlayer][play] starting vibration for id=\(id.uuidString)")
-            startVibration(for: id)
-        } else {
-            print("[\(ts())][AlarmPlayer][play] vibration disabled")
-        }
     }
     
     /// 1회성 시스템 사운드 재생
@@ -122,10 +109,24 @@ final class AlarmPlayer: AlarmPlayable {
         }
     }
     
+    // MARK: - Public Vibration Methods
+
+    func startContinuousVibration(for id: UUID) {
+        guard vibrationTimers[id] == nil else { return } // 이미 진동 중이면 중복
+        
+        // n초마다 진동을 실행하는 타이머 생성
+        let timer = Timer.scheduledTimer(withTimeInterval: 1.7, repeats: true) { _ in
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        }
+        vibrationTimers[id] = timer
+    }
+    
     /// '1회성' 기본 진동을 재생
     func playSingleVibration() {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }
+    
+    // MARK: - Stop Methods
 
     /// 특정 타이머의 알람(소리/진동) 정지
     func stop(for id: UUID) {
@@ -152,19 +153,8 @@ final class AlarmPlayer: AlarmPlayable {
         vibrationTimers.values.forEach { $0.invalidate() }
         vibrationTimers.removeAll()
     }
-    
+
     // MARK: - Private Vibration Helpers
-    
-    /// 반복적인 진동을 시작하는 private 함수
-    private func startVibration(for id: UUID) {
-        guard vibrationTimers[id] == nil else { return } // 이미 진동 중이면 중복 실행 방지
-        
-        // 2초마다 진동을 실행하는 타이머 생성
-        let timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-        }
-        vibrationTimers[id] = timer
-    }
     
     /// 진동을 멈추는 private 함수
     private func stopVibration(for id: UUID) {

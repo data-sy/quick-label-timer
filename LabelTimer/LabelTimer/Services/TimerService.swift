@@ -103,7 +103,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
                 if remaining == 0 {
                     timer.status = .completed
                     if scenePhase != .active {
-                        alarmHandler.playIfNeeded(for: timer)
+                        alarmHandler.playCustomFeedback(for: timer)
                     }
 
                     if scenePhase == .active {

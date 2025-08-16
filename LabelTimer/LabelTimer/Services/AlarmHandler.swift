@@ -12,7 +12,7 @@
 import Foundation
 
 protocol AlarmTriggering {
-    func playIfNeeded(for timer: TimerData)
+    func playCustomFeedback(for timer: TimerData)
     func playSystemFeedback(for timer: TimerData)
     func stop(for id: UUID)
     func stopAll()
@@ -20,20 +20,23 @@ protocol AlarmTriggering {
 
 final class AlarmHandler: AlarmTriggering {
     private let player: AlarmPlayable
-
+    
     init(player: AlarmPlayable = AlarmPlayer.shared) {
         self.player = player
     }
-
-    /// 타이머 설정에 따라 소리/진동 재생
-    func playIfNeeded(for timer: TimerData) {
-        if timer.isSoundOn || timer.isVibrationOn {
-             let sound = timer.isSoundOn ? AlarmSound.current : .none // .none 케이스 필요
-             player.play(for: timer.id, sound: sound, needsVibration: timer.isVibrationOn)
+    
+    /// [백그라운드용] 타이머 설정에 따라 지속적인 커스텀 피드백 재생을 '결정'
+    func playCustomFeedback(for timer: TimerData) {
+        if timer.isSoundOn {
+            let sound = AlarmSound.current // 또는 다른 로직으로 사운드 결정
+            player.playCustomSound(for: timer.id, sound: sound)
+        }
+        if timer.isVibrationOn {
+            player.startContinuousVibration(for: timer.id)
         }
     }
-    
-    /// [포그라운드용] 1회성 시스템 피드백 재생
+        
+    /// [포그라운드용] 타이머 설정에 따라 1회성 시스템 피드백 재생을 '결정'
     func playSystemFeedback(for timer: TimerData) {
         if timer.isSoundOn {
             player.playSystemSound()
@@ -42,7 +45,7 @@ final class AlarmHandler: AlarmTriggering {
             player.playSingleVibration()
         }
     }
-    
+        
     /// 특정 타이머의 알람 중지
     func stop(for id: UUID) {
         player.stop(for: id)
