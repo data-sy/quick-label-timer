@@ -27,16 +27,21 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler:
                                 @escaping (UNNotificationPresentationOptions) -> Void) {
-        guard let timerID = UUID(uuidString: notification.request.identifier),
-              let timer = timerService?.getTimer(byId: timerID) else {
+        guard let id = UUID(uuidString: notification.request.identifier) else {
             completionHandler([.banner, .list, .badge])
             return
         }
-        
-        // 1회성 피드백(소리/진동) 재생
-        alarmHandler?.playSystemFeedback(for: timer)
-        
-        // 원본 알림의 소리는 끈 채, 시각적인 요소만 표시
-        completionHandler([.banner, .list, .badge])
+        // 메인 액터로 hop해서 @MainActor 서비스 안전 호출
+        Task { [weak self] in
+            let timer = await self?.timerService?.getTimer(byId: id)
+
+            // 1회성 피드백(소리/진동) 재생
+            if let timer, let handler = self?.alarmHandler {
+                handler.playSystemFeedback(for: timer)
+            }
+
+            // 원본 알림의 소리는 끄고, 배너/리스트/배지 표시
+            completionHandler([.banner, .list, .badge])
+        }
     }
 }

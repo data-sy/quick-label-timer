@@ -10,6 +10,7 @@
 
 import SwiftUI
 
+@MainActor
 class EditPresetViewModel: ObservableObject {
     private let preset: TimerPreset
     private let presetRepository: PresetRepositoryProtocol

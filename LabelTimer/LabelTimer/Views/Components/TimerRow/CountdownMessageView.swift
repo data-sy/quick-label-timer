@@ -11,36 +11,30 @@
 import SwiftUI
 
 struct CountdownMessageView: View {
-    let pendingAt: Date?
-    let isFavorite: Bool
-    let presetId: UUID?
+    let timer: TimerData
     
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1.0)) { context in
-            if let message = dynamicMessage(now: context.date) {
-                Text(message)
-                    .font(.caption)
-                    .foregroundColor(.red)
-                    .padding(.top, 2)
+            if let pendingAt = timer.pendingDeletionAt {
+                let remaining = Int(pendingAt.timeIntervalSince(context.date))
+                if remaining > 0 {
+                    Text(dynamicMessage(remaining: remaining))
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .padding(.top, 2)
+                }
             }
         }
     }
     
     /// 완료 후 n초 카운트다운 안내 메시지를 계산하는 함수
-    private func dynamicMessage(now: Date) -> String? {
-        guard let pendingAt = pendingAt else { return nil }
-        
-        let remaining = Int(pendingAt.timeIntervalSince(now))
-        guard remaining > 0 else { return nil }
-        
-        if presetId == nil {
-            return isFavorite
-                ? "\(remaining)초 후 즐겨찾기로 저장됩니다"
-                : "\(remaining)초 후 삭제됩니다"
+    private func dynamicMessage(remaining: Int) -> String {
+        if timer.presetId == nil {
+            return timer.isFavorite ? "\(remaining)초 후 즐겨찾기로 저장됩니다"
+                                   : "\(remaining)초 후 삭제됩니다"
         } else {
-            return isFavorite
-                ? "\(remaining)초 후 즐겨찾기로 돌아갑니다"
-                : "\(remaining)초 후 삭제됩니다"
+            return timer.isFavorite ? "\(remaining)초 후 즐겨찾기로 돌아갑니다"
+                                   : "\(remaining)초 후 삭제됩니다"
         }
     }
 }

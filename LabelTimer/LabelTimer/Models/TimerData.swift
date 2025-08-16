@@ -10,7 +10,7 @@
 
 import Foundation
 
-enum TimerStatus {
+enum TimerStatus: String, Codable {
     case running
     case paused
     case stopped

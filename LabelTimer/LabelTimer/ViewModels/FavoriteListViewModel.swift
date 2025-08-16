@@ -11,6 +11,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 class FavoriteListViewModel: ObservableObject {
     let presetRepository: PresetRepositoryProtocol
     let timerService: TimerServiceProtocol

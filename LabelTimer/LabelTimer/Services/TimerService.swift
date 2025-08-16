@@ -15,6 +15,7 @@ import AVFoundation
 
 // MARK: - Protocol Definition
 /// 다른 객체가 이 프로토콜에 의존하게 만들어, 코드의 유연성과 테스트 용이성을 높임
+@MainActor
 protocol TimerServiceProtocol: ObservableObject {
     var didStart: PassthroughSubject<Void, Never> { get }
 
@@ -41,6 +42,7 @@ protocol TimerServiceProtocol: ObservableObject {
 
 
 // MARK: - TimerService Class
+@MainActor
 final class TimerService: ObservableObject, TimerServiceProtocol {
     private let timerRepository: TimerRepositoryProtocol
     private let presetRepository: PresetRepositoryProtocol
@@ -101,14 +103,17 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
                 timer.remainingSeconds = remaining
 
                 if remaining == 0 {
-                    timer.status = .completed
-                    if scenePhase != .active {
-                        alarmHandler.playCustomFeedback(for: timer)
-                    }
+                    // 완료 처리: 여기서 '한 번만' 업데이트되게 분기 정리
+                    var completed = timer
+                    completed.status = .completed
 
-                    if scenePhase == .active {
-                        startCompletionProcess(for: timer)
+                    if scenePhase != .active {
+                        alarmHandler.playCustomFeedback(for: completed)
+                        timerRepository.updateTimer(completed)
+                    } else {
+                        startCompletionProcess(for: completed)
                     }
+                    continue // 아래의 일반 updateTimer(timer)로 내려가지 않게!
                 }
                 timerRepository.updateTimer(timer)
             }
@@ -119,10 +124,13 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     /// 타이머가 완료되었을 때, Handler에게 작업을 위임하는 "핸드오프" 함수
     private func startCompletionProcess(for timer: TimerData) {
+        guard timer.pendingDeletionAt == nil else { return }
+        
         var mutableTimer = timer
-        mutableTimer.pendingDeletionAt = Date().addingTimeInterval(TimeInterval(deleteCountdownSeconds))
+        let deadline = Date().addingTimeInterval(TimeInterval(deleteCountdownSeconds))
+        mutableTimer.pendingDeletionAt = deadline
+        
         timerRepository.updateTimer(mutableTimer)
-
         completionHandler.scheduleCompletion(for: mutableTimer, after: deleteCountdownSeconds)
     }
     
@@ -271,12 +279,9 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
     
     private func markCompletedTimersForDeletion(n: Int, onMarked: ((TimerData) -> Void)? = nil) {
-        let now = Date()
-        for var timer in timerRepository.getAllTimers() {
+        for timer in timerRepository.getAllTimers() {
             if timer.status == .completed && timer.pendingDeletionAt == nil {
-                timer.pendingDeletionAt = now.addingTimeInterval(TimeInterval(n))
-                timerRepository.updateTimer(timer) // 업데이트
-                onMarked?(timer)
+                onMarked?(timer) // startCompletionProcess에서 세팅+스케줄
             }
         }
     }
