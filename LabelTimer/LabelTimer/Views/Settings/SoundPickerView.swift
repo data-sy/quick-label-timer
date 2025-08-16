@@ -18,10 +18,10 @@ struct SoundPickerView: View {
     @State private var audioPlayer: AVAudioPlayer?
 
     var body: some View {
-        Text("무음 모드에서는 소리가 나지 않습니다.")
-            .font(.footnote)
-            .foregroundColor(.secondary)
-            .padding(.top, 32)
+//        Text("무음 모드에서는 소리가 나지 않습니다.")
+//            .font(.footnote)
+//            .foregroundColor(.secondary)
+//            .padding(.top, 32)
         List(sounds) { sound in
             HStack {
                 Text(sound.displayName)
