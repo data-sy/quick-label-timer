@@ -271,7 +271,13 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     func updateScenePhase(_ phase: ScenePhase) {
         self.scenePhase = phase
         if phase == .active {
-            alarmHandler.stopAll()
+            let allTimers = timerRepository.getAllTimers()
+            let completedTimers = allTimers.filter { $0.status == .completed }
+            
+            for timer in completedTimers {
+                alarmHandler.stop(for: timer.id)
+            }
+            
             markCompletedTimersForDeletion(n: deleteCountdownSeconds) { [weak self] markedTimer in
                 self?.startCompletionProcess(for: markedTimer)
             }
