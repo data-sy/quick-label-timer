@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIPageControl.appearance().pageIndicatorTintColor = UIColor.systemGray4
 
         NotificationUtils.requestAuthorization()
+        UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
 
         return true
     }

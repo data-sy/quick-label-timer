@@ -14,7 +14,6 @@ import Combine
 import AVFoundation
 
 // MARK: - Protocol Definition
-/// 다른 객체가 이 프로토콜에 의존하게 만들어, 코드의 유연성과 테스트 용이성을 높임
 @MainActor
 protocol TimerServiceProtocol: ObservableObject {
     var didStart: PassthroughSubject<Void, Never> { get }
@@ -39,7 +38,6 @@ protocol TimerServiceProtocol: ObservableObject {
 
     func updateScenePhase(_ phase: ScenePhase)
 }
-
 
 // MARK: - TimerService Class
 @MainActor
@@ -91,7 +89,37 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         updateTimerStates()
     }
 
-    /// 실행 중인 타이머들의 남은 시간 매초 갱신
+//    /// 실행 중인 타이머들의 남은 시간 매초 갱신 (구버전) - deprecated
+//    /// - 구현 특징: 완료 시 오디오 세션을 통해 직접 소리 재생까지 처리
+//    private func updateTimerStates() {
+//        let now = Date()
+//        for var timer in timerRepository.getAllTimers() {
+//            guard timer.status == .running else { continue }
+//
+//            let remaining = max(0, Int(timer.endDate.timeIntervalSince(now)))
+//
+//            if timer.remainingSeconds != remaining {
+//                timer.remainingSeconds = remaining
+//
+//                if remaining == 0 {
+//                    // 완료 처리: 여기서 '한 번만' 업데이트되게 분기 정리
+//                    var completed = timer
+//                    completed.status = .completed
+//
+//                    if scenePhase != .active {
+//                        alarmHandler.playCustomFeedback(for: completed)
+//                        timerRepository.updateTimer(completed)
+//                    } else {
+//                        startCompletionProcess(for: completed)
+//                    }
+//                    continue // 아래의 일반 updateTimer(timer)로 내려가지 않게!
+//                }
+//                timerRepository.updateTimer(timer)
+//            }
+//        }
+//    }
+
+    /// 실행 중인 타이머들의 남은 시간 매초 갱신 (신버전)
     private func updateTimerStates() {
         let now = Date()
         for var timer in timerRepository.getAllTimers() {
@@ -106,11 +134,9 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
                     // 완료 처리: 여기서 '한 번만' 업데이트되게 분기 정리
                     var completed = timer
                     completed.status = .completed
-
-                    if scenePhase != .active {
-                        alarmHandler.playCustomFeedback(for: completed)
-                        timerRepository.updateTimer(completed)
-                    } else {
+                    timerRepository.updateTimer(completed)
+                    
+                    if scenePhase == .active {
                         startCompletionProcess(for: completed)
                     }
                     continue // 아래의 일반 updateTimer(timer)로 내려가지 않게!
@@ -167,7 +193,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             isFavorite: isFavorite
         )
         timerRepository.addTimer(newTimer)
-        scheduleNotification(for: newTimer)
+        scheduleRepeatingNotification(for: newTimer)
     }
     
     func runTimer(from preset: TimerPreset) {
@@ -189,7 +215,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     @discardableResult
     func removeTimer(id: UUID) -> TimerData? {
         completionHandler.cancelPendingAction(for: id)
-        NotificationUtils.cancelScheduledNotification(id: id.uuidString)
+        NotificationUtils.cancelRepeatingNotifications(for: id.uuidString)
         alarmHandler.stop(for: id)
         
         return timerRepository.removeTimer(byId: id)
@@ -205,7 +231,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     func pauseTimer(id: UUID) {
         guard var timer = timerRepository.getTimer(byId: id), timer.status == .running else { return }
-        NotificationUtils.cancelScheduledNotification(id: id.uuidString)
+        NotificationUtils.cancelRepeatingNotifications(for: id.uuidString)
             
         timer.status = .paused
         timerRepository.updateTimer(timer)
@@ -218,12 +244,12 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         timer.endDate = now.addingTimeInterval(TimeInterval(timer.remainingSeconds))
         timer.status = .running
         timerRepository.updateTimer(timer)
-        scheduleNotification(for: timer)
+        scheduleRepeatingNotification(for: timer)
     }
     
     func stopTimer(id: UUID) {
         completionHandler.cancelPendingAction(for: id)
-        NotificationUtils.cancelScheduledNotification(id: id.uuidString)
+        NotificationUtils.cancelRepeatingNotifications(for: id.uuidString)
         alarmHandler.stop(for: id)
 
         guard let oldTimer = timerRepository.getTimer(byId: id) else { return }
@@ -249,7 +275,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             pendingDeletionAt: .some(nil)
         )
         timerRepository.updateTimer(updatedTimer)
-        scheduleNotification(for: updatedTimer)
+        scheduleRepeatingNotification(for: updatedTimer)
     }
 
     // MARK: - 즐겨찾기 (isFavorite)
@@ -270,24 +296,20 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     func updateScenePhase(_ phase: ScenePhase) {
         self.scenePhase = phase
-        if phase == .active {
-            let allTimers = timerRepository.getAllTimers()
-            let completedTimers = allTimers.filter { $0.status == .completed }
-            
-            for timer in completedTimers {
-                alarmHandler.stop(for: timer.id)
-            }
-            
-            markCompletedTimersForDeletion(n: deleteCountdownSeconds) { [weak self] markedTimer in
-                self?.startCompletionProcess(for: markedTimer)
-            }
-        }
-    }
-    
-    private func markCompletedTimersForDeletion(n: Int, onMarked: ((TimerData) -> Void)? = nil) {
-        for timer in timerRepository.getAllTimers() {
-            if timer.status == .completed && timer.pendingDeletionAt == nil {
-                onMarked?(timer) // startCompletionProcess에서 세팅+스케줄
+        
+        guard phase == .active else { return }
+
+        let allTimers = timerRepository.getAllTimers()
+        let completedTimers = allTimers.filter { $0.status == .completed }
+
+        guard !completedTimers.isEmpty else { return }
+        
+        for timer in completedTimers {
+            alarmHandler.stop(for: timer.id)
+            NotificationUtils.cancelRepeatingNotifications(for: timer.id.uuidString)
+
+            if timer.pendingDeletionAt == nil {
+                startCompletionProcess(for: timer)
             }
         }
     }
@@ -306,12 +328,14 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         }
     }
     
-    private func scheduleNotification(for timer: TimerData) {
-        let interval = max(1, timer.endDate.timeIntervalSince(Date()))
-        NotificationUtils.scheduleNotification(
+    private func scheduleRepeatingNotification(for timer: TimerData) {
+        let minimumStartDate = Date().addingTimeInterval(2)
+        let effectiveEndDate = max(timer.endDate, minimumStartDate)
+
+        NotificationUtils.scheduleRepeatingNotifications(
             id: timer.id.uuidString,
-            label: timer.label,
-            after: Int(interval)
+            startDate: effectiveEndDate,
+            interval: 8.0
         )
     }
 }

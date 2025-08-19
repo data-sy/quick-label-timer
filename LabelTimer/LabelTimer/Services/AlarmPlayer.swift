@@ -14,7 +14,7 @@ import AudioToolbox
 
 protocol AlarmPlayable {
     func playCustomSound(for id: UUID, sound: AlarmSound)
-    func startContinuousVibration(for id: UUID)
+    func playContinuousVibration(for id: UUID)
     func playSystemSound()
     func playSingleVibration()
     func stop(for id: UUID)
@@ -35,7 +35,7 @@ final class AlarmPlayer: AlarmPlayable {
     
     // MARK: - Public Play Sound Methods
 
-    /// [백그라운드용] 특정 타이머에 대한 커스텀 알람(소리/진동) 재생
+    /// 커스텀 알람(소리/진동) 재생
     func playCustomSound(for id: UUID, sound: AlarmSound) {
         func ts() -> String { ISO8601DateFormatter().string(from: Date()) }
         print("[\(ts())][AlarmPlayer][play] id=\(id.uuidString) sound=\(sound)")
@@ -57,7 +57,16 @@ final class AlarmPlayer: AlarmPlayable {
             if let finalUrl = urlToPlay {
                 do {                    
                     let player = try AVAudioPlayer(contentsOf: finalUrl)
-                    player.numberOfLoops = -1
+                    /*
+                     player.numberOfLoops 프로퍼티 설명
+                     
+                     오디오 재생이 끝난 후 반복될 횟수 설정
+                     - 0 (기본값): 반복 없이 총 1회만 재생
+                     - 양수(n): 기본 재생 후 n번 더 반복하여 총 n+1회 재생 (예: 1을 입력하면 총 2회 재생)
+                     - -1: stop() 메서드가 호출될 때까지 무한 반복
+                    */
+//                    player.numberOfLoops = -1
+                    player.numberOfLoops = 0
                     
                     if player.play() {
                         players[id] = player
@@ -83,7 +92,9 @@ final class AlarmPlayer: AlarmPlayable {
         }
     }
     
-    /// 1회성 시스템 사운드 재생
+    /// 시스템 사운드 재생
+    /// - 실제 iOS 시스템 사운드가 아님
+    /// - 앱 번들에 포함된 짧은 음원을 재생해 시스템 사운드와 유사한 효과를 냄
     func playSystemSound() {
         // TODO: .feedback 음원 추가 시 교체
         let feedbackSound: AlarmSound = .lowBuzz
@@ -111,7 +122,8 @@ final class AlarmPlayer: AlarmPlayable {
     
     // MARK: - Public Vibration Methods
 
-    func startContinuousVibration(for id: UUID) {
+    // 연속 진동 재생
+    func playContinuousVibration(for id: UUID) {
         guard vibrationTimers[id] == nil else { return } // 이미 진동 중이면 중복
         
         // n초마다 진동을 실행하는 타이머 생성
@@ -121,7 +133,7 @@ final class AlarmPlayer: AlarmPlayable {
         vibrationTimers[id] = timer
     }
     
-    /// '1회성' 기본 진동을 재생
+    /// 1회성 진동 재생
     func playSingleVibration() {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }
@@ -141,7 +153,7 @@ final class AlarmPlayer: AlarmPlayable {
         stopVibration(for: id)
     }
 
-    /// 모든 알람(소리/진동) 정지
+    /// 모든 타이머의 알람(소리/진동) 정지
     func stopAll() {
         autoStopTasks.values.forEach { cancel(task: $0) }
         autoStopTasks.removeAll()

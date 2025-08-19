@@ -32,7 +32,7 @@ final class AlarmHandler: AlarmTriggering {
             player.playCustomSound(for: timer.id, sound: sound)
         }
         if timer.isVibrationOn {
-            player.startContinuousVibration(for: timer.id)
+            player.playContinuousVibration(for: timer.id)
         }
     }
         
