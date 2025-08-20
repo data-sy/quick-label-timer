@@ -29,7 +29,7 @@ final class AlarmHandler: AlarmTriggering {
     func playCustomFeedback(for timer: TimerData) {
         if timer.isSoundOn {
             let sound = AlarmSound.current // 또는 다른 로직으로 사운드 결정
-            player.playCustomSound(for: timer.id, sound: sound)
+            player.playCustomSound(for: timer.id, sound: sound, repeatMode: RepeatMode.infinite)
         }
         if timer.isVibrationOn {
             player.playContinuousVibration(for: timer.id)

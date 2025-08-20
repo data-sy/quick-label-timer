@@ -4,16 +4,16 @@
 //
 //  Created by 이소연 on 7/25/25.
 //
-/// 타이머 종료 시 반복 알람(소리,진동)을 재생하는 클래스
+/// 앱 내 알람(소리, 진동) 재생을 전담하는 오디오 핸들러
 ///
-/// - 사용 목적: 백그라운드에서 반복적으로 울리는 알람 소리/진동 재생
+/// - 기능: 커스텀 사운드 반복 재생, 연속적인 시스템 진동 생성, ID 기반의 개별 알람 제어(시작/정지)
 
 import Foundation
 import AVFoundation
 import AudioToolbox
 
 protocol AlarmPlayable {
-    func playCustomSound(for id: UUID, sound: AlarmSound)
+    func playCustomSound(for id: UUID, sound: AlarmSound, repeatMode: RepeatMode)
     func playContinuousVibration(for id: UUID)
     func playSystemSound()
     func playSingleVibration()
@@ -36,59 +36,34 @@ final class AlarmPlayer: AlarmPlayable {
     // MARK: - Public Play Sound Methods
 
     /// 커스텀 알람(소리/진동) 재생
-    func playCustomSound(for id: UUID, sound: AlarmSound) {
+    func playCustomSound(for id: UUID, sound: AlarmSound, repeatMode: RepeatMode = .infinite) {
         func ts() -> String { ISO8601DateFormatter().string(from: Date()) }
         print("[\(ts())][AlarmPlayer][play] id=\(id.uuidString) sound=\(sound)")
 
-        // 1. 소리가 '없음'이 아닐 경우에만 재생 로직 실행
-        if sound != .none {
-            var urlToPlay: URL?
-            
-            // 2. 사용자가 선택한 사운드 파일이 있는지 먼저 확인
-            if let primaryUrl = Bundle.main.url(forResource: sound.fileName, withExtension: sound.fileExtension) {
-                urlToPlay = primaryUrl
-            } else {
-                // 3. 파일이 없다면, 경고를 출력하고 '대체 사운드'로 전환
-                print("[\(ts())][AlarmPlayer][play][WARN] 주 사운드 파일(\(sound.fileName))을 찾을 수 없어 대체 사운드를 재생합니다.")
-                urlToPlay = Bundle.main.url(forResource: AlarmSound.fallback.fileName, withExtension: AlarmSound.fallback.fileExtension)
-            }
+        // 재생할 URL을 요청했을 때 없다면(기본 사운드도 없다면) 종료
+        guard let finalUrl = sound.playableURL else {
+            return
+        }
 
-            // 4. 재생할 최종 URL이 확정되었다면 재생 시도
-            if let finalUrl = urlToPlay {
-                do {                    
-                    let player = try AVAudioPlayer(contentsOf: finalUrl)
-                    /*
-                     player.numberOfLoops 프로퍼티 설명
-                     
-                     오디오 재생이 끝난 후 반복될 횟수 설정
-                     - 0 (기본값): 반복 없이 총 1회만 재생
-                     - 양수(n): 기본 재생 후 n번 더 반복하여 총 n+1회 재생 (예: 1을 입력하면 총 2회 재생)
-                     - -1: stop() 메서드가 호출될 때까지 무한 반복
-                    */
-//                    player.numberOfLoops = -1
-                    player.numberOfLoops = 0
-                    
-                    if player.play() {
-                        players[id] = player
-                        print("[\(ts())][AlarmPlayer][play] AVAudioPlayer started=true")
-                        let task = schedule(after: autoStopInterval) { [weak self] in
-                            print("⏰ 15분이 지나 알람을 자동으로 끕니다: \(id)")
-                            self?.stop(for: id)
-                        }
-                        autoStopTasks[id] = task
-                    } else {
-                        print("[\(ts())][AlarmPlayer][play] AVAudioPlayer started=false. Playback failed.")
-                        // 5. 재생 실패 시, 로컬의 사운드 알람 기능 사용 (예) 다른 사운드 재생 중)
-                        // TODO: 추가 예정
+        do {
+            let player = try AVAudioPlayer(contentsOf: finalUrl)
+            player.numberOfLoops = repeatMode.loopValue
+            
+            if player.play() {
+                players[id] = player
+                print("[\(ts())][AlarmPlayer][play] AVAudioPlayer started=true")
+                if case .infinite = repeatMode {
+                    let task = schedule(after: autoStopInterval) { [weak self] in
+                        print("⏰ 15분이 지나 알람을 자동으로 끕니다: \(id)")
+                        self?.stop(for: id)
                     }
-                } catch {
-                    print("[\(ts())][AlarmPlayer][play][ERROR] 세션 설정 또는 플레이어 초기화 실패: \(error)")
+                    autoStopTasks[id] = task
                 }
             } else {
-                print("[\(ts())][AlarmPlayer][play][FATAL] 대체 사운드 파일마저 찾을 수 없습니다.")
+                print("[\(ts())][AlarmPlayer][play] AVAudioPlayer started=false. Playback failed.")
             }
-        } else {
-            print("[\(ts())][AlarmPlayer][play] sound is .none → skip sound")
+        } catch {
+            print("[\(ts())][AlarmPlayer][play][ERROR] 플레이어 초기화 실패: \(error)")
         }
     }
     
