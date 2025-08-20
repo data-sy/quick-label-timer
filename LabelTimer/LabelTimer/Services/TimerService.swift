@@ -49,6 +49,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     @Published private(set) var scenePhase: ScenePhase = .active
 
     let deleteCountdownSeconds: Int
+    private let repeatingNotificationInterval: TimeInterval = 4.0
     let didStart = PassthroughSubject<Void, Never>()
 
     // --- 완료 로직을 전담할 Handler ---
@@ -88,36 +89,6 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     func tick() {
         updateTimerStates()
     }
-
-//    /// 실행 중인 타이머들의 남은 시간 매초 갱신 (구버전) - deprecated
-//    /// - 구현 특징: 완료 시 오디오 세션을 통해 직접 소리 재생까지 처리
-//    private func updateTimerStates() {
-//        let now = Date()
-//        for var timer in timerRepository.getAllTimers() {
-//            guard timer.status == .running else { continue }
-//
-//            let remaining = max(0, Int(timer.endDate.timeIntervalSince(now)))
-//
-//            if timer.remainingSeconds != remaining {
-//                timer.remainingSeconds = remaining
-//
-//                if remaining == 0 {
-//                    // 완료 처리: 여기서 '한 번만' 업데이트되게 분기 정리
-//                    var completed = timer
-//                    completed.status = .completed
-//
-//                    if scenePhase != .active {
-//                        alarmHandler.playCustomFeedback(for: completed)
-//                        timerRepository.updateTimer(completed)
-//                    } else {
-//                        startCompletionProcess(for: completed)
-//                    }
-//                    continue // 아래의 일반 updateTimer(timer)로 내려가지 않게!
-//                }
-//                timerRepository.updateTimer(timer)
-//            }
-//        }
-//    }
 
     /// 실행 중인 타이머들의 남은 시간 매초 갱신 (신버전)
     private func updateTimerStates() {
@@ -335,7 +306,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         NotificationUtils.scheduleRepeatingNotifications(
             id: timer.id.uuidString,
             startDate: effectiveEndDate,
-            interval: 8.0
+            interval: repeatingNotificationInterval
         )
     }
 }
