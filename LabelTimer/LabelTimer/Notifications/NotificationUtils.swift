@@ -4,9 +4,9 @@
 //
 //  Created by 이소연 on 7/11/25.
 //
-/// 로컬 알림을 요청, 예약, 취소하는 유틸리티
+/// 로컬 알림을 생성, 조회, 취소하는 범용 유틸리티
 ///
-/// - 사용 목적: 타이머 종료 시 로컬 알림을 발송하거나 취소하기 위한 로직 모듈화
+/// - 사용 목적: 앱의 모든 부분에서 일관된 방식으로 로컬 알림을 관리
 
 import UserNotifications
 
@@ -14,104 +14,83 @@ enum NotificationUtils {
     
     static let center = UNUserNotificationCenter.current()
 
-    private static let maxNotifications = 60 // (iOS가 허용하는 최대 알림 개수: 64개)
+//    private static let maxNotifications = 60 // (iOS가 허용하는 최대 알림 개수: 64개)
 
+    // MARK: - 권한 및 기본 유틸
+    
     /// 알림 권한 요청 (앱 시작 시 1회)
     static func requestAuthorization() {
-        let center = UNUserNotificationCenter.current()
-        
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if let error = error {
-                #if DEBUG
-                print("알림 권한 요청 실패: \(error)")
-                #endif
-            } else {
-                #if DEBUG
-                print("알림 권한: \(granted ? "허용됨" : "거부됨")")
-                #endif
-            }
+            #if DEBUG
+            if let error = error { print("🔔 LN Auth Failed: \(error.localizedDescription)") }
+            else { print("🔔 LN Auth Granted: \(granted)") }
+            #endif
         }
     }
     
-    // MARK: - 단일 알림 예약/취소
+    /// AlarmSoundType enum을 UNNotificationSound 객체로 변환
+    static func createSound(from soundType: AlarmSoundType) -> UNNotificationSound? {
+        switch soundType {
+        case .defaultRingtone:
+            // 실제 앱에서 사용하는 기본 사운드 파일명을 사용합니다 (예: "default_sound.caf")
+            // 여기서는 테스트를 위해 iOS 기본 사운드를 사용합니다.
+            return .default
+        case .silentVibration, .silentNone:
+            // 진동 또는 완전 무음을 위한 '무음' 사운드 파일을 사용합니다.
+            // 이 파일은 프로젝트에 'silence.caf'라는 이름으로 포함되어 있어야 합니다.
+            return UNNotificationSound(named: UNNotificationSoundName("silence.caf"))
+        case .systemDefault:
+            // nil을 반환하면 시스템 기본 알림(소리 또는 진동)이 울립니다.
+            return nil
+        }
+    }
+    // MARK: - 알림 예약
     
     /// 단일 로컬 알림 예약
-        static func scheduleNotification(id: String, label: String, after seconds: Int) {
-            let content = UNMutableNotificationContent()
-            content.title = "⏰ 타이머 종료"
-            content.body = label.isEmpty ? "타이머가 끝났습니다." : label
-            content.sound = nil
+    static func scheduleNotification(id: String, title: String?, body: String?, sound: UNNotificationSound?, interval: TimeInterval) {
+        let content = UNMutableNotificationContent()
+        content.title = title ?? ""
+        content.body = body ?? ""
+        content.sound = sound
 
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
 
-            let request = UNNotificationRequest(
-                identifier: id,  // 각 타이머 ID를 identifier로 사용
-                content: content,
-                trigger: trigger
-            )
-
-            center.add(request) { error in
+        center.add(request) { error in
+            #if DEBUG
+            if let error = error { print("🔔 LN Schedule Failed: \(id), \(error.localizedDescription)") }
+            else { print("🔔 LN Scheduled: \(id) after \(interval)s") }
+            #endif
+        }
+    }
+    
+    // MARK: - 알림 취소
+    
+    /// ID prefix로 예약/도착된 알림 모두 취소
+    static func cancelNotifications(withPrefix prefix: String, completion: (() -> Void)? = nil) {
+        center.getPendingNotificationRequests { pendingRequests in
+            let pendingIDs = pendingRequests.map(\.identifier).filter { $0.hasPrefix(prefix) }
+            center.removePendingNotificationRequests(withIdentifiers: pendingIDs)
+            
+            center.getDeliveredNotifications { deliveredNotifications in
+                let deliveredIDs = deliveredNotifications.map { $0.request.identifier }.filter { $0.hasPrefix(prefix) }
+                center.removeDeliveredNotifications(withIdentifiers: deliveredIDs)
+                
                 #if DEBUG
-                if let error = error {
-                    print("알림 예약 실패: \(error)")
-                }
+                print("🔔 LN Cancelled by prefix '\(prefix)': \(pendingIDs.count) pending, \(deliveredIDs.count) delivered.")
                 #endif
-            }
-        }
-
-        /// 단일 알림 취소
-        static func cancelScheduledNotification(id: String) {
-            center.removePendingNotificationRequests(withIdentifiers: [id])
-        }
-
-    // MARK: - 연속 표시 알림 (반복 배너 방식)
-
-    /// 연속 표시 알림 예약
-    static func scheduleRepeatingNotifications(id: String, startDate: Date, interval: TimeInterval) {
-        print("🚀 [NotificationUtils] '보이는' 연속 알람 예약을 시작합니다...")
-        
-        for i in 0..<Self.maxNotifications {
-            let content = UNMutableNotificationContent()
-            content.title = "알람!"
-            content.body = "타이머가 완료되었습니다."
-            content.sound = .default // 소리가 있는 기본 알림
-
-            let timeIntervalSinceNow = startDate.addingTimeInterval(Double(i) * interval).timeIntervalSinceNow
-            
-            guard timeIntervalSinceNow > 0 else {
-                continue
-            }
-            
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeIntervalSinceNow, repeats: false)
-            let notificationId = "\(id)_\(i)"
-            let request = UNNotificationRequest(identifier: notificationId, content: content, trigger: trigger)
-            
-            center.add(request) { error in
-                if let error = error {
-                    print("❗️[NotificationUtils] add 실패 \(notificationId): \(error.localizedDescription)")
-//                } else {
-//                    #if DEBUG
-//                    print("✅ add 성공 \(notificationId) (+\(Int(timeIntervalSinceNow))s)")
-//                    #endif
-                }
+                completion?()
             }
         }
     }
     
-    /// 연속 표시 알림 일괄 취소
-    static func cancelRepeatingNotifications(for id: String) {
-        let identifiers = (0..<Self.maxNotifications).map { "\(id)_\($0)" }
-        center.removePendingNotificationRequests(withIdentifiers: identifiers)
-        center.removeDeliveredNotifications(withIdentifiers: identifiers)
-        
+    /// 모든 예약/도착된 알림 삭제
+    static func cancelAll(completion: (() -> Void)? = nil) {
+        center.removeAllPendingNotificationRequests()
+        center.removeAllDeliveredNotifications()
         #if DEBUG
-        print("🗑️ \(identifiers.count)개의 연속 알림 취소 완료 (ID: \(id))")
+        print("🔔 LN Cancelled All.")
         #endif
+        completion?()
     }
-    
-    /// 전체 예약 알림 취소
-    static func cancelAllNotifications() {
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-    }
-    
 }

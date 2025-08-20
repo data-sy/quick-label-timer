@@ -50,6 +50,8 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
     let deleteCountdownSeconds: Int
     private let repeatingNotificationInterval: TimeInterval = 4.0
+    private let repeatingNotificationCount = 60  // iOS 최대 64개
+    
     let didStart = PassthroughSubject<Void, Never>()
 
     // --- 완료 로직을 전담할 Handler ---
@@ -142,7 +144,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         completionHandler.forceHandle(timerId: timerId)
     }
 
-    // MARK: - CRUD (이제 Repository를 호출)
+    // MARK: - CRUD
     
     func getTimer(byId id: UUID) -> TimerData? {
         return timerRepository.getTimer(byId: id)
@@ -186,7 +188,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     @discardableResult
     func removeTimer(id: UUID) -> TimerData? {
         completionHandler.cancelPendingAction(for: id)
-        NotificationUtils.cancelRepeatingNotifications(for: id.uuidString)
+        NotificationUtils.cancelNotifications(withPrefix: id.uuidString)
         alarmHandler.stop(for: id)
         
         return timerRepository.removeTimer(byId: id)
@@ -202,8 +204,8 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     func pauseTimer(id: UUID) {
         guard var timer = timerRepository.getTimer(byId: id), timer.status == .running else { return }
-        NotificationUtils.cancelRepeatingNotifications(for: id.uuidString)
-            
+        NotificationUtils.cancelNotifications(withPrefix: id.uuidString)
+        
         timer.status = .paused
         timerRepository.updateTimer(timer)
     }
@@ -220,7 +222,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     func stopTimer(id: UUID) {
         completionHandler.cancelPendingAction(for: id)
-        NotificationUtils.cancelRepeatingNotifications(for: id.uuidString)
+        NotificationUtils.cancelNotifications(withPrefix: id.uuidString)
         alarmHandler.stop(for: id)
 
         guard let oldTimer = timerRepository.getTimer(byId: id) else { return }
@@ -277,8 +279,8 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         
         for timer in completedTimers {
             alarmHandler.stop(for: timer.id)
-            NotificationUtils.cancelRepeatingNotifications(for: timer.id.uuidString)
-
+            NotificationUtils.cancelNotifications(withPrefix: timer.id.uuidString)
+            
             if timer.pendingDeletionAt == nil {
                 startCompletionProcess(for: timer)
             }
@@ -287,6 +289,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
     // MARK: - Private Helpers
     
+    /// 사용자가 라벨을 입력하지 않았을 때 "타이머N" 형식의 고유한 라벨 생성 (오름차순)
     private func generateAutoLabel() -> String {
         let existingLabels = timerRepository.getAllTimers().map(\.label) + presetRepository.allPresets.map(\.label)
         var index = 1
@@ -299,14 +302,43 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         }
     }
     
+    /// 연속 로컬 알림 예약
     private func scheduleRepeatingNotification(for timer: TimerData) {
+        // 타이머의 소리/진동 설정에 따라 알림 정책(AlarmSoundType)을 결정
+        var soundType: AlarmSoundType
+        if timer.isSoundOn {
+           soundType = .defaultRingtone
+        } else {
+           if timer.isVibrationOn {
+               soundType = .silentVibration
+           } else {
+               soundType = .silentNone
+           }
+        }
+
+        // 정책에 맞는 UNNotificationSound 객체 생성
+        let sound = NotificationUtils.createSound(from: soundType)
+
         let minimumStartDate = Date().addingTimeInterval(2)
         let effectiveEndDate = max(timer.endDate, minimumStartDate)
 
-        NotificationUtils.scheduleRepeatingNotifications(
-            id: timer.id.uuidString,
-            startDate: effectiveEndDate,
-            interval: repeatingNotificationInterval
-        )
+        // TimerService가 직접 반복문을 실행하여 단일 알림을 여러 개 예약
+        for i in 0..<repeatingNotificationCount {
+            let interval = effectiveEndDate.timeIntervalSinceNow + (Double(i) * repeatingNotificationInterval)
+
+            guard interval > 0 else { continue }
+
+            let title = "⏰ 타이머 종료"
+            let body = timer.label.isEmpty ? "설정한 시간이 다 되었습니다." : timer.label
+
+            // 단일 알림 예약 함수를 반복 호출
+            NotificationUtils.scheduleNotification(
+               id: "\(timer.id.uuidString)_\(i)",
+               title: title,
+               body: body,
+               sound: sound,
+               interval: interval
+            )
+        }
     }
 }
