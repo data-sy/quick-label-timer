@@ -33,11 +33,7 @@ struct LabelTimerApp: App {
             deleteCountdownSeconds: Self.deleteCountdownSeconds,
             alarmHandler: alarmHandler
         )
-        
-        NotificationDelegate.shared.timerService = timerService
-        NotificationDelegate.shared.alarmHandler = alarmHandler
 
-        //@StateObject 속성들을 초기화
         _timerRepository = StateObject(wrappedValue: timerRepository)
         _presetRepository = StateObject(wrappedValue: presetRepository)
         _timerService = StateObject(wrappedValue: timerService)

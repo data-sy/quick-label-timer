@@ -9,9 +9,11 @@
 /// - 사용 목적: 앱 실행에 필요한 오디오 세션, 전역 UI, 알림 권한 등을 초기화
 
 import UIKit
-import AVFoundation // import 추가
+import AVFoundation
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    private var notifDelegate: LocalNotificationDelegate?
 
     func application(
         _ application: UIApplication,
@@ -24,7 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIPageControl.appearance().pageIndicatorTintColor = UIColor.systemGray4
 
         NotificationUtils.requestAuthorization()
-        UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
+
+        let alarmHandler = AlarmHandler()
+        let delegate = LocalNotificationDelegate(alarmHandler: alarmHandler)
+        UNUserNotificationCenter.current().delegate = delegate
+        self.notifDelegate = delegate
 
         return true
     }
