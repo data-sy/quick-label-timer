@@ -14,30 +14,184 @@ import UserNotifications
 @MainActor
 enum AlarmDebugManager {
     
-    // MARK: - Properties
+    private static let testPrefix = "debug-"
+    private static let soundTestInterval: TimeInterval = 60.0 // suspended 테스트를 위해 1분 이상
     
-    // TODO: 테스트용 prefix와 interval 상수 구현
-    
-    /// 앱 진입점에서 주입받을 실제 TimerService 인스턴스
     static var timerService: TimerServiceProtocol!
     
     // MARK: - 0. 유틸리티 기능
     
-    // TODO: 유틸리티 함수 구현: 권한 요청, 테스트 알림 전체 삭제, 덤프(설정, 예약, 도착)
+    static func requestAuth() {
+        NotificationUtils.requestAuthorization()
+    }
+    
+    static func clearAllTestNotifications() {
+        NotificationUtils.cancelNotifications(withPrefix: testPrefix)
+    }
+    
+    static func dumpSettings() async {
+        let settings = await NotificationUtils.center.notificationSettings()
+        print("""
+        🔔 LN Settings Dump:
+           - Auth Status: \(settings.authorizationStatus.rawValue)
+           - Sound: \(settings.soundSetting.rawValue)
+           - Badge: \(settings.badgeSetting.rawValue)
+           - Alert: \(settings.alertSetting.rawValue)
+           - Lock Screen: \(settings.lockScreenSetting.rawValue)
+           - Notification Center: \(settings.notificationCenterSetting.rawValue)
+        """)
+    }
+    
+    static func dumpPending() async {
+        let pending = await NotificationUtils.center.pendingNotificationRequests()
+        let ids = pending.map(\.identifier).joined(separator: ", ")
+        print("🔔 LN Pending Dump (\(pending.count) items): [\(ids)]")
+    }
+    
+    static func dumpDelivered() async {
+        let delivered = await NotificationUtils.center.deliveredNotifications()
+        let ids = delivered.map { $0.request.identifier }.joined(separator: ", ")
+        print("🔔 LN Delivered Dump (\(delivered.count) items): [\(ids)]")
+    }
     
     // MARK: - 1. 소리 기본 동작 검증 (연속 로컬)
     
-    // TODO: 소리 동작 테스트 함수 구현: 커스텀, 시스템, 무음, nil
+    static func testCustomSound() {
+        let sound = NotificationUtils.createSound(fromSound: .melody)
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+        
+        timerService.scheduleRepeatingNotifications(
+            baseId: "\(testPrefix)repeating-custom",
+            title: "연속 1-1: 커스텀 사운드",
+            body: "melody 파일이 반복 재생되어야 합니다.",
+            sound: sound,
+            endDate: endDate,
+            repeatingInterval: 2
+        )
+    }
+    
+    static func testSystemSound() {
+        let sound = UNNotificationSound.default
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+        
+        timerService.scheduleRepeatingNotifications(
+            baseId: "\(testPrefix)repeating-system",
+            title: "연속 1-2: 시스템 사운드",
+            body: "iOS 기본 알림음이 반복 재생되어야 합니다.",
+            sound: sound,
+            endDate: endDate,
+            repeatingInterval: 2
+        )
+    }
+    
+    static func testSilentSound() {
+        let sound = NotificationUtils.createSound(fromSound: .silence)
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+        
+        timerService.scheduleRepeatingNotifications(
+            baseId: "\(testPrefix)repeating-silent",
+            title: "연속 1-3: 무음 사운드",
+            body: " (햅틱 켠 경우) 소리 없이 진동만 반복.",
+            sound: sound,
+            endDate: endDate,
+            repeatingInterval: 2
+        )
+    }
+    
+    static func testNilSound() {
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+        
+        timerService.scheduleRepeatingNotifications(
+            baseId: "\(testPrefix)repeating-nil",
+            title: "연속 1-4: 사운드 없음(nil)",
+            body: "시스템 기본 동작(소리/진동)이 반복되어야 합니다.",
+            sound: nil,
+            endDate: endDate,
+            repeatingInterval: 2
+        )
+    }
     
     // MARK: - 2. 배너 기본 동작 검증
-    
-    // TODO: 배너 동작 테스트 함수 구현: 소리만
-    
+
+    /// 2-1: 배너 없이 소리만 (연속)
+     /// 가설: title과 body가 nil이면 배너나 알림창 없이 소리만 재생될 것이다.
+     static func testSoundOnly() {
+         let sound = NotificationUtils.createSound(fromSound: .melody)
+         let endDate = Date().addingTimeInterval(soundTestInterval)
+         
+         timerService.scheduleRepeatingNotifications(
+             baseId: "\(testPrefix)repeating-sound-only",
+             title: nil,
+             body: nil,
+             sound: sound,
+             endDate: endDate,
+             repeatingInterval: 2
+         )
+     }
+   
     // MARK: - 3. 연속 알림 성능 및 UX 검증
     
-    // TODO: 연속 알림 테스트 함수 구현: 간격(barrage), 취소
+    // 3-1, 3-2: n초 간격을 파라미터로 받아 시스템 사운드로 연속 알림을 테스트
+    /// - Parameter interval: 알림이 반복될 간격(초)
+    static func testBarrage(interval: TimeInterval) {
+     let sound = UNNotificationSound.default
+     let endDate = Date().addingTimeInterval(soundTestInterval)
+     let baseId = "\(testPrefix)barrage-\(interval)s"
+     
+     print("▶️ Scheduling barrage test with \(interval)s interval. BaseID: \(baseId)")
+     
+     timerService.scheduleRepeatingNotifications(
+         baseId: baseId,
+         title: "연속 알림 테스트 (\(interval)초 간격)",
+         body: "시스템 기본 알림음이 \(interval)초 간격으로 반복되어야 합니다.",
+         sound: sound,
+         endDate: endDate,
+         repeatingInterval: interval
+     )
+    }
+    
+    /// 3-3. 예약된 연속 알림을 즉시 취소하는 기능을 테스트
+    static func testCancel() {
+        let testId = "\(testPrefix)cancellation-test"
+        let sound = UNNotificationSound.default
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+        
+        print("▶️ Scheduling notifications to be cancelled immediately. BaseID: \(testId)")
+        timerService.scheduleRepeatingNotifications(
+            baseId: testId,
+            title: "취소 테스트용 알림",
+            body: "이 알림은 예약 직후 취소되어 울리면 안 됩니다.",
+            sound: sound,
+            endDate: endDate,
+            repeatingInterval: 2
+        )
+        
+         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            print("▶️ Attempting to cancel notifications with baseId: \(testId)")
+            timerService.stopTimerNotifications(for: testId)
+        }
+    }
     
     // MARK: - 4. 최종 정책 조합 검증
     
-    // TODO: 최종 정책 조합 테스트 함수 구현: 소리/진동 조합
+    static func testPolicy(soundOn: Bool, vibrationOn: Bool) {
+       // 1. TimerService의 정책 결정 로직을 그대로 시뮬레이션
+       //    (실제 앱에서는 timer.isSoundOn, timer.isVibrationOn으로 이 로직을 통과하게 됩니다.)
+        let policy = AlarmNotificationPolicy.determine(soundOn: soundOn, vibrationOn: vibrationOn)
+        // 2. 결정된 정책에 따라 실제 UNNotificationSound 객체 생성
+        let sound = NotificationUtils.createSound(fromPolicy: policy)
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+
+        // 3. TimerService의 실제 연속 알림 함수를 호출하여 최종 테스트
+        timerService.scheduleRepeatingNotifications(
+           baseId: "\(testPrefix)final-policy-s\(soundOn)-v\(vibrationOn)",
+           title: "최종 정책 테스트",
+           body: "소리:\(soundOn ? "ON" : "OFF"), 진동:\(vibrationOn ? "ON" : "OFF") / 정책: \(policy)",
+           sound: sound,
+           endDate: endDate,
+           repeatingInterval: 1.5 // 테스트로 찾은 최적의 간격
+        )
+
+        print("▶️ Final policy test scheduled. Policy: \(policy), Interval: 1.5s")
+        }
 }

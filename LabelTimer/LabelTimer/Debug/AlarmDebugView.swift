@@ -20,40 +20,101 @@ struct AlarmDebugView: View {
                 // MARK: - 0. 유틸리티 기능
                 VStack(spacing: 10) {
                     Text("Utilities").font(.headline)
-                    // TODO: Add utility buttons (Auth, Clear, Dumps)
+                    HStack {
+                        Button("권한 요청") { AlarmDebugManager.requestAuth() }
+                        Button("전체 클리어") { AlarmDebugManager.clearAllTestNotifications() }
+                    }
+                    HStack {
+                        Button("설정 덤프") { Task { await AlarmDebugManager.dumpSettings() } }
+                        Button("Pending 덤프") { Task { await AlarmDebugManager.dumpPending() } }
+                        Button("Delivered 덤프") { Task { await AlarmDebugManager.dumpDelivered() } }
+                    }
                 }
+                .buttonStyle(.bordered)
 
                 Divider().padding(.vertical)
                 
                 // MARK: - 1. 소리 기본 동작 검증
                 VStack(spacing: 15) {
-                    Text("Part 1: 소리 기본 동작 검증").font(.title2).bold()
-                    // TODO: Add buttons for sound tests (custom, system, silent, nil)
+                    Text("Part 1: 소리 기본 동작 검증 (햅틱: 항상 재생 상태)").font(.title2).bold()
+                    
+                    Text("가설 1-1: 커스텀 사운드. 소리모드: 소리ㅇ 진동ㅇ. 무음모드: 소리x 진동 ㅇ")
+                    Button("테스트 1-1: 커스텀 사운드 ") { AlarmDebugManager.testCustomSound() }
+
+                    Text("가설 1-2: 시스템 기본 사운드. 연속 알림 간격이 2초일 때 소리 텀 적당한가")
+                    Button("테스트 1-2: 시스템 사운드 ") { AlarmDebugManager.testSystemSound() }
+                    
+                    Text("가설 1-3: 무음 사운드. 소리모드: 소리x 진동ㅇ. 무음모드: 소리x 진동ㅇ")
+                    Button("테스트 1-3: 무음 사운드 ") { AlarmDebugManager.testSilentSound() }
+
+                    Text("가설 1-4: sound = nil. 소리모드: 소리x 진동x. 무음모드: 소리x 진동x")
+                    Button("테스트 1-4: 사운드 없음") {
+                        AlarmDebugManager.testNilSound() }
                 }
+                .buttonStyle(.bordered)
 
                 Divider().padding(.vertical)
 
                 // MARK: - 2. 배너 기본 동작 검증
                 VStack(spacing: 15) {
                     Text("Part 2: 배너 기본 동작 검증").font(.title2).bold()
-                    // TODO: Add button for banner test (sound only)
+                    
+                    Text("~~가설 2-1: 제목/본문 없이 소리만 있는 알림은 배너 없이 소리만 재생됨~~")
+                    Button("~~테스트 2-1: 소리만~~") {
+                        AlarmDebugManager.testSoundOnly() }
+                    Text("결과: Suspended 상태에서 미실행. iOS 정책상 미지원으로 판단.")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                        .padding(.leading, 5)
                 }
-                
+                .buttonStyle(.bordered)
+
                 Divider().padding(.vertical)
 
                 // MARK: - 3. 연속 알림 성능 및 UX 검증
                 VStack(spacing: 15) {
                     Text("Part 3: 연속 알림 성능/UX 검증").font(.title2).bold()
-                    // TODO: Add buttons for barrage and cancellation tests
+
+                    Text("~~가설 3-1: 1초 간격 적당한가~~")
+                    Button("~~테스트 3-1: 1초 간격~~") { AlarmDebugManager.testBarrage(interval: 1) }
+                    Text("결과: 너무 빨라")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                        .padding(.leading, 5)
+
+                    Text("가설 3-1': 1.5초 간격 적당한가")
+                    Button("테스트 3-1': 1.5초 간격") { AlarmDebugManager.testBarrage(interval: 1.5) }
+                    
+                    Text("가설 3-2: 2초 간격 적당한가")
+                    Button("테스트 3-2: 2초 간격") { AlarmDebugManager.testBarrage(interval: 2) }
+
+                    Text("가설 3-3: 예약된 연속 알림 즉시 취소 (포그라운드 didReceive에서 사용 예정)")
+                    Button("테스트 3-3: 연속 알림 즉시 취소") { AlarmDebugManager.testCancel() }
+
+                    Text("~~가설 3-4: '대표 배너'로 스팸 느낌을 줄일 수 있는가~~")
+                    Button("~~테스트 3-4: 대표 배너 1개 + 소리 9회~~") {
+                    }
+                    Text("결과: 가설 2-1 실패로 3-4 철회")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                        .padding(.leading, 5)
+
                 }
+                .buttonStyle(.bordered)
                 
                 Divider().padding(.vertical)
-                
+
                 // MARK: - 4. 최종 정책 동적 생성 검증
                 VStack(spacing: 15) {
                     Text("Part 4: 최종 정책 동적 생성 검증").font(.title2).bold()
-                    // TODO: Add buttons for final policy combination tests
+                    
+                    Button("A: 소리O, 진동O") { AlarmDebugManager.testPolicy(soundOn: true, vibrationOn: true) }
+                    Text("~~B: 소리O, 진동X 는 iOS 정책상 불가~~")
+                        .padding(.leading, 5)
+                    Button("C: 소리X, 진동O") { AlarmDebugManager.testPolicy(soundOn: false, vibrationOn: true) }
+                    Button("D: 소리X, 진동X") { AlarmDebugManager.testPolicy(soundOn: false, vibrationOn: false) }
                 }
+                .buttonStyle(.borderedProminent)
                 .padding(.bottom, 40)
             }
             .padding()
@@ -62,3 +123,4 @@ struct AlarmDebugView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+
