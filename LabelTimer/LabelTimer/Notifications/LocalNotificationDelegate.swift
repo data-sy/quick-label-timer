@@ -55,16 +55,24 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
+        let request = response.notification.request
+        let content = request.content
+        let identifier = request.identifier
+        
         #if DEBUG
-        print("👇 Notification didReceive (user tapped): \(response.notification.request.identifier)")
+        print("👇 Notification didReceive (user tapped): \(identifier)")
         #endif
-        
-        // TODO: 알림 탭 시, 후속 알림 정리
-        // 1. alarmHandler.stopAll()을 호출하여 현재 재생중인 모든 알람(소리/진동) 중지
-        // 2. identifier에서 타이머 ID(UUID)를 추출
-        // 3. NotificationUtils를 사용해 해당 타이머 ID로 예약된 모든 후속 알림(Pending) 취소
-        
-        completionHandler()
+
+        let baseIdentifier = extractBaseIdentifier(from: identifier, userInfo: content.userInfo)
+
+        NotificationUtils.cancelNotifications(withPrefix: baseIdentifier) {
+            #if DEBUG
+            print("🧹 didReceive cleaned up for prefix=\(baseIdentifier)")
+            #endif
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+        }
     }
 }
 
