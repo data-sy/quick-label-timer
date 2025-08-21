@@ -121,8 +121,11 @@ enum AlarmDebugManager {
          
          timerService.scheduleRepeatingNotifications(
              baseId: "\(testPrefix)repeating-sound-only",
-             title: nil,
-             body: nil,
+             // 테스트 후, nil이 들어오지 못하게 논옵셔널로 수정해서 주석 처리
+//             title: nil,
+//             body: nil,
+             title: "",
+             body: "",
              sound: sound,
              endDate: endDate,
              repeatingInterval: 2
@@ -191,7 +194,7 @@ enum AlarmDebugManager {
            endDate: endDate,
            repeatingInterval: 1.5 // 테스트로 찾은 최적의 간격
         )
-
+        
         print("▶️ Final policy test scheduled. Policy: \(policy), Interval: 1.5s")
-        }
+    }
 }

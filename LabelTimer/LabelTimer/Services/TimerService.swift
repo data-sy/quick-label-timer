@@ -46,7 +46,7 @@ protocol TimerServiceProtocol: ObservableObject {
     
     // MARK: - Notification Scheduling
     func scheduleNotification(for timer: TimerData)
-    func scheduleRepeatingNotifications(baseId: String, title: String?, body: String?, sound: UNNotificationSound?, endDate: Date, repeatingInterval: TimeInterval)
+    func scheduleRepeatingNotifications(baseId: String, title: String, body: String, sound: UNNotificationSound?, endDate: Date, repeatingInterval: TimeInterval)
     func stopTimerNotifications(for baseId: String)
 }
 
@@ -319,7 +319,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
     
     /// 연속 로컬 알림 예약 (저수준)
-    func scheduleRepeatingNotifications(baseId: String, title: String?, body: String?, sound: UNNotificationSound?, endDate: Date, repeatingInterval: TimeInterval) {
+    func scheduleRepeatingNotifications(baseId: String, title: String, body: String, sound: UNNotificationSound?, endDate: Date, repeatingInterval: TimeInterval) {
         let minimumStartDate = Date().addingTimeInterval(2)
         let effectiveEndDate = max(endDate, minimumStartDate)
         
