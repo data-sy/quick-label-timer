@@ -12,16 +12,7 @@ import UserNotifications
 
 final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     
-    private let alarmHandler: AlarmHandler
-
-    init(alarmHandler: AlarmHandler) {
-        self.alarmHandler = alarmHandler
-        #if DEBUG
-        print("✅ LocalNotificationDelegate initialized")
-        #endif
-    }
-    
-    /// 앱이 포그라운드(실행 중) 상태일 때 알림이 도착하면 호출되는 함수
+    /// 앱이 포그라운드(실행 중) 상태일 때 알림이 도착하면 호출되는 함수 (willPresent)
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -31,17 +22,34 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         print("📬 Notification willPresent in foreground: \(notification.request.identifier)")
         #endif
         
-        // TODO: 포그라운드 알림 정책 구현
-        // 1. notification.request.identifier에서 timerId 추출
-        // 2. Settings에서 현재 '소리' 및 '진동' 설정값 가져오기
-        // 3. alarmHandler를 사용해 인앱 알람(소리/진동) 시작
-        // 4. completionHandler([])를 호출하여 시스템 알림 배너는 억제
+        let request = notification.request
+        let content = request.content
+        let identifier = request.identifier // 예: "<baseIdentifier>_<index>"
         
-        // 임시로 기본 옵션 유지
-        completionHandler([.banner, .list, .sound, .badge])
+        let baseIdentifier = extractBaseIdentifier(from: identifier, userInfo: content.userInfo)
+        let index = extractIndex(from: identifier, userInfo: content.userInfo)
+
+        // 두 번째 알림부터는 억제 + 일괄 취소
+        guard index == 0 else {
+            completionHandler([])
+            NotificationUtils.cancelNotifications(withPrefix: baseIdentifier, completion: nil)
+            #if DEBUG
+            print("🧹 willPresent suppressed index \(index); cancelled pending/delivered for \(baseIdentifier)")
+            #endif
+            return
+        }
+
+        // 첫 번째 알림
+        completionHandler([.banner, .list, .sound])
+
+        // 남은 예약/전달 알림 정리
+        NotificationUtils.cancelNotifications(withPrefix: baseIdentifier, completion: nil)
+        #if DEBUG
+        print("🧹 willPresent displayed index 0; cancelled remaining for \(baseIdentifier)")
+        #endif
     }
     
-    /// 사용자가 알림 배너를 탭하거나, 알림 센터에서 항목을 선택했을 때 호출되는 함수
+    /// 사용자가 알림 배너를 탭하거나, 알림 센터에서 항목을 선택했을 때 호출되는 함수 (didReceive)
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
@@ -57,5 +65,21 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         // 3. NotificationUtils를 사용해 해당 타이머 ID로 예약된 모든 후속 알림(Pending) 취소
         
         completionHandler()
+    }
+}
+
+private extension LocalNotificationDelegate {
+    func extractBaseIdentifier(from identifier: String, userInfo: [AnyHashable: Any]) -> String {
+        if let base = userInfo["baseIdentifier"] as? String {
+            return base
+        }
+        return identifier.components(separatedBy: "_").first ?? identifier
+    }
+    
+    func extractIndex(from identifier: String, userInfo: [AnyHashable: Any]) -> Int {
+        if let idx = userInfo["index"] as? Int {
+            return idx
+        }
+        return Int(identifier.components(separatedBy: "_").last ?? "") ?? 0
     }
 }

@@ -27,8 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         NotificationUtils.requestAuthorization()
 
-        let alarmHandler = AlarmHandler()
-        let delegate = LocalNotificationDelegate(alarmHandler: alarmHandler)
+        let delegate = LocalNotificationDelegate()
         UNUserNotificationCenter.current().delegate = delegate
         self.notifDelegate = delegate
 
