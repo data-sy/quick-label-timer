@@ -15,7 +15,7 @@ enum AlarmSound: String, CaseIterable, Identifiable {
     // 사용자에게 표시될 실제 사운드
     case lowBuzz, highBuzz, siren, melody
     // '진동만' 모드를 위한 기술적인 케이스 (UI에는 표시되지 않음)
-    case silent
+    case silence
  
     var fileName: String {
         switch self {
@@ -23,7 +23,7 @@ enum AlarmSound: String, CaseIterable, Identifiable {
         case .highBuzz: return "high-buzz"
         case .siren: return "siren"
         case .melody: return "melody"
-        case .silent: return "silence1sec"
+        case .silence: return "silence1sec"
         }
     }
 
@@ -39,12 +39,12 @@ enum AlarmSound: String, CaseIterable, Identifiable {
         case .highBuzz: return "높은 알림음"
         case .siren: return "사이렌"
         case .melody: return "멜로디"
-        case .silent: return "진동용 무음사운드" // UI에 표시되진 않지만, 디버깅 등을 위해 명확한 이름 부여
+        case .silence: return "진동용 무음사운드" // UI에 표시되진 않지만, 디버깅 등을 위해 명확한 이름 부여
         }
     }
     
     static var selectableSounds: [AlarmSound] {
-        return allCases.filter { $0 != .silent } /// 사운드 선택 화면에서 무음사운드 제거
+        return allCases.filter { $0 != .silence } /// 사운드 선택 화면에서 무음사운드 제거
     }
     
     var id: String { self.rawValue }

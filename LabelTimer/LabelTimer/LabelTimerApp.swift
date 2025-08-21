@@ -38,6 +38,11 @@ struct LabelTimerApp: App {
         _presetRepository = StateObject(wrappedValue: presetRepository)
         _timerService = StateObject(wrappedValue: timerService)
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel())
+        
+        // 디버그 매니저에 실제 서비스 주입
+        #if DEBUG
+        AlarmDebugManager.timerService = timerService
+        #endif
     }
     
     var body: some Scene {

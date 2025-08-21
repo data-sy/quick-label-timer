@@ -27,20 +27,21 @@ enum NotificationUtils {
             #endif
         }
     }
+    /// AlarmSound enum을 UNNotificationSound 객체로 변환
+    static func createSound(fromSound sound: AlarmSound) -> UNNotificationSound? {
+         let fileNameWithExtension = "\(sound.fileName).\(sound.fileExtension)"
+        return UNNotificationSound(named: UNNotificationSoundName(fileNameWithExtension))
+    }
     
-    /// AlarmSoundType enum을 UNNotificationSound 객체로 변환
-    static func createSound(from soundType: AlarmSoundType) -> UNNotificationSound? {
-        switch soundType {
-        case .defaultRingtone:
-            // 실제 앱에서 사용하는 기본 사운드 파일명을 사용합니다 (예: "default_sound.caf")
-            // 여기서는 테스트를 위해 iOS 기본 사운드를 사용합니다.
-            return .default
-        case .silentVibration, .silentNone:
-            // 진동 또는 완전 무음을 위한 '무음' 사운드 파일을 사용합니다.
-            // 이 파일은 프로젝트에 'silence.caf'라는 이름으로 포함되어 있어야 합니다.
-            return UNNotificationSound(named: UNNotificationSoundName("silence.caf"))
-        case .systemDefault:
-            // nil을 반환하면 시스템 기본 알림(소리 또는 진동)이 울립니다.
+    /// AlarmNotificationPolicy enum을 UNNotificationSound 객체로 변환
+    static func createSound(fromPolicy policy: AlarmNotificationPolicy) -> UNNotificationSound? {
+        switch policy {
+        case .soundAndVibration:
+            return createSound(fromSound: AlarmSound.current)
+        case .vibrationOnly:
+            // '무음' 사운드 트릭
+            return createSound(fromSound: AlarmSound.silence)
+        case .silent:
             return nil
         }
     }
