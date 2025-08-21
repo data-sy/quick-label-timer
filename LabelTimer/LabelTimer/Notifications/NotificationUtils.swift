@@ -50,8 +50,12 @@ enum NotificationUtils {
     /// 단일 로컬 알림 예약
     static func scheduleNotification(id: String, title: String?, body: String?, sound: UNNotificationSound?, interval: TimeInterval) {
         let content = UNMutableNotificationContent()
-        content.title = title ?? ""
-        content.body = body ?? ""
+        if let title = title {
+            content.title = title
+        }
+        if let body = body {
+            content.body = body
+        }
         content.sound = sound
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
