@@ -60,12 +60,14 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     @Published private(set) var scenePhase: ScenePhase = .active
 
     let deleteCountdownSeconds: Int
-    private let repeatingNotificationCount = 60  // iOS 최대 64개
-    /// 실제 앱에서 사용할 기본 알림 반복 간격 (초)
-    private let defaultRepeatingInterval: TimeInterval = 2.0
-
+    private let repeatingNotificationCount = 60  // iOS pending limit 64 고려, 여유 4
+    private let defaultRepeatingInterval: TimeInterval = 2.0 // 연속 알림 반복 간격
     
     let didStart = PassthroughSubject<Void, Never>()
+    
+    private var lastActivationCleanupAt: Date = .distantPast
+    private let activationCleanupThrottle: TimeInterval = 0.8 // 연속 활성화 디바운스
+    private let activationGraceWindow: TimeInterval = 0.5
 
     // --- 완료 로직을 전담할 Handler ---
     private lazy var completionHandler: TimerCompletionHandler = {
@@ -282,21 +284,16 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     func updateScenePhase(_ phase: ScenePhase) {
         self.scenePhase = phase
-        
         guard phase == .active else { return }
 
-        let allTimers = timerRepository.getAllTimers()
-        let completedTimers = allTimers.filter { $0.status == .completed }
+        guard shouldRunActivationCleanup() else { return }
 
-        guard !completedTimers.isEmpty else { return }
-        
-        for timer in completedTimers {
-            alarmHandler.stop(for: timer.id)
-            NotificationUtils.cancelNotifications(withPrefix: timer.id.uuidString)
-            
-            if timer.pendingDeletionAt == nil {
-                startCompletionProcess(for: timer)
-            }
+        let now = Date()
+        let candidates = collectCleanupCandidates(now: now)
+        guard !candidates.isEmpty else { return }
+
+        runActivationCleanup(for: candidates) { [weak self] in
+            self?.finalizeCompletedTimers(candidates)
         }
     }
     
@@ -356,7 +353,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     /// 사용자가 라벨을 입력하지 않았을 때 "타이머N" 형식의 고유한 라벨 생성 (오름차순)
     private func generateAutoLabel() -> String {
-        let existingLabels = timerRepository.getAllTimers().map(\.label) + presetRepository.allPresets.map(\.label)
+        let existingLabels = Set(timerRepository.getAllTimers().map(\.label) + presetRepository.allPresets.map(\.label))
         var index = 1
         while true {
             let candidate = "타이머\(index)"
@@ -364,6 +361,77 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
                 return candidate
             }
             index += 1
+        }
+    }
+    
+    /// 연속 활성화 시 과도 호출을 방지하는 디바운스
+    private func shouldRunActivationCleanup() -> Bool {
+        let now = Date()
+        guard now.timeIntervalSince(lastActivationCleanupAt) > activationCleanupThrottle else {
+            #if DEBUG
+            print("[LNGuard] Skipped activation cleanup due to throttle")
+            #endif
+            return false
+        }
+        lastActivationCleanupAt = now
+        return true
+    }
+
+    /// 정리 대상 타이머 수집 (완료 상태 or 사실상 종료 시각을 지난 타이머)
+    private func collectCleanupCandidates(now: Date) -> [TimerData] {
+        let allTimers = timerRepository.getAllTimers()
+        let candidates = allTimers.filter { timer in
+            switch timer.status {
+            case .completed:
+                return true
+            case .running, .paused:
+                return timer.endDate <= now.addingTimeInterval(activationGraceWindow)
+            default:
+                return false
+            }
+        }
+
+        #if DEBUG
+        if candidates.isEmpty {
+            print("[LNGuard] Activation candidates count=0")
+        } else {
+            let ids = candidates.map { $0.id.uuidString }
+            print("[LNGuard] Activation candidates count=\(candidates.count) ids=\(ids)")
+        }
+        #endif
+
+        return candidates
+    }
+
+    /// 알림 체인 중단 및 사운드 정지
+    private func runActivationCleanup(for timers: [TimerData], completion: @escaping () -> Void) {
+        let baseIds = Set(timers.map { $0.id.uuidString })
+        guard !baseIds.isEmpty else { completion(); return }
+
+        let group = DispatchGroup()
+
+        // 알림 정리
+        for baseId in baseIds {
+            group.enter()
+            NotificationUtils.cancelNotifications(withPrefix: baseId) {
+                #if DEBUG
+                print("[LNGuard] cleaned notifications for \(baseId)")
+                #endif
+                group.leave()
+            }
+        }
+
+        // 사운드/진동 정지 (idempotent 가정)
+        timers.forEach { alarmHandler.stop(for: $0.id) }
+
+        group.notify(queue: .main) { completion() }
+    }
+
+    /// 완료 처리 루틴 진입
+    private func finalizeCompletedTimers(_ timers: [TimerData]) {
+        for timer in timers {
+            guard timer.pendingDeletionAt == nil else { continue }
+            startCompletionProcess(for: timer)
         }
     }
 }
