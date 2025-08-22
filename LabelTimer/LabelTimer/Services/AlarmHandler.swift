@@ -11,6 +11,7 @@
 
 import Foundation
 
+@available(*, deprecated, message: "이제 로컬 알림을 사용하므로 앱 내 알람 재생 로직은 더 이상 사용되지 않습니다. '무음 사운드' 트릭 등 잠재적인 활용을 위해 코드를 남겨둡니다.")
 protocol AlarmTriggering {
     func playCustomFeedback(for timer: TimerData)
     func playSystemFeedback(for timer: TimerData)
@@ -18,6 +19,7 @@ protocol AlarmTriggering {
     func stopAll()
 }
 
+@available(*, deprecated, message: "이제 로컬 알림을 사용하므로 앱 내 알람 재생 로직은 더 이상 사용되지 않습니다. '무음 사운드' 트릭 등 잠재적인 활용을 위해 코드를 남겨둡니다.")
 final class AlarmHandler: AlarmTriggering {
     private let player: AlarmPlayable
     

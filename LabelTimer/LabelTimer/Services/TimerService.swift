@@ -55,7 +55,6 @@ protocol TimerServiceProtocol: ObservableObject {
 final class TimerService: ObservableObject, TimerServiceProtocol {
     private let timerRepository: TimerRepositoryProtocol
     private let presetRepository: PresetRepositoryProtocol
-    private let alarmHandler: AlarmTriggering
 
     @Published private(set) var scenePhase: ScenePhase = .active
 
@@ -86,11 +85,10 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     private var timer: Timer?
 
-    init(timerRepository: TimerRepositoryProtocol, presetRepository: PresetRepositoryProtocol, deleteCountdownSeconds: Int, alarmHandler: AlarmTriggering = AlarmHandler()) {
+    init(timerRepository: TimerRepositoryProtocol, presetRepository: PresetRepositoryProtocol, deleteCountdownSeconds: Int) {
         self.timerRepository = timerRepository
         self.presetRepository = presetRepository
         self.deleteCountdownSeconds = deleteCountdownSeconds
-        self.alarmHandler = alarmHandler
         startTicking()
     }
 
@@ -204,7 +202,6 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     func removeTimer(id: UUID) -> TimerData? {
         completionHandler.cancelPendingAction(for: id)
         NotificationUtils.cancelNotifications(withPrefix: id.uuidString)
-        alarmHandler.stop(for: id)
         
         return timerRepository.removeTimer(byId: id)
     }
@@ -238,7 +235,6 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     func stopTimer(id: UUID) {
         completionHandler.cancelPendingAction(for: id)
         NotificationUtils.cancelNotifications(withPrefix: id.uuidString)
-        alarmHandler.stop(for: id)
 
         guard let oldTimer = timerRepository.getTimer(byId: id) else { return }
         
@@ -420,10 +416,6 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
                 group.leave()
             }
         }
-
-        // 사운드/진동 정지 (idempotent 가정)
-        timers.forEach { alarmHandler.stop(for: $0.id) }
-
         group.notify(queue: .main) { completion() }
     }
 

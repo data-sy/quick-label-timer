@@ -26,12 +26,10 @@ struct LabelTimerApp: App {
     init() {
         let timerRepository = TimerRepository()
         let presetRepository = PresetRepository()
-        let alarmHandler = AlarmHandler()
         let timerService = TimerService(
             timerRepository: timerRepository,
             presetRepository: presetRepository,
-            deleteCountdownSeconds: Self.deleteCountdownSeconds,
-            alarmHandler: alarmHandler
+            deleteCountdownSeconds: Self.deleteCountdownSeconds
         )
 
         _timerRepository = StateObject(wrappedValue: timerRepository)

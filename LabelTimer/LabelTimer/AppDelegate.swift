@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
 
-        setupAudioSession()
+//        setupAudioSession()  // 로컬 알림으로 전환되어 현재는 불필요
 
         UIPageControl.appearance().currentPageIndicatorTintColor = .label
         UIPageControl.appearance().pageIndicatorTintColor = UIColor.systemGray4
@@ -34,12 +34,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    /*
+    // MARK: - Deprecated: In-app Audio Session
+    // 로컬 알림으로 전환되면서 앱 내 오디오 재생이 불필요해져 주석 처리함
+    // 추후 '무음 사운드' 트릭 등 앱 내에서 오디오를 직접 재생해야 할 경우 다시 활성화 필요
     private func setupAudioSession() {
         let audioSession = AVAudioSession.sharedInstance()
         do {
             /*
              [AVAudioSession.CategoryOptions]
-
+             
              - []: 다른 앱 소리 중지 (알람)
              - .mixWithOthers: 다른 앱 소리와 함께 재생 (게임, 사운드보드)
              - .duckOthers: 다른 앱 소리 볼륨 줄임 (내비게이션 안내)
@@ -54,4 +58,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("🚨 Failed to set up AVAudioSession: \(error)")
         }
     }
+    */
 }
