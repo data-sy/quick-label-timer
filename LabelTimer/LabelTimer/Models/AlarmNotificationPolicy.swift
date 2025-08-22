@@ -27,6 +27,18 @@ enum AlarmNotificationPolicy {
         }
     }
     
+    /// 정책을 isSoundOn, isVibrationOn Bool 값으로 변환
+    var asBools: (sound: Bool, vibration: Bool) {
+        switch self {
+        case .soundAndVibration:
+            return (sound: true, vibration: true)
+        case .vibrationOnly:
+            return (sound: false, vibration: true)
+        case .silent:
+            return (sound: false, vibration: false)
+        }
+    }
+    
     // UI에서 선택한 모드를 정책으로 변환
     static func from(mode: AlarmMode) -> AlarmNotificationPolicy {
         switch mode {

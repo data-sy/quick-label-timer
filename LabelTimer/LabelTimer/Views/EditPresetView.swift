@@ -31,8 +31,7 @@ struct EditPresetView: View {
                             hours: $viewModel.hours,
                             minutes: $viewModel.minutes,
                             seconds: $viewModel.seconds,
-                            isSoundOn: $viewModel.isSoundOn,
-                            isVibrationOn: $viewModel.isVibrationOn,
+                            selectedMode: $viewModel.selectedMode,
                             isLabelFocused: $isLabelFocused,
                             isStartDisabled: (viewModel.hours + viewModel.minutes + viewModel.seconds) == 0,
                             onStart: {

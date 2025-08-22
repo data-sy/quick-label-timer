@@ -20,8 +20,7 @@ class EditPresetViewModel: ObservableObject {
     @Published var hours: Int
     @Published var minutes: Int
     @Published var seconds: Int
-    @Published var isSoundOn: Bool
-    @Published var isVibrationOn: Bool
+    @Published var selectedMode: AlarmMode
     @Published var isShowingHideAlert = false
     
     init(preset: TimerPreset, presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol) {
@@ -33,20 +32,25 @@ class EditPresetViewModel: ObservableObject {
         self.hours = preset.hours
         self.minutes = preset.minutes
         self.seconds = preset.seconds
-        self.isSoundOn = preset.isSoundOn
-        self.isVibrationOn = preset.isVibrationOn
+        let initialPolicy = AlarmNotificationPolicy.determine(
+            soundOn: preset.isSoundOn,
+            vibrationOn: preset.isVibrationOn
+        )
+        self.selectedMode = initialPolicy.asMode
     }
         
     /// 변경된 내용 저장
     func save() {
+        let policy = AlarmNotificationPolicy.from(mode: selectedMode)
+        let attributes = policy.asBools
         presetRepository.updatePreset(
             preset,
             label: label,
             hours: hours,
             minutes: minutes,
             seconds: seconds,
-            isSoundOn: isSoundOn,
-            isVibrationOn: isVibrationOn
+            isSoundOn: attributes.sound,
+            isVibrationOn: attributes.vibration
         )
     }
     

@@ -15,8 +15,7 @@ struct AddTimerView: View {
     @State private var hours = 0
     @State private var minutes = 0
     @State private var seconds = 0
-    @State private var isSoundOn = false
-    @State private var isVibrationOn = false
+    @State private var selectedMode: AlarmMode = .soundAndVibration
     @FocusState private var isLabelFocused: Bool
 
     @EnvironmentObject var timerService: TimerService
@@ -30,12 +29,14 @@ struct AddTimerView: View {
                 hours: $hours,
                 minutes: $minutes,
                 seconds: $seconds,
-                isSoundOn: $isSoundOn,
-                isVibrationOn: $isVibrationOn,
+                selectedMode: $selectedMode,
                 isLabelFocused: $isLabelFocused,
                 isStartDisabled: (hours + minutes + seconds) == 0,
                 onStart: {
                     if isLabelFocused { isLabelFocused = false }
+                    
+                    let policy = AlarmNotificationPolicy.from(mode: selectedMode)
+                    let attributes = policy.asBools
 
                     DispatchQueue.main.async {
                         timerService.addTimer(
@@ -43,8 +44,8 @@ struct AddTimerView: View {
                             hours: hours,
                             minutes: minutes,
                             seconds: seconds,
-                            isSoundOn: isSoundOn,
-                            isVibrationOn: isVibrationOn
+                            isSoundOn: attributes.sound,
+                            isVibrationOn: attributes.vibration
                         )
                         // 입력 초기화
                         label = ""
