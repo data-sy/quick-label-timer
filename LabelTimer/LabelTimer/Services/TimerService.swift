@@ -328,12 +328,18 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             
             guard interval > 0 else { continue }
             
+            let userInfo: [AnyHashable: Any] = [
+                "baseIdentifier": baseId,
+                "index": i
+            ]
+            
             NotificationUtils.scheduleNotification(
                 id: "\(baseId)_\(i)",
                 title: title,
                 body: body,
                 sound: sound,
-                interval: interval
+                interval: interval,
+                userInfo: userInfo
             )
         }
     }

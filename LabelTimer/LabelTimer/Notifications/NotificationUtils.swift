@@ -48,11 +48,14 @@ enum NotificationUtils {
     // MARK: - 알림 예약
     
     /// 단일 로컬 알림 예약
-    static func scheduleNotification(id: String, title: String, body: String, sound: UNNotificationSound?, interval: TimeInterval) {
+    static func scheduleNotification(id: String, title: String, body: String, sound: UNNotificationSound?, interval: TimeInterval, userInfo: [AnyHashable: Any]? = nil) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = sound
+        if let info = userInfo {
+            content.userInfo = info
+        }
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
@@ -107,7 +110,7 @@ enum NotificationUtils {
         }
     }
 
-        /// 표시된(Delivered) 연속 알림 취소
+    /// 표시된(Delivered) 연속 알림 취소
     static func cancelDelivered(
         withPrefix prefix: String,
         excluding excludedIDs: Set<String> = [],
@@ -138,7 +141,4 @@ enum NotificationUtils {
         #endif
         completion?()
     }
-    
-    
-    
 }

@@ -33,10 +33,10 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         guard index == 0 else {
             completionHandler([])
             // 포그라운드에서 추가 표시 방지: 바로 pending 정리
-            NotificationUtils.cancelPending(withPrefix: baseIdentifier, excluding: [identifier]) {}
+            NotificationUtils.cancelPending(withPrefix: baseIdentifier, excluding: Set([identifier])) {}
             // delivered는 약간 지연 후 정리 (현재 표시 알림 보존 및 사운드 보장)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                NotificationUtils.cancelDelivered(withPrefix: baseIdentifier, excluding: [identifier]) {}
+                NotificationUtils.cancelDelivered(withPrefix: baseIdentifier, excluding: Set([identifier])) {}
             }
             return
         }
@@ -45,9 +45,9 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         completionHandler([.banner, .list, .sound])
 
         // 현재 표시 중인 id는 제외하고 정리
-        NotificationUtils.cancelPending(withPrefix: baseIdentifier, excluding: [identifier]) {}
+        NotificationUtils.cancelPending(withPrefix: baseIdentifier, excluding: Set([identifier])) {}
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            NotificationUtils.cancelDelivered(withPrefix: baseIdentifier, excluding: [identifier]) {}
+            NotificationUtils.cancelDelivered(withPrefix: baseIdentifier, excluding: Set([identifier])) {}
         }
     }
     
@@ -66,7 +66,6 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         print("[LNDelegate] 👇 didReceive (user tapped): \(identifier)")
         #endif
 
-
         NotificationUtils.cancelNotifications(withPrefix: baseIdentifier) {
             #if DEBUG
             print("[LNDelegate] 🧹 didReceive cleaned up for prefix=\(baseIdentifier)")
@@ -80,6 +79,11 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
 
 private extension LocalNotificationDelegate {
     func extractBaseIdentifier(from identifier: String, userInfo: [AnyHashable: Any]) -> String {
+        if userInfo["baseIdentifier"] == nil {
+            #if DEBUG
+            print("[LNDelegate] ⚠️ userInfo.baseIdentifier missing; falling back to identifier prefix")
+            #endif
+        }
         if let base = userInfo["baseIdentifier"] as? String {
             return base
         }
@@ -87,6 +91,11 @@ private extension LocalNotificationDelegate {
     }
     
     func extractIndex(from identifier: String, userInfo: [AnyHashable: Any]) -> Int {
+        if userInfo["index"] == nil {
+            #if DEBUG
+            print("[LNDelegate] ⚠️ userInfo.index missing; falling back to suffix parsing")
+            #endif
+        }
         if let idx = userInfo["index"] as? Int {
             return idx
         }
