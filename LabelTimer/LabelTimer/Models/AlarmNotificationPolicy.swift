@@ -26,4 +26,22 @@ enum AlarmNotificationPolicy {
             return vibrationOn ? .vibrationOnly : .silent
         }
     }
+    
+    // UI에서 선택한 모드를 정책으로 변환
+    static func from(mode: AlarmMode) -> AlarmNotificationPolicy {
+        switch mode {
+        case .soundAndVibration: return .soundAndVibration
+        case .vibrationOnly:     return .vibrationOnly
+        case .silent:         return .silent
+        }
+    }
+
+    // 정책을 UI 모드로 변환 (예: 저장된 값을 세그먼트에 반영)
+    var asMode: AlarmMode {
+        switch self {
+        case .soundAndVibration: return .soundAndVibration
+        case .vibrationOnly:     return .vibrationOnly
+        case .silent:            return .silent
+        }
+    }
 }
