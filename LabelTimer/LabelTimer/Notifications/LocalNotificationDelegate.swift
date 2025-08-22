@@ -12,44 +12,46 @@ import UserNotifications
 
 final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     
-    /// 앱이 포그라운드(실행 중) 상태일 때 알림이 도착하면 호출되는 함수 (willPresent)
+    /// 앱이 포그라운드(실행 중) 상태일 때 알림이 도착하면 호출 (willPresent)
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
-        #if DEBUG
-        print("📬 Notification willPresent in foreground: \(notification.request.identifier)")
-        #endif
         
         let request = notification.request
         let content = request.content
         let identifier = request.identifier // 예: "<baseIdentifier>_<index>"
-        
         let baseIdentifier = extractBaseIdentifier(from: identifier, userInfo: content.userInfo)
         let index = extractIndex(from: identifier, userInfo: content.userInfo)
+        
+        #if DEBUG
+        print("[LNDelegate] 📬 willPresent: id=\(identifier) index=\(index)")
+        #endif
 
         // 두 번째 알림부터는 억제 + 일괄 취소
         guard index == 0 else {
             completionHandler([])
-            NotificationUtils.cancelNotifications(withPrefix: baseIdentifier, completion: nil)
-            #if DEBUG
-            print("🧹 willPresent suppressed index \(index); cancelled pending/delivered for \(baseIdentifier)")
-            #endif
+            // 포그라운드에서 추가 표시 방지: 바로 pending 정리
+            NotificationUtils.cancelPending(withPrefix: baseIdentifier, excluding: [identifier]) {}
+            // delivered는 약간 지연 후 정리 (현재 표시 알림 보존 및 사운드 보장)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                NotificationUtils.cancelDelivered(withPrefix: baseIdentifier, excluding: [identifier]) {}
+            }
             return
         }
 
-        // 첫 번째 알림
+        // 첫 번째 알림은 표기 + 사운드
         completionHandler([.banner, .list, .sound])
 
-        // 남은 예약/전달 알림 정리
-        NotificationUtils.cancelNotifications(withPrefix: baseIdentifier, completion: nil)
-        #if DEBUG
-        print("🧹 willPresent displayed index 0; cancelled remaining for \(baseIdentifier)")
-        #endif
+        // 현재 표시 중인 id는 제외하고 정리
+        NotificationUtils.cancelPending(withPrefix: baseIdentifier, excluding: [identifier]) {}
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            NotificationUtils.cancelDelivered(withPrefix: baseIdentifier, excluding: [identifier]) {}
+        }
     }
     
-    /// 사용자가 알림 배너를 탭하거나, 알림 센터에서 항목을 선택했을 때 호출되는 함수 (didReceive)
+    /// 사용자가 알림 배너를 탭하거나, 알림 센터에서 항목을 선택했을 때 호출 (didReceive)
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
@@ -58,16 +60,16 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         let request = response.notification.request
         let content = request.content
         let identifier = request.identifier
+        let baseIdentifier = extractBaseIdentifier(from: identifier, userInfo: content.userInfo)
         
         #if DEBUG
-        print("👇 Notification didReceive (user tapped): \(identifier)")
+        print("[LNDelegate] 👇 didReceive (user tapped): \(identifier)")
         #endif
 
-        let baseIdentifier = extractBaseIdentifier(from: identifier, userInfo: content.userInfo)
 
         NotificationUtils.cancelNotifications(withPrefix: baseIdentifier) {
             #if DEBUG
-            print("🧹 didReceive cleaned up for prefix=\(baseIdentifier)")
+            print("[LNDelegate] 🧹 didReceive cleaned up for prefix=\(baseIdentifier)")
             #endif
             DispatchQueue.main.async {
                 completionHandler()

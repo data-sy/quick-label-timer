@@ -69,19 +69,63 @@ enum NotificationUtils {
     
     /// ID prefix로 예약/도착된 알림 모두 취소
     static func cancelNotifications(withPrefix prefix: String, completion: (() -> Void)? = nil) {
-        center.getPendingNotificationRequests { pendingRequests in
-            let pendingIDs = pendingRequests.map(\.identifier).filter { $0.hasPrefix(prefix) }
-            center.removePendingNotificationRequests(withIdentifiers: pendingIDs)
-            
-            center.getDeliveredNotifications { deliveredNotifications in
-                let deliveredIDs = deliveredNotifications.map { $0.request.identifier }.filter { $0.hasPrefix(prefix) }
-                center.removeDeliveredNotifications(withIdentifiers: deliveredIDs)
-                
-                #if DEBUG
-                print("🔔 LN Cancelled by prefix '\(prefix)': \(pendingIDs.count) pending, \(deliveredIDs.count) delivered.")
-                #endif
-                completion?()
+        let group = DispatchGroup()
+
+        group.enter()
+        cancelPending(withPrefix: prefix) { group.leave() }
+
+        group.enter()
+        cancelDelivered(withPrefix: prefix) { group.leave() }
+
+        group.notify(queue: .main) {
+            #if DEBUG
+            print("🔔 LN Cancelled by prefix '\(prefix)' (pending + delivered)")
+            #endif
+            completion?()
+        }
+    }
+    
+    /// 예약된(Pending) 연속 알림 취소
+    static func cancelPending(
+        withPrefix prefix: String,
+        excluding excludedIDs: Set<String> = [],
+        completion: (() -> Void)? = nil
+    ) {
+        center.getPendingNotificationRequests { requests in
+            let ids = requests
+                .map(\.identifier)
+                .filter { $0.hasPrefix(prefix) && !excludedIDs.contains($0) }
+
+            if !ids.isEmpty {
+                center.removePendingNotificationRequests(withIdentifiers: ids)
             }
+
+            #if DEBUG
+            print("🔔 LN Cancel pending by prefix '\(prefix)' excluding \(excludedIDs) → \(ids.count)")
+            #endif
+            DispatchQueue.main.async { completion?() }
+        }
+    }
+
+        /// 표시된(Delivered) 연속 알림 취소
+    static func cancelDelivered(
+        withPrefix prefix: String,
+        excluding excludedIDs: Set<String> = [],
+        completion: (() -> Void)? = nil
+    ) {
+        center.getDeliveredNotifications { delivered in
+            let ids = delivered
+                .map { $0.request.identifier }
+                .filter { $0.hasPrefix(prefix) && !excludedIDs.contains($0) }
+
+            if !ids.isEmpty {
+                center.removeDeliveredNotifications(withIdentifiers: ids)
+            }
+
+            #if DEBUG
+            print("🔔 LN Cancel delivered by prefix '\(prefix)' excluding \(excludedIDs) → \(ids.count)")
+            #endif
+            DispatchQueue.main.async { completion?() }
         }
     }
     
@@ -94,4 +138,7 @@ enum NotificationUtils {
         #endif
         completion?()
     }
+    
+    
+    
 }
