@@ -11,6 +11,7 @@
 import Foundation
 import Combine
 
+@MainActor
 final class RunningListViewModel: ObservableObject {
     @Published private(set) var sortedTimers: [TimerData] = []
 
@@ -32,7 +33,6 @@ final class RunningListViewModel: ObservableObject {
             .map { timers in
                 timers.sorted { $0.createdAt > $1.createdAt }
             }
-            .receive(on: DispatchQueue.main)
             .assign(to: \.sortedTimers, on: self)
             .store(in: &cancellables)
     }

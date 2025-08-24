@@ -14,6 +14,7 @@ import Foundation
 import Combine
 
 // MARK: - Protocol Definition
+@MainActor
 protocol TimerRepositoryProtocol {
     var timersPublisher: Published<[TimerData]>.Publisher { get }
     
@@ -24,7 +25,7 @@ protocol TimerRepositoryProtocol {
     @discardableResult
     func removeTimer(byId id: UUID) -> TimerData?
 }
-
+@MainActor
 // MARK: - TimerRepository Class
 final class TimerRepository: ObservableObject, TimerRepositoryProtocol {
     @Published var timers: [TimerData] = []

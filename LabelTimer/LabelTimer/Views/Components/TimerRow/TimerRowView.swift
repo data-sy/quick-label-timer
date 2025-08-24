@@ -76,11 +76,7 @@ struct TimerRowView: View {
                     }
                 }
             }
-            CountdownMessageView(
-                pendingAt: timer.pendingDeletionAt,
-                isFavorite: timer.isFavorite,
-                presetId: timer.presetId
-            )
+            CountdownMessageView(timer: timer)
         }
         .padding(.horizontal)
         .padding(.vertical, 8)

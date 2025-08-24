@@ -31,12 +31,16 @@ struct LabelTimerApp: App {
             presetRepository: presetRepository,
             deleteCountdownSeconds: Self.deleteCountdownSeconds
         )
-        
-        //@StateObject 속성들을 초기화
+
         _timerRepository = StateObject(wrappedValue: timerRepository)
         _presetRepository = StateObject(wrappedValue: presetRepository)
         _timerService = StateObject(wrappedValue: timerService)
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel())
+        
+        // 디버그 매니저에 실제 서비스 주입
+        #if DEBUG
+        AlarmDebugManager.timerService = timerService
+        #endif
     }
     
     var body: some Scene {

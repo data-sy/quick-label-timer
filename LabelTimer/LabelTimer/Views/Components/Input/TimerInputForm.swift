@@ -17,8 +17,7 @@ struct TimerInputForm: View {
     @Binding var hours: Int
     @Binding var minutes: Int
     @Binding var seconds: Int
-    @Binding var isSoundOn: Bool
-    @Binding var isVibrationOn: Bool
+    @Binding var selectedMode: AlarmMode
     @FocusState.Binding var isLabelFocused: Bool
 
     var isStartDisabled: Bool = false
@@ -29,10 +28,8 @@ struct TimerInputForm: View {
             HStack {
                 SectionTitle(text: sectionTitle)
                 Spacer()
-                AlarmSettingToggles(
-                    isSoundOn: $isSoundOn,
-                    isVibrationOn: $isVibrationOn
-                )
+                AlarmModeSelectorView(selectedMode: $selectedMode)
+                    .fixedSize()
             }
             LabelInputField(label: $label, isFocused: $isLabelFocused)
             Divider()

@@ -14,14 +14,10 @@ import AVFoundation
 struct SoundPickerView: View {
     @AppStorage("defaultSound") private var selectedSoundID: String = AlarmSound.default.id
 
-    private let sounds = AlarmSound.allCases
+    private let sounds = AlarmSound.selectableSounds
     @State private var audioPlayer: AVAudioPlayer?
 
     var body: some View {
-        Text("무음 모드에서는 소리가 나지 않습니다.")
-            .font(.footnote)
-            .foregroundColor(.secondary)
-            .padding(.top, 32)
         List(sounds) { sound in
             HStack {
                 Text(sound.displayName)
