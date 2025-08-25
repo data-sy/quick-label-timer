@@ -17,16 +17,9 @@ struct FavoriteToggleButton: View {
     var body: some View {
         Button(action: onToggle) {
             Image(systemName: isFavorite ? "star.fill" : "star")
-                .foregroundColor(isFavorite ? .yellow : .gray)
-                .imageScale(.medium)
-                .padding(8)
-                .background(
-                    Circle()
-                        .stroke(
-                            isFavorite ? Color.yellow : Color.gray.opacity(0.6),
-                            lineWidth: 1.5
-                        )
-                )
+                .foregroundColor(isFavorite ? .yellow : .gray.opacity(0.6))
+                .font(.title2)
+                .frame(width: 44, height: 44) // 탭 영역 확보
         }
         .buttonStyle(.plain)
         // 접근성 라벨 등 추가 가능

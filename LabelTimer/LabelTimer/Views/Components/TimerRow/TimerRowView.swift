@@ -38,7 +38,35 @@ struct TimerRowView: View {
     private var buttonTypes: TimerButtonSet {
         makeButtonSet(for: state, isFavorite: timer.isFavorite)
     }
+    
+    private var labelFont: Font {
+        // 완료 상태일 때만 더 큰 폰트를 사용
+        switch state {
+        case .completed:
+            return .system(.title3, weight: .semibold)
+        default:
+            return .system(.headline, weight: .semibold)
+        }
+    }
+    
+    private var labelColor: Color {
+        switch state {
+        case .paused, .stopped:
+            return .secondary
+        default:
+            return .primary // 완료일 때도 검은색
+        }
+    }
 
+    private var timeColor: Color {
+        switch state {
+        case .paused, .stopped, .completed:
+            return .secondary
+        default:
+            return .primary
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .center, spacing: 6) {
@@ -48,7 +76,8 @@ struct TimerRowView: View {
                 )
                 
                 Text(timer.label)
-                    .font(.headline)
+                    .font(labelFont)
+                    .foregroundColor(labelColor)
 
                 if let statusText = statusText {
                     Text(statusText)
@@ -61,6 +90,9 @@ struct TimerRowView: View {
                 VStack(alignment: .leading, spacing: 0){
                     Text(timer.formattedTime)
                         .font(.system(size: 44, weight: .light))
+                        .foregroundColor(timeColor)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                 }
                 
                 Spacer()

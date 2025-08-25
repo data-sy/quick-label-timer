@@ -71,24 +71,14 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
     @ViewBuilder
     private func row(for item: Item) -> some View {
         rowContent(item)
-            .foregroundColor(textColor(for: stateProvider(item)))
+            .listRowInsets(EdgeInsets()) // List 내부의 앞 여백 없애기
             .listRowBackground(
                 RoundedRectangle(cornerRadius: 12)
                     .fill(backgroundColor(for: stateProvider(item)))
                     .padding(.vertical, 4)
-                    .padding(.horizontal)
                     .offset(x: isEditing ? 40 : 0)
                     .animation(.default, value: isEditing)
             )
-    }
-
-    private func textColor(for state: TimerInteractionState) -> Color {
-        switch state {
-        case .paused, .stopped, .completed:
-            return .secondary
-        default:
-            return .primary
-        }
     }
 
     private func backgroundColor(for state: TimerInteractionState) -> Color {

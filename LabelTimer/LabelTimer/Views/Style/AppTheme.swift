@@ -34,10 +34,13 @@ enum AppTheme {
     
     // MARK: - Buttons (중앙 관리)
     enum Buttons {
-        /// 원형 버튼 기본 지름(접근성 최소 44 권장)
-        static var diameter: CGFloat = 50
-        /// 채움 방식 전역 설정 (모든 버튼 공통)
-        /// .primary(채움),  .secondary(외곽선), nil(각 매핑값 사용)
-        static var emphasis: TimerButtonEmphasis? = .primary
+        /// 원형 버튼 기본 지름 (접근성 최소 44 권장)
+        static let diameter: CGFloat = 52
+        /// 외곽선 두께
+        static let lineWidth: CGFloat = 1.5
+        /// 아이콘 폰트 크기
+        static let iconFont: Font = .title3
+        /// 아이콘 폰트 두께
+        static let iconWeight: Font.Weight = .bold
     }
 }
