@@ -48,11 +48,12 @@ struct FavoriteListView: View {
                 .toolbar {
                     MainToolbarContent(showSettings: $showSettings)
                 }
-                .deleteAlert(
+                .confirmationAlert(
                     isPresented: $viewModel.isShowingHideAlert,
                     itemName: viewModel.presetToHide?.label ?? "",
-                    deleteLabel: "즐겨찾기에서 숨김",
-                    onDelete: viewModel.confirmHide
+                    titleMessage: "이 타이머를 삭제하시겠습니까?",
+                    actionButtonLabel: "삭제",
+                    onConfirm: viewModel.confirmHide
                 )
                 .sheet(isPresented: $viewModel.isEditing, onDismiss: viewModel.stopEditing) {
                     if let preset = viewModel.editingPreset {
