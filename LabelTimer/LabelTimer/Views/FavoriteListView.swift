@@ -11,8 +11,13 @@
 import SwiftUI
 
 struct FavoriteListView: View {
+    @Environment(\.editMode) private var editMode
     @ObservedObject var viewModel: FavoriteListViewModel
     @State private var showSettings = false
+    
+    private var isEditing: Bool {
+        editMode?.wrappedValue.isEditing ?? false
+    }
     
     var body: some View {
         NavigationStack {
@@ -36,9 +41,11 @@ struct FavoriteListView: View {
                         },
                         onLeftTap: {
                             viewModel.handleLeft(for: preset)
+                            editMode?.wrappedValue = .inactive
                         },
                         onRightTap: {
                             viewModel.handleRight(for: preset)
+                            editMode?.wrappedValue = .inactive
                         }
                     )
                 }
@@ -46,7 +53,7 @@ struct FavoriteListView: View {
                 .navigationTitle("즐겨찾기")
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
-                    MainToolbarContent(showSettings: $showSettings)
+                    MainToolbarContent(showSettings: $showSettings, showEditButton: true)
                 }
                 .confirmationAlert(
                     isPresented: $viewModel.isShowingHideAlert,

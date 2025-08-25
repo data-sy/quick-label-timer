@@ -34,7 +34,7 @@ struct TimerView: View {
                 .navigationTitle("타이머 실행")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    MainToolbarContent(showSettings: $showSettings)
+                    MainToolbarContent(showSettings: $showSettings, showEditButton: false)
                 }
                 .sheet(isPresented: $showSettings) {
                     SettingsView()

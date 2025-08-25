@@ -11,10 +11,15 @@
 import SwiftUI
 
 struct FavoritePresetRowView: View {
+    @Environment(\.editMode) private var editMode
     let preset: TimerPreset
     let onToggleFavorite: (() -> Void)?
     let onLeftTap: (() -> Void)?
     let onRightTap: (() -> Void)?
+    
+    private var isEditing: Bool {
+        editMode?.wrappedValue.isEditing ?? false
+    }
     
     /// 전체 시간을 포맷된 문자열로 반환
     private var tempTimer: TimerData {
@@ -43,5 +48,8 @@ struct FavoritePresetRowView: View {
             onLeftTap: onLeftTap,
             onRightTap: onRightTap,
         )
+        .opacity(isEditing ? 0.5 : 1.0)
+        .allowsHitTesting(!isEditing)
+        .animation(.easeInOut(duration: 0.2), value: isEditing)
     }
 }
