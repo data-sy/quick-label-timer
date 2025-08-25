@@ -298,13 +298,14 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     // 로컬 알림 예약 (고수준)
     func scheduleNotification(for timer: TimerData) {
         let policy = AlarmNotificationPolicy.determine(soundOn: timer.isSoundOn, vibrationOn: timer.isVibrationOn)
-        
         let sound = NotificationUtils.createSound(fromPolicy: policy)
+        let title = timer.label.isEmpty ? "타이머 완료" : timer.label
+        let body = "눌러서 알람 끄기"
         
         scheduleRepeatingNotifications(
             baseId: timer.id.uuidString,
-            title: "⏰ 타이머 종료",
-            body: timer.label.isEmpty ? "설정한 시간이 다 되었습니다." : timer.label,
+            title: title,
+            body: body,
             sound: sound,
             endDate: timer.endDate,
             repeatingInterval: defaultRepeatingInterval
@@ -321,6 +322,10 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             
             guard interval > 0 else { continue }
             
+            let clockCount = (i % 5) + 1 // 👈 1. 0~4를 1~5로 변환하고, 5가 넘어가면 다시 1부터 반복
+            let clocks = String(repeating: "⏰", count: clockCount) // 👈 2. 개수만큼 시계 이모지 생성
+            let dynamicBody = "\(body) \(clocks)" // 👈 3. 기존 body 텍스트와 이모지를 합침
+    
             let userInfo: [AnyHashable: Any] = [
                 "baseIdentifier": baseId,
                 "index": i
@@ -329,7 +334,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             NotificationUtils.scheduleNotification(
                 id: "\(baseId)_\(i)",
                 title: title,
-                body: body,
+                body: dynamicBody,
                 sound: sound,
                 interval: interval,
                 userInfo: userInfo
