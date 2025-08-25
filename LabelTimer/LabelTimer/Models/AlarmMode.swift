@@ -10,21 +10,13 @@
 ///          선택 결과를 AlarmNotificationPolicy와 1:1 매핑하기 위한 모델
 import SwiftUI
 
-enum AlarmMode: CaseIterable, Identifiable {
+enum AlarmMode: String, CaseIterable, Identifiable {
     case soundAndVibration   // 소리+진동
     case vibrationOnly       // 진동만
     case silent              // 무음
     
     var id: Self { self }
-    
-    var title: String {
-        switch self {
-        case .soundAndVibration: return "소리+진동"
-        case .vibrationOnly:     return "진동만"
-        case .silent:            return "무음"
-        }
-    }
-    
+        
     /// 시스템 아이콘 (SF Symbol). 아이콘이 2개 필요한 경우를 위해 배열로 반환
     var symbolNames: [String] {
         switch self {

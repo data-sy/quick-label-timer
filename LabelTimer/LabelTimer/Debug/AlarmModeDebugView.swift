@@ -21,7 +21,7 @@ struct BasicSegmentedControl: View {
         Picker("알림 방식 (기본)", selection: $selectedMode) {
             ForEach(AlarmMode.allCases) { mode in
                 // symbolNames 배열의 첫 번째 아이콘만 표시
-                Label(mode.title, systemImage: mode.symbolNames.first ?? "questionmark.circle")
+                Label("타이틀", systemImage: mode.symbolNames.first ?? "questionmark.circle")
                     .tag(mode)
             }
         }

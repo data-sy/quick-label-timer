@@ -11,6 +11,8 @@
 import SwiftUI
 
 struct AddTimerView: View {
+    @AppStorage("defaultAlarmMode") private var defaultAlarmMode: AlarmMode = .soundAndVibration
+
     @State private var label = ""
     @State private var hours = 0
     @State private var minutes = 0
@@ -52,9 +54,16 @@ struct AddTimerView: View {
                         hours = 0
                         minutes = 0
                         seconds = 0
+                        selectedMode = defaultAlarmMode
                     }
                 }
             )
+        }
+        .onAppear {
+            selectedMode = defaultAlarmMode
+        }
+        .onChange(of: defaultAlarmMode) { newValue in
+            selectedMode = newValue
         }
         .onSubmit { isLabelFocused = false }
         .submitLabel(.done)

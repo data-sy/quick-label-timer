@@ -35,6 +35,9 @@ struct SettingsView: View {
                     NavigationLink("기본 사운드") {
                         SoundPickerView()
                     }
+                    NavigationLink("기본 알림 방식") {
+                        AlarmModePickerView()
+                    }
 
                     Toggle("다크 모드", isOn: $settingsViewModel.isDarkMode)
                 }
