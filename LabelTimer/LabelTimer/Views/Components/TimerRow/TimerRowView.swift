@@ -61,6 +61,8 @@ struct TimerRowView: View {
                 VStack(alignment: .leading, spacing: 0){
                     Text(timer.formattedTime)
                         .font(.system(size: 44, weight: .light))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                 }
                 
                 Spacer()
