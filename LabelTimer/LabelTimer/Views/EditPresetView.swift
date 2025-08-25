@@ -43,15 +43,16 @@ struct EditPresetView: View {
                 }
                 .padding()
                 Spacer()
-                Button(role: .destructive) {
-                    viewModel.isShowingHideAlert = true
+                Button {
+                    viewModel.save()
+                    dismiss()
                 } label: {
-                    Text("삭제")
+                    Text("저장")
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 8)
                 }
-                .buttonStyle(.bordered)
-                .tint(.red)
+                .buttonStyle(.borderedProminent)
+                .disabled((viewModel.hours + viewModel.minutes + viewModel.seconds) == 0) // 저장 비활성화 조건
                 .padding(.horizontal)
             }
             .padding()
@@ -65,22 +66,22 @@ struct EditPresetView: View {
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("저장") {
-                        viewModel.save()
-                        dismiss()
+                    Button("삭제", role: .destructive) {
+                        viewModel.isShowingHideAlert = true
                     }
-                    // 저장 버튼은 시간이 0이 아닐 때만 활성화
-                    .disabled((viewModel.hours + viewModel.minutes + viewModel.seconds) == 0)
+                    .foregroundColor(.red)
                 }
             }
-            .deleteAlert(
+            .confirmationAlert(
                 isPresented: $viewModel.isShowingHideAlert,
                 itemName: viewModel.label,
-                deleteLabel: ""
-            ) {
-                viewModel.hide()
-                dismiss()
-            }
+                titleMessage: "이 타이머를 삭제하시겠습니까?",
+                actionButtonLabel: "삭제",
+                onConfirm: {
+                    viewModel.hide()
+                    dismiss()
+                }
+            )
         }
     }
 }
