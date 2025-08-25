@@ -10,11 +10,6 @@
 
 import SwiftUI
 
-public enum TimerButtonEmphasis {
-    case primary   // 채움
-    case secondary // 외곽선
-}
-
 public struct TimerButtonStyle: ButtonStyle {
     let color: Color
 
@@ -23,25 +18,20 @@ public struct TimerButtonStyle: ButtonStyle {
     }
 
     public func makeBody(configuration: Configuration) -> some View {
-        let isPrimary = (AppTheme.Buttons.emphasis == .primary)
         let diameter = AppTheme.Buttons.diameter
-
-        @ViewBuilder
-        var background: some View {
-            if isPrimary {
-                Circle().fill(color)
-            } else {
-                Circle().strokeBorder(color, lineWidth: 1)
-            }
-        }
-
+        let lineWidth = AppTheme.Buttons.lineWidth
+        let font = AppTheme.Buttons.iconFont
+        let fontWeight = AppTheme.Buttons.iconWeight
+        
         return configuration.label
-            .font(.body.weight(.semibold))
-            .foregroundColor(isPrimary ? .white : color)
+            .font(font.weight(fontWeight))
+            .foregroundColor(color)
             .frame(width: diameter, height: diameter)
-            .background(background)
+            .background(Circle().fill(Color.clear))
+            .overlay(
+                Circle().strokeBorder(color, lineWidth: lineWidth)
+            )
             .opacity(configuration.isPressed ? 0.85 : 1)
-            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }
 
