@@ -39,7 +39,7 @@ enum AppTheme {
         /// 외곽선 두께
         static let lineWidth: CGFloat = 1.5
         /// 아이콘 폰트 크기
-        static let iconFont: Font = .title3
+        static let iconFont: Font = .headline
         /// 아이콘 폰트 두께
         static let iconWeight: Font.Weight = .bold
     }
