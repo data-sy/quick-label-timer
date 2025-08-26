@@ -42,8 +42,8 @@ enum AlarmNotificationPolicy {
     // UI에서 선택한 모드를 정책으로 변환
     static func from(mode: AlarmMode) -> AlarmNotificationPolicy {
         switch mode {
-        case .soundAndVibration: return .soundAndVibration
-        case .vibrationOnly:     return .vibrationOnly
+        case .sound: return .soundAndVibration
+        case .vibration:     return .vibrationOnly
         case .silent:         return .silent
         }
     }
@@ -51,9 +51,21 @@ enum AlarmNotificationPolicy {
     // 정책을 UI 모드로 변환 (예: 저장된 값을 세그먼트에 반영)
     var asMode: AlarmMode {
         switch self {
-        case .soundAndVibration: return .soundAndVibration
-        case .vibrationOnly:     return .vibrationOnly
+        case .soundAndVibration: return .sound
+        case .vibrationOnly:     return .vibration
         case .silent:            return .silent
         }
+    }
+    
+    // MARK: - Conversion Helpers
+    
+    /// [UI -> 데이터] AlarmMode에서 (isSoundOn, isVibrationOn) Bool 튜플을 바로 얻는 함수
+    static func getBools(from mode: AlarmMode) -> (sound: Bool, vibration: Bool) {
+        return from(mode: mode).asBools
+    }
+    
+    /// [데이터 -> UI] (isSoundOn, isVibrationOn) Bool 값에서 AlarmMode를 바로 얻는 함수
+    static func getMode(soundOn: Bool, vibrationOn: Bool) -> AlarmMode {
+        return determine(soundOn: soundOn, vibrationOn: vibrationOn).asMode
     }
 }

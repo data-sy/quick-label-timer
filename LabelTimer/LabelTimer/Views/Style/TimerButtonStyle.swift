@@ -13,7 +13,7 @@ import SwiftUI
 public struct TimerButtonStyle: ButtonStyle {
     let color: Color
 
-    public init(color: Color = .accentColor) {
+    public init(color: Color = .pink) { // 디버깅용 색
         self.color = color
     }
 
@@ -37,7 +37,7 @@ public struct TimerButtonStyle: ButtonStyle {
 
 public extension View {
     /// `.timerButton(color:)`
-    func timerButton(color: Color = .accentColor) -> some View {
+    func timerButton(color: Color = .pink) -> some View {
         self.buttonStyle(TimerButtonStyle(color: color))
     }
 }

@@ -20,7 +20,7 @@ struct TimerInputStartButton: View {
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.white)
                 .padding(20)
-                .background(Circle().fill(Color.accentColor))
+                .background(Circle().fill(.blue))
         }
         .disabled(isDisabled)
     }

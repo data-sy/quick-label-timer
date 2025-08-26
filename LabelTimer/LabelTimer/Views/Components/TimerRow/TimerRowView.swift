@@ -67,6 +67,24 @@ struct TimerRowView: View {
         }
     }
     
+    private var indicatorInfo: (iconName: String, color: Color) {
+        let mode = AlarmNotificationPolicy.getMode(
+            soundOn: timer.isSoundOn,
+            vibrationOn: timer.isVibrationOn
+        )
+        let iconName = mode.iconName
+
+        let finalColor: Color
+        switch state {
+        case .paused, .stopped:
+            finalColor = .secondary
+        default:
+            finalColor = mode.color
+        }
+        
+        return (iconName, finalColor)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .center, spacing: 6) {
@@ -84,7 +102,13 @@ struct TimerRowView: View {
                         .font(.subheadline)
                         .foregroundColor(.gray.opacity(0.7))
                 }
+                
                 Spacer()
+                
+                AlarmModeIndicatorView(
+                    iconName: indicatorInfo.iconName,
+                    color: indicatorInfo.color
+                )
             }
             HStack {
                 VStack(alignment: .leading, spacing: 0){

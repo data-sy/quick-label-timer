@@ -20,8 +20,7 @@ struct BasicSegmentedControl: View {
     var body: some View {
         Picker("알림 방식 (기본)", selection: $selectedMode) {
             ForEach(AlarmMode.allCases) { mode in
-                // symbolNames 배열의 첫 번째 아이콘만 표시
-                Label(mode.title, systemImage: mode.symbolNames.first ?? "questionmark.circle")
+                Label(mode.label, systemImage: mode.iconName)
                     .tag(mode)
             }
         }
@@ -42,15 +41,11 @@ struct AlarmModeDebugView: View {
                 ZStack {
                     if selectedMode == mode {
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(.white)
+                            .fill(mode.color.opacity(0.1))
                             .matchedGeometryEffect(id: "selection", in: animation)
                     }
                     
-                    HStack(spacing: 5) {
-                        ForEach(mode.symbolNames, id: \.self) { name in
-                            Image(systemName: name)
-                        }
-                    }
+                    Image(systemName: mode.iconName)
                     .padding(.vertical, 8)
                     .padding(.horizontal, 8)
                 }
@@ -78,7 +73,7 @@ struct AlarmModeDebugView: View {
 
 #Preview {
     struct PreviewWrapper: View {
-        @State private var mode: AlarmMode = .soundAndVibration
+        @State private var mode: AlarmMode = .sound
         
         var body: some View {
             VStack(spacing: 50) {
