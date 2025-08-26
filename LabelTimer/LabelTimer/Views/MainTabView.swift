@@ -52,8 +52,8 @@ struct MainTabView: View {
     // 슬라이드 방식
     var body: some View {
         TabView(selection: $selectedTab) {
-            AlarmDebugView()
-                .tag(Tab.debug)
+//            AlarmModeIndicatorDebugView()
+//                .tag(Tab.debug)
             TimerView(runningListVM: runningListVM)
                 .tag(Tab.timer)
             
