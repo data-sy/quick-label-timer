@@ -59,7 +59,7 @@ func ui(for type: TimerRightButtonType) -> TimerButtonUI {
     case .play:
         return .init(
             systemImage: "play.fill",
-            tint: .accentColor,
+            tint: .blue,
             role: nil,
             accessibilityLabel: "재생"
         )
@@ -73,7 +73,7 @@ func ui(for type: TimerRightButtonType) -> TimerButtonUI {
     case .restart:
         return .init(
             systemImage: "gobackward",
-            tint: .accentColor,
+            tint: .blue,
             role: nil,
             accessibilityLabel: "재시작"
         )

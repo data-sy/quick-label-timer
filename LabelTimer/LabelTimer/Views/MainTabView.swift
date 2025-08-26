@@ -18,6 +18,7 @@ enum Tab {
 }
 
 struct MainTabView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     @State private var selectedTab: Tab = .timer
     private let timerDidStart: AnyPublisher<Void,Never>
@@ -66,6 +67,7 @@ struct MainTabView: View {
         .onReceive(timerDidStart.receive(on: RunLoop.main)) { _ in
             selectedTab = .timer
         }
-        .id(settingsViewModel.isDarkMode)
+        .tint(.blue)
+        .id(colorScheme)
     }
 }
