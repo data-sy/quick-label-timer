@@ -21,7 +21,7 @@ struct AlarmModeSelectorView: View {
                 ZStack {
                     if selectedMode == mode {
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(.white)
+                            .fill(mode.color.opacity(0.1))
                             .matchedGeometryEffect(id: "selection", in: animation)
                     }
                     

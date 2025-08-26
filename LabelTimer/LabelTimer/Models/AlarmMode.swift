@@ -32,9 +32,9 @@ enum AlarmMode: String, CaseIterable, Identifiable {
     /// 각 모드를 나타내는 고유 색상
     var color: Color {
         switch self {
-        case .soundAndVibration: return .blue
-        case .vibrationOnly:     return .green
-        case .silent:            return .black
+        case .soundAndVibration: return .indigo
+        case .vibrationOnly:     return AppTheme.vibrationModeColor // darkCyan
+        case .silent:            return Color(white: 0.2)
         }
     }
 }
