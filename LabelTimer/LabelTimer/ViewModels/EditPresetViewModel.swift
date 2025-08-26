@@ -41,8 +41,7 @@ class EditPresetViewModel: ObservableObject {
         
     /// 변경된 내용 저장
     func save() {
-        let policy = AlarmNotificationPolicy.from(mode: selectedMode)
-        let attributes = policy.asBools
+        let attributes = AlarmNotificationPolicy.getBools(from: selectedMode)
         presetRepository.updatePreset(
             preset,
             label: label,

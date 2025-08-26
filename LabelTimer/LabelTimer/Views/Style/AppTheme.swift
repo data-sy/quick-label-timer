@@ -21,8 +21,6 @@ enum AppTheme {
     /// 콘텐츠가 담기는 영역의 배경색
     static let contentBackground = Color(.secondarySystemGroupedBackground)
     
-    static let vibrationModeColor = Color(red: 0, green: 0.55, blue: 0.55) // darkCyan
-    
     // MARK: - Fonts (예시)
     /*
     static let titleFont = Font.system(size: 24, weight: .bold)

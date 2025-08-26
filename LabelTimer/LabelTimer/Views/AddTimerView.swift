@@ -11,13 +11,13 @@
 import SwiftUI
 
 struct AddTimerView: View {
-    @AppStorage("defaultAlarmMode") private var defaultAlarmMode: AlarmMode = .soundAndVibration
+    @AppStorage("defaultAlarmMode") private var defaultAlarmMode: AlarmMode = .sound
 
     @State private var label = ""
     @State private var hours = 0
     @State private var minutes = 0
     @State private var seconds = 0
-    @State private var selectedMode: AlarmMode = .soundAndVibration
+    @State private var selectedMode: AlarmMode = .sound
     @FocusState private var isLabelFocused: Bool
 
     @EnvironmentObject var timerService: TimerService
@@ -36,9 +36,7 @@ struct AddTimerView: View {
                 isStartDisabled: (hours + minutes + seconds) == 0,
                 onStart: {
                     if isLabelFocused { isLabelFocused = false }
-                    
-                    let policy = AlarmNotificationPolicy.from(mode: selectedMode)
-                    let attributes = policy.asBools
+                    let attributes = AlarmNotificationPolicy.getBools(from: selectedMode)
 
                     DispatchQueue.main.async {
                         timerService.addTimer(

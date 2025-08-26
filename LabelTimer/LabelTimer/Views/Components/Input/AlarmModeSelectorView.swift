@@ -25,14 +25,11 @@ struct AlarmModeSelectorView: View {
                             .matchedGeometryEffect(id: "selection", in: animation)
                     }
                     
-                    HStack(spacing: 5) {
-                        ForEach(mode.symbolNames, id: \.self) { name in
-                            Image(systemName: name)
-                        }
-                    }
+                    Image(systemName: mode.iconName)
                     .padding(.vertical, 8)
-                    .padding(.horizontal, 8)
+                    .padding(.horizontal, 6)
                 }
+                .frame(width: 44)
                 .font(.callout)
                 .foregroundStyle(selectedMode == mode ? mode.color : .gray)
                 .onTapGesture {

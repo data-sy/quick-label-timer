@@ -11,27 +11,25 @@
 import SwiftUI
 
 struct AlarmModePickerView: View {
-    @AppStorage("defaultAlarmMode") private var defaultAlarmMode: AlarmMode = .soundAndVibration
+    @AppStorage("defaultAlarmMode") private var defaultAlarmMode: AlarmMode = .sound
     private let iconAreaWidth: CGFloat = 64
     
     private func displayName(for mode: AlarmMode) -> String {
         switch mode {
-        case .soundAndVibration: return "소리 O, 진동 O"
-        case .vibrationOnly:     return "소리 X, 진동 O"
-        case .silent:            return "소리 X, 진동 X"
+        case .sound: return "소리 O, 진동 O"
+        case .vibration: return "소리 X, 진동 O"
+        case .silent: return "소리 X, 진동 X"
         }
     }
 
     var body: some View {
         List(AlarmMode.allCases) { mode in
             HStack(spacing: 10) {
-                HStack(spacing: 6) {
-                    ForEach(mode.symbolNames, id: \.self) { name in
-                        Image(systemName: name)
-                    }
+                ZStack {
+                    Image(systemName: mode.iconName)
                 }
                 .foregroundColor(mode.color)
-                .frame(width: iconAreaWidth, alignment: .leading)
+                .frame(width: iconAreaWidth, alignment: .center)
 
                 Text(displayName(for: mode))
 
