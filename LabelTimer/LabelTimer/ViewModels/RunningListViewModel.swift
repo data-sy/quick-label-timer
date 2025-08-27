@@ -33,6 +33,7 @@ final class RunningListViewModel: ObservableObject {
             .map { timers in
                 timers.sorted { $0.createdAt > $1.createdAt }
             }
+            .receive(on: RunLoop.main)
             .assign(to: \.sortedTimers, on: self)
             .store(in: &cancellables)
     }

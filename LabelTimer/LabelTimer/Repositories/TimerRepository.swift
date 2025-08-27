@@ -30,6 +30,12 @@ protocol TimerRepositoryProtocol {
 final class TimerRepository: ObservableObject, TimerRepositoryProtocol {
     @Published var timers: [TimerData] = []
     var timersPublisher: Published<[TimerData]>.Publisher { $timers }
+    
+    private let timersStorageKey = "running_timers"
+    
+    init() {
+        loadTimers()
+    }
 
     /// 모든 타이머 객체를 배열로 반환
     func getAllTimers() -> [TimerData] {
@@ -44,18 +50,39 @@ final class TimerRepository: ObservableObject, TimerRepositoryProtocol {
     /// 새로운 타이머를 배열에 추가
     func addTimer(_ timer: TimerData) {
         timers.append(timer)
+        saveTimers()
     }
 
     /// 기존 타이머의 정보를 수정
     func updateTimer(_ updatedTimer: TimerData) {
         guard let index = timers.firstIndex(where: { $0.id == updatedTimer.id }) else { return }
         timers[index] = updatedTimer
+        saveTimers()
     }
 
     /// ID로 특정 타이머를 배열에서 삭제하고, 삭제된 객체를 반환
     @discardableResult
     func removeTimer(byId id: UUID) -> TimerData? {
         guard let index = timers.firstIndex(where: { $0.id == id }) else { return nil }
-        return timers.remove(at: index)
+        let removed = timers.remove(at: index)
+        saveTimers()
+        return removed
+    }
+    
+    // MARK: - Private Persistence Helpers
+        
+    // 타이머 목록을 UserDefaults에 저장하는 함수
+    private func saveTimers() {
+        if let data = try? JSONEncoder().encode(timers) {
+            UserDefaults.standard.set(data, forKey: timersStorageKey)
+        }
+    }
+    
+    // UserDefaults에서 타이머 목록을 불러오는 함수
+    private func loadTimers() {
+        if let data = UserDefaults.standard.data(forKey: timersStorageKey),
+           let decoded = try? JSONDecoder().decode([TimerData].self, from: data) {
+            self.timers = decoded
+        }
     }
 }

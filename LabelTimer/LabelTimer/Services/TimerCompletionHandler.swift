@@ -63,8 +63,8 @@ final class TimerCompletionHandler {
         }
     }
 
-    /// 사용자 수동 삭제, 수동 보관
-    func forceHandle(timerId: UUID) {
+    /// 타이머 완료 처리 즉시 실행
+    func handleCompletionImmediately(timerId: UUID) {
         cancelPendingAction(for: timerId)
         Task {
             await handle(timerId: timerId)
@@ -103,12 +103,12 @@ final class TimerCompletionHandler {
         // 최종 결정된 Action 실행
         switch finalAction {
         case .saveAsPreset:
-            presetRepository.addPreset(from: latestTimer)
             timerService.removeTimer(id: timerId)
+            presetRepository.addPreset(from: latestTimer)
         case .showPreset:
             guard let presetId = latestTimer.presetId else { return }
-            presetRepository.showPreset(withId: presetId)
             timerService.removeTimer(id: timerId)
+            presetRepository.showPreset(withId: presetId)
         case .deleteOnly:
             timerService.removeTimer(id: timerId)
         }

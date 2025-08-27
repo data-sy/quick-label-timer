@@ -17,7 +17,7 @@ enum TimerStatus: String, Codable {
     case completed
 }
 
-struct TimerData: Identifiable, Hashable {
+struct TimerData: Identifiable, Hashable, Codable {
     let id: UUID
 
     let label: String

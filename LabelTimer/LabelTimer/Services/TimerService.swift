@@ -89,6 +89,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         self.timerRepository = timerRepository
         self.presetRepository = presetRepository
         self.deleteCountdownSeconds = deleteCountdownSeconds
+        reconcileTimersOnLaunch()
         startTicking()
     }
 
@@ -150,11 +151,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     // TODO: 추후 RunningListViewModel 리팩토링 시, 완료 상태의 타이머 버튼 액션을 이 함수로 연결
     // Handler를 통해 '최신' 데이터를 기준으로 액션을 처리하여 데이터 정합성을 보장
     func userDidConfirmCompletion(for timerId: UUID) {
-        completionHandler.forceHandle(timerId: timerId)
+        completionHandler.handleCompletionImmediately(timerId: timerId)
     }
 
     func userDidRequestDelete(for timerId: UUID) {
-        completionHandler.forceHandle(timerId: timerId)
+        completionHandler.handleCompletionImmediately(timerId: timerId)
     }
 
     // MARK: - CRUD
@@ -328,9 +329,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             
             let clockCount = (i % 5) + 1
             let clocks = String(repeating: "⏰", count: clockCount)
-//            let dynamicBody = "\(body) \(clocks)"
-            // 빈문자열 테스트
-            let dynamicBody = body
+            let dynamicBody = "\(body) \(clocks)"
 
             let userInfo: [AnyHashable: Any] = [
                 "baseIdentifier": baseId,
@@ -357,6 +356,36 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
     
     // MARK: - Private Helpers
+    
+    private func reconcileTimersOnLaunch() {
+        let now = Date()
+        for timer in timerRepository.getAllTimers() {
+            
+            switch timer.status {
+            
+            case .running:
+                let remaining = Int(timer.endDate.timeIntervalSince(now))
+                if remaining <= 0 {
+                    let completedTimer = timer.updating(remainingSeconds: 0, status: .completed)
+                    timerRepository.updateTimer(completedTimer)
+                    startCompletionProcess(for: completedTimer)
+                } else {
+                    let updatedTimer = timer.updating(remainingSeconds: remaining)
+                    timerRepository.updateTimer(updatedTimer)
+                }
+
+            case .completed:
+                let elapsedTime = now.timeIntervalSince(timer.endDate)
+                if elapsedTime > TimeInterval(deleteCountdownSeconds) {
+                    completionHandler.handleCompletionImmediately(timerId: timer.id)
+                }
+            
+            // .paused, .stopped 상태는 보정할 필요 없으므로 default에서 처리
+            default:
+                continue
+            }
+        }
+    }
     
     /// 사용자가 라벨을 입력하지 않았을 때 "타이머N" 형식의 고유한 라벨 생성 (오름차순)
     private func generateAutoLabel() -> String {
