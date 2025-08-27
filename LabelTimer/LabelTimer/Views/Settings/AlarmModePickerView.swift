@@ -28,7 +28,7 @@ struct AlarmModePickerView: View {
                 ZStack {
                     Image(systemName: mode.iconName)
                 }
-                .foregroundColor(mode.color)
+                .foregroundColor(AppTheme.controlForegroundColor)
                 .frame(width: iconAreaWidth, alignment: .center)
 
                 Text(displayName(for: mode))

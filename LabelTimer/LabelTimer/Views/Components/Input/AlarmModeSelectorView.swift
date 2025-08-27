@@ -21,7 +21,7 @@ struct AlarmModeSelectorView: View {
                 ZStack {
                     if selectedMode == mode {
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(mode.color.opacity(0.1))
+                            .fill(AppTheme.controlBackgroundColor)
                             .matchedGeometryEffect(id: "selection", in: animation)
                     }
                     
@@ -31,7 +31,7 @@ struct AlarmModeSelectorView: View {
                 }
                 .frame(width: 44)
                 .font(.callout)
-                .foregroundStyle(selectedMode == mode ? mode.color : .gray)
+                .foregroundStyle(selectedMode == mode ? AppTheme.controlForegroundColor : .gray)
                 .onTapGesture {
                     withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.7)) {
                         selectedMode = mode

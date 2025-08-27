@@ -22,7 +22,7 @@ fileprivate struct IndicatorDesign1_SingleIcon: View {
     var body: some View {
         Image(systemName: currentMode.iconName)
             .font(.caption.weight(.bold))
-            .foregroundStyle(currentMode.color)
+//            .foregroundStyle(currentMode.color)
             .frame(width: 30, height: 30, alignment: .center)
     }
 }
@@ -35,7 +35,7 @@ fileprivate struct IndicatorDesign2_SingleDot: View {
 
     var body: some View {
         Circle()
-            .fill(currentMode.color)
+//            .fill(currentMode.color)
             .frame(width: 12, height: 12)
     }
 }
@@ -51,7 +51,7 @@ fileprivate struct IndicatorDesign3_ThreeIcons: View {
             ForEach(AlarmMode.allCases) { mode in
                 Image(systemName: mode.iconName)
                     .font(.caption.weight(.semibold))
-                    .foregroundStyle(mode == currentMode ? mode.color : Color(UIColor.systemGray3))
+//                    .foregroundStyle(mode == currentMode ? mode.color : Color(UIColor.systemGray3))
             }
         }
         .frame(width: 60, alignment: .trailing)
@@ -69,7 +69,7 @@ fileprivate struct IndicatorDesign4_FilledRing: View {
             ForEach(AlarmMode.allCases) { mode in
                 Circle()
                     .frame(width: 12, height: 12)
-                    .foregroundStyle(mode == currentMode ? mode.color : .clear)
+//                    .foregroundStyle(mode == currentMode ? mode.color : .clear)
                     .overlay(
                         Circle().stroke(Color(UIColor.systemGray4), lineWidth: 1.5)
                     )

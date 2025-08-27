@@ -30,6 +30,7 @@ struct TimerInputForm: View {
                 Spacer()
                 AlarmModeSelectorView(selectedMode: $selectedMode)
                     .fixedSize()
+                TimeChipButton(label: "+5분", action: addFiveMinutes)
             }
             LabelInputField(label: $label, isFocused: $isLabelFocused)
             Divider()
@@ -46,5 +47,37 @@ struct TimerInputForm: View {
             }
         }
         .padding()
+    }
+    
+    // [+5분] 버튼
+    func addFiveMinutes() {
+        withAnimation {
+            let newMinutes = self.minutes + 5
+            
+            if newMinutes < 60 {
+                self.minutes = newMinutes
+            } else {
+                self.hours += newMinutes / 60
+                self.minutes = newMinutes % 60
+            }
+        }
+    }
+}
+
+struct TimeChipButton: View {
+    let label: String
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Text(label)
+                .font(.callout)
+                .fontWeight(.semibold)
+                .foregroundColor(AppTheme.controlForegroundColor)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 9)
+                .background(AppTheme.controlBackgroundColor)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
     }
 }

@@ -15,7 +15,7 @@ struct AddTimerView: View {
 
     @State private var label = ""
     @State private var hours = 0
-    @State private var minutes = 0
+    @State private var minutes = 5
     @State private var seconds = 0
     @State private var selectedMode: AlarmMode = .sound
     @FocusState private var isLabelFocused: Bool

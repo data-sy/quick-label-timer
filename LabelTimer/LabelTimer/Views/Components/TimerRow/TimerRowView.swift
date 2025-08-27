@@ -79,7 +79,7 @@ struct TimerRowView: View {
         case .paused, .stopped:
             finalColor = .secondary
         default:
-            finalColor = mode.color
+            finalColor = AppTheme.controlForegroundColor
         }
         
         return (iconName, finalColor)
