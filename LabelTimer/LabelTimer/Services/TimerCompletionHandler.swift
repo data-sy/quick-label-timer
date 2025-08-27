@@ -108,7 +108,6 @@ final class TimerCompletionHandler {
         case .showPreset:
             guard let presetId = latestTimer.presetId else { return }
             timerService.removeTimer(id: timerId)
-            presetRepository.showPreset(withId: presetId)
         case .deleteOnly:
             timerService.removeTimer(id: timerId)
         }

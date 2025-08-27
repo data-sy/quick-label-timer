@@ -45,7 +45,8 @@ struct MainTabView: View {
         _favoriteListVM = StateObject(
             wrappedValue: FavoriteListViewModel(
                 presetRepository: presetRepository,
-                timerService: timerService
+                timerService: timerService,
+                timerRepository: timerRepository
             )
         )
     }

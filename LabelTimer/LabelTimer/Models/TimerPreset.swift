@@ -22,7 +22,7 @@ struct TimerPreset: Identifiable, Codable, Hashable {
     let createdAt: Date
     
     var lastUsedAt: Date
-    var isHiddenInList: Bool = false
+    var isHiddenInList: Bool = false // 즐겨찾기 삭제에서 사용하므로 제거하지 말 것
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
     }

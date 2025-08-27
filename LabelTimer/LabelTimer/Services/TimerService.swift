@@ -195,7 +195,6 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             isFavorite: true
         )
         presetRepository.updateLastUsed(for: preset.id)
-        presetRepository.hidePreset(withId: preset.id)
         didStart.send()
     }
     

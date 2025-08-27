@@ -13,12 +13,14 @@ import Combine
 
 @MainActor
 class FavoriteListViewModel: ObservableObject {
+    // MARK: - Dependencies
     let presetRepository: PresetRepositoryProtocol
     let timerService: TimerServiceProtocol
+    private let timerRepository: TimerRepositoryProtocol
     
-    private var cancellables = Set<AnyCancellable>()
-
+    // MARK: - Published Properties for UI
     @Published var visiblePresets: [TimerPreset] = []
+    @Published private(set) var runningPresetIds: Set<UUID> = []
     
     @Published var presetToHide: TimerPreset?
     @Published var isShowingHideAlert: Bool = false
@@ -26,19 +28,43 @@ class FavoriteListViewModel: ObservableObject {
     @Published var editingPreset: TimerPreset?
     @Published var isEditing: Bool = false
     
-    init(presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol) {
+    // MARK: - Private Properties
+    private var cancellables = Set<AnyCancellable>()
+
+    
+    init(presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol, timerRepository: TimerRepositoryProtocol) {
         self.presetRepository = presetRepository
         self.timerService = timerService
+        self.timerRepository = timerRepository
         
+        // 프리셋 목록 구독
         presetRepository.userPresetsPublisher
             .map { presets in
                 let visible = presets.filter { !$0.isHiddenInList }
                 return visible.sorted { $0.lastUsedAt > $1.lastUsedAt }
             }
             .receive(on: DispatchQueue.main) // UI 업데이트는 메인 스레드에서
-            .assign(to: &$visiblePresets)
+            .assign(to: \.visiblePresets, on: self)
+            .store(in: &cancellables)
+        
+        // 타이머 목록 구독
+        timerRepository.timersPublisher
+            .map { timers in
+                let ids = timers.compactMap { $0.presetId } // presetId가 nil이 아닌 타이머들
+                return Set(ids)
+            }
+            .receive(on: RunLoop.main)
+            .assign(to: \.runningPresetIds, on: self)
+            .store(in: &cancellables)
     }
-
+    
+    // MARK: - State Checkers
+    
+    // 프리셋이 실행 중인지 확인
+    func isPresetRunning(_ preset: TimerPreset) -> Bool {
+        return runningPresetIds.contains(preset.id)
+    }
+    
     // MARK: - Actions (Left / Right)
 
     /// Left 버튼 액션 처리
