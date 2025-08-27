@@ -23,6 +23,14 @@ class EditPresetViewModel: ObservableObject {
     @Published var selectedMode: AlarmMode
     @Published var isShowingHideAlert = false
     
+    // 재생, 저장 유효성
+    var totalSeconds: Int { hours * 3600 + minutes * 60 + seconds }
+    var trimmedLabel: String { label.trimmingCharacters(in: .whitespacesAndNewlines) } // "   " 공백 라벨도 무효로 판단
+    var isLabelValid: Bool { !trimmedLabel.isEmpty }
+    var isDurationValid: Bool { totalSeconds > 0 }
+    var canStart: Bool { isLabelValid && isDurationValid }
+    var canSave:  Bool { isLabelValid && isDurationValid }
+    
     init(preset: TimerPreset, presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol) {
         self.preset = preset
         self.presetRepository = presetRepository
@@ -40,7 +48,8 @@ class EditPresetViewModel: ObservableObject {
     }
         
     /// 변경된 내용 저장
-    func save() {
+    func save() -> Bool {
+        guard canSave else { return false }
         let attributes = AlarmNotificationPolicy.getBools(from: selectedMode)
         presetRepository.updatePreset(
             preset,
@@ -51,6 +60,7 @@ class EditPresetViewModel: ObservableObject {
             isSoundOn: attributes.sound,
             isVibrationOn: attributes.vibration
         )
+        return true
     }
     
     /// 프리셋 삭제
@@ -59,10 +69,12 @@ class EditPresetViewModel: ObservableObject {
     }
     
     /// 변경된 내용으로 타이머 시작
-    func start() {
+    func start() -> Bool {
+        guard canStart else { return false }
         save()
         if let updatedPreset = presetRepository.allPresets.first(where: { $0.id == preset.id }) {
             timerService.runTimer(from: updatedPreset)
         }
+        return true
     }
 }

@@ -33,10 +33,13 @@ struct EditPresetView: View {
                             seconds: $viewModel.seconds,
                             selectedMode: $viewModel.selectedMode,
                             isLabelFocused: $isLabelFocused,
-                            isStartDisabled: (viewModel.hours + viewModel.minutes + viewModel.seconds) == 0,
+                            isStartDisabled: !viewModel.canStart,
                             onStart: {
-                                viewModel.start()
-                                dismiss()
+                                if viewModel.start() {
+                                    dismiss()
+                                } else {
+                                    isLabelFocused = !viewModel.isLabelValid  // 라벨 문제면 포커스
+                                }
                             }
                         )
                     }
@@ -44,15 +47,18 @@ struct EditPresetView: View {
                 .padding()
                 Spacer()
                 Button {
-                    viewModel.save()
-                    dismiss()
+                    if viewModel.save() {
+                        dismiss()
+                    } else {
+                        isLabelFocused = !viewModel.isLabelValid
+                    }
                 } label: {
                     Text("저장")
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 8)
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled((viewModel.hours + viewModel.minutes + viewModel.seconds) == 0) // 저장 비활성화 조건
+                .disabled(!viewModel.canSave)
                 .padding(.horizontal)
             }
             .padding()
