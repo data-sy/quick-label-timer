@@ -63,7 +63,12 @@ enum NotificationUtils {
         center.add(request) { error in
             #if DEBUG
             if let error = error { print("🔔 LN Schedule Failed: \(id), \(error.localizedDescription)") }
-            else { print("🔔 LN Scheduled: \(id) after \(interval)s") }
+            else {
+                let fireDate = Date().addingTimeInterval(interval)
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm:ss"
+                print("🔔 LN Scheduled: \(id) → \(formatter.string(from: fireDate)) 예정")
+            }
             #endif
         }
     }

@@ -281,6 +281,10 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     func updateScenePhase(_ phase: ScenePhase) {
         self.scenePhase = phase
         guard phase == .active else { return }
+        
+        #if DEBUG
+        NotiLog.logDelivered("scene.active")
+        #endif
 
         guard shouldRunActivationCleanup() else { return }
 
@@ -322,10 +326,12 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             
             guard interval > 0 else { continue }
             
-            let clockCount = (i % 5) + 1 // 👈 1. 0~4를 1~5로 변환하고, 5가 넘어가면 다시 1부터 반복
-            let clocks = String(repeating: "⏰", count: clockCount) // 👈 2. 개수만큼 시계 이모지 생성
-            let dynamicBody = "\(body) \(clocks)" // 👈 3. 기존 body 텍스트와 이모지를 합침
-    
+            let clockCount = (i % 5) + 1
+            let clocks = String(repeating: "⏰", count: clockCount)
+//            let dynamicBody = "\(body) \(clocks)"
+            // 빈문자열 테스트
+            let dynamicBody = body
+
             let userInfo: [AnyHashable: Any] = [
                 "baseIdentifier": baseId,
                 "index": i

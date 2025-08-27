@@ -55,6 +55,8 @@ struct MainTabView: View {
         TabView(selection: $selectedTab) {
 //            AlarmModeIndicatorDebugView()
 //                .tag(Tab.debug)
+            AlarmDebugView()
+                .tag(Tab.debug)
             TimerView(runningListVM: runningListVM)
                 .tag(Tab.timer)
             

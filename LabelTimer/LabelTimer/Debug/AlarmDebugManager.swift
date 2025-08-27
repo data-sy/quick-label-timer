@@ -11,11 +11,12 @@
 import Foundation
 import UserNotifications
 
+
 @MainActor
 enum AlarmDebugManager {
     
     private static let testPrefix = "debug-"
-    private static let soundTestInterval: TimeInterval = 60.0 // suspended 테스트를 위해 1분 이상
+    private static let soundTestInterval: TimeInterval = 20.0 
     
     static var timerService: TimerServiceProtocol!
     
@@ -116,11 +117,11 @@ enum AlarmDebugManager {
     /// 2-1: 배너 없이 소리만 (연속)
      /// 가설: title과 body가 nil이면 배너나 알림창 없이 소리만 재생될 것이다.
      static func testSoundOnly() {
-         let sound = NotificationUtils.createSound(fromSound: .melody)
+         let sound = UNNotificationSound.default
          let endDate = Date().addingTimeInterval(soundTestInterval)
          
          timerService.scheduleRepeatingNotifications(
-             baseId: "\(testPrefix)repeating-sound-only",
+             baseId: "\(testPrefix)sound-only",
              // 테스트 후, nil이 들어오지 못하게 논옵셔널로 수정해서 주석 처리
 //             title: nil,
 //             body: nil,
@@ -130,7 +131,37 @@ enum AlarmDebugManager {
              endDate: endDate,
              repeatingInterval: 2
          )
+         NotiLog.logPending("after-schedule:sound-only")
      }
+    static func testBodyOnly() {
+        let sound = UNNotificationSound.default
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+        
+        timerService.scheduleRepeatingNotifications(
+            baseId: "\(testPrefix)body-only",
+            title: "",
+            body: "바디는 있음",
+            sound: nil,
+            endDate: endDate,
+            repeatingInterval: 2
+        )
+        NotiLog.logPending("after-schedule:body-only")
+    }
+    
+    static func testTitleOnly() {
+        let sound = UNNotificationSound.default
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+        
+        timerService.scheduleRepeatingNotifications(
+            baseId: "\(testPrefix)title-only",
+            title: "타이틀은 있음",
+            body: "",
+            sound: nil,
+            endDate: endDate,
+            repeatingInterval: 2
+        )
+        NotiLog.logPending("after-schedule:title-only")
+    }
    
     // MARK: - 3. 연속 알림 성능 및 UX 검증
     
@@ -198,3 +229,22 @@ enum AlarmDebugManager {
         print("▶️ Final policy test scheduled. Policy: \(policy), Interval: 1.5s")
     }
 }
+
+#if DEBUG
+
+enum NotiLog {
+    static func logPending(_ tag: String = "") {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { reqs in
+            let ids = reqs.map { $0.identifier }
+            print("🔶 [pending\(tag.isEmpty ? "" : " - \(tag)")] pending_count=\(ids.count)")
+        }
+    }
+
+    static func logDelivered(_ tag: String = "") {
+        UNUserNotificationCenter.current().getDeliveredNotifications { notis in
+            let ids = notis.map { $0.request.identifier }
+            print("🟩 [delivered\(tag.isEmpty ? "" : " - \(tag)")] delivered_count=\(ids.count)")
+        }
+    }
+}
+#endif

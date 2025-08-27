@@ -66,6 +66,16 @@ struct AlarmDebugView: View {
                         .font(.caption)
                         .foregroundColor(.gray)
                         .padding(.leading, 5)
+                    Text("가설 2-2: 제목 X(빈문자열) 본문 ㅇ 소리 X")
+                    Button("테스트 2-2: 본문만") {
+                        AlarmDebugManager.testBodyOnly() }
+                    Text("결과: Title은 프로젝트 이름으로 뜸")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                        .padding(.leading, 5)
+                    Text("가설 2-3: 제목 ㅇ 본문 X(빈문자열) 소리 X")
+                    Button("테스트 2-3: 제목만") {
+                        AlarmDebugManager.testTitleOnly() }
                 }
                 .buttonStyle(.bordered)
 
