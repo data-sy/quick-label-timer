@@ -21,7 +21,9 @@ class EditPresetViewModel: ObservableObject {
     @Published var minutes: Int
     @Published var seconds: Int
     @Published var selectedMode: AlarmMode
-    @Published var isShowingHideAlert = false
+    @Published var activeAlert: AppAlert?
+    @Published var isDeleted = false
+//    @Published var isShowingHideAlert = false
     
     // 재생, 저장 유효성
     var totalSeconds: Int { hours * 3600 + minutes * 60 + seconds }
@@ -48,6 +50,7 @@ class EditPresetViewModel: ObservableObject {
     }
         
     /// 변경된 내용 저장
+    @discardableResult
     func save() -> Bool {
         guard canSave else { return false }
         let attributes = AlarmNotificationPolicy.getBools(from: selectedMode)
@@ -63,9 +66,20 @@ class EditPresetViewModel: ObservableObject {
         return true
     }
     
+    // 타이머 삭제 확인창 띄우기
+    func requestToDelete() {
+        activeAlert = .confirmDeletion(
+            itemName: self.label,
+            onConfirm: { [weak self] in
+                self?.hide()
+            }
+        )
+    }
+    
     /// 프리셋 삭제
     func hide() {
         presetRepository.hidePreset(withId: preset.id)
+        isDeleted = true
     }
     
     /// 변경된 내용으로 타이머 시작
@@ -73,7 +87,12 @@ class EditPresetViewModel: ObservableObject {
         guard canStart else { return false }
         save()
         if let updatedPreset = presetRepository.allPresets.first(where: { $0.id == preset.id }) {
-            timerService.runTimer(from: updatedPreset)
+            let success = timerService.runTimer(from: updatedPreset)
+            
+            if !success {
+                activeAlert = .timerRunLimit
+                return false
+            }
         }
         return true
     }

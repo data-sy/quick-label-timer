@@ -20,8 +20,7 @@ struct RunningListView: View {
             emptyMessage: "아직 실행 중인 타이머가 없습니다.",
             stateProvider: { timer in
                 return timer.interactionState
-            },
-            onDelete: viewModel.deleteTimer(at:)
+            }
         ) { timer in
             RunningTimerRowView(
                 timer: timer,
@@ -37,5 +36,6 @@ struct RunningListView: View {
             )
             .id(timer.id)
         }
+        .appAlert(item: $viewModel.activeAlert)
     }
 }

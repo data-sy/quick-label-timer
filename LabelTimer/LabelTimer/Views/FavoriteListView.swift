@@ -73,13 +73,6 @@ struct FavoriteListView: View {
                 .toolbar {
                     MainToolbarContent(showSettings: $showSettings, showEditButton: true)
                 }
-                .confirmationAlert(
-                    isPresented: $viewModel.isShowingHideAlert,
-                    itemName: viewModel.presetToHide?.label ?? "",
-                    titleMessage: "이 타이머를 삭제하시겠습니까?",
-                    actionButtonLabel: "삭제",
-                    onConfirm: viewModel.confirmHide
-                )
                 .sheet(isPresented: $viewModel.isEditing, onDismiss: viewModel.stopEditing) {
                     if let preset = viewModel.editingPreset {
                         let editViewModel = EditPresetViewModel(
@@ -97,87 +90,6 @@ struct FavoriteListView: View {
                 .standardToolbarStyle()
             }
         }
-    }
-}
-
-// MARK: - Preview
-
-import Combine
-
-private let runningPresetID = UUID()
-
-// 프리뷰를 위한 가짜(Mock) Repository와 Service
-class MockPresetRepository: PresetRepositoryProtocol {
-    @Published var userPresets: [TimerPreset] = [
-        // "회의 준비" 프리셋에 고정 ID 부여
-        TimerPreset(id: runningPresetID, label: "회의 준비", hours:12 , minutes: 15, seconds: 58, isHiddenInList: false),
-        TimerPreset(label: "스트레칭", hours: 0, minutes: 1, seconds: 30, isHiddenInList: false),
-        TimerPreset(label: "업무 집중", hours: 0, minutes: 25, seconds: 0, isHiddenInList: false)
-    ]
-    var userPresetsPublisher: AnyPublisher<[TimerPreset], Never> { $userPresets.eraseToAnyPublisher() }
-    
-    // 사용되지 않는 함수들은 비워두기
-    func getPreset(byId id: UUID) -> TimerPreset? { nil }
-    func addPreset(from timer: TimerData) {}
-    func showPreset(withId id: UUID) {}
-    func hidePreset(withId id: UUID) {}
-    var allPresets: [TimerPreset] { userPresets }
-    func updatePreset(_ preset: TimerPreset, label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool) {}
-    func updateLastUsed(for presetId: UUID) {}
-}
-
-class MockTimerRepository: TimerRepositoryProtocol {
-    @Published var timers: [TimerData] = [
-        // 실행 중인 타이머
-        TimerData(label: "회의 준비", hours: 0, minutes: 5, seconds: 0, createdAt: Date(), endDate: Date(), remainingSeconds: 300, status: .running, presetId: runningPresetID)
-    ]
-    var timersPublisher: Published<[TimerData]>.Publisher { $timers }
-    
-    // 사용되지 않는 함수들은 비워둠
-    func getAllTimers() -> [TimerData] { timers }
-    func getTimer(byId id: UUID) -> TimerData? { nil }
-    func addTimer(_ timer: TimerData) {}
-    func updateTimer(_ timer: TimerData) {}
-    func removeTimer(byId id: UUID) -> TimerData? { nil }
-}
-
-class MockTimerService: TimerServiceProtocol {
-    var didStart = PassthroughSubject<Void, Never>()
-    func getTimer(byId id: UUID) -> TimerData? { nil }
-    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID?, isFavorite: Bool) {}
-    func runTimer(from preset: TimerPreset) {}
-    func removeTimer(id: UUID) -> TimerData? { nil }
-    func convertTimerToPreset(timerId: UUID) {}
-    func pauseTimer(id: UUID) {}
-    func resumeTimer(id: UUID) {}
-    func stopTimer(id: UUID) {}
-    func restartTimer(id: UUID) {}
-    func toggleFavorite(for id: UUID) {}
-    func setFavorite(for id: UUID, to value: Bool) {}
-    func userDidConfirmCompletion(for timerId: UUID) {}
-    func userDidRequestDelete(for timerId: UUID) {}
-    func updateScenePhase(_ phase: ScenePhase) {}
-    func scheduleNotification(for timer: TimerData) {}
-    func scheduleRepeatingNotifications(baseId: String, title: String, body: String, sound: UNNotificationSound?, endDate: Date, repeatingInterval: TimeInterval) {}
-    func stopTimerNotifications(for baseId: String) {}
-}
-
-
-// 프리뷰 본체
-struct FavoriteListView_Previews: PreviewProvider {
-    static var previews: some View {
-        // 가짜 객체들 생성
-        let mockPresetRepo = MockPresetRepository()
-        let mockTimerRepo = MockTimerRepository()
-        
-        // 가짜 ViewModel 만들고 가짜 객체들 주입
-        let viewModel = FavoriteListViewModel(
-            presetRepository: mockPresetRepo,
-            timerService: MockTimerService(),
-            timerRepository: mockTimerRepo
-        )
-        
-        // 진짜 FavoriteListView에 가짜 ViewModel을 넣어서 프리뷰를 띄움
-        FavoriteListView(viewModel: viewModel)
+        .appAlert(item: $viewModel.activeAlert)
     }
 }

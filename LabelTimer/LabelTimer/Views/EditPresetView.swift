@@ -73,21 +73,17 @@ struct EditPresetView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("삭제", role: .destructive) {
-                        viewModel.isShowingHideAlert = true
+                        viewModel.requestToDelete()
                     }
                     .foregroundColor(.red)
                 }
             }
-            .confirmationAlert(
-                isPresented: $viewModel.isShowingHideAlert,
-                itemName: viewModel.label,
-                titleMessage: "이 타이머를 삭제하시겠습니까?",
-                actionButtonLabel: "삭제",
-                onConfirm: {
-                    viewModel.hide()
-                    dismiss()
-                }
-            )
+            .appAlert(item: $viewModel.activeAlert)
+            .onChange(of: viewModel.isDeleted) { deleted in
+                 if deleted {
+                     dismiss()
+                 }
+            }
         }
     }
 }

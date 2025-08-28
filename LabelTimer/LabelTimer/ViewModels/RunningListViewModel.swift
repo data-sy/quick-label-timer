@@ -13,15 +13,15 @@ import Combine
 
 @MainActor
 final class RunningListViewModel: ObservableObject {
-    @Published private(set) var sortedTimers: [TimerData] = []
-
-    let deleteCountdownSeconds = LabelTimerApp.deleteCountdownSeconds
-
     private let timerService: TimerServiceProtocol
     private let timerRepository: TimerRepositoryProtocol
     private let presetRepository: PresetRepositoryProtocol
-    
-    
+
+    let deleteCountdownSeconds = LabelTimerApp.deleteCountdownSeconds
+
+    @Published private(set) var sortedTimers: [TimerData] = []
+    @Published var activeAlert: AppAlert?
+
     private var cancellables = Set<AnyCancellable>()
     
     init(timerService: TimerServiceProtocol, timerRepository: TimerRepositoryProtocol, presetRepository: PresetRepositoryProtocol) {
@@ -73,19 +73,28 @@ final class RunningListViewModel: ObservableObject {
     /// 실행 중인 타이머를 프리셋으로 이동/복구
     func handleMoveToPreset(for timer: TimerData) {
         if let presetId = timer.presetId,
-           let preset = presetRepository.getPreset(byId: presetId) {
-            // 기존 프리셋에서 실행된 타이머였다면 프리셋을 다시 보이게 처리 후 타이머 삭제
-            presetRepository.showPreset(withId: preset.id)
+           let _ = presetRepository.getPreset(byId: presetId) {
+            // 기존 프리셋에서 실행된 타이머였다면 타이머 삭제 (id가 쓰이지 않게 된 프리셋은 자동으로 실행중 화면 사라짐)
             timerService.removeTimer(id: timer.id)
         } else {
             // 사용자 생성 타이머라면 새 프리셋으로 변환
-            timerService.convertTimerToPreset(timerId: timer.id)
+            let success = presetRepository.addPreset(from: timer)
+            
+            if success {
+                timerService.removeTimer(id: timer.id)
+            } else {
+                activeAlert = .presetSaveLimit
+            }
         }
     }
-
+    
     /// 타이머의 즐겨찾기 상태를 토글
     func toggleFavorite(for id: UUID) {
-        timerService.toggleFavorite(for: id)
+        let success = timerService.toggleFavorite(for: id)
+        
+        if !success {
+            activeAlert = .presetSaveLimit
+        }
     }
     
     /// 타이머 삭제 (편집 모드)

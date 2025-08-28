@@ -28,6 +28,8 @@ class FavoriteListViewModel: ObservableObject {
     @Published var editingPreset: TimerPreset?
     @Published var isEditing: Bool = false
     
+    @Published var activeAlert: AppAlert?
+    
     // MARK: - Private Properties
     private var cancellables = Set<AnyCancellable>()
 
@@ -82,30 +84,39 @@ class FavoriteListViewModel: ObservableObject {
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
     func runTimer(from preset: TimerPreset) {
         presetRepository.updateLastUsed(for: preset.id)
-        timerService.runTimer(from: preset)
+        let success = timerService.runTimer(from: preset)
+        if !success {
+            activeAlert = .timerRunLimit
+        }
     }
     
     // MARK: - Hide (즐겨찾기 제거 흐름)
     
     /// 즐겨찾기 삭제 확인창 띄우기
     func requestToHide(_ preset: TimerPreset) {
-        presetToHide = preset
-        isShowingHideAlert = true
-    }
-    
-    /// 확인창에서의 즐겨찾기 삭제
-    func confirmHide() {
-        if let preset = presetToHide {
-            presetRepository.hidePreset(withId: preset.id)
-        }
-        presetToHide = nil // 상태 초기화
+        activeAlert = .confirmDeletion(
+            itemName: preset.label,
+            onConfirm: { [weak self] in
+                self?.presetRepository.hidePreset(withId: preset.id)
+            }
+        )
     }
     
     /// 편집모드에서의 즐겨찾기 삭제
     func hidePreset(at offsets: IndexSet) {
         let presetsToHide = offsets.map { visiblePresets[$0] }
+        var wasDeletionBlocked = false
+        
         for preset in presetsToHide {
-            presetRepository.hidePreset(withId: preset.id)
+            if isPresetRunning(preset) {
+                wasDeletionBlocked = true
+            } else {
+                presetRepository.hidePreset(withId: preset.id)
+            }
+        }
+
+        if wasDeletionBlocked {
+            activeAlert = .cannotDeleteRunningPreset
         }
     }
     
