@@ -48,7 +48,7 @@ enum NotificationUtils {
     // MARK: - 알림 예약
     
     /// 단일 로컬 알림 예약
-    static func scheduleNotification(id: String, title: String, body: String, sound: UNNotificationSound?, interval: TimeInterval, userInfo: [AnyHashable: Any]? = nil) {
+    static func scheduleNotification(id: String, title: String, body: String, sound: UNNotificationSound?, interval: TimeInterval, userInfo: [AnyHashable: Any]? = nil, threadIdentifier: String? = nil) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
@@ -57,6 +57,10 @@ enum NotificationUtils {
             content.userInfo = info
         }
 
+        if let threadId = threadIdentifier {
+            content.threadIdentifier = threadId
+        }
+        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
 

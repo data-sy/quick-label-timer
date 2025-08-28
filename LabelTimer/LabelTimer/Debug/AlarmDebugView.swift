@@ -62,7 +62,7 @@ struct AlarmDebugView: View {
                     Text("~~가설 2-1: 제목/본문 없이 소리만 있는 알림은 배너 없이 소리만 재생됨~~")
                     Button("~~테스트 2-1: 소리만~~") {
                         AlarmDebugManager.testSoundOnly() }
-                    Text("결과: Suspended 상태에서 미실행. iOS 정책상 미지원으로 판단.")
+                    Text("결과: Suspended 상태에서 미실행. iOS 정책상 미지원으로 판단")
                         .font(.caption)
                         .foregroundColor(.gray)
                         .padding(.leading, 5)
@@ -76,6 +76,19 @@ struct AlarmDebugView: View {
                     Text("가설 2-3: 제목 ㅇ 본문 X(빈문자열) 소리 X")
                     Button("테스트 2-3: 제목만") {
                         AlarmDebugManager.testTitleOnly() }
+                    
+                    Text("~~가설 2-4: 동일 ID로 알림 10개 연속 전송 시 배너 1개만 남음~~")
+                    Button("~~테스트 2-4: 동일 ID 연속 알림~~") {
+                        AlarmDebugManager.testSameIdentifierNotifications()}
+                    Text("결과: id가 같으면 새 알림으로 대체되어 가장 마지막 알림만 울림")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                        .padding(.leading, 5)
+                    Text("가설 2-5: 고유 ID + 동일 threadID 연속 전송 시 순차 실행 및 그룹핑")
+                    Button("테스트 2-5: threadID 그룹핑 알림") {
+                        AlarmDebugManager.testThreadIdentifierGrouping()
+                    }
+                    
                 }
                 .buttonStyle(.bordered)
 

@@ -353,7 +353,8 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
                 body: dynamicBody,
                 sound: sound,
                 interval: interval,
-                userInfo: userInfo
+                userInfo: userInfo,
+                threadIdentifier: baseId
             )
         }
     }

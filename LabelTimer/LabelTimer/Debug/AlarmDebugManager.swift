@@ -162,6 +162,57 @@ enum AlarmDebugManager {
         )
         NotiLog.logPending("after-schedule:title-only")
     }
+    
+
+    static func testSameIdentifierNotifications() {
+        let notificationId = "test_unified_id" // ✨ 모든 알림이 사용할 단일 ID
+        let title = "동일 ID 테스트"
+        let body = "이 알림은 이전 알림을 대체합니다."
+        let sound = UNNotificationSound.default
+        let intervalSeconds: TimeInterval = 3 // 3초 간격으로 테스트
+        
+        let initialDelay: TimeInterval = 10
+        
+        for i in 1...10 {
+            let interval = initialDelay + (TimeInterval(i-1) * intervalSeconds)
+            
+            NotificationUtils.scheduleNotification(
+                id: notificationId, // ✨ 루프 안에서도 항상 동일한 ID 사용
+                title: title,
+                body: "\(body) (\(i)/10)", // 몇 번째 알림인지 본문에 표시
+                sound: sound,
+                interval: interval
+            )
+        }
+        NotiLog.logPending("after-schedule:test_unified_id")
+    }
+
+    static func testThreadIdentifierGrouping() {
+        let groupID = "test_thread_group_final"
+        let title = "threadID 그룹핑 테스트"
+        let body = "이 알림들은 하나로 묶입니다."
+        let sound = UNNotificationSound.default
+        let intervalSeconds: TimeInterval = 3 // 3초 간격으로 테스트
+        
+        let initialDelay: TimeInterval = 10
+        
+        for i in 1...10 {
+            // ✨ 각 알림마다 고유한 ID를 생성합니다.
+            let uniqueId = "\(groupID)_\(i)"
+            let interval = initialDelay + (TimeInterval(i-1) * intervalSeconds)
+            
+            // NotificationUtils.scheduleNotification 함수를 수정해야 합니다. (아래 참고)
+            NotificationUtils.scheduleNotification(
+                id: uniqueId, // ✨ 고유 ID 전달
+                title: title,
+                body: "\(body) (\(i)/10)",
+                sound: sound,
+                interval: interval,
+                threadIdentifier: groupID // ✨ 모든 알림에 동일한 threadIdentifier 전달
+            )
+        }
+        NotiLog.logPending("after-schedule:\(groupID)")
+}
    
     // MARK: - 3. 연속 알림 성능 및 UX 검증
     
