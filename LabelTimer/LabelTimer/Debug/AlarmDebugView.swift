@@ -34,6 +34,19 @@ struct AlarmDebugView: View {
 
                 Divider().padding(.vertical)
                 
+                // MARK: - 0. (연속 알림이 아닌) 소리 기본 동작 검증
+                VStack(spacing: 15) {
+                    Text("Part 0: 1회 소리 기본 동작 검증 (햅틱: 켜짐)").font(.title2).bold()
+                    
+                    Text("가설 0-1: 30초 커스텀 사운드로 로컬 알림을 1회 사용했을 때, 무음 모드일 때 진동으로 변환되어 울리는가")
+                    Button("테스트 0-1: 커스텀 사운드 ") { AlarmDebugManager.testCustomSoundOne() }
+                    
+                    Text("가설 0-2: 30초 무음 사운드로 로컬 알림을 1회 사용했을 때, 무음 모드일 때 진동으로 변환되어 울리는가")
+                    Button("테스트 0-2: 무음 사운드 ") { AlarmDebugManager.testSilentSoundOne() }
+
+                }
+                .buttonStyle(.bordered)
+                
                 // MARK: - 1. 소리 기본 동작 검증
                 VStack(spacing: 15) {
                     Text("Part 1: 소리 기본 동작 검증 (햅틱: 항상 재생 상태)").font(.title2).bold()

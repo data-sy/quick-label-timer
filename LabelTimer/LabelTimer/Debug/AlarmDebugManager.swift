@@ -55,6 +55,32 @@ enum AlarmDebugManager {
         print("🔔 LN Delivered Dump (\(delivered.count) items): [\(ids)]")
     }
     
+    
+    // MARK: - 0. 소리 기본 동작 검증 (1회 로컬)
+    
+    static func testCustomSoundOne() {
+        let sound = NotificationUtils.createSound(fromSound: .melody)
+
+        NotificationUtils.scheduleNotification(
+            id: "\(testPrefix)single-custom",
+            title: "1회 0-1: 커스텀 사운드",
+            body: "무음 모드에서의 진동 확인",
+            sound: sound,
+            interval: 5
+        )
+    }
+    
+    static func testSilentSoundOne() {
+        let sound = NotificationUtils.createSound(fromSound: .silence)
+        NotificationUtils.scheduleNotification(
+            id: "\(testPrefix)single-system",
+            title: "1회 0-2: 기본 사운드",
+            body: "무음 모드에서의 진동 확인",
+            sound: sound,
+            interval: 5
+        )
+    }
+    
     // MARK: - 1. 소리 기본 동작 검증 (연속 로컬)
     
     static func testCustomSound() {
