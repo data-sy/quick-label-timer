@@ -68,6 +68,7 @@ struct FavoriteListView: View {
                         }
                     }
                     .disabled(viewModel.isPresetRunning(preset))
+                    .deleteDisabled(viewModel.isPresetRunning(preset))
                 }
                 .padding(.horizontal)
                 .navigationTitle("즐겨찾기")
