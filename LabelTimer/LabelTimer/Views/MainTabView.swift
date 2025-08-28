@@ -68,7 +68,7 @@ struct MainTabView: View {
             TimerView(addTimerVM: addTimerVM, runningListVM: runningListVM)
                 .tag(Tab.timer)
             
-            FavoriteListView(viewModel: favoriteListVM)
+            FavoriteListView(viewModel: favoriteListVM, selectedTab: selectedTab)
                 .tag(Tab.favorites)
         }
         .tabViewStyle(.page(indexDisplayMode: .automatic))

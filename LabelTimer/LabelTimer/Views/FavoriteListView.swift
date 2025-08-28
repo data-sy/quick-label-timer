@@ -15,6 +15,8 @@ struct FavoriteListView: View {
     @ObservedObject var viewModel: FavoriteListViewModel
     @State private var showSettings = false
     
+    let selectedTab: Tab
+    
     private var isEditing: Bool {
         editMode?.wrappedValue.isEditing ?? false
     }
@@ -91,5 +93,10 @@ struct FavoriteListView: View {
             }
         }
         .appAlert(item: $viewModel.activeAlert)
+        .onChange(of: selectedTab) {
+            if selectedTab != .favorites {
+                editMode?.wrappedValue = .inactive
+            }
+        }
     }
 }
