@@ -12,13 +12,6 @@
 
 import Foundation
 
-// MARK: - 처리 유형 정의 Enum
-enum CompletionActionType {
-    case saveAsPreset // 사용자 입력 타이머를 즐겨찾기하여 프리셋으로 저장
-    case showPreset   // 프리셋 기반 타이머를 즐겨찾기하여 다시 목록에 표시
-    case deleteOnly   // 즐겨찾기하지 않은 타이머를 삭제
-}
-
 // MARK: - Timer Completion Handler
 final class TimerCompletionHandler {
     private var countdownTasks: [UUID: Task<Void, Never>] = [:]
@@ -76,7 +69,7 @@ final class TimerCompletionHandler {
     /// 특정 타이머 카운트다운 Task 취소
     func cancelPendingAction(for timerId: UUID) {
         countdownTasks[timerId]?.cancel()
-//        countdownTasks[timerId] = nil          // ✅ 참조 제거
+        countdownTasks[timerId] = nil
     }
 
     /// 모든 타이머 카운트다운 Task 취소
@@ -94,33 +87,30 @@ final class TimerCompletionHandler {
         // '최신' TimerData 가져오기 (완료 후의 즐겨찾기 토글 적용)
         guard let latestTimer = timerService.getTimer(byId: timerId) else {
             onComplete?(timerId)
-//            countdownTasks[timerId] = nil   // ✅ 누수 방지. 기본 리팩토링 성공을 먼저 확인. 성공하면 주석 풀자
+            countdownTasks[timerId] = nil
             return
         }
-                
-        // TODO: (legacy) show/hide 제거 정책에 맞춰 분기 단순화 예정
-        // '최신' 데이터를 기반으로 실행할 Action을 '다시' 결정
-        let finalAction: CompletionActionType
-        if latestTimer.endAction.isPreserve {
-            finalAction = latestTimer.presetId == nil ? .saveAsPreset : .showPreset
-        } else {
-            finalAction = .deleteOnly
+        // 1-1. 즉석 타이머 & 보존 -> 새 프리셋으로 저장 후, 기존 타이머 삭제
+        // 1-2. 즉석 타이머 & 폐기 -> 타이머만 삭제
+        // 2-1. 프리셋 기반 타이머 & 보존 -> 타이머만 삭제 (프리셋은 자동으로 다시 활성화됨)
+        // 2-2. 프리셋 기반 타이머 & 폐기 -> 프리셋을 숨기고(hide) 타이머 삭제
+        switch (latestTimer.presetId, latestTimer.endAction) {
+            case (.none, .preserve):
+              presetRepository.addPreset(from: latestTimer)
+              timerService.removeTimer(id: timerId)
+            
+            case (.none, .discard):
+              timerService.removeTimer(id: timerId)
+              
+            case (.some, .preserve):
+              timerService.removeTimer(id: timerId)
+
+            case (.some(let presetId), .discard):
+              presetRepository.hidePreset(withId: presetId)
+              timerService.removeTimer(id: timerId)
         }
-        // 최종 결정된 Action 실행
-        switch finalAction {
-        case .saveAsPreset:
-            timerService.removeTimer(id: timerId)
-            presetRepository.addPreset(from: latestTimer)
-        case .showPreset:
-            guard let presetId = latestTimer.presetId else { return }
-//            guard latestTimer.presetId != nil else { return } // ✅ 기본 리팩토링 성공을 먼저 확인. 성공하면 윗 guard 지우고 주석 풀자
-            timerService.removeTimer(id: timerId)
-        case .deleteOnly:
-            timerService.removeTimer(id: timerId)
-        }
-        
         onComplete?(timerId)
-//        countdownTasks[timerId] = nil // ✅ 누수 방지. 기본 리팩토링 성공을 먼저 확인. 성공하면 주석 풀자
+        countdownTasks[timerId] = nil
     }
 
 }
