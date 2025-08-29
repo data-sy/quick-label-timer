@@ -21,7 +21,17 @@ class EditPresetViewModel: ObservableObject {
     @Published var minutes: Int
     @Published var seconds: Int
     @Published var selectedMode: AlarmMode
-    @Published var isShowingHideAlert = false
+    @Published var activeAlert: AppAlert?
+    @Published var isDeleted = false
+//    @Published var isShowingHideAlert = false
+    
+    // 재생, 저장 유효성
+    var totalSeconds: Int { hours * 3600 + minutes * 60 + seconds }
+    var trimmedLabel: String { label.trimmingCharacters(in: .whitespacesAndNewlines) } // "   " 공백 라벨도 무효로 판단
+    var isLabelValid: Bool { !trimmedLabel.isEmpty }
+    var isDurationValid: Bool { totalSeconds > 0 }
+    var canStart: Bool { isLabelValid && isDurationValid }
+    var canSave:  Bool { isLabelValid && isDurationValid }
     
     init(preset: TimerPreset, presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol) {
         self.preset = preset
@@ -40,7 +50,9 @@ class EditPresetViewModel: ObservableObject {
     }
         
     /// 변경된 내용 저장
-    func save() {
+    @discardableResult
+    func save() -> Bool {
+        guard canSave else { return false }
         let attributes = AlarmNotificationPolicy.getBools(from: selectedMode)
         presetRepository.updatePreset(
             preset,
@@ -51,18 +63,37 @@ class EditPresetViewModel: ObservableObject {
             isSoundOn: attributes.sound,
             isVibrationOn: attributes.vibration
         )
+        return true
+    }
+    
+    // 타이머 삭제 확인창 띄우기
+    func requestToDelete() {
+        activeAlert = .confirmDeletion(
+            itemName: self.label,
+            onConfirm: { [weak self] in
+                self?.hide()
+            }
+        )
     }
     
     /// 프리셋 삭제
     func hide() {
         presetRepository.hidePreset(withId: preset.id)
+        isDeleted = true
     }
     
     /// 변경된 내용으로 타이머 시작
-    func start() {
+    func start() -> Bool {
+        guard canStart else { return false }
         save()
         if let updatedPreset = presetRepository.allPresets.first(where: { $0.id == preset.id }) {
-            timerService.runTimer(from: updatedPreset)
+            let success = timerService.runTimer(from: updatedPreset)
+            
+            if !success {
+                activeAlert = .timerRunLimit
+                return false
+            }
         }
+        return true
     }
 }

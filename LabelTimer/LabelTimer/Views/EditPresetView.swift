@@ -33,10 +33,13 @@ struct EditPresetView: View {
                             seconds: $viewModel.seconds,
                             selectedMode: $viewModel.selectedMode,
                             isLabelFocused: $isLabelFocused,
-                            isStartDisabled: (viewModel.hours + viewModel.minutes + viewModel.seconds) == 0,
+                            isStartDisabled: !viewModel.canStart,
                             onStart: {
-                                viewModel.start()
-                                dismiss()
+                                if viewModel.start() {
+                                    dismiss()
+                                } else {
+                                    isLabelFocused = !viewModel.isLabelValid  // 라벨 문제면 포커스
+                                }
                             }
                         )
                     }
@@ -44,15 +47,18 @@ struct EditPresetView: View {
                 .padding()
                 Spacer()
                 Button {
-                    viewModel.save()
-                    dismiss()
+                    if viewModel.save() {
+                        dismiss()
+                    } else {
+                        isLabelFocused = !viewModel.isLabelValid
+                    }
                 } label: {
                     Text("저장")
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 8)
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled((viewModel.hours + viewModel.minutes + viewModel.seconds) == 0) // 저장 비활성화 조건
+                .disabled(!viewModel.canSave)
                 .padding(.horizontal)
             }
             .padding()
@@ -67,21 +73,17 @@ struct EditPresetView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("삭제", role: .destructive) {
-                        viewModel.isShowingHideAlert = true
+                        viewModel.requestToDelete()
                     }
                     .foregroundColor(.red)
                 }
             }
-            .confirmationAlert(
-                isPresented: $viewModel.isShowingHideAlert,
-                itemName: viewModel.label,
-                titleMessage: "이 타이머를 삭제하시겠습니까?",
-                actionButtonLabel: "삭제",
-                onConfirm: {
-                    viewModel.hide()
-                    dismiss()
-                }
-            )
+            .appAlert(item: $viewModel.activeAlert)
+            .onChange(of: viewModel.isDeleted) { deleted in
+                 if deleted {
+                     dismiss()
+                 }
+            }
         }
     }
 }

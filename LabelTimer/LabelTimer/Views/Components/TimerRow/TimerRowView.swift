@@ -24,7 +24,7 @@ struct TimerRowView: View {
         statusText: String? = nil,
         onToggleFavorite: (() -> Void)? = nil,
         onLeftTap: (() -> Void)? = nil,
-        onRightTap: (() -> Void)? = nil,
+        onRightTap: (() -> Void)? = nil
     ) {
         self.timer = timer
         self.state = state
@@ -34,20 +34,21 @@ struct TimerRowView: View {
         self.onRightTap = onRightTap
     }
     
-    /// 상태 × 즐겨찾기 → 좌/우 버튼 타입
+    /// 상태 × endAction → 좌/우 버튼 타입
     private var buttonTypes: TimerButtonSet {
-        makeButtonSet(for: state, isFavorite: timer.isFavorite)
+        makeButtonSet(for: state, endAction: timer.endAction)
     }
     
     private var labelFont: Font {
         // 완료 상태일 때만 더 큰 폰트를 사용
         switch state {
         case .completed:
-            return .system(.title3, weight: .semibold)
+            return .system(.title3).weight(.semibold)
         default:
-            return .system(.headline, weight: .semibold)
+            return .system(.headline).weight(.semibold)
         }
     }
+
     
     private var labelColor: Color {
         switch state {
@@ -79,7 +80,7 @@ struct TimerRowView: View {
         case .paused, .stopped:
             finalColor = .secondary
         default:
-            finalColor = mode.color
+            finalColor = AppTheme.controlForegroundColor
         }
         
         return (iconName, finalColor)
@@ -89,7 +90,7 @@ struct TimerRowView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .center, spacing: 6) {
                 FavoriteToggleButton(
-                    isFavorite: timer.isFavorite,
+                    endAction: timer.endAction,
                     onToggle: { onToggleFavorite?() }
                 )
                 

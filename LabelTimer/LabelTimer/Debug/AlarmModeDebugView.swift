@@ -41,7 +41,7 @@ struct AlarmModeDebugView: View {
                 ZStack {
                     if selectedMode == mode {
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(mode.color.opacity(0.1))
+                            .fill(AppTheme.controlBackgroundColor)
                             .matchedGeometryEffect(id: "selection", in: animation)
                     }
                     
@@ -50,7 +50,7 @@ struct AlarmModeDebugView: View {
                     .padding(.horizontal, 8)
                 }
                 .font(.callout)
-                .foregroundStyle(selectedMode == mode ? mode.color : .gray)
+                .foregroundStyle(selectedMode == mode ? AppTheme.controlForegroundColor : .gray)
                 .onTapGesture {
                     withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.7)) {
                         selectedMode = mode
@@ -68,6 +68,60 @@ struct AlarmModeDebugView: View {
         .frame(height: 40)
     }
 }
+
+// MARK: - 3. 아이콘 후보 비교 뷰
+struct SymbolDebugView: View {
+    let oldSymbols = [
+        "speaker.wave.2.fill",
+        "iphone.radiowaves.left.and.right",
+        "speaker.slash.fill"
+    ]
+    
+    let newSymbols = [
+        "bell.and.waveform.fill",
+        "bell.fill",
+        "bell.slash.fill"
+    ]
+    
+    var body: some View {
+        VStack(spacing: 15) {
+            Text("아이콘 후보 비교")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+            
+            HStack(spacing: 40) {
+                // 기존 아이콘 목록
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("기존 (스피커)").font(.caption).foregroundStyle(.secondary)
+                    ForEach(oldSymbols, id: \.self) { name in
+                        HStack {
+                            Image(systemName: name)
+                                .font(.title3)
+                                .frame(width: 35, alignment: .center)
+                            Text(name)
+                                .font(.footnote)
+                        }
+                    }
+                }
+                
+                // 새로운 아이콘 목록
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("신규 (종)").font(.caption).foregroundStyle(.secondary)
+                    ForEach(newSymbols, id: \.self) { name in
+                        HStack {
+                            Image(systemName: name)
+                                .font(.title3)
+                                .frame(width: 35, alignment: .center)
+                            Text(name)
+                                .font(.footnote)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 // MARK: - Preview
 
@@ -97,6 +151,10 @@ struct AlarmModeDebugView: View {
                         AlarmModeDebugView(selectedMode: $mode)
                     }
                 }
+
+                Divider()
+
+                SymbolDebugView()
             }
             .padding()
         }

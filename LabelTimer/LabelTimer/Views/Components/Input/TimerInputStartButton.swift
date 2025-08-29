@@ -21,7 +21,10 @@ struct TimerInputStartButton: View {
                 .foregroundColor(.white)
                 .padding(20)
                 .background(Circle().fill(.blue))
+                .opacity(isDisabled ? 0.35 : 1.0)
         }
         .disabled(isDisabled)
+        .allowsHitTesting(!isDisabled)
+        .animation(.easeInOut(duration: 0.15), value: isDisabled)
     }
 }

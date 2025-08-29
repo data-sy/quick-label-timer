@@ -48,7 +48,7 @@ enum NotificationUtils {
     // MARK: - 알림 예약
     
     /// 단일 로컬 알림 예약
-    static func scheduleNotification(id: String, title: String, body: String, sound: UNNotificationSound?, interval: TimeInterval, userInfo: [AnyHashable: Any]? = nil) {
+    static func scheduleNotification(id: String, title: String, body: String, sound: UNNotificationSound?, interval: TimeInterval, userInfo: [AnyHashable: Any]? = nil, threadIdentifier: String? = nil) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
@@ -57,13 +57,22 @@ enum NotificationUtils {
             content.userInfo = info
         }
 
+        if let threadId = threadIdentifier {
+            content.threadIdentifier = threadId
+        }
+        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
 
         center.add(request) { error in
             #if DEBUG
             if let error = error { print("🔔 LN Schedule Failed: \(id), \(error.localizedDescription)") }
-            else { print("🔔 LN Scheduled: \(id) after \(interval)s") }
+            else {
+                let fireDate = Date().addingTimeInterval(interval)
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm:ss"
+                print("🔔 LN Scheduled: \(id) → \(formatter.string(from: fireDate)) 예정")
+            }
             #endif
         }
     }

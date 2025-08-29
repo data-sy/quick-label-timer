@@ -35,9 +35,4 @@ enum AlarmMode: String, CaseIterable, Identifiable {
         case .silent: return "speaker.slash.fill"
         }
     }
-    
-    /// 각 모드를 나타내는 고유 색상
-    var color: Color {
-        return .primary.opacity(0.75)
-    }
 }

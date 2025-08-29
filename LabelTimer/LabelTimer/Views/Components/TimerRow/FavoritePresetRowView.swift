@@ -24,6 +24,7 @@ struct FavoritePresetRowView: View {
     /// 전체 시간을 포맷된 문자열로 반환
     private var tempTimer: TimerData {
         TimerData(
+            id: preset.id,
             label: preset.label,
             hours: preset.hours,
             minutes: preset.minutes,
@@ -36,7 +37,7 @@ struct FavoritePresetRowView: View {
             status: .stopped,
             pendingDeletionAt: nil,
             presetId: preset.id,
-            isFavorite: true
+            endAction: .preserve
         )
     }
 
@@ -46,7 +47,7 @@ struct FavoritePresetRowView: View {
             state: TimerInteractionState.preset,
             onToggleFavorite: onToggleFavorite,
             onLeftTap: onLeftTap,
-            onRightTap: onRightTap,
+            onRightTap: onRightTap
         )
         .opacity(isEditing ? 0.5 : 1.0)
         .allowsHitTesting(!isEditing)

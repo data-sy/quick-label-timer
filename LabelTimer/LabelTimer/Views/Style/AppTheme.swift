@@ -21,6 +21,11 @@ enum AppTheme {
     /// 콘텐츠가 담기는 영역의 배경색
     static let contentBackground = Color(.secondarySystemGroupedBackground)
     
+    /// 폼 내부 보조 컨트롤의 배경색 (0.75 * 0.1 = 0.075)
+    static let controlBackgroundColor = Color.primary.opacity(0.075)
+    /// 폼 내부 보조 컨트롤의 아이콘/텍스트 색상
+    static let controlForegroundColor = Color.primary.opacity(0.75)
+
     // MARK: - Fonts (예시)
     /*
     static let titleFont = Font.system(size: 24, weight: .bold)

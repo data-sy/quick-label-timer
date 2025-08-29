@@ -23,7 +23,7 @@ enum AlarmSound: String, CaseIterable, Identifiable {
         case .highBuzz: return "high-buzz"
         case .siren: return "siren"
         case .melody: return "melody"
-        case .silence: return "silence1sec"
+        case .silence: return "inaudible_tone"
         }
     }
 

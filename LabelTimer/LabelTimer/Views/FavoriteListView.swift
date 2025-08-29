@@ -15,6 +15,8 @@ struct FavoriteListView: View {
     @ObservedObject var viewModel: FavoriteListViewModel
     @State private var showSettings = false
     
+    let selectedTab: Tab
+    
     private var isEditing: Bool {
         editMode?.wrappedValue.isEditing ?? false
     }
@@ -34,20 +36,39 @@ struct FavoriteListView: View {
                     },
                     onDelete: viewModel.hidePreset(at:)
                 ) { preset in
-                    FavoritePresetRowView(
-                        preset: preset,
-                        onToggleFavorite: {
-                            viewModel.requestToHide(preset)
-                        },
-                        onLeftTap: {
-                            viewModel.handleLeft(for: preset)
-                            editMode?.wrappedValue = .inactive
-                        },
-                        onRightTap: {
-                            viewModel.handleRight(for: preset)
-                            editMode?.wrappedValue = .inactive
+                    ZStack {
+                        FavoritePresetRowView(
+                            preset: preset,
+                            onToggleFavorite: {
+                                viewModel.requestToHide(preset)
+                            },
+                            onLeftTap: {
+                                viewModel.handleLeft(for: preset)
+                                editMode?.wrappedValue = .inactive
+                            },
+                            onRightTap: {
+                                viewModel.handleRight(for: preset)
+                                editMode?.wrappedValue = .inactive
+                            }
+                        )
+                        // 실행 중인 프리셋
+                        if viewModel.isPresetRunning(preset) {
+                            Color.black.opacity(0.4)
+                                .cornerRadius(12)
+                                .padding(4)
+                            HStack(spacing: 8) {
+                                Text("«« 실행 중")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                Image(systemName: "figure.run")
+                                    .font(.title)
+                                    .scaleEffect(x: -1, y: 1)
+                            }
+                            .foregroundColor(.white)
                         }
-                    )
+                    }
+                    .disabled(viewModel.isPresetRunning(preset))
+                    .deleteDisabled(viewModel.isPresetRunning(preset))
                 }
                 .padding(.horizontal)
                 .navigationTitle("즐겨찾기")
@@ -55,13 +76,6 @@ struct FavoriteListView: View {
                 .toolbar {
                     MainToolbarContent(showSettings: $showSettings, showEditButton: true)
                 }
-                .confirmationAlert(
-                    isPresented: $viewModel.isShowingHideAlert,
-                    itemName: viewModel.presetToHide?.label ?? "",
-                    titleMessage: "이 타이머를 삭제하시겠습니까?",
-                    actionButtonLabel: "삭제",
-                    onConfirm: viewModel.confirmHide
-                )
                 .sheet(isPresented: $viewModel.isEditing, onDismiss: viewModel.stopEditing) {
                     if let preset = viewModel.editingPreset {
                         let editViewModel = EditPresetViewModel(
@@ -77,6 +91,12 @@ struct FavoriteListView: View {
                     SettingsView()
                 }
                 .standardToolbarStyle()
+            }
+        }
+        .appAlert(item: $viewModel.activeAlert)
+        .onChange(of: selectedTab) {
+            if selectedTab != .favorites {
+                editMode?.wrappedValue = .inactive
             }
         }
     }

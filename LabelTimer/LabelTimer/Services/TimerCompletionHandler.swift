@@ -7,15 +7,10 @@
 ///
 /// 타이머가 '완료'된 후의 모든 비동기 로직을 전담하는 클래스
 /// 사용 목적: TimerService가 타이머의 '실행'에만 집중하도록, '완료 후'의 복잡한 로직을 위임받아 책임을 분리함
+// TODO: (legacy) 프리셋 show/hide 흐름은 ViewModel(runningPresetIds)로 대체됨
+// CompletionActionType.showPreset 제거 및 handle() 이진 분기(저장 또는 삭제)로 단순화 예정
 
 import Foundation
-
-// MARK: - 처리 유형 정의 Enum
-enum CompletionActionType {
-    case saveAsPreset // 사용자 입력 타이머를 즐겨찾기하여 프리셋으로 저장
-    case showPreset   // 프리셋 기반 타이머를 즐겨찾기하여 다시 목록에 표시
-    case deleteOnly   // 즐겨찾기하지 않은 타이머를 삭제
-}
 
 // MARK: - Timer Completion Handler
 final class TimerCompletionHandler {
@@ -63,8 +58,8 @@ final class TimerCompletionHandler {
         }
     }
 
-    /// 사용자 수동 삭제, 수동 보관
-    func forceHandle(timerId: UUID) {
+    /// 타이머 완료 처리 즉시 실행
+    func handleCompletionImmediately(timerId: UUID) {
         cancelPendingAction(for: timerId)
         Task {
             await handle(timerId: timerId)
@@ -74,6 +69,7 @@ final class TimerCompletionHandler {
     /// 특정 타이머 카운트다운 Task 취소
     func cancelPendingAction(for timerId: UUID) {
         countdownTasks[timerId]?.cancel()
+        countdownTasks[timerId] = nil
     }
 
     /// 모든 타이머 카운트다운 Task 취소
@@ -91,29 +87,30 @@ final class TimerCompletionHandler {
         // '최신' TimerData 가져오기 (완료 후의 즐겨찾기 토글 적용)
         guard let latestTimer = timerService.getTimer(byId: timerId) else {
             onComplete?(timerId)
+            countdownTasks[timerId] = nil
             return
         }
-        // '최신' 데이터를 기반으로 실행할 Action을 '다시' 결정
-        let finalAction: CompletionActionType
-        if latestTimer.isFavorite {
-            finalAction = latestTimer.presetId == nil ? .saveAsPreset : .showPreset
-        } else {
-            finalAction = .deleteOnly
+        // 1-1. 즉석 타이머 & 보존 -> 새 프리셋으로 저장 후, 기존 타이머 삭제
+        // 1-2. 즉석 타이머 & 폐기 -> 타이머만 삭제
+        // 2-1. 프리셋 기반 타이머 & 보존 -> 타이머만 삭제 (프리셋은 자동으로 다시 활성화됨)
+        // 2-2. 프리셋 기반 타이머 & 폐기 -> 프리셋을 숨기고(hide) 타이머 삭제
+        switch (latestTimer.presetId, latestTimer.endAction) {
+            case (.none, .preserve):
+              presetRepository.addPreset(from: latestTimer)
+              timerService.removeTimer(id: timerId)
+            
+            case (.none, .discard):
+              timerService.removeTimer(id: timerId)
+              
+            case (.some, .preserve):
+              timerService.removeTimer(id: timerId)
+
+            case (.some(let presetId), .discard):
+              presetRepository.hidePreset(withId: presetId)
+              timerService.removeTimer(id: timerId)
         }
-        // 최종 결정된 Action 실행
-        switch finalAction {
-        case .saveAsPreset:
-            presetRepository.addPreset(from: latestTimer)
-            timerService.removeTimer(id: timerId)
-        case .showPreset:
-            guard let presetId = latestTimer.presetId else { return }
-            presetRepository.showPreset(withId: presetId)
-            timerService.removeTimer(id: timerId)
-        case .deleteOnly:
-            timerService.removeTimer(id: timerId)
-        }
-        
         onComplete?(timerId)
+        countdownTasks[timerId] = nil
     }
 
 }

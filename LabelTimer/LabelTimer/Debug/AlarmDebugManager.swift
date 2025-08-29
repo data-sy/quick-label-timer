@@ -11,11 +11,12 @@
 import Foundation
 import UserNotifications
 
+
 @MainActor
 enum AlarmDebugManager {
     
     private static let testPrefix = "debug-"
-    private static let soundTestInterval: TimeInterval = 60.0 // suspended 테스트를 위해 1분 이상
+    private static let soundTestInterval: TimeInterval = 20.0 
     
     static var timerService: TimerServiceProtocol!
     
@@ -52,6 +53,32 @@ enum AlarmDebugManager {
         let delivered = await NotificationUtils.center.deliveredNotifications()
         let ids = delivered.map { $0.request.identifier }.joined(separator: ", ")
         print("🔔 LN Delivered Dump (\(delivered.count) items): [\(ids)]")
+    }
+    
+    
+    // MARK: - 0. 소리 기본 동작 검증 (1회 로컬)
+    
+    static func testCustomSoundOne() {
+        let sound = NotificationUtils.createSound(fromSound: .melody)
+
+        NotificationUtils.scheduleNotification(
+            id: "\(testPrefix)single-custom",
+            title: "1회 0-1: 커스텀 사운드",
+            body: "무음 모드에서의 진동 확인",
+            sound: sound,
+            interval: 5
+        )
+    }
+    
+    static func testSilentSoundOne() {
+        let sound = NotificationUtils.createSound(fromSound: .silence)
+        NotificationUtils.scheduleNotification(
+            id: "\(testPrefix)single-system",
+            title: "1회 0-2: 기본 사운드",
+            body: "무음 모드에서의 진동 확인",
+            sound: sound,
+            interval: 5
+        )
     }
     
     // MARK: - 1. 소리 기본 동작 검증 (연속 로컬)
@@ -116,11 +143,11 @@ enum AlarmDebugManager {
     /// 2-1: 배너 없이 소리만 (연속)
      /// 가설: title과 body가 nil이면 배너나 알림창 없이 소리만 재생될 것이다.
      static func testSoundOnly() {
-         let sound = NotificationUtils.createSound(fromSound: .melody)
+         let sound = UNNotificationSound.default
          let endDate = Date().addingTimeInterval(soundTestInterval)
          
          timerService.scheduleRepeatingNotifications(
-             baseId: "\(testPrefix)repeating-sound-only",
+             baseId: "\(testPrefix)sound-only",
              // 테스트 후, nil이 들어오지 못하게 논옵셔널로 수정해서 주석 처리
 //             title: nil,
 //             body: nil,
@@ -130,7 +157,88 @@ enum AlarmDebugManager {
              endDate: endDate,
              repeatingInterval: 2
          )
+         NotiLog.logPending("after-schedule:sound-only")
      }
+    static func testBodyOnly() {
+        let sound = UNNotificationSound.default
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+        
+        timerService.scheduleRepeatingNotifications(
+            baseId: "\(testPrefix)body-only",
+            title: "",
+            body: "바디는 있음",
+            sound: nil,
+            endDate: endDate,
+            repeatingInterval: 2
+        )
+        NotiLog.logPending("after-schedule:body-only")
+    }
+    
+    static func testTitleOnly() {
+        let sound = UNNotificationSound.default
+        let endDate = Date().addingTimeInterval(soundTestInterval)
+        
+        timerService.scheduleRepeatingNotifications(
+            baseId: "\(testPrefix)title-only",
+            title: "타이틀은 있음",
+            body: "",
+            sound: nil,
+            endDate: endDate,
+            repeatingInterval: 2
+        )
+        NotiLog.logPending("after-schedule:title-only")
+    }
+    
+
+    static func testSameIdentifierNotifications() {
+        let notificationId = "test_unified_id" // ✨ 모든 알림이 사용할 단일 ID
+        let title = "동일 ID 테스트"
+        let body = "이 알림은 이전 알림을 대체합니다."
+        let sound = UNNotificationSound.default
+        let intervalSeconds: TimeInterval = 3 // 3초 간격으로 테스트
+        
+        let initialDelay: TimeInterval = 10
+        
+        for i in 1...10 {
+            let interval = initialDelay + (TimeInterval(i-1) * intervalSeconds)
+            
+            NotificationUtils.scheduleNotification(
+                id: notificationId, // ✨ 루프 안에서도 항상 동일한 ID 사용
+                title: title,
+                body: "\(body) (\(i)/10)", // 몇 번째 알림인지 본문에 표시
+                sound: sound,
+                interval: interval
+            )
+        }
+        NotiLog.logPending("after-schedule:test_unified_id")
+    }
+
+    static func testThreadIdentifierGrouping() {
+        let groupID = "test_thread_group_final"
+        let title = "threadID 그룹핑 테스트"
+        let body = "이 알림들은 하나로 묶입니다."
+        let sound = UNNotificationSound.default
+        let intervalSeconds: TimeInterval = 3 // 3초 간격으로 테스트
+        
+        let initialDelay: TimeInterval = 10
+        
+        for i in 1...10 {
+            // ✨ 각 알림마다 고유한 ID를 생성합니다.
+            let uniqueId = "\(groupID)_\(i)"
+            let interval = initialDelay + (TimeInterval(i-1) * intervalSeconds)
+            
+            // NotificationUtils.scheduleNotification 함수를 수정해야 합니다. (아래 참고)
+            NotificationUtils.scheduleNotification(
+                id: uniqueId, // ✨ 고유 ID 전달
+                title: title,
+                body: "\(body) (\(i)/10)",
+                sound: sound,
+                interval: interval,
+                threadIdentifier: groupID // ✨ 모든 알림에 동일한 threadIdentifier 전달
+            )
+        }
+        NotiLog.logPending("after-schedule:\(groupID)")
+}
    
     // MARK: - 3. 연속 알림 성능 및 UX 검증
     
@@ -198,3 +306,22 @@ enum AlarmDebugManager {
         print("▶️ Final policy test scheduled. Policy: \(policy), Interval: 1.5s")
     }
 }
+
+#if DEBUG
+
+enum NotiLog {
+    static func logPending(_ tag: String = "") {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { reqs in
+            let ids = reqs.map { $0.identifier }
+            print("🔶 [pending\(tag.isEmpty ? "" : " - \(tag)")] pending_count=\(ids.count)")
+        }
+    }
+
+    static func logDelivered(_ tag: String = "") {
+        UNUserNotificationCenter.current().getDeliveredNotifications { notis in
+            let ids = notis.map { $0.request.identifier }
+            print("🟩 [delivered\(tag.isEmpty ? "" : " - \(tag)")] delivered_count=\(ids.count)")
+        }
+    }
+}
+#endif

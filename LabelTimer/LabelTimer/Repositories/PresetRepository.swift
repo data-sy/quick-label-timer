@@ -15,37 +15,48 @@ import Combine
 
 // MARK: - Protocol Definition
 protocol PresetRepositoryProtocol {
+    var allPresets: [TimerPreset] { get }
+    var visiblePresetsCount: Int { get }
+    var userPresetsPublisher: AnyPublisher<[TimerPreset], Never> { get }
+
     func getPreset(byId id: UUID) -> TimerPreset?
-    func addPreset(from timer: TimerData)
+    func addPreset(from timer: TimerData) -> Bool
     func showPreset(withId id: UUID)
     func hidePreset(withId id: UUID)
-    var allPresets: [TimerPreset] { get }
     func updatePreset(_ preset: TimerPreset, label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool)
     func updateLastUsed(for presetId: UUID)
-    var userPresetsPublisher: AnyPublisher<[TimerPreset], Never> { get }
 }
 
 // MARK: - PresetRepository Class
 final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     @Published var userPresets: [TimerPreset] = []
-
-    private let userDefaultsKey = "user_presets"
-    private let didInitializeKey = "did_initialize_presets"
-    
-    init() {
-        loadPresets()
-    }
     
     // MARK: - Preset 목록
     
-    /// 전체 프리셋 목록 (기본 + 사용자)
+    /// 전체 프리셋 목록 (숨김 포함)
     var allPresets: [TimerPreset] {
         userPresets
+    }
+    
+    /// 사용자에게 보여지는 프리셋 개수 (숨김 제외)
+    var visiblePresetsCount: Int {
+        userPresets.filter { !$0.isHiddenInList }.count
     }
     
     // Publisher
     var userPresetsPublisher: AnyPublisher<[TimerPreset], Never> {
         $userPresets.eraseToAnyPublisher()
+    }
+    
+    // MARK: - Private Properties
+
+    private let userDefaultsKey = "user_presets"
+    private let didInitializeKey = "did_initialize_presets"
+    
+    // MARK: - Initializer
+    
+    init() {
+        loadPresets()
     }
     
     // MARK: - CRUD
@@ -56,13 +67,24 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     }
     
     /// 사용자 프리셋 추가
-    func addPreset(_ preset: TimerPreset) {
+    func addPreset(_ preset: TimerPreset) -> Bool {
+        guard visiblePresetsCount < 20 else {
+            print("프리셋 개수 제한(20개) 도달")
+            return false
+        }
         userPresets.append(preset)
         savePresets()
+        return true
     }
     
     /// 실행 중 타이머를 프리셋으로 추가
-    func addPreset(from timer: TimerData) {
+    @discardableResult
+    func addPreset(from timer: TimerData) -> Bool {
+        guard visiblePresetsCount < 20 else {
+            print("프리셋 개수 제한(20개) 도달")
+            return false
+        }
+        
         let now = Date()
         let preset = TimerPreset(
             label: timer.label,
@@ -76,11 +98,16 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
         )
         userPresets.insert(preset, at: 0)
         savePresets()
+        return true
     }
 
     /// 프리셋 수정
     func updatePreset(_ preset: TimerPreset, label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool) {
-        guard let index = userPresets.firstIndex(where: { $0.id == preset.id }) else { return }
+        guard let index = userPresets.firstIndex(where: { $0.id == preset.id }) else {
+            print("수정하려는 프리셋(\(preset.id))을 찾을 수 없습니다.")
+            return
+        }
+        
         let updated = TimerPreset(
             id: preset.id,
             label: label,
@@ -115,6 +142,11 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
 
     /// 프리셋 숨기기
     func hidePreset(withId id: UUID) {
+        guard let idx = userPresets.firstIndex(where: { $0.id == id }) else {
+            print("숨기려는 프리셋(\(id))을 찾을 수 없습니다.")
+            return
+        }
+        
         if let idx = userPresets.firstIndex(where: { $0.id == id }) {
             userPresets[idx].isHiddenInList = true
             savePresets()

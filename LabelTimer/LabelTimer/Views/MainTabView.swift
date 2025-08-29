@@ -23,6 +23,7 @@ struct MainTabView: View {
     @State private var selectedTab: Tab = .timer
     private let timerDidStart: AnyPublisher<Void,Never>
     
+    @StateObject private var addTimerVM: AddTimerViewModel
     @StateObject private var runningListVM: RunningListViewModel
     @StateObject private var favoriteListVM: FavoriteListViewModel
     
@@ -34,6 +35,12 @@ struct MainTabView: View {
         
         self.timerDidStart = timerService.didStart.eraseToAnyPublisher()
         
+        _addTimerVM = StateObject(
+            wrappedValue: AddTimerViewModel(
+                timerService: timerService,
+                defaultAlarmMode: .sound
+            )
+        )
         _runningListVM = StateObject(
             wrappedValue: RunningListViewModel(
                 timerService: timerService,
@@ -45,7 +52,8 @@ struct MainTabView: View {
         _favoriteListVM = StateObject(
             wrappedValue: FavoriteListViewModel(
                 presetRepository: presetRepository,
-                timerService: timerService
+                timerService: timerService,
+                timerRepository: timerRepository
             )
         )
     }
@@ -55,10 +63,12 @@ struct MainTabView: View {
         TabView(selection: $selectedTab) {
 //            AlarmModeIndicatorDebugView()
 //                .tag(Tab.debug)
-            TimerView(runningListVM: runningListVM)
+//            AlarmDebugView()
+//                .tag(Tab.debug)
+            TimerView(addTimerVM: addTimerVM, runningListVM: runningListVM)
                 .tag(Tab.timer)
             
-            FavoriteListView(viewModel: favoriteListVM)
+            FavoriteListView(viewModel: favoriteListVM, selectedTab: selectedTab)
                 .tag(Tab.favorites)
         }
         .tabViewStyle(.page(indexDisplayMode: .automatic))

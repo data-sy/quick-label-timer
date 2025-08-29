@@ -21,11 +21,10 @@ protocol TimerServiceProtocol: ObservableObject {
 
     // MARK: - CRUD
     func getTimer(byId id: UUID) -> TimerData?
-    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID?, isFavorite: Bool)
-    func runTimer(from preset: TimerPreset)
+    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID?,  endAction: TimerEndAction) -> Bool
+    func runTimer(from preset: TimerPreset) -> Bool
     @discardableResult
     func removeTimer(id: UUID) -> TimerData?
-    func convertTimerToPreset(timerId: UUID)
     
     // MARK: - Timer Controls
     func pauseTimer(id: UUID)
@@ -34,8 +33,8 @@ protocol TimerServiceProtocol: ObservableObject {
     func restartTimer(id: UUID)
 
     // MARK: - Favorite
-    func toggleFavorite(for id: UUID)
-    func setFavorite(for id: UUID, to value: Bool)
+    @discardableResult
+    func toggleFavorite(for id: UUID) -> Bool
     
     // MARK: - Completion Handling
     func userDidConfirmCompletion(for timerId: UUID)
@@ -89,6 +88,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         self.timerRepository = timerRepository
         self.presetRepository = presetRepository
         self.deleteCountdownSeconds = deleteCountdownSeconds
+        reconcileTimersOnLaunch()
         startTicking()
     }
 
@@ -150,11 +150,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     // TODO: 추후 RunningListViewModel 리팩토링 시, 완료 상태의 타이머 버튼 액션을 이 함수로 연결
     // Handler를 통해 '최신' 데이터를 기준으로 액션을 처리하여 데이터 정합성을 보장
     func userDidConfirmCompletion(for timerId: UUID) {
-        completionHandler.forceHandle(timerId: timerId)
+        completionHandler.handleCompletionImmediately(timerId: timerId)
     }
 
     func userDidRequestDelete(for timerId: UUID) {
-        completionHandler.forceHandle(timerId: timerId)
+        completionHandler.handleCompletionImmediately(timerId: timerId)
     }
 
     // MARK: - CRUD
@@ -163,7 +163,13 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         return timerRepository.getTimer(byId: id)
     }
 
-    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID? = nil, isFavorite: Bool = false) {
+    @discardableResult
+    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID? = nil, endAction: TimerEndAction = .discard) -> Bool  {
+        guard timerRepository.getAllTimers().count < 10 else {
+            print("실행 가능한 타이머 개수(10개) 초과")
+            return false
+        }
+        
         let newTimer = TimerData(
             label: label.isEmpty ? generateAutoLabel() : label,
             hours: hours,
@@ -176,14 +182,21 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             remainingSeconds: hours * 3600 + minutes * 60 + seconds,
             status: .running,
             presetId: presetId,
-            isFavorite: isFavorite
+            endAction: endAction
         )
         timerRepository.addTimer(newTimer)
         scheduleNotification(for: newTimer)
+        return true
     }
     
-    func runTimer(from preset: TimerPreset) {
-        addTimer(
+    @discardableResult
+    func runTimer(from preset: TimerPreset) -> Bool {
+        guard presetRepository.getPreset(byId: preset.id) != nil else {
+            print("존재하지 않는 프리셋으로는 타이머를 실행할 수 없습니다.")
+            return false
+        }
+        
+        let success = addTimer(
             label: preset.label,
             hours: preset.hours,
             minutes: preset.minutes,
@@ -191,11 +204,13 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             isSoundOn: preset.isSoundOn,
             isVibrationOn: preset.isVibrationOn,
             presetId: preset.id,
-            isFavorite: true
+            endAction: .preserve
         )
-        presetRepository.updateLastUsed(for: preset.id)
-        presetRepository.hidePreset(withId: preset.id)
-        didStart.send()
+        if success {
+            presetRepository.updateLastUsed(for: preset.id)
+            didStart.send()
+        }
+        return success
     }
     
     @discardableResult
@@ -204,12 +219,6 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         NotificationUtils.cancelNotifications(withPrefix: id.uuidString)
         
         return timerRepository.removeTimer(byId: id)
-    }
-    
-    func convertTimerToPreset(timerId: UUID) {
-        if let timer = removeTimer(id: timerId) {
-            presetRepository.addPreset(from: timer)
-        }
     }
 
     // MARK: - 타이머 상태 제어
@@ -262,18 +271,24 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         scheduleNotification(for: updatedTimer)
     }
 
-    // MARK: - 즐겨찾기 (isFavorite)
+    // MARK: - 즐겨찾기 (endAction)
 
-    func toggleFavorite(for id: UUID) {
-        guard var timer = timerRepository.getTimer(byId: id) else { return }
-        timer.isFavorite.toggle()
+    @discardableResult
+    func toggleFavorite(for id: UUID) -> Bool {
+        guard var timer = timerRepository.getTimer(byId: id) else { return false }
+
+        switch timer.endAction {
+        case .discard:
+            // 즐겨찾기를 '추가'하려는 경우, '총 잠재적 프리셋 개수' 확인
+            let visiblePresetCount = presetRepository.visiblePresetsCount
+            let pendingPresetCount = timerRepository.preservingInstantTimersCount // 저장될 예정인 즉석 타이머 개수
+            guard (visiblePresetCount + pendingPresetCount) < 20 else { return false }
+            timer.endAction = .preserve
+        case .preserve:
+            timer.endAction = .discard
+        }
         timerRepository.updateTimer(timer)
-    }
-    
-    func setFavorite(for id: UUID, to value: Bool) {
-        guard var timer = timerRepository.getTimer(byId: id) else { return }
-        timer.isFavorite = value
-        timerRepository.updateTimer(timer)
+        return true
     }
 
     // MARK: - Scene 관리
@@ -281,6 +296,10 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     func updateScenePhase(_ phase: ScenePhase) {
         self.scenePhase = phase
         guard phase == .active else { return }
+        
+        #if DEBUG
+        NotiLog.logDelivered("scene.active")
+        #endif
 
         guard shouldRunActivationCleanup() else { return }
 
@@ -322,10 +341,10 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             
             guard interval > 0 else { continue }
             
-            let clockCount = (i % 5) + 1 // 👈 1. 0~4를 1~5로 변환하고, 5가 넘어가면 다시 1부터 반복
-            let clocks = String(repeating: "⏰", count: clockCount) // 👈 2. 개수만큼 시계 이모지 생성
-            let dynamicBody = "\(body) \(clocks)" // 👈 3. 기존 body 텍스트와 이모지를 합침
-    
+            let clockCount = (i % 5) + 1
+            let clocks = String(repeating: "⏰", count: clockCount)
+            let dynamicBody = "\(body) \(clocks)"
+
             let userInfo: [AnyHashable: Any] = [
                 "baseIdentifier": baseId,
                 "index": i
@@ -337,7 +356,8 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
                 body: dynamicBody,
                 sound: sound,
                 interval: interval,
-                userInfo: userInfo
+                userInfo: userInfo,
+                threadIdentifier: baseId
             )
         }
     }
@@ -351,6 +371,36 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
     
     // MARK: - Private Helpers
+    
+    private func reconcileTimersOnLaunch() {
+        let now = Date()
+        for timer in timerRepository.getAllTimers() {
+            
+            switch timer.status {
+            
+            case .running:
+                let remaining = Int(timer.endDate.timeIntervalSince(now))
+                if remaining <= 0 {
+                    let completedTimer = timer.updating(remainingSeconds: 0, status: .completed)
+                    timerRepository.updateTimer(completedTimer)
+                    startCompletionProcess(for: completedTimer)
+                } else {
+                    let updatedTimer = timer.updating(remainingSeconds: remaining)
+                    timerRepository.updateTimer(updatedTimer)
+                }
+
+            case .completed:
+                let elapsedTime = now.timeIntervalSince(timer.endDate)
+                if elapsedTime > TimeInterval(deleteCountdownSeconds) {
+                    completionHandler.handleCompletionImmediately(timerId: timer.id)
+                }
+            
+            // .paused, .stopped 상태는 보정할 필요 없으므로 default에서 처리
+            default:
+                continue
+            }
+        }
+    }
     
     /// 사용자가 라벨을 입력하지 않았을 때 "타이머N" 형식의 고유한 라벨 생성 (오름차순)
     private func generateAutoLabel() -> String {

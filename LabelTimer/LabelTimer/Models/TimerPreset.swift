@@ -21,8 +21,9 @@ struct TimerPreset: Identifiable, Codable, Hashable {
     let isVibrationOn: Bool
     let createdAt: Date
     
+    /// 현재는 사용되지 않지만, 향후 '최근 사용순 정렬' 또는 '사용 통계'와 같은 기능을 위해 남겨둠
     var lastUsedAt: Date
-    var isHiddenInList: Bool = false
+    var isHiddenInList: Bool = false // 즐겨찾기 삭제에서 사용하므로 제거하지 말 것
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
     }

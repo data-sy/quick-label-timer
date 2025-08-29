@@ -12,56 +12,41 @@ import SwiftUI
 
 struct AddTimerView: View {
     @AppStorage("defaultAlarmMode") private var defaultAlarmMode: AlarmMode = .sound
-
-    @State private var label = ""
-    @State private var hours = 0
-    @State private var minutes = 0
-    @State private var seconds = 0
-    @State private var selectedMode: AlarmMode = .sound
+    @ObservedObject private var viewModel: AddTimerViewModel
+    
     @FocusState private var isLabelFocused: Bool
-
-    @EnvironmentObject var timerService: TimerService
-    @Environment(\.dismiss) private var dismiss
+    
+    init(viewModel: AddTimerViewModel) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             TimerInputForm(
                 sectionTitle: "타이머 생성",
-                label: $label,
-                hours: $hours,
-                minutes: $minutes,
-                seconds: $seconds,
-                selectedMode: $selectedMode,
+                label: $viewModel.label,
+                hours: $viewModel.hours,
+                minutes: $viewModel.minutes,
+                seconds: $viewModel.seconds,
+                selectedMode: $viewModel.selectedMode,
                 isLabelFocused: $isLabelFocused,
-                isStartDisabled: (hours + minutes + seconds) == 0,
+                isStartDisabled: viewModel.isStartDisabled,
                 onStart: {
                     if isLabelFocused { isLabelFocused = false }
-                    let attributes = AlarmNotificationPolicy.getBools(from: selectedMode)
-
-                    DispatchQueue.main.async {
-                        timerService.addTimer(
-                            label: label,
-                            hours: hours,
-                            minutes: minutes,
-                            seconds: seconds,
-                            isSoundOn: attributes.sound,
-                            isVibrationOn: attributes.vibration
-                        )
-                        // 입력 초기화
-                        label = ""
-                        hours = 0
-                        minutes = 0
-                        seconds = 0
-                        selectedMode = defaultAlarmMode
-                    }
+                    viewModel.startTimer()
+//                    // TODO: 기존 코드에서 DispatchQueue를 없앤 상태. 만약 문제가 발생한다면 다시 투입할 예정
+//                    DispatchQueue.main.async {
+//                        viewModel.startTimer()
+//                    }
                 }
             )
+            .appAlert(item: $viewModel.activeAlert)
         }
         .onAppear {
-            selectedMode = defaultAlarmMode
+            viewModel.setDefaultAlarmMode(defaultAlarmMode)
         }
         .onChange(of: defaultAlarmMode) { newValue in
-            selectedMode = newValue
+            viewModel.setDefaultAlarmMode(newValue)
         }
         .onSubmit { isLabelFocused = false }
         .submitLabel(.done)
