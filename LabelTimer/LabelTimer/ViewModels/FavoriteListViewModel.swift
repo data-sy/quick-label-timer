@@ -43,7 +43,7 @@ class FavoriteListViewModel: ObservableObject {
         presetRepository.userPresetsPublisher
             .map { presets in
                 let visible = presets.filter { !$0.isHiddenInList }
-                return visible.sorted { $0.lastUsedAt > $1.lastUsedAt }
+                return visible.sorted { $0.createdAt > $1.createdAt }
             }
             .receive(on: DispatchQueue.main) // UI 업데이트는 메인 스레드에서
             .assign(to: \.visiblePresets, on: self)
