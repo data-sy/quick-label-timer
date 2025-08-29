@@ -44,7 +44,7 @@ extension View {
             case .presetSaveLimit:
                 return Alert(
                     title: Text("저장 불가"),
-                    message: Text("저장 가능한 타이머는 최대 20개입니다."),
+                    message: Text("즐겨찾기는 최대 20개까지 추가할 수 있습니다."),
                     dismissButton: .default(Text("확인"))
                 )
             case .cannotDeleteRunningPreset:

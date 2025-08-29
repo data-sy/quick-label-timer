@@ -279,8 +279,10 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
         switch timer.endAction {
         case .discard:
-            // 즐겨찾기를 '추가'하려는 경우 프리셋 개수 확인
-            guard presetRepository.visiblePresetsCount < 20 else { return false }
+            // 즐겨찾기를 '추가'하려는 경우, '총 잠재적 프리셋 개수' 확인
+            let visiblePresetCount = presetRepository.visiblePresetsCount
+            let pendingPresetCount = timerRepository.preservingInstantTimersCount // 저장될 예정인 즉석 타이머 개수
+            guard (visiblePresetCount + pendingPresetCount) < 20 else { return false }
             timer.endAction = .preserve
         case .preserve:
             timer.endAction = .discard

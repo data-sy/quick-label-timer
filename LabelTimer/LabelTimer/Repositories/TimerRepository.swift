@@ -17,6 +17,7 @@ import Combine
 @MainActor
 protocol TimerRepositoryProtocol {
     var timersPublisher: Published<[TimerData]>.Publisher { get }
+    var preservingInstantTimersCount: Int { get }
     
     func getAllTimers() -> [TimerData]
     func getTimer(byId id: UUID) -> TimerData?
@@ -24,12 +25,17 @@ protocol TimerRepositoryProtocol {
     func updateTimer(_ timer: TimerData)
     @discardableResult
     func removeTimer(byId id: UUID) -> TimerData?
+    
 }
 @MainActor
 // MARK: - TimerRepository Class
 final class TimerRepository: ObservableObject, TimerRepositoryProtocol {
     @Published var timers: [TimerData] = []
     var timersPublisher: Published<[TimerData]>.Publisher { $timers }
+    /// 프리셋으로 저장될 예정인 즉석 타이머의 개수
+    var preservingInstantTimersCount: Int {
+        timers.filter { $0.presetId == nil && $0.endAction == .preserve }.count
+    }
     
     private let timersStorageKey = "running_timers"
     
