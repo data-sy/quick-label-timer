@@ -49,7 +49,10 @@ final class RunningListViewModel: ObservableObject {
         case .moveToFavorite:
             handleMoveToPreset(for: timer)
         case .delete:
-            deleteTimer(timer)
+            if let presetId = timer.presetId {
+                presetRepository.hidePreset(withId: presetId)
+            }
+            timerService.removeTimer(id: timer.id)
         case .edit:
             // Running에선 등장하지 않아야 함
             assertionFailure("Left .edit should not appear for running timers")
@@ -72,19 +75,18 @@ final class RunningListViewModel: ObservableObject {
     
     /// 실행 중인 타이머를 프리셋으로 이동/복구
     func handleMoveToPreset(for timer: TimerData) {
-        if let presetId = timer.presetId,
-           let _ = presetRepository.getPreset(byId: presetId) {
-            // 기존 프리셋에서 실행된 타이머였다면 타이머 삭제 (id가 쓰이지 않게 된 프리셋은 자동으로 실행중 화면 사라짐)
+        // 기존 프리셋에서 실행된 타이머였다면 타이머 삭제만 하면 됨 (id가 쓰이지 않게 된 프리셋은 자동으로 실행중 화면 사라짐)
+        guard timer.presetId == nil else {
+            timerService.removeTimer(id: timer.id)
+            return
+        }
+        // 사용자 생성 타이머라면 새 프리셋으로 변환 후 삭제
+        let success = presetRepository.addPreset(from: timer)
+        
+        if success {
             timerService.removeTimer(id: timer.id)
         } else {
-            // 사용자 생성 타이머라면 새 프리셋으로 변환
-            let success = presetRepository.addPreset(from: timer)
-            
-            if success {
-                timerService.removeTimer(id: timer.id)
-            } else {
-                activeAlert = .presetSaveLimit
-            }
+            activeAlert = .presetSaveLimit
         }
     }
     
@@ -97,16 +99,4 @@ final class RunningListViewModel: ObservableObject {
         }
     }
     
-    /// 타이머 삭제 (편집 모드)
-    func deleteTimer(at offsets: IndexSet) {
-        let timersToDelete = offsets.map { sortedTimers[$0] }
-        for timer in timersToDelete {
-            timerService.removeTimer(id: timer.id)
-        }
-    }
-    
-    /// 특정 타이머를 삭제
-    func deleteTimer(_ timer: TimerData) {
-        timerService.removeTimer(id: timer.id)
-    }
 }
