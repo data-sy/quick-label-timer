@@ -1,3 +1,15 @@
+//
+//  TimerFontDebugView.swift
+//  LabelTimer
+//
+//  Created by 이소연 on 8/22/25.
+//
+/// 타이머의 라벨과 시간 폰트 조합을 테스트하기 위한 디버그용 뷰
+///
+/// - 사용 목적: 다양한 폰트(크기, 두께) 조합을 한 화면에 렌더링하여 최적의 가독성 및 디자인을 시각적으로 확인하고 결정
+
+#if DEBUG
+
 import SwiftUI
 
 // MARK: - 테스트에 필요한 컴포넌트 (독립된 환경)
@@ -137,4 +149,6 @@ struct TimerFontDebugView_Previews:  PreviewProvider {
         }
     }
 }
+#endif
+
 #endif

@@ -6,7 +6,7 @@
 //
 /// EditPresetView의 상태와 로직을 관리하는 ViewModel
 ///
-/// - 사용 목적: 프리셋 수정 화면 내에서 필요한 모든 데이터(@Published)와 액션(저장, 숨기기, 시작)을 캡슐화하여 View의 복잡도를 낮춥니다.
+/// - 사용 목적: 프리셋 수정에 필요한 데이터(@Published)와 액션(저장, 숨기기 등)을 캡슐화하여 View의 복잡도를 낮춤
 
 import SwiftUI
 

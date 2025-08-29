@@ -9,6 +9,8 @@
 /// - 사용 목적: 사용자가 '소리+진동 / 진동만 / 무음' 중 하나를 직관적으로 선택하도록 제공
 ///         선택 결과는 AlarmMode로 바인딩되어 정책 결정 로직(AlarmNotificationPolicy)과 연동됨
 
+#if DEBUG
+
 import SwiftUI
 
 // MARK: - 1. 기본 Picker를 사용한 세그먼트 컨트롤
@@ -162,3 +164,5 @@ struct SymbolDebugView: View {
     
     return PreviewWrapper()
 }
+
+#endif

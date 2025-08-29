@@ -5,6 +5,7 @@
 //  Created by 이소연 on 8/26/25.
 //
 
+#if DEBUG
 
 import SwiftUI
 
@@ -88,4 +89,6 @@ struct GrayPaletteView_Previews: PreviewProvider {
         }
     }
 }
+#endif
+
 #endif

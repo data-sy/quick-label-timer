@@ -6,8 +6,7 @@
 //
 /// 앱에서 사용할 알람 사운드의 종류를 정의하고 관리
 ///
-/// - 사용 목적: 사용자가 선택할 수 있는 알람 사운드 목록을 제공하고,
-///          '진동만'과 같은 기술적인 사운드 트릭을 코드 내에서 명확하게 사용하기 위함
+/// - 사용 목적: 사용자가 선택할 수 있는 알람 사운드 목록을 제공하고, '진동만'과 같은 기술적인 사운드 트릭을 코드 내에서 명확하게 사용하기 위함
 
 import Foundation
 
@@ -44,7 +43,7 @@ enum AlarmSound: String, CaseIterable, Identifiable {
     }
     
     static var selectableSounds: [AlarmSound] {
-        return allCases.filter { $0 != .silence } /// 사운드 선택 화면에서 무음사운드 제거
+        return allCases.filter { $0 != .silence } // 사운드 선택 화면에서 무음사운드 제거
     }
     
     var id: String { self.rawValue }

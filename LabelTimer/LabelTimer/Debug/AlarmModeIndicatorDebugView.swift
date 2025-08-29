@@ -9,6 +9,8 @@
 /// - 사용 목적: 최종 인디케이터 디자인을 결정하기 전에, 여러 후보 디자인(단일 아이콘, 단일 점, 링 스타일 등)이
 ///   각 알람 모드(소리, 진동, 무음)에 따라 어떻게 보이는지 시각적으로 비교
 
+#if DEBUG
+
 import SwiftUI
 
 // MARK: - 4가지 인디케이터 디자인 (테스트 대상)
@@ -218,4 +220,6 @@ struct AlarmModeIndicatorDebugView_Previews: PreviewProvider {
         }
     }
 }
+#endif
+
 #endif

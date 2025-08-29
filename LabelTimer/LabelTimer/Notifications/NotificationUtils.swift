@@ -14,8 +14,6 @@ enum NotificationUtils {
     
     static let center = UNUserNotificationCenter.current()
 
-//    private static let maxNotifications = 60 // (iOS가 허용하는 최대 알림 개수: 64개)
-
     // MARK: - 권한 및 기본 유틸
     
     /// 알림 권한 요청 (앱 시작 시 1회)

@@ -4,11 +4,9 @@
 //
 //  Created by 이소연 on 8/11/25.
 //
-///
 /// 타이머가 '완료'된 후의 모든 비동기 로직을 전담하는 클래스
+///
 /// 사용 목적: TimerService가 타이머의 '실행'에만 집중하도록, '완료 후'의 복잡한 로직을 위임받아 책임을 분리함
-// TODO: (legacy) 프리셋 show/hide 흐름은 ViewModel(runningPresetIds)로 대체됨
-// CompletionActionType.showPreset 제거 및 handle() 이진 분기(저장 또는 삭제)로 단순화 예정
 
 import Foundation
 

@@ -1,4 +1,14 @@
+//
+//  TimerRowDebugView.swift
+//  LabelTimer
+//
+//  Created by 이소연 on 7/24/25.
+//
+/// 타이머 목록의 행(Row) UI 컴포넌트 테스트용 뷰
+///
+/// - 사용 목적: 타이머의 각 상태(기본, 실행 중, 완료)에 따른 행(Row)의 UI와 버튼 스타일(채움/외곽선)을 시각적으로 검증
 
+#if DEBUG
 
 import SwiftUI
 
@@ -122,4 +132,6 @@ struct TimerRowDebugView_Previews: PreviewProvider {
         }
     }
 }
+#endif
+
 #endif

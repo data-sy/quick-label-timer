@@ -8,6 +8,8 @@
 ///
 /// - 사용 목적: 텍스트 색상, 배경, 폰트 웨이트 등의 조합을 시각적으로 비교하여 타이머 UI 개선에 참고
 
+#if DEBUG
+
 import SwiftUI
 
 struct TimerFontExperimentView: View {
@@ -174,3 +176,5 @@ private enum FontSampleGroup: CaseIterable {
 private enum Constants {
     static let timerStartSeconds = 180
 }
+
+#endif

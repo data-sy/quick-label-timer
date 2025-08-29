@@ -7,6 +7,8 @@
 /// 알림 기능 테스트 시나리오를 실행하고 검증하기 위한 UI
 /// - 사용 목적: AlarmDebugManager의 각 테스트 함수를 직접 실행하고 결과를 확인
 
+#if DEBUG
+
 import SwiftUI
 
 struct AlarmDebugView: View {
@@ -160,3 +162,4 @@ struct AlarmDebugView: View {
     }
 }
 
+#endif

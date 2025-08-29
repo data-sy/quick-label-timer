@@ -4,9 +4,9 @@
 //
 //  Created by 이소연 on 8/7/25.
 //
-/// 실행 중인 타이머 리스트의 상태와 액션을 관리하는 뷰모델
+/// RunningTimerListView의 상태와 로직을 관리하는 ViewModel
 ///
-/// - 사용 목적: 타이머 리스트의 상태, 타이머 관련 버튼 액션, 프리셋 변환 등 비즈니스 로직을 View와 분리하여 관리
+/// - 사용 목적: 실행 중인 타이머 목록 상태, 타이머 관련 액션(정지, 재시작 등)의 비즈니스 로직을 View와 분리
 
 import Foundation
 import Combine

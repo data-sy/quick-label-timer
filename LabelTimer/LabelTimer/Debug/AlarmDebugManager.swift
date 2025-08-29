@@ -8,6 +8,8 @@
 ///
 /// - 사용 목적: 다양한 조건의 로컬 알림을 생성하고 검증하기 위한 테스트 로직 모음
 
+#if DEBUG
+
 import Foundation
 import UserNotifications
 
@@ -324,4 +326,6 @@ enum NotiLog {
         }
     }
 }
+#endif
+
 #endif

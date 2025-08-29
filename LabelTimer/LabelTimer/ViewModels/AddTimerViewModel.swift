@@ -4,6 +4,9 @@
 //
 //  Created by 이소연 on 8/28/25.
 //
+/// AddTimerView의 상태와 로직을 관리하는 ViewModel
+///
+/// - 사용 목적: 사용자로부터 시간 및 레이블 입력을 받아 타이머를 생성하고 시작하는 핵심 로직을 담당. View는 UI 표시에만 집중하도록 역할을 분리
 
 import SwiftUI
 
