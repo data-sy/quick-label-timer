@@ -34,8 +34,8 @@ fileprivate struct DebugTimerRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Image(systemName: timer.isFavorite ? "star.fill" : "star")
-                    .foregroundColor(timer.isFavorite ? .yellow : .gray.opacity(0.6))
+                Image(systemName: timer.endAction.isPreserve ? "star.fill" : "star")
+                    .foregroundColor(timer.endAction.isPreserve ? .yellow : .gray.opacity(0.6))
                     .font(.title2)
                     .frame(width: 44, height: 44)
 
@@ -74,7 +74,7 @@ struct TimerFontDebugView: View {
     let timeWeights: [Font.Weight] = [.thin, .light]
 
     private func createSampleTimer(label: String) -> TimerData {
-        return TimerData(label: label, hours: 0, minutes: 5, seconds: 25, createdAt: Date(), endDate: Date(), remainingSeconds: 325, status: .stopped, isFavorite: true)
+        return TimerData(label: label, hours: 0, minutes: 5, seconds: 25, createdAt: Date(), endDate: Date(), remainingSeconds: 325, status: .stopped, endAction: .preserve)
     }
     
     // --- 폰트 스타일/두께를 설명하는 헬퍼 함수 ---

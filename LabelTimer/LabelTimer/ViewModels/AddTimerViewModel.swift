@@ -42,7 +42,7 @@ class AddTimerViewModel: ObservableObject {
             isSoundOn: attributes.sound,
             isVibrationOn: attributes.vibration,
             presetId: nil,
-            isFavorite: false
+            endAction: .discard
         )
         
         if success {

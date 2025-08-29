@@ -40,7 +40,7 @@ final class RunningListViewModel: ObservableObject {
     
     /// Left 버튼 액션 처리
     func handleLeft(for timer: TimerData) {
-        let set = makeButtonSet(for: timer.interactionState, isFavorite: timer.isFavorite)
+        let set = makeButtonSet(for: timer.interactionState, endAction: timer.endAction)
         switch set.left {
         case .none:
             break
@@ -59,7 +59,7 @@ final class RunningListViewModel: ObservableObject {
 
     /// Right 버튼 액션 처리
     func handleRight(for timer: TimerData) {
-        let set = makeButtonSet(for: timer.interactionState, isFavorite: timer.isFavorite)
+        let set = makeButtonSet(for: timer.interactionState, endAction: timer.endAction)
         switch set.right {
         case .play:
             timerService.resumeTimer(id: timer.id)

@@ -21,7 +21,7 @@ protocol TimerServiceProtocol: ObservableObject {
 
     // MARK: - CRUD
     func getTimer(byId id: UUID) -> TimerData?
-    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID?, isFavorite: Bool) -> Bool
+    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID?,  endAction: TimerEndAction) -> Bool
     func runTimer(from preset: TimerPreset) -> Bool
     @discardableResult
     func removeTimer(id: UUID) -> TimerData?
@@ -164,7 +164,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
 
     @discardableResult
-    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID? = nil, isFavorite: Bool = false) -> Bool  {
+    func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID? = nil, endAction: TimerEndAction = .discard) -> Bool  {
         guard timerRepository.getAllTimers().count < 10 else {
             print("실행 가능한 타이머 개수(10개) 초과")
             return false
@@ -182,7 +182,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             remainingSeconds: hours * 3600 + minutes * 60 + seconds,
             status: .running,
             presetId: presetId,
-            isFavorite: isFavorite
+            endAction: endAction
         )
         timerRepository.addTimer(newTimer)
         scheduleNotification(for: newTimer)
@@ -204,7 +204,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             isSoundOn: preset.isSoundOn,
             isVibrationOn: preset.isVibrationOn,
             presetId: preset.id,
-            isFavorite: true
+            endAction: .preserve
         )
         if success {
             presetRepository.updateLastUsed(for: preset.id)
@@ -271,19 +271,20 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         scheduleNotification(for: updatedTimer)
     }
 
-    // MARK: - 즐겨찾기 (isFavorite)
+    // MARK: - 즐겨찾기 (endAction)
 
     @discardableResult
     func toggleFavorite(for id: UUID) -> Bool {
         guard var timer = timerRepository.getTimer(byId: id) else { return false }
-        
-        // 즐겨찾기를 '추가'하려는 경우 프리셋 개수 확인
-        if !timer.isFavorite {
-            guard presetRepository.visiblePresetsCount < 20 else {
-                return false
-            }
+
+        switch timer.endAction {
+        case .discard:
+            // 즐겨찾기를 '추가'하려는 경우 프리셋 개수 확인
+            guard presetRepository.visiblePresetsCount < 20 else { return false }
+            timer.endAction = .preserve
+        case .preserve:
+            timer.endAction = .discard
         }
-        timer.isFavorite.toggle()
         timerRepository.updateTimer(timer)
         return true
     }

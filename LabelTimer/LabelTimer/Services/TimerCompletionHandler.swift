@@ -7,6 +7,8 @@
 ///
 /// 타이머가 '완료'된 후의 모든 비동기 로직을 전담하는 클래스
 /// 사용 목적: TimerService가 타이머의 '실행'에만 집중하도록, '완료 후'의 복잡한 로직을 위임받아 책임을 분리함
+// TODO: (legacy) 프리셋 show/hide 흐름은 ViewModel(runningPresetIds)로 대체됨
+// CompletionActionType.showPreset 제거 및 handle() 이진 분기(저장 또는 삭제)로 단순화 예정
 
 import Foundation
 
@@ -74,6 +76,7 @@ final class TimerCompletionHandler {
     /// 특정 타이머 카운트다운 Task 취소
     func cancelPendingAction(for timerId: UUID) {
         countdownTasks[timerId]?.cancel()
+//        countdownTasks[timerId] = nil          // ✅ 참조 제거
     }
 
     /// 모든 타이머 카운트다운 Task 취소
@@ -91,11 +94,14 @@ final class TimerCompletionHandler {
         // '최신' TimerData 가져오기 (완료 후의 즐겨찾기 토글 적용)
         guard let latestTimer = timerService.getTimer(byId: timerId) else {
             onComplete?(timerId)
+//            countdownTasks[timerId] = nil   // ✅ 누수 방지. 기본 리팩토링 성공을 먼저 확인. 성공하면 주석 풀자
             return
         }
+                
+        // TODO: (legacy) show/hide 제거 정책에 맞춰 분기 단순화 예정
         // '최신' 데이터를 기반으로 실행할 Action을 '다시' 결정
         let finalAction: CompletionActionType
-        if latestTimer.isFavorite {
+        if latestTimer.endAction.isPreserve {
             finalAction = latestTimer.presetId == nil ? .saveAsPreset : .showPreset
         } else {
             finalAction = .deleteOnly
@@ -107,12 +113,14 @@ final class TimerCompletionHandler {
             presetRepository.addPreset(from: latestTimer)
         case .showPreset:
             guard let presetId = latestTimer.presetId else { return }
+//            guard latestTimer.presetId != nil else { return } // ✅ 기본 리팩토링 성공을 먼저 확인. 성공하면 윗 guard 지우고 주석 풀자
             timerService.removeTimer(id: timerId)
         case .deleteOnly:
             timerService.removeTimer(id: timerId)
         }
         
         onComplete?(timerId)
+//        countdownTasks[timerId] = nil // ✅ 누수 방지. 기본 리팩토링 성공을 먼저 확인. 성공하면 주석 풀자
     }
 
 }

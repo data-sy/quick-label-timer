@@ -24,7 +24,7 @@ struct TimerRowView: View {
         statusText: String? = nil,
         onToggleFavorite: (() -> Void)? = nil,
         onLeftTap: (() -> Void)? = nil,
-        onRightTap: (() -> Void)? = nil,
+        onRightTap: (() -> Void)? = nil
     ) {
         self.timer = timer
         self.state = state
@@ -34,9 +34,9 @@ struct TimerRowView: View {
         self.onRightTap = onRightTap
     }
     
-    /// 상태 × 즐겨찾기 → 좌/우 버튼 타입
+    /// 상태 × endAction → 좌/우 버튼 타입
     private var buttonTypes: TimerButtonSet {
-        makeButtonSet(for: state, isFavorite: timer.isFavorite)
+        makeButtonSet(for: state, endAction: timer.endAction)
     }
     
     private var labelFont: Font {
@@ -48,6 +48,16 @@ struct TimerRowView: View {
             return .system(.headline, weight: .semibold)
         }
     }
+//    private var labelFont: Font { // ✅ 기본 리팩토링 성공을 먼저 확인. 성공하면 위의 labelFont 제거하고 주석 풀자
+//        // 완료 상태일 때만 더 큰 폰트를 사용
+//        switch state {
+//        case .completed:
+//            return .system(.title3).weight(.semibold)
+//        default:
+//            return .system(.headline).weight(.semibold)
+//        }
+//    }
+
     
     private var labelColor: Color {
         switch state {
@@ -89,7 +99,7 @@ struct TimerRowView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .center, spacing: 6) {
                 FavoriteToggleButton(
-                    isFavorite: timer.isFavorite,
+                    endAction: timer.endAction,
                     onToggle: { onToggleFavorite?() }
                 )
                 

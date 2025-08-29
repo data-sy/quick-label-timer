@@ -16,7 +16,12 @@ enum TimerStatus: String, Codable {
     case stopped
     case completed
 }
-
+enum TimerEndAction: String, Codable {
+    case preserve // 타이머가 끝나면 '보존'한다 (프리셋으로 저장 또는 복구)
+    case discard // 타이머가 끝나면 '폐기'한다 (완전 삭제 또는 숨김)
+    var isPreserve: Bool { self == .preserve }
+    var isDiscard: Bool { self == .discard }
+}
 struct TimerData: Identifiable, Hashable, Codable {
     let id: UUID
 
@@ -31,8 +36,14 @@ struct TimerData: Identifiable, Hashable, Codable {
     /// 프리셋 기반 실행일 경우 해당 프리셋의 id, 즉석 타이머는 nil
     let presetId: UUID?
     
-    /// 즐겨찾기(프리셋화) 여부. 프리셋 기반 타이머는 true, 즉석 타이머는 기본 false.
-    var isFavorite: Bool
+    var endAction: TimerEndAction = .discard
+
+    /// 병렬 변경 기법(하드버전)으로 수정 중 !
+    @available(*, unavailable, message: "Use endAction (== .preserve) instead")
+    var isFavorite: Bool {
+        get { fatalError("unavailable") }
+        set { fatalError("unavailable") }
+    }
     
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
@@ -44,22 +55,18 @@ struct TimerData: Identifiable, Hashable, Codable {
     var status: TimerStatus
     var pendingDeletionAt: Date? = nil // 삭제 종료 예정 시간
     
-    // 명시적 생성자 (id는 기본값으로 자동 생성 가능)
     init(
         id: UUID = UUID(),
         label: String,
-        hours: Int,
-        minutes: Int,
-        seconds: Int,
-        isSoundOn: Bool = true,
-        isVibrationOn: Bool = true,
+        hours: Int, minutes: Int, seconds: Int,
+        isSoundOn: Bool = true, isVibrationOn: Bool = true,
         createdAt: Date,
         endDate: Date,
         remainingSeconds: Int,
         status: TimerStatus,
         pendingDeletionAt: Date? = nil,
         presetId: UUID? = nil,
-        isFavorite: Bool = false
+        endAction: TimerEndAction
     ) {
         self.id = id
         self.label = label
@@ -74,7 +81,28 @@ struct TimerData: Identifiable, Hashable, Codable {
         self.status = status
         self.pendingDeletionAt = pendingDeletionAt
         self.presetId = presetId
-        self.isFavorite = isFavorite
+        self.endAction = endAction
+    }
+
+//    @available(*, deprecated, message: "Use endAction-based initializer")
+    @available(*, unavailable, message: "Use the endAction-based initializer (.preserve / .discard)")
+    init(
+        id: UUID = UUID(),
+        label: String,
+        hours: Int,
+        minutes: Int,
+        seconds: Int,
+        isSoundOn: Bool = true,
+        isVibrationOn: Bool = true,
+        createdAt: Date,
+        endDate: Date,
+        remainingSeconds: Int,
+        status: TimerStatus,
+        pendingDeletionAt: Date? = nil,
+        presetId: UUID? = nil,
+        isFavorite: Bool
+    ) {
+        fatalError("Unavailable. Replace isFavorite with endAction (.preserve / .discard).")
     }
 }
 
@@ -86,7 +114,7 @@ extension TimerData {
         status: TimerStatus? = nil,
         pendingDeletionAt: Date?? = nil,
         presetId: UUID? = nil,
-        isFavorite: Bool? = nil
+        endAction: TimerEndAction? = nil
     ) -> TimerData {
         let finalRemaining = remainingSeconds ?? self.remainingSeconds
         let finalStatus = status ?? (finalRemaining > 0 ? .running : .completed)
@@ -105,7 +133,7 @@ extension TimerData {
             status: finalStatus,
             pendingDeletionAt: pendingDeletionAt ?? self.pendingDeletionAt,
             presetId: presetId ?? self.presetId,
-            isFavorite: isFavorite ?? self.isFavorite
+            endAction: endAction ?? self.endAction
         )
     }
     
@@ -125,7 +153,7 @@ extension TimerData {
 
 // 테스트에 필요한 최소한의 파라미터로 TimerData 생성
 extension TimerData {
-    static func testData(isSoundOn: Bool = true, isVibrationOn: Bool = true) -> TimerData {
-        return .init(label: "test", hours: 0, minutes: 0, seconds: 1, isSoundOn: isSoundOn, isVibrationOn: isVibrationOn, createdAt: Date(), endDate: Date(), remainingSeconds: 1, status: .running, presetId: nil, isFavorite: false)
+    static func testData(isSoundOn: Bool = true, isVibrationOn: Bool = true,  endAction: TimerEndAction = .discard) -> TimerData {
+        return .init(label: "test", hours: 0, minutes: 0, seconds: 1, isSoundOn: isSoundOn, isVibrationOn: isVibrationOn, createdAt: Date(), endDate: Date(), remainingSeconds: 1, status: .running, presetId: nil, endAction: endAction)
     }
 }

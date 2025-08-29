@@ -15,7 +15,7 @@ import Foundation
 // MARK: - Pure function
 
 /// 상태 × 즐겨찾기 여부 → 좌/우 버튼 조합
-func makeButtonSet(for state: TimerInteractionState, isFavorite: Bool) -> TimerButtonSet {
+func makeButtonSet(for state: TimerInteractionState, endAction: TimerEndAction) -> TimerButtonSet {
     switch state {
     case .preset:
         return .init(left: .edit, right: .play)
@@ -27,7 +27,7 @@ func makeButtonSet(for state: TimerInteractionState, isFavorite: Bool) -> TimerB
         return .init(left: .stop, right: .play)
 
     case .stopped, .completed:
-        return .init(left: isFavorite ? .moveToFavorite : .delete,
+        return .init(left: endAction.isPreserve ? .moveToFavorite : .delete,
                      right: .restart)
     }
 }
@@ -35,8 +35,8 @@ func makeButtonSet(for state: TimerInteractionState, isFavorite: Bool) -> TimerB
 // MARK: - Convenience
 
 extension TimerInteractionState {
-    /// 편의 확장: `timer.interactionState.buttonSet(isFavorite:)`
-    func buttonSet(isFavorite: Bool) -> TimerButtonSet {
-        makeButtonSet(for: self, isFavorite: isFavorite)
+    /// 편의 확장: `timer.interactionState.buttonSet(endAction:)`
+    func buttonSet(endAction: TimerEndAction) -> TimerButtonSet {
+        makeButtonSet(for: self, endAction: endAction)
     }
 }

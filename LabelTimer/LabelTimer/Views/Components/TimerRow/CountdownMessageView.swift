@@ -30,11 +30,21 @@ struct CountdownMessageView: View {
     /// 완료 후 n초 카운트다운 안내 메시지를 계산하는 함수
     private func dynamicMessage(remaining: Int) -> String {
         if timer.presetId == nil {
-            return timer.isFavorite ? "\(remaining)초 후 즐겨찾기로 저장됩니다"
+            return timer.endAction.isPreserve ? "\(remaining)초 후 즐겨찾기로 저장됩니다"
                                    : "\(remaining)초 후 삭제됩니다"
         } else {
-            return timer.isFavorite ? "\(remaining)초 후 즐겨찾기로 돌아갑니다"
+            return timer.endAction.isPreserve ? "\(remaining)초 후 즐겨찾기로 돌아갑니다"
                                    : "\(remaining)초 후 삭제됩니다"
         }
     }
+//    private func dynamicMessage(remaining: Int) -> String { ✅ 개선된 로직. 기본 리팩토링 성공을 먼저 확인. 성공하면 위의 dynamicMessage 함수 삭제하고 주석 풀자
+//        let phrase: String
+//        switch (timer.presetId == nil, timer.endAction) {
+//        case (true,  .preserve): phrase = "즐겨찾기로 저장됩니다"
+//        case (false, .preserve): phrase = "즐겨찾기로 돌아갑니다"
+//        case (_,     .discard):  phrase = "삭제됩니다"
+//        }
+//        return "\(remaining)초 후 \(phrase)"
+//    }
+
 }

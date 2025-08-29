@@ -45,8 +45,8 @@ fileprivate struct DebugTimerRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Image(systemName: timer.isFavorite ? "star.fill" : "star")
-                    .foregroundColor(timer.isFavorite ? .yellow : .gray.opacity(0.6))
+                Image(systemName: timer.endAction.isPreserve ? "star.fill" : "star")
+                    .foregroundColor(timer.endAction.isPreserve ? .yellow : .gray.opacity(0.6))
                     .font(.title2)
                     .frame(width: 44, height: 44)
 
@@ -79,8 +79,8 @@ fileprivate struct DebugTimerRowView: View {
 // MARK: - 실제 테스트 화면
 
 struct TimerRowDebugView: View {
-    private func createSampleTimer(label: String, isFavorite: Bool = true) -> TimerData {
-        return TimerData(label: label, hours: 0, minutes: 5, seconds: 25, createdAt: Date(), endDate: Date(), remainingSeconds: 325, status: .stopped, isFavorite: isFavorite)
+    private func createSampleTimer(label: String, endAction: TimerEndAction = .preserve) -> TimerData {
+        return TimerData(label: label, hours: 0, minutes: 5, seconds: 25, createdAt: Date(), endDate: Date(), remainingSeconds: 325, status: .stopped, endAction: endAction)
     }
 
     var body: some View {
