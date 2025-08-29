@@ -22,11 +22,11 @@ struct FavoriteToggleButton: View {
                 .foregroundColor(endAction.isPreserve ? .yellow : .gray.opacity(0.6))
                 .font(.title2)
                 .frame(width: 44, height: 44) // 탭 영역 확보
-//                .accessibilityLabel("즐겨찾기") // ✅ 기본 리팩토링 성공을 먼저 확인. 성공하면 주석 풀자
+//                .accessibilityLabel("즐겨찾기") // ✅ 접근성 만들 때 주석 풀기
 //                .accessibilityValue(isOn ? "켜짐" : "꺼짐")
 //                .accessibilityHint("상태를 전환합니다")
 //                .accessibilityAddTraits(isOn ? .isSelected : [])
-//                .animation(.easeInOut(duration: 0.15), value: endAction)
+                .animation(.interactiveSpring(response: 0.2, dampingFraction: 0.7), value: endAction)
         }
         .buttonStyle(.plain)
     }

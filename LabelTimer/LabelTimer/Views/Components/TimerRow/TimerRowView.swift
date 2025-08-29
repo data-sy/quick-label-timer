@@ -43,20 +43,11 @@ struct TimerRowView: View {
         // 완료 상태일 때만 더 큰 폰트를 사용
         switch state {
         case .completed:
-            return .system(.title3, weight: .semibold)
+            return .system(.title3).weight(.semibold)
         default:
-            return .system(.headline, weight: .semibold)
+            return .system(.headline).weight(.semibold)
         }
     }
-//    private var labelFont: Font { // ✅ 기본 리팩토링 성공을 먼저 확인. 성공하면 위의 labelFont 제거하고 주석 풀자
-//        // 완료 상태일 때만 더 큰 폰트를 사용
-//        switch state {
-//        case .completed:
-//            return .system(.title3).weight(.semibold)
-//        default:
-//            return .system(.headline).weight(.semibold)
-//        }
-//    }
 
     
     private var labelColor: Color {

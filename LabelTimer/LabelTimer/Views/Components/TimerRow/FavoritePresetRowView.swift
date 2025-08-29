@@ -24,7 +24,7 @@ struct FavoritePresetRowView: View {
     /// 전체 시간을 포맷된 문자열로 반환
     private var tempTimer: TimerData {
         TimerData(
-//            id: preset.id,    // ✅ 안정적인 ID. 기본 리팩토링 성공을 먼저 확인. 성공하면 주석 풀자
+            id: preset.id,
             label: preset.label,
             hours: preset.hours,
             minutes: preset.minutes,
