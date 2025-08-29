@@ -22,7 +22,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		EBFBBEEE2E22357000C94C47 /* Exceptions for "LabelTimer" folder in "QuickLabelTimer" target */ = {
+		EBFBBEEE2E22357000C94C47 /* Exceptions for "QuickLabelTimer" folder in "QuickLabelTimer" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -32,17 +32,17 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		EB8A19B82E1E773700ADD4F0 /* LabelTimer */ = {
+		EB8A19B82E1E773700ADD4F0 /* QuickLabelTimer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				EBFBBEEE2E22357000C94C47 /* Exceptions for "LabelTimer" folder in "QuickLabelTimer" target */,
+				EBFBBEEE2E22357000C94C47 /* Exceptions for "QuickLabelTimer" folder in "QuickLabelTimer" target */,
 			);
-			path = LabelTimer;
+			path = QuickLabelTimer;
 			sourceTree = "<group>";
 		};
-		EB8A19C72E1E773800ADD4F0 /* LabelTimerTests */ = {
+		EB8A19C72E1E773800ADD4F0 /* QuickLabelTimerTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LabelTimerTests;
+			path = QuickLabelTimerTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -68,8 +68,8 @@
 		EB8A19AD2E1E773700ADD4F0 = {
 			isa = PBXGroup;
 			children = (
-				EB8A19B82E1E773700ADD4F0 /* LabelTimer */,
-				EB8A19C72E1E773800ADD4F0 /* LabelTimerTests */,
+				EB8A19B82E1E773700ADD4F0 /* QuickLabelTimer */,
+				EB8A19C72E1E773800ADD4F0 /* QuickLabelTimerTests */,
 				EB8A19B72E1E773700ADD4F0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -99,7 +99,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				EB8A19B82E1E773700ADD4F0 /* LabelTimer */,
+				EB8A19B82E1E773700ADD4F0 /* QuickLabelTimer */,
 			);
 			name = QuickLabelTimer;
 			packageProductDependencies = (
@@ -122,7 +122,7 @@
 				EB8A19C62E1E773800ADD4F0 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				EB8A19C72E1E773800ADD4F0 /* LabelTimerTests */,
+				EB8A19C72E1E773800ADD4F0 /* QuickLabelTimerTests */,
 			);
 			name = QuickLabelTimerTests;
 			packageProductDependencies = (
@@ -334,14 +334,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = LabelTimer/LabelTimer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = QuickLabelTimer/QuickLabelTimer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4H79F9W5AQ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LabelTimer/Info.plist;
+				INFOPLIST_FILE = QuickLabelTimer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = QuickLabelTimer;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -375,14 +375,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = LabelTimer/LabelTimer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = QuickLabelTimer/QuickLabelTimer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4H79F9W5AQ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LabelTimer/Info.plist;
+				INFOPLIST_FILE = QuickLabelTimer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = QuickLabelTimer;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
