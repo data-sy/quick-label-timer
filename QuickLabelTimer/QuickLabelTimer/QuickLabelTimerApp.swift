@@ -1,5 +1,5 @@
 //
-//  LabelTimerApp.swift
+//  QuickLabelTimerApp.swift
 //  QuickLabelTimer
 //
 //  Created by 이소연 on 7/9/25.
@@ -11,7 +11,7 @@
 import SwiftUI
 
 @main
-struct LabelTimerApp: App {
+struct QuickLabelTimerApp: App {
     static let deleteCountdownSeconds = 10
     
     @Environment(\.scenePhase) private var scenePhase
