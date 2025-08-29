@@ -24,7 +24,6 @@ enum TimerEndAction: String, Codable {
 }
 struct TimerData: Identifiable, Hashable, Codable {
     let id: UUID
-
     let label: String
     let hours: Int
     let minutes: Int
@@ -32,19 +31,9 @@ struct TimerData: Identifiable, Hashable, Codable {
     let isSoundOn: Bool
     let isVibrationOn: Bool
     let createdAt: Date
-
     /// 프리셋 기반 실행일 경우 해당 프리셋의 id, 즉석 타이머는 nil
     let presetId: UUID?
-    
-    var endAction: TimerEndAction = .discard
-
-    /// 병렬 변경 기법(하드버전)으로 수정 중 !
-    @available(*, unavailable, message: "Use endAction (== .preserve) instead")
-    var isFavorite: Bool {
-        get { fatalError("unavailable") }
-        set { fatalError("unavailable") }
-    }
-    
+        
     var totalSeconds: Int {
         hours * 3600 + minutes * 60 + seconds
     }
@@ -54,7 +43,8 @@ struct TimerData: Identifiable, Hashable, Codable {
     var remainingSeconds: Int
     var status: TimerStatus
     var pendingDeletionAt: Date? = nil // 삭제 종료 예정 시간
-    
+    var endAction: TimerEndAction
+
     init(
         id: UUID = UUID(),
         label: String,
@@ -82,27 +72,6 @@ struct TimerData: Identifiable, Hashable, Codable {
         self.pendingDeletionAt = pendingDeletionAt
         self.presetId = presetId
         self.endAction = endAction
-    }
-
-//    @available(*, deprecated, message: "Use endAction-based initializer")
-    @available(*, unavailable, message: "Use the endAction-based initializer (.preserve / .discard)")
-    init(
-        id: UUID = UUID(),
-        label: String,
-        hours: Int,
-        minutes: Int,
-        seconds: Int,
-        isSoundOn: Bool = true,
-        isVibrationOn: Bool = true,
-        createdAt: Date,
-        endDate: Date,
-        remainingSeconds: Int,
-        status: TimerStatus,
-        pendingDeletionAt: Date? = nil,
-        presetId: UUID? = nil,
-        isFavorite: Bool
-    ) {
-        fatalError("Unavailable. Replace isFavorite with endAction (.preserve / .discard).")
     }
 }
 
