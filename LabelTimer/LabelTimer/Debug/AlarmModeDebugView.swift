@@ -69,6 +69,60 @@ struct AlarmModeDebugView: View {
     }
 }
 
+// MARK: - 3. 아이콘 후보 비교 뷰
+struct SymbolDebugView: View {
+    let oldSymbols = [
+        "speaker.wave.2.fill",
+        "iphone.radiowaves.left.and.right",
+        "speaker.slash.fill"
+    ]
+    
+    let newSymbols = [
+        "bell.and.waveform.fill",
+        "bell.fill",
+        "bell.slash.fill"
+    ]
+    
+    var body: some View {
+        VStack(spacing: 15) {
+            Text("아이콘 후보 비교")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+            
+            HStack(spacing: 40) {
+                // 기존 아이콘 목록
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("기존 (스피커)").font(.caption).foregroundStyle(.secondary)
+                    ForEach(oldSymbols, id: \.self) { name in
+                        HStack {
+                            Image(systemName: name)
+                                .font(.title3)
+                                .frame(width: 35, alignment: .center)
+                            Text(name)
+                                .font(.footnote)
+                        }
+                    }
+                }
+                
+                // 새로운 아이콘 목록
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("신규 (종)").font(.caption).foregroundStyle(.secondary)
+                    ForEach(newSymbols, id: \.self) { name in
+                        HStack {
+                            Image(systemName: name)
+                                .font(.title3)
+                                .frame(width: 35, alignment: .center)
+                            Text(name)
+                                .font(.footnote)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 // MARK: - Preview
 
 #Preview {
@@ -97,6 +151,10 @@ struct AlarmModeDebugView: View {
                         AlarmModeDebugView(selectedMode: $mode)
                     }
                 }
+
+                Divider()
+
+                SymbolDebugView()
             }
             .padding()
         }
