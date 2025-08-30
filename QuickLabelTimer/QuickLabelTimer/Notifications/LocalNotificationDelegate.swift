@@ -9,8 +9,11 @@
 /// - 사용 목적: 앱이 실행 중일 때 알림을 어떻게 표시할지, 사용자가 알림을 탭했을 때 어떤 동작을 할지 결정
 
 import UserNotifications
+import OSLog
 
 final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    
+    private let logger = Logger.withCategory("LocalNotificationDelegate")
     
     /// 앱이 포그라운드(실행 중) 상태일 때 알림이 도착하면 호출 (willPresent)
     func userNotificationCenter(
@@ -26,9 +29,9 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         let index = extractIndex(from: identifier, userInfo: content.userInfo)
         
         #if DEBUG
-        print("[LNDelegate] 📬 willPresent: id=\(identifier) index=\(index)")
+        logger.debug("로거가 뜬다는 증거 [LNDelegate] 📬 willPresent: id=\(identifier, privacy: .public) index=\(index)")
         #endif
-
+        
         // 두 번째 알림부터는 억제 + 일괄 취소
         guard index == 0 else {
             completionHandler([])
@@ -61,28 +64,33 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         let content = request.content
         let identifier = request.identifier
         let baseIdentifier = extractBaseIdentifier(from: identifier, userInfo: content.userInfo)
-        
+
         #if DEBUG
-        print("[LNDelegate] 👇 didReceive (user tapped): \(identifier)")
+        logger.debug("[LNDelegate] 👇 didReceive (user tapped): \(identifier, privacy: .public)")
         #endif
 
         NotificationUtils.cancelNotifications(withPrefix: baseIdentifier) {
+            
             #if DEBUG
-            print("[LNDelegate] 🧹 didReceive cleaned up for prefix=\(baseIdentifier)")
+            self.logger.debug("[LNDelegate] 🧹 didReceive cleaned up for prefix=\(baseIdentifier, privacy: .public)")
             #endif
+
             DispatchQueue.main.async {
                 completionHandler()
             }
         }
     }
-}
-
-private extension LocalNotificationDelegate {
-    func extractBaseIdentifier(from identifier: String, userInfo: [AnyHashable: Any]) -> String {
+    
+    // MARK: - Private Methods
+    
+    /// 알림 식별자에서 기본 ID를 추출
+    private func extractBaseIdentifier(from identifier: String, userInfo: [AnyHashable: Any]) -> String {
         if userInfo["baseIdentifier"] == nil {
+            
             #if DEBUG
-            print("[LNDelegate] ⚠️ userInfo.baseIdentifier missing; falling back to identifier prefix")
+            logger.warning("[LNDelegate] ⚠️ userInfo.baseIdentifier missing; falling back to identifier prefix")
             #endif
+            
         }
         if let base = userInfo["baseIdentifier"] as? String {
             return base
@@ -90,11 +98,14 @@ private extension LocalNotificationDelegate {
         return identifier.components(separatedBy: "_").first ?? identifier
     }
     
-    func extractIndex(from identifier: String, userInfo: [AnyHashable: Any]) -> Int {
+    /// 알림 식별자에서 인덱스를 추출
+    private func extractIndex(from identifier: String, userInfo: [AnyHashable: Any]) -> Int {
         if userInfo["index"] == nil {
+            
             #if DEBUG
-            print("[LNDelegate] ⚠️ userInfo.index missing; falling back to suffix parsing")
+            logger.warning("[LNDelegate] ⚠️ userInfo.index missing; falling back to suffix parsing")
             #endif
+            
         }
         if let idx = userInfo["index"] as? Int {
             return idx

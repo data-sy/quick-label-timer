@@ -9,9 +9,12 @@
 /// - 사용 목적: 앱의 모든 부분에서 일관된 방식으로 로컬 알림을 관리
 
 import UserNotifications
+import OSLog
 
 enum NotificationUtils {
-    
+
+    private static let logger = Logger.withCategory("NotificationUtils")
+        
     static let center = UNUserNotificationCenter.current()
 
     // MARK: - 권한 및 기본 유틸
@@ -19,10 +22,12 @@ enum NotificationUtils {
     /// 알림 권한 요청 (앱 시작 시 1회)
     static func requestAuthorization() {
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            
             #if DEBUG
-            if let error = error { print("🔔 LN Auth Failed: \(error.localizedDescription)") }
-            else { print("🔔 LN Auth Granted: \(granted)") }
+            if let error = error { logger.error("🔔 LN Auth Failed: \(error.localizedDescription)") }
+            else { logger.debug("🔔 LN Auth Granted: \(granted)") }
             #endif
+            
         }
     }
     /// AlarmSound enum을 UNNotificationSound 객체로 변환
@@ -63,15 +68,18 @@ enum NotificationUtils {
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
 
         center.add(request) { error in
+            
             #if DEBUG
-            if let error = error { print("🔔 LN Schedule Failed: \(id), \(error.localizedDescription)") }
-            else {
+            if let error = error {
+                logger.error("🔔 LN Schedule Failed: \(id, privacy: .public), \(error.localizedDescription)")
+            } else {
                 let fireDate = Date().addingTimeInterval(interval)
                 let formatter = DateFormatter()
                 formatter.dateFormat = "HH:mm:ss"
-                print("🔔 LN Scheduled: \(id) → \(formatter.string(from: fireDate)) 예정")
+                logger.debug("🔔 LN Scheduled: \(id, privacy: .public) → \(formatter.string(from: fireDate)) 예정")
             }
             #endif
+            
         }
     }
     
@@ -88,9 +96,11 @@ enum NotificationUtils {
         cancelDelivered(withPrefix: prefix) { group.leave() }
 
         group.notify(queue: .main) {
+            
             #if DEBUG
-            print("🔔 LN Cancelled by prefix '\(prefix)' (pending + delivered)")
+            logger.debug("🔔 LN Cancelled by prefix '\(prefix, privacy: .public)' (pending + delivered)")
             #endif
+            
             completion?()
         }
     }
@@ -109,10 +119,11 @@ enum NotificationUtils {
             if !ids.isEmpty {
                 center.removePendingNotificationRequests(withIdentifiers: ids)
             }
-
+            
             #if DEBUG
-            print("🔔 LN Cancel pending by prefix '\(prefix)' excluding \(excludedIDs) → \(ids.count)")
+            logger.debug("🔔 LN Cancel pending by prefix '\(prefix, privacy: .public)' excluding \(excludedIDs.count) IDs → \(ids.count) cancelled")
             #endif
+            
             DispatchQueue.main.async { completion?() }
         }
     }
@@ -133,8 +144,9 @@ enum NotificationUtils {
             }
 
             #if DEBUG
-            print("🔔 LN Cancel delivered by prefix '\(prefix)' excluding \(excludedIDs) → \(ids.count)")
+            logger.debug("🔔 LN Cancel delivered by prefix '\(prefix, privacy: .public)' excluding \(excludedIDs.count) IDs → \(ids.count) cancelled")
             #endif
+            
             DispatchQueue.main.async { completion?() }
         }
     }
@@ -143,9 +155,11 @@ enum NotificationUtils {
     static func cancelAll(completion: (() -> Void)? = nil) {
         center.removeAllPendingNotificationRequests()
         center.removeAllDeliveredNotifications()
+        
         #if DEBUG
-        print("🔔 LN Cancelled All.")
+        logger.debug("🔔 LN Cancelled All.")
         #endif
+        
         completion?()
     }
 }

@@ -11,8 +11,11 @@
 import UIKit
 import AVFoundation
 import FirebaseCore
+//import OSLog
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+//    private let logger = Logger.withCategory("AppDelegate")
     
     private var notifDelegate: LocalNotificationDelegate?
 
@@ -55,9 +58,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             */
             try audioSession.setCategory(.playback, mode: .default, options: [])
             try audioSession.setActive(true)
-            print("✅ AVAudioSession is active and set to non-mixing playback.")
+     
+            #if DEBUG
+            logger.debug("✅ AVAudioSession is active and set to non-mixing playback.")
+            #endif
+
         } catch {
-            print("🚨 Failed to set up AVAudioSession: \(error)")
+     
+            #if DEBUG
+            logger.error("🚨 Failed to set up AVAudioSession: \(error.localizedDescription)")
+            #endif
+     
         }
     }
     */

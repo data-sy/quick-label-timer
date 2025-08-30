@@ -22,9 +22,6 @@ struct TimerView: View {
                     .ignoresSafeArea()
                 
                 VStack(spacing: 24) {
-                    Button("Crash") {
-                      fatalError("Crash was triggered")
-                    }
                     SectionContainerView{
                         AddTimerView(viewModel: addTimerVM)
                     }
