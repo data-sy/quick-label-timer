@@ -10,6 +10,7 @@
 
 import UIKit
 import AVFoundation
+import FirebaseCore
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -19,7 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-
+        FirebaseApp.configure()
+        
 //        setupAudioSession()  // 로컬 알림으로 전환되어 현재는 불필요
 
         UIPageControl.appearance().currentPageIndicatorTintColor = .label
