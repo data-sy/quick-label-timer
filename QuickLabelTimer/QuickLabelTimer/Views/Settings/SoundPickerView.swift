@@ -10,10 +10,13 @@
 
 import SwiftUI
 import AVFoundation
+import OSLog
 
 struct SoundPickerView: View {
     @AppStorage("defaultSound") private var selectedSoundID: String = AlarmSound.default.id
 
+    private let logger = Logger.withCategory("SoundPickerView")
+    
     private let sounds = AlarmSound.selectableSounds
     @State private var audioPlayer: AVAudioPlayer?
 
@@ -42,7 +45,12 @@ struct SoundPickerView: View {
         }
 
         guard let url = Bundle.main.url(forResource: sound.fileName, withExtension: sound.fileExtension) else {
-            print("⚠️ Sound file not found: \(sound.fileName).\(sound.fileExtension)")
+
+            #if DEBUG
+            let soundName = "\(sound.fileName).\(sound.fileExtension)"
+            logger.error("⚠️ Sound file not found: \(soundName, privacy: .public)")
+            #endif
+
             return
         }
 
@@ -50,7 +58,11 @@ struct SoundPickerView: View {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.play()
         } catch {
-            print("⚠️ Failed to play sound: \(error.localizedDescription)")
+
+            #if DEBUG
+            logger.error("⚠️ Failed to play sound: \(error.localizedDescription)")
+            #endif
+            
         }
     }
 }
