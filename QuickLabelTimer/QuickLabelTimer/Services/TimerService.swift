@@ -13,6 +13,7 @@ import Foundation
 import Combine
 import AVFoundation
 import UserNotifications
+import OSLog
 
 // MARK: - Protocol Definition
 @MainActor
@@ -52,6 +53,9 @@ protocol TimerServiceProtocol: ObservableObject {
 // MARK: - TimerService Class
 @MainActor
 final class TimerService: ObservableObject, TimerServiceProtocol {
+    
+    private let logger = Logger.withCategory("TimerService")
+    
     private let timerRepository: TimerRepositoryProtocol
     private let presetRepository: PresetRepositoryProtocol
 
@@ -166,7 +170,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     @discardableResult
     func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID? = nil, endAction: TimerEndAction = .discard) -> Bool  {
         guard timerRepository.getAllTimers().count < 10 else {
-            print("실행 가능한 타이머 개수(10개) 초과")
+            
+            #if DEBUG
+            logger.info("실행 가능한 타이머 개수(10개) 초과")
+            #endif
+            
             return false
         }
         
@@ -192,7 +200,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     @discardableResult
     func runTimer(from preset: TimerPreset) -> Bool {
         guard presetRepository.getPreset(byId: preset.id) != nil else {
-            print("존재하지 않는 프리셋으로는 타이머를 실행할 수 없습니다.")
+            
+            #if DEBUG
+            logger.warning("존재하지 않는 프리셋(\(preset.id, privacy: .public))으로는 타이머를 실행할 수 없습니다.")
+            #endif
+
             return false
         }
         
@@ -298,9 +310,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         guard phase == .active else { return }
         
         #if DEBUG
-        NotiLog.logDelivered("scene.active")
+        UNUserNotificationCenter.current().getDeliveredNotifications { [weak self] notifications in
+            self?.logger.debug("🟩 Scene became active. Delivered notifications count: \(notifications.count)")
+        }
         #endif
-
+        
         guard shouldRunActivationCleanup() else { return }
 
         let now = Date()
@@ -364,9 +378,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     /// 특정 타이머와 연결된 모든 예정/도착된 알림을 중단(취소)
     func stopTimerNotifications(for baseId: String) {
+
         #if DEBUG
-        print("🛑 Stopping all notifications for timer with baseId: \(baseId)")
+        logger.debug("🛑 Stopping all notifications for timer with baseId: \(baseId, privacy: .public)")
         #endif
+
         NotificationUtils.cancelNotifications(withPrefix: baseId)
     }
     
@@ -419,9 +435,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     private func shouldRunActivationCleanup() -> Bool {
         let now = Date()
         guard now.timeIntervalSince(lastActivationCleanupAt) > activationCleanupThrottle else {
+
             #if DEBUG
-            print("[LNGuard] Skipped activation cleanup due to throttle")
+            logger.debug("[LNGuard] Skipped activation cleanup due to throttle")
             #endif
+
             return false
         }
         lastActivationCleanupAt = now
@@ -444,10 +462,10 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
         #if DEBUG
         if candidates.isEmpty {
-            print("[LNGuard] Activation candidates count=0")
+            logger.debug("[LNGuard] Activation candidates count=0")
         } else {
             let ids = candidates.map { $0.id.uuidString }
-            print("[LNGuard] Activation candidates count=\(candidates.count) ids=\(ids)")
+            logger.debug("[LNGuard] Activation candidates count=\(candidates.count) ids=\(ids, privacy: .public)")
         }
         #endif
 
@@ -465,9 +483,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         for baseId in baseIds {
             group.enter()
             NotificationUtils.cancelNotifications(withPrefix: baseId) {
+
                 #if DEBUG
-                print("[LNGuard] cleaned notifications for \(baseId)")
+                self.logger.debug("[LNGuard] cleaned notifications for \(baseId, privacy: .public)")
                 #endif
+
                 group.leave()
             }
         }

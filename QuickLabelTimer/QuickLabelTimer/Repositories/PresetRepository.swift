@@ -12,6 +12,7 @@
 
 import Foundation
 import Combine
+import OSLog
 
 // MARK: - Protocol Definition
 protocol PresetRepositoryProtocol {
@@ -29,6 +30,9 @@ protocol PresetRepositoryProtocol {
 
 // MARK: - PresetRepository Class
 final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
+    
+    private let logger = Logger.withCategory("PresetRepository")
+    
     @Published var userPresets: [TimerPreset] = []
     
     // MARK: - Preset 목록
@@ -69,7 +73,11 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     /// 사용자 프리셋 추가
     func addPreset(_ preset: TimerPreset) -> Bool {
         guard visiblePresetsCount < 20 else {
-            print("프리셋 개수 제한(20개) 도달")
+            
+            #if DEBUG
+            logger.info("프리셋 개수 제한(20개) 도달")
+            #endif
+            
             return false
         }
         userPresets.append(preset)
@@ -81,7 +89,11 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     @discardableResult
     func addPreset(from timer: TimerData) -> Bool {
         guard visiblePresetsCount < 20 else {
-            print("프리셋 개수 제한(20개) 도달")
+            
+            #if DEBUG
+            logger.info("프리셋 개수 제한(20개) 도달")
+            #endif
+            
             return false
         }
         
@@ -104,7 +116,11 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     /// 프리셋 수정
     func updatePreset(_ preset: TimerPreset, label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool) {
         guard let index = userPresets.firstIndex(where: { $0.id == preset.id }) else {
-            print("수정하려는 프리셋(\(preset.id))을 찾을 수 없습니다.")
+            
+            #if DEBUG
+            logger.warning("수정하려는 프리셋(\(preset.id, privacy: .public))을 찾을 수 없습니다.")
+            #endif
+            
             return
         }
         
@@ -143,7 +159,11 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     /// 프리셋 숨기기
     func hidePreset(withId id: UUID) {
         guard let idx = userPresets.firstIndex(where: { $0.id == id }) else {
-            print("숨기려는 프리셋(\(id))을 찾을 수 없습니다.")
+
+            #if DEBUG
+            logger.warning("숨기려는 프리셋(\(id, privacy: .public))을 찾을 수 없습니다.")
+            #endif
+
             return
         }
         
