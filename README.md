@@ -1,1 +1,1 @@
-# label-timer
+# quick-label-timer
