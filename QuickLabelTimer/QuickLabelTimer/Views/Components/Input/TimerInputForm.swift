@@ -21,6 +21,7 @@ struct TimerInputForm: View {
     @FocusState.Binding var isLabelFocused: Bool
 
     var isStartDisabled: Bool = false
+    let maxLabelLength: Int
     var onStart: () -> Void
 
     var body: some View {
@@ -32,7 +33,11 @@ struct TimerInputForm: View {
                     .fixedSize()
                 TimeChipButton(label: "+5분", action: addFiveMinutes)
             }
-            LabelInputField(label: $label, isFocused: $isLabelFocused)
+            LabelInputField(
+                maxLabelLength: maxLabelLength,
+                label: $label,
+                isFocused: $isLabelFocused
+            )
             Divider()
             HStack(spacing: 24) {
                 TimePickerGroup(

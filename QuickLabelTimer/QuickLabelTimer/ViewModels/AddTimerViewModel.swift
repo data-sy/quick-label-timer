@@ -14,6 +14,8 @@ import SwiftUI
 class AddTimerViewModel: ObservableObject {
     private let timerService: TimerServiceProtocol
     
+    let maxLabelLength = AppConfiguration.maxLabelLength
+    
     @Published var label = ""
     @Published var hours = 0
     @Published var minutes = 5

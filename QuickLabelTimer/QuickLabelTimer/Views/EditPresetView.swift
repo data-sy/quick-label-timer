@@ -34,6 +34,7 @@ struct EditPresetView: View {
                             selectedMode: $viewModel.selectedMode,
                             isLabelFocused: $isLabelFocused,
                             isStartDisabled: !viewModel.canStart,
+                            maxLabelLength: viewModel.maxLabelLength,
                             onStart: {
                                 if viewModel.start() {
                                     dismiss()

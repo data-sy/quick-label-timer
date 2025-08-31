@@ -31,13 +31,10 @@ struct AddTimerView: View {
                 selectedMode: $viewModel.selectedMode,
                 isLabelFocused: $isLabelFocused,
                 isStartDisabled: viewModel.isStartDisabled,
+                maxLabelLength: viewModel.maxLabelLength,
                 onStart: {
                     if isLabelFocused { isLabelFocused = false }
                     viewModel.startTimer()
-//                    // TODO: 기존 코드에서 DispatchQueue를 없앤 상태. 만약 문제가 발생한다면 다시 투입할 예정
-//                    DispatchQueue.main.async {
-//                        viewModel.startTimer()
-//                    }
                 }
             )
             .appAlert(item: $viewModel.activeAlert)
