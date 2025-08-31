@@ -16,7 +16,7 @@ struct LabelInputField: View {
 
     var body: some View {
         HStack {
-            Text("레이블")
+            Text("라벨")
                 .font(.body)
                 .foregroundColor(.primary)
 
@@ -24,11 +24,15 @@ struct LabelInputField: View {
                 .frame(height: 20)
                 .overlay(Color.gray.opacity(0.4))
             
-            TextField("레이블을 입력하세요", text: $label)
+            TextField("라벨 입력 (비워두면 자동 생성)", text: $label)
                 .focused($isFocused)
                 .frame(maxWidth: .infinity)
 
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("타이머 라벨")
+        .accessibilityValue(label.isEmpty ? "입력되지 않음" : label)
+        .accessibilityHint("타이머의 라벨을 입력하세요. 비워두면 자동으로 라벨이 생성됩니다.")
         .padding(.vertical, 16)
         .contentShape(Rectangle())
         .onTapGesture {
