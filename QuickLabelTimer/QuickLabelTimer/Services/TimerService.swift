@@ -109,7 +109,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         updateTimerStates()
     }
 
-    /// 실행 중인 타이머들의 남은 시간 매초 갱신 (신버전)
+    /// 실행 중인 타이머들의 남은 시간 매초 갱신
     private func updateTimerStates() {
         let now = Date()
         for var timer in timerRepository.getAllTimers() {
@@ -239,12 +239,20 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         guard var timer = timerRepository.getTimer(byId: id), timer.status == .running else { return }
         NotificationUtils.cancelNotifications(withPrefix: id.uuidString)
         
+        #if DEBUG
+        logger.debug("Pausing timer: \(id, privacy: .public)")
+        #endif
+        
         timer.status = .paused
         timerRepository.updateTimer(timer)
     }
     
     func resumeTimer(id: UUID) {
         guard var timer = timerRepository.getTimer(byId: id), timer.status == .paused else { return }
+
+        #if DEBUG
+        logger.debug("Resuming timer: \(id, privacy: .public)")
+        #endif
         
         let now = Date()
         timer.endDate = now.addingTimeInterval(TimeInterval(timer.remainingSeconds))
@@ -254,6 +262,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
     
     func stopTimer(id: UUID) {
+
+        #if DEBUG
+        logger.debug("Stopping timer: \(id, privacy: .public)")
+        #endif
+        
         completionHandler.cancelPendingAction(for: id)
         NotificationUtils.cancelNotifications(withPrefix: id.uuidString)
 
@@ -269,6 +282,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
     
     func restartTimer(id: UUID) {
+        
+        #if DEBUG
+        logger.debug("Restarting timer: \(id, privacy: .public)")
+        #endif
+        
         completionHandler.cancelPendingAction(for: id)
         
         guard let oldTimer = timerRepository.getTimer(byId: id) else { return }
@@ -388,7 +406,13 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     // MARK: - Private Helpers
     
+    /// 앱 실행 시, 종료 기간을 반영하여 타이머 상태를 재조정 (강제 종료 복구 등)
     private func reconcileTimersOnLaunch() {
+        
+        #if DEBUG
+        logger.debug("Reconciling timers on launch...")
+        #endif
+        
         let now = Date()
         for timer in timerRepository.getAllTimers() {
             
@@ -399,6 +423,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
                 if remaining <= 0 {
                     let completedTimer = timer.updating(remainingSeconds: 0, status: .completed)
                     timerRepository.updateTimer(completedTimer)
+                    
+                    #if DEBUG
+                    logger.debug("...Timer \(completedTimer.id, privacy: .public) expired while app was closed. Marking as completed.")
+                    #endif
+                    
                     startCompletionProcess(for: completedTimer)
                 } else {
                     let updatedTimer = timer.updating(remainingSeconds: remaining)
@@ -408,6 +437,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             case .completed:
                 let elapsedTime = now.timeIntervalSince(timer.endDate)
                 if elapsedTime > TimeInterval(deleteCountdownSeconds) {
+                    
+                    #if DEBUG
+                    logger.debug("...Timer \(timer.id, privacy: .public) was already completed. Finalizing.")
+                    #endif
+                    
                     completionHandler.handleCompletionImmediately(timerId: timer.id)
                 }
             

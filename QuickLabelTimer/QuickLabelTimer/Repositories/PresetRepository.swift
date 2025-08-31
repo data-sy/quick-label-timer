@@ -150,6 +150,11 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
 
     /// 사용자 프리셋 삭제
     func deletePreset(_ preset: TimerPreset) {
+        
+        #if DEBUG
+        logger.debug("Deleting preset with ID: \(preset.id, privacy: .public)")
+        #endif
+
         userPresets.removeAll { $0.id == preset.id }
         savePresets()
     }
@@ -193,17 +198,32 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
             userPresets = samplePresets
             savePresets()
             defaults.set(true, forKey: didInitializeKey)
+
+            #if DEBUG
+            logger.debug("First launch: Initializing with \(self.userPresets.count) sample presets.")
+            #endif
+            
             return
         }
 
         if let data = defaults.data(forKey: userDefaultsKey),
            let decoded = try? JSONDecoder().decode([TimerPreset].self, from: data) {
             userPresets = decoded
+            
+            #if DEBUG
+            logger.debug("Loaded \(decoded.count) presets from UserDefaults.")
+            #endif
+            
         }
     }
     
     /// 프리셋 저장
     private func savePresets() {
+        
+        #if DEBUG
+        logger.debug("Saving \(self.userPresets.count) presets to UserDefaults.")
+        #endif
+        
         if let data = try? JSONEncoder().encode(userPresets) {
             UserDefaults.standard.set(data, forKey: userDefaultsKey)
         }
