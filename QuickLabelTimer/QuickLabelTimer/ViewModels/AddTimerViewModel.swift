@@ -18,7 +18,7 @@ class AddTimerViewModel: ObservableObject {
     
     @Published var label = ""
     @Published var hours = 0
-    @Published var minutes = 5
+    @Published var minutes = 0
     @Published var seconds = 0
     @Published var selectedMode: AlarmMode
     @Published var activeAlert: AppAlert?
@@ -61,8 +61,5 @@ class AddTimerViewModel: ObservableObject {
     
     func resetInputFields() {
         label = ""
-        hours = 0
-        minutes = 5
-        seconds = 0
     }
 }
