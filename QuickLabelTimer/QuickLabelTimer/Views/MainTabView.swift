@@ -72,6 +72,7 @@ struct MainTabView: View {
                 .tag(Tab.favorites)
         }
         .tabViewStyle(.page(indexDisplayMode: .automatic))
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .animation(.easeInOut, value: selectedTab)
         .background(AppTheme.pageBackground)
         .onReceive(timerDidStart.receive(on: RunLoop.main)) { _ in

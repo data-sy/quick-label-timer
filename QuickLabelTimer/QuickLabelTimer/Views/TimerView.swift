@@ -32,6 +32,7 @@ struct TimerView: View {
                     Spacer()
                 }
                 .padding(.horizontal)
+                .ignoresSafeArea(.keyboard, edges: .bottom)
                 .navigationTitle("타이머 실행")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
