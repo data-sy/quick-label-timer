@@ -37,8 +37,10 @@ class AddTimerViewModel: ObservableObject {
     func startTimer() {
         let attributes = AlarmNotificationPolicy.getBools(from: selectedMode)
 
+        let trimmedLabel = label.trimmingCharacters(in: .whitespacesAndNewlines)
+
         let success = timerService.addTimer(
-            label: label,
+            label: trimmedLabel,
             hours: hours,
             minutes: minutes,
             seconds: seconds,
