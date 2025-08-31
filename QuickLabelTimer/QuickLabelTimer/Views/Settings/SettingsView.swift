@@ -28,7 +28,7 @@ struct SettingsView: View {
         let preferredLanguage = Locale.preferredLanguages.first ?? "en"
         let languageCode = preferredLanguage.components(separatedBy: "-").first ?? "en"
         
-        return NavigationView {
+        return NavigationStack {
             Form {
                 // MARK: - 알림 설정
                 Section(header: Text("알림 설정")) {
