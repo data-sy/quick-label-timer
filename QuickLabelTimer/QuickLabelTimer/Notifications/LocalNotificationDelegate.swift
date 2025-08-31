@@ -29,7 +29,7 @@ final class LocalNotificationDelegate: NSObject, UNUserNotificationCenterDelegat
         let index = extractIndex(from: identifier, userInfo: content.userInfo)
         
         #if DEBUG
-        logger.debug("로거가 뜬다는 증거 [LNDelegate] 📬 willPresent: id=\(identifier, privacy: .public) index=\(index)")
+        logger.debug("[LNDelegate] 📬 willPresent: id=\(identifier, privacy: .public) index=\(index)")
         #endif
         
         // 두 번째 알림부터는 억제 + 일괄 취소

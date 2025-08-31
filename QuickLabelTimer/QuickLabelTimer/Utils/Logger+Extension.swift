@@ -18,14 +18,6 @@ extension Logger {
     private static var subsystem = Bundle.main.bundleIdentifier!
 
     static func withCategory(_ category: String) -> Logger {
-        
-        #if DEBUG
-        // 추가한 곳 --- Logger 생성 값 직접 확인 ---
-        print("✅ Logger Subsystem: \(subsystem)")
-        print("✅ Logger Category: \(category)")
-        // --------------------------------
-        #endif
-
         return Logger(subsystem: subsystem, category: category)
     }
 }
