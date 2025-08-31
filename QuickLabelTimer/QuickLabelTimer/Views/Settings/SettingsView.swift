@@ -12,11 +12,13 @@ import SwiftUI
 import UserNotifications
 
 struct SettingsView: View {
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
+
+    let iconAreaWidth: CGFloat = 36
+
     private let githubUsername = "data-sy"
     private let repoName = "label-timer"
 
-    @EnvironmentObject var settingsViewModel: SettingsViewModel
-    
     private var privacyPolicyURL: URL {
         URL(string: "https://\(githubUsername).github.io/\(repoName)/privacy-policy-kr")!
     }
@@ -59,9 +61,26 @@ struct SettingsView: View {
 
                 // MARK: - 지원
                 Section(header: Text("지원")) {
-//                    NavigationLink("도움말") {
-//                        Text("앱 사용법 작성 예정 화면") // TODO: 작성 예정
-//                    }
+                    NavigationLink {
+                        SoundHelpView()
+                    } label: {
+                        HStack(spacing: 8) {
+                            SpeakerBadgeIcon()
+                                .frame(width: iconAreaWidth, alignment: .center)
+                            Text("소리가 안 들려요")
+                        }
+                    }
+
+                    NavigationLink {
+                        VibrationHelpView()
+                    } label: {
+                        HStack(spacing: 8) {
+                            VibrationBadgeIcon()
+                                .frame(width: iconAreaWidth, alignment: .center)
+                            Text("진동이 안 울려요")
+                        }
+                    }
+
 //
 //                    Link("의견 보내기", destination: URL(string: "https://forms.gle/your-google-form-id")!) // TODO: 구글 폼 연결 예정
 
