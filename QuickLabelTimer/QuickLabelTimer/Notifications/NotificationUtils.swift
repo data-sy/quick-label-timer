@@ -10,6 +10,7 @@
 
 import UserNotifications
 import OSLog
+import FirebaseCrashlytics
 
 enum NotificationUtils {
 
@@ -72,6 +73,7 @@ enum NotificationUtils {
             #if DEBUG
             if let error = error {
                 logger.error("🔔 LN Schedule Failed: \(id, privacy: .public), \(error.localizedDescription)")
+                Crashlytics.crashlytics().record(error: error)
             } else {
                 let fireDate = Date().addingTimeInterval(interval)
                 let formatter = DateFormatter()

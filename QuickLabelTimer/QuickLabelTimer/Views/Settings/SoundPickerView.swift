@@ -11,6 +11,7 @@
 import SwiftUI
 import AVFoundation
 import OSLog
+import FirebaseCrashlytics
 
 struct SoundPickerView: View {
     @AppStorage("defaultSound") private var selectedSoundID: String = AlarmSound.default.id
@@ -48,7 +49,11 @@ struct SoundPickerView: View {
 
             #if DEBUG
             let soundName = "\(sound.fileName).\(sound.fileExtension)"
-            logger.error("⚠️ Sound file not found: \(soundName, privacy: .public)")
+            let message = "Sound file not found: \(soundName)"
+            logger.error("\(message)")
+            
+            let error = NSError(domain: "SoundError", code: 404, userInfo: [NSLocalizedDescriptionKey: message])
+            Crashlytics.crashlytics().record(error: error)
             #endif
 
             return
@@ -61,6 +66,7 @@ struct SoundPickerView: View {
 
             #if DEBUG
             logger.error("⚠️ Failed to play sound: \(error.localizedDescription)")
+            Crashlytics.crashlytics().record(error: error)
             #endif
             
         }
