@@ -31,7 +31,6 @@ struct AddTimerView: View {
                 selectedMode: $viewModel.selectedMode,
                 isLabelFocused: $isLabelFocused,
                 isStartDisabled: viewModel.isStartDisabled,
-                maxLabelLength: viewModel.maxLabelLength,
                 onStart: {
                     if isLabelFocused { isLabelFocused = false }
                     viewModel.startTimer()
