@@ -1,5 +1,5 @@
 //
-//  AppConfiguration.swift
+//  AppConfig.swift
 //  QuickLabelTimer
 //
 //  Created by 이소연 on 8/31/25.
@@ -10,7 +10,7 @@
 
 import Foundation
 
-enum AppConfiguration {
+enum AppConfig {
     static let maxLabelLength = 100
     // TODO: 설정값들 여기로 모으기 (예: static let maxRunningTimers = 10)
 }
