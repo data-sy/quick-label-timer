@@ -81,8 +81,7 @@ struct SettingsView: View {
                         }
                     }
 
-//
-//                    Link("의견 보내기", destination: URL(string: "https://forms.gle/your-google-form-id")!) // TODO: 구글 폼 연결 예정
+                    Link("문의하기", destination: URL(string: "https://forms.gle/CobXgiRGjEFQZKgr8")!)
 
                     if languageCode == "ko" {
                         Link("개인정보 처리방침", destination: privacyPolicyURL)
