@@ -12,7 +12,7 @@ import SwiftUI
 
 struct AlarmModePickerView: View {
     @AppStorage("defaultAlarmMode") private var defaultAlarmMode: AlarmMode = .sound
-    private let iconAreaWidth: CGFloat = 64
+    private let iconAreaWidth: CGFloat = 36
     
     private func displayName(for mode: AlarmMode) -> String {
         switch mode {
