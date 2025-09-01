@@ -15,6 +15,8 @@ class EditPresetViewModel: ObservableObject {
     private let preset: TimerPreset
     private let presetRepository: PresetRepositoryProtocol
     private let timerService: TimerServiceProtocol
+
+    let maxLabelLength = AppConfig.maxLabelLength
     
     @Published var label: String
     @Published var hours: Int
@@ -23,7 +25,6 @@ class EditPresetViewModel: ObservableObject {
     @Published var selectedMode: AlarmMode
     @Published var activeAlert: AppAlert?
     @Published var isDeleted = false
-//    @Published var isShowingHideAlert = false
     
     // 재생, 저장 유효성
     var totalSeconds: Int { hours * 3600 + minutes * 60 + seconds }
@@ -32,6 +33,10 @@ class EditPresetViewModel: ObservableObject {
     var isDurationValid: Bool { totalSeconds > 0 }
     var canStart: Bool { isLabelValid && isDurationValid }
     var canSave:  Bool { isLabelValid && isDurationValid }
+    // 실제 저장되는 라벨
+    private var sanitizedLabelForSubmit: String {
+        LabelSanitizer.sanitizeOnSubmit(label, maxLength: maxLabelLength)
+    }
     
     init(preset: TimerPreset, presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol) {
         self.preset = preset
@@ -56,7 +61,7 @@ class EditPresetViewModel: ObservableObject {
         let attributes = AlarmNotificationPolicy.getBools(from: selectedMode)
         presetRepository.updatePreset(
             preset,
-            label: label,
+            label: sanitizedLabelForSubmit,
             hours: hours,
             minutes: minutes,
             seconds: seconds,

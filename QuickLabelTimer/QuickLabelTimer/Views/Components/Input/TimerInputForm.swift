@@ -32,7 +32,10 @@ struct TimerInputForm: View {
                     .fixedSize()
                 TimeChipButton(label: "+5분", action: addFiveMinutes)
             }
-            LabelInputField(label: $label, isFocused: $isLabelFocused)
+            LabelInputField(
+                label: $label,
+                isFocused: $isLabelFocused
+            )
             Divider()
             HStack(spacing: 24) {
                 TimePickerGroup(

@@ -14,9 +14,11 @@ import SwiftUI
 class AddTimerViewModel: ObservableObject {
     private let timerService: TimerServiceProtocol
     
+    let maxLabelLength = AppConfig.maxLabelLength
+    
     @Published var label = ""
     @Published var hours = 0
-    @Published var minutes = 5
+    @Published var minutes = 0
     @Published var seconds = 0
     @Published var selectedMode: AlarmMode
     @Published var activeAlert: AppAlert?
@@ -37,8 +39,10 @@ class AddTimerViewModel: ObservableObject {
     func startTimer() {
         let attributes = AlarmNotificationPolicy.getBools(from: selectedMode)
 
+        let sanitizedLabelForSubmit = LabelSanitizer.sanitizeOnSubmit(label, maxLength: AppConfig.maxLabelLength)
+
         let success = timerService.addTimer(
-            label: label,
+            label: sanitizedLabelForSubmit,
             hours: hours,
             minutes: minutes,
             seconds: seconds,
@@ -57,8 +61,5 @@ class AddTimerViewModel: ObservableObject {
     
     func resetInputFields() {
         label = ""
-        hours = 0
-        minutes = 5
-        seconds = 0
     }
 }
