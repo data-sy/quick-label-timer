@@ -63,7 +63,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
     let deleteCountdownSeconds: Int
     private let repeatingNotificationCount = 60  // iOS pending limit 64 고려, 여유 4
-    private let defaultRepeatingInterval: TimeInterval = 2.0 // 연속 알림 반복 간격
+    private let defaultRepeatingInterval: TimeInterval = AppConfiguration.notificationRepeatingInterval // 연속 알림 반복 간격
     
     let didStart = PassthroughSubject<Void, Never>()
     

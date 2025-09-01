@@ -12,5 +12,6 @@ import Foundation
 
 enum AppConfig {
     static let maxLabelLength = 100
+    static let notificationRepeatingInterval: TimeInterval = 3.0
     // TODO: 설정값들 여기로 모으기 (예: static let maxRunningTimers = 10)
 }
