@@ -14,7 +14,7 @@ import SwiftUI
 class EditPresetViewModel: ObservableObject {
     private let preset: TimerPreset
     private let presetRepository: PresetRepositoryProtocol
-    private let timerService: TimerServiceProtocol
+    private let timerService: any TimerServiceProtocol
 
     let maxLabelLength = AppConfig.maxLabelLength
     
@@ -38,7 +38,7 @@ class EditPresetViewModel: ObservableObject {
         LabelSanitizer.sanitizeOnSubmit(label, maxLength: maxLabelLength)
     }
     
-    init(preset: TimerPreset, presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol) {
+    init(preset: TimerPreset, presetRepository: PresetRepositoryProtocol, timerService: any TimerServiceProtocol) {
         self.preset = preset
         self.presetRepository = presetRepository
         self.timerService = timerService

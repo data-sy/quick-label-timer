@@ -13,14 +13,14 @@ import Foundation
 // MARK: - Timer Completion Handler
 final class TimerCompletionHandler {
     private var countdownTasks: [UUID: Task<Void, Never>] = [:]
-    private let timerService: TimerServiceProtocol
+    private let timerService: any TimerServiceProtocol
     private let presetRepository: PresetRepositoryProtocol
     /// 1초마다 카운트다운이 진행될 때 호출되는 클로저
     var onTick: ((_ timerId: UUID) -> Void)?
     // 카운트다운이 완전히 끝나거나 취소되었을 때 호출되는 클로저 (Service가 정리 작업 수행)
     var onComplete: ((_ timerId: UUID) -> Void)?
 
-    init(timerService: TimerServiceProtocol, presetRepository: PresetRepositoryProtocol) {
+    init(timerService: any TimerServiceProtocol, presetRepository: PresetRepositoryProtocol) {
         self.timerService = timerService
         self.presetRepository = presetRepository
     }

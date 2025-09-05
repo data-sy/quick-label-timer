@@ -20,7 +20,7 @@ enum AlarmDebugManager {
     private static let testPrefix = "debug-"
     private static let soundTestInterval: TimeInterval = 20.0 
     
-    static var timerService: TimerServiceProtocol!
+    static var timerService: (any TimerServiceProtocol)!
     
     // MARK: - 0. 유틸리티 기능
     

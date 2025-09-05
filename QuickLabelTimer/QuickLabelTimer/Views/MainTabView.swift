@@ -28,7 +28,7 @@ struct MainTabView: View {
     @StateObject private var favoriteListVM: FavoriteListViewModel
     
     init(
-        timerService: TimerServiceProtocol,
+        timerService: any TimerServiceProtocol,
         timerRepository: TimerRepositoryProtocol,
         presetRepository: PresetRepositoryProtocol
     ) {
