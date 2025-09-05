@@ -62,9 +62,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     @Published private(set) var scenePhase: ScenePhase = .active
 
     let deleteCountdownSeconds: Int
-    private let repeatingNotificationCount = 60  // iOS pending limit 64 고려, 여유 4
-    private let defaultRepeatingInterval: TimeInterval = AppConfig.notificationRepeatingInterval // 연속 알림 반복 간격
-    
+
     let didStart = PassthroughSubject<Void, Never>()
     
     private var lastActivationCleanupAt: Date = .distantPast
@@ -169,10 +167,10 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
     @discardableResult
     func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID? = nil, endAction: TimerEndAction = .discard) -> Bool  {
-        guard timerRepository.getAllTimers().count < 10 else {
+        guard timerRepository.getAllTimers().count < AppConfig.maxConcurrentTimers else {
             
             #if DEBUG
-            logger.info("실행 가능한 타이머 개수(10개) 초과")
+            logger.info("실행 가능한 타이머 개수(\(AppConfig.maxConcurrentTimers)개) 초과")
             #endif
             
             return false
@@ -359,7 +357,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             body: body,
             sound: sound,
             endDate: timer.endDate,
-            repeatingInterval: defaultRepeatingInterval
+            repeatingInterval: AppConfig.notificationRepeatingInterval
         )
     }
     
@@ -368,7 +366,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         let minimumStartDate = Date().addingTimeInterval(2)
         let effectiveEndDate = max(endDate, minimumStartDate)
         
-        for i in 0..<repeatingNotificationCount {
+        for i in 0..<AppConfig.repeatingNotificationCount {
             let interval = effectiveEndDate.timeIntervalSinceNow + (Double(i) * repeatingInterval)
             
             guard interval > 0 else { continue }

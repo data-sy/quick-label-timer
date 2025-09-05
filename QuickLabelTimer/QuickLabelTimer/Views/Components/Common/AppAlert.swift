@@ -38,7 +38,7 @@ extension View {
             case .timerRunLimit:
                 return Alert(
                     title: Text("실행 불가"),
-                    message: Text("타이머는 최대 10개까지 실행할 수 있습니다."),
+                    message: Text("타이머는 최대 \(AppConfig.maxConcurrentTimers)개까지 실행할 수 있습니다."),
                     dismissButton: .default(Text("확인"))
                 )
             case .presetSaveLimit:
