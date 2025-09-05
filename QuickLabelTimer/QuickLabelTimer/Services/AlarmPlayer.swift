@@ -98,9 +98,9 @@ final class AlarmPlayer: AlarmPlayable {
     /// - 앱 번들에 포함된 짧은 음원을 재생해 시스템 사운드와 유사한 효과를 냄
     func playSystemSound() {
         // TODO: .feedback 음원 추가 시 교체
-        let feedbackSound: AlarmSound = .lowBuzz
+        let feedbackSound: AlarmSound = .buzzLow
         
-        guard let url = Bundle.main.url(forResource: feedbackSound.fileName, withExtension: feedbackSound.fileExtension) else {
+        guard let url = feedbackSound.playableURL else {
             print("[AlarmPlayer][playSystemSound] 피드백 사운드 파일을 찾을 수 없습니다.")
             return
         }

@@ -41,36 +41,26 @@ struct SoundPickerView: View {
     }
 
     private func playSound(for sound: AlarmSound) {
-        if audioPlayer?.isPlaying == true {
-            audioPlayer?.stop()
+            if audioPlayer?.isPlaying == true {
+                audioPlayer?.stop()
+            }
+            guard let url = sound.playableURL else {
+                logger.info("'\(sound.displayName)' has no local file to play for preview.")
+                return
+            }
+
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url)
+                // (기본 1회 + 반복 9회) = 총 10회 재생
+                audioPlayer?.numberOfLoops = 9
+                audioPlayer?.play()
+            } catch {
+                #if DEBUG
+                logger.error("⚠️ Failed to play sound: \(error.localizedDescription)")
+                Crashlytics.crashlytics().record(error: error)
+                #endif
+            }
         }
-
-        guard let url = Bundle.main.url(forResource: sound.fileName, withExtension: sound.fileExtension) else {
-
-            #if DEBUG
-            let soundName = "\(sound.fileName).\(sound.fileExtension)"
-            let message = "Sound file not found: \(soundName)"
-            logger.error("\(message)")
-            
-            let error = NSError(domain: "SoundError", code: 404, userInfo: [NSLocalizedDescriptionKey: message])
-            Crashlytics.crashlytics().record(error: error)
-            #endif
-
-            return
-        }
-
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.play()
-        } catch {
-
-            #if DEBUG
-            logger.error("⚠️ Failed to play sound: \(error.localizedDescription)")
-            Crashlytics.crashlytics().record(error: error)
-            #endif
-            
-        }
-    }
 }
 
 #Preview {
