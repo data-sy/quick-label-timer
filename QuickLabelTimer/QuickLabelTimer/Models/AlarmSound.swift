@@ -55,7 +55,7 @@ enum AlarmSound: String, CaseIterable, Identifiable {
         return allCases.filter { $0 != .silence && $0 != .systemDefault }
     }
 
-    static var `default`: AlarmSound { .buzzLow }
+    static var `default`: AlarmSound { .beepSingle }
 
     static var current: AlarmSound {
         if let id = UserDefaults.standard.string(forKey: "defaultSound"),
