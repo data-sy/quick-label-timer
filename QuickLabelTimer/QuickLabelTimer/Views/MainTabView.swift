@@ -12,7 +12,6 @@ import SwiftUI
 import Combine
 
 enum Tab {
-    case debug
     case timer
     case favorites
 }
@@ -61,10 +60,6 @@ struct MainTabView: View {
     // 슬라이드 방식
     var body: some View {
         TabView(selection: $selectedTab) {
-//            AlarmModeIndicatorDebugView()
-//                .tag(Tab.debug)
-//            AlarmDebugView()
-//                .tag(Tab.debug)
             TimerView(addTimerVM: addTimerVM, runningListVM: runningListVM)
                 .tag(Tab.timer)
             
