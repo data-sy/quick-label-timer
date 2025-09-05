@@ -79,7 +79,7 @@ struct EditPresetView: View {
                 }
             }
             .appAlert(item: $viewModel.activeAlert)
-            .onChange(of: viewModel.isDeleted) { deleted in
+            .onChange(of: viewModel.isDeleted) { _, deleted in
                  if deleted {
                      dismiss()
                  }

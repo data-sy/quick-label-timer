@@ -57,7 +57,7 @@ struct QuickLabelTimerApp: App {
             .environmentObject(settingsViewModel)
             .preferredColorScheme(settingsViewModel.isDarkMode ? .dark : .light)
         }
-        .onChange(of: scenePhase) { newPhase in
+        .onChange(of: scenePhase) { _, newPhase in
             timerService.updateScenePhase(newPhase)
         }
     }

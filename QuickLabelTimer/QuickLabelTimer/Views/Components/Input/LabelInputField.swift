@@ -63,7 +63,7 @@ struct LabelInputField: View {
         .onTapGesture {
             isFocused = true
         }
-        .onChange(of: label) { newValue in
+        .onChange(of: label) { _, newValue in
             let count = newValue.count
             if count > AppConfig.maxLabelLength {
                 
