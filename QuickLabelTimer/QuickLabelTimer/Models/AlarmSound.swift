@@ -31,6 +31,14 @@ enum AlarmSound: String, CaseIterable, Identifiable {
     var fullName: String {
         return fileName + "." + fileExtension
     }
+    /// 실제 알림 요청에 사용할 UNNotificationSound 객체
+    var notificationSound: UNNotificationSound {
+        if self == .systemDefault {
+            return .default
+        }
+        guard let fileName = self.fileName else {
+            return .default
+        }
 
     var displayName: String {
         switch self {

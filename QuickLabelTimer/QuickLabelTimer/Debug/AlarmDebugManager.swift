@@ -61,7 +61,7 @@ enum AlarmDebugManager {
     // MARK: - 0. 소리 기본 동작 검증 (1회 로컬)
     
     static func testCustomSoundOne() {
-        let sound = NotificationUtils.createSound(fromSound: .melody)
+        let sound = AlarmSound.ringtone01.notificationSound
 
         NotificationUtils.scheduleNotification(
             id: "\(testPrefix)single-custom",
@@ -73,7 +73,7 @@ enum AlarmDebugManager {
     }
     
     static func testSilentSoundOne() {
-        let sound = NotificationUtils.createSound(fromSound: .silence)
+        let sound = AlarmSound.silence.notificationSound
         NotificationUtils.scheduleNotification(
             id: "\(testPrefix)single-system",
             title: "1회 0-2: 기본 사운드",
@@ -86,13 +86,13 @@ enum AlarmDebugManager {
     // MARK: - 1. 소리 기본 동작 검증 (연속 로컬)
     
     static func testCustomSound() {
-        let sound = NotificationUtils.createSound(fromSound: .melody)
+        let sound = AlarmSound.ringtone01.notificationSound
         let endDate = Date().addingTimeInterval(soundTestInterval)
         
         timerService.scheduleRepeatingNotifications(
             baseId: "\(testPrefix)repeating-custom",
             title: "연속 1-1: 커스텀 사운드",
-            body: "melody 파일이 반복 재생되어야 합니다.",
+            body: "ringtone01 파일이 반복 재생되어야 합니다.",
             sound: sound,
             endDate: endDate,
             repeatingInterval: 2
@@ -114,7 +114,7 @@ enum AlarmDebugManager {
     }
     
     static func testSilentSound() {
-        let sound = NotificationUtils.createSound(fromSound: .silence)
+        let sound = AlarmSound.silence.notificationSound
         let endDate = Date().addingTimeInterval(soundTestInterval)
         
         timerService.scheduleRepeatingNotifications(
@@ -162,7 +162,6 @@ enum AlarmDebugManager {
          NotiLog.logPending("after-schedule:sound-only")
      }
     static func testBodyOnly() {
-        let sound = UNNotificationSound.default
         let endDate = Date().addingTimeInterval(soundTestInterval)
         
         timerService.scheduleRepeatingNotifications(
@@ -177,7 +176,6 @@ enum AlarmDebugManager {
     }
     
     static func testTitleOnly() {
-        let sound = UNNotificationSound.default
         let endDate = Date().addingTimeInterval(soundTestInterval)
         
         timerService.scheduleRepeatingNotifications(

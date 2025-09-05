@@ -31,24 +31,19 @@ enum NotificationUtils {
             
         }
     }
-    /// AlarmSound enum을 UNNotificationSound 객체로 변환
-    static func createSound(fromSound sound: AlarmSound) -> UNNotificationSound? {
-         let fileNameWithExtension = "\(sound.fileName).\(sound.fileExtension)"
-        return UNNotificationSound(named: UNNotificationSoundName(fileNameWithExtension))
-    }
-    
+
     /// AlarmNotificationPolicy enum을 UNNotificationSound 객체로 변환
     static func createSound(fromPolicy policy: AlarmNotificationPolicy) -> UNNotificationSound? {
         switch policy {
         case .soundAndVibration:
-            return createSound(fromSound: AlarmSound.current)
+            return AlarmSound.current.notificationSound
         case .vibrationOnly:
-            // '무음' 사운드 트릭
-            return createSound(fromSound: AlarmSound.silence)
+            return AlarmSound.silence.notificationSound
         case .silent:
             return nil
         }
     }
+    
     // MARK: - 알림 예약
     
     /// 단일 로컬 알림 예약
