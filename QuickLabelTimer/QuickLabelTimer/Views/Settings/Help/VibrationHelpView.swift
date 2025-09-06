@@ -18,7 +18,7 @@ struct VibrationHelpView: View {
                 진동이 느껴지지 않는다면 아래 항목을 확인해 주세요.
                 """))){}
 
-            Section(header: Text("시스템 설정 확인")) {
+            Section(header: Text("시스템 설정 확인").accessibilityAddTraits(.isHeader)) {
                 Text(.init("**설정 > 손쉬운 사용 > 터치**로 이동해 '진동'이 켜져 있는지 확인해 주세요"))
                 Text(.init("""
                 **설정 > 사운드 및 햅틱**으로 이동해 아래 항목을 확인해 주세요
@@ -28,11 +28,11 @@ struct VibrationHelpView: View {
                 """))
             }
 
-            Section(header: Text("집중 모드 확인")) {
+            Section(header: Text("집중 모드 확인").accessibilityAddTraits(.isHeader)) {
                 Text(.init("**설정 > 집중 모드**에서 활성화된 모드가 알림/진동을 차단하지 않는지 확인해 주세요"))
             }
 
-            Section(header: Text("Apple Watch 사용자")) {
+            Section(header: Text("Apple Watch 사용자").accessibilityAddTraits(.isHeader)) {
                 Text(.init("Apple Watch를 착용 중이라면, 알림이 Watch로 전달될 수 있습니다"))
                 Text(.init("**Watch 앱 > 나의 시계 > 사운드 및 햅틱**에서 '촉각' 강도가 충분한지 확인하세요"))
             }

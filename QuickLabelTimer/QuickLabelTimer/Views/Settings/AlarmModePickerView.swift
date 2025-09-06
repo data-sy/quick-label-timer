@@ -41,6 +41,9 @@ struct AlarmModePickerView: View {
                 }
             }
             .contentShape(Rectangle())
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(displayName(for: mode))
+            .accessibilityAddTraits(mode == defaultAlarmMode ? [.isButton, .isSelected] : .isButton)
             .onTapGesture {
                 defaultAlarmMode = mode
             }

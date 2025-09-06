@@ -176,5 +176,12 @@ enum A11yText {
         static let cancelButton: LocalizedStringKey = "취소"
         static let deleteButton: LocalizedStringKey = "삭제"
     }
+    
+    // 설정 (SettingsView)
+    enum Settings {
+        static let opensExternalLinkHint: LocalizedStringKey = "외부 브라우저에서 열립니다."
+        static let opensExternalLinkHint_EN: LocalizedStringKey = "Opens in an external browser."
+        static let opensSystemSettingsHint: LocalizedStringKey = "iOS 설정 화면을 엽니다."
+    }
 }
 
