@@ -110,16 +110,41 @@ enum A11yText {
         static let timeChipHint: LocalizedStringKey = "타이머 설정 시간에 5분을 추가합니다."
     }
     
-    // 실행 중인 타이머 (RunningTimerView)
-    enum RunningTimer {
-        // %1$@ = 라벨, %2$@ = 남은 시간
-        static func cellLabel(label: String, remainingTime: String) -> LocalizedStringKey {
-            return LocalizedStringKey("\(label) 타이머, 남은 시간 \(remainingTime)")
+    // Timer Row (TimerRowView) & Buttons
+    enum TimerRow {
+        // %1$@ = label, %2$@ = formatted time
+        static func runningLabel(label: String, time: String) -> LocalizedStringKey {
+            return LocalizedStringKey("\(label), 남은 시간 \(time)")
         }
-        static let cellHint: LocalizedStringKey = "선택하여 타이머의 세부 정보를 확인하거나 수정합니다."
+
+        // %1$@ = label, %2$@ = formatted time
+        static func pausedLabel(label: String, time: String) -> LocalizedStringKey {
+            return LocalizedStringKey("\(label), 일시정지됨, 남은 시간 \(time)")
+        }
+
+        // %1$@ = label
+        static func completedLabel(label: String) -> LocalizedStringKey {
+            return LocalizedStringKey("\(label), 완료됨")
+        }
         
-        static let pauseButtonLabel: LocalizedStringKey = "일시정지"
-        static let resumeButtonLabel: LocalizedStringKey = "재개"
-        static let stopButtonLabel: LocalizedStringKey = "정지"
+        // %1$@ = label, %2$@ = formatted time
+        static func presetLabel(label: String, time: String) -> LocalizedStringKey {
+            return LocalizedStringKey("\(label), 설정 시간 \(time)")
+        }
+
+        static let favoriteLabel: LocalizedStringKey = "즐겨찾기"
+        static let favoriteOnHint: LocalizedStringKey = "즐겨찾기에서 해제합니다."
+        static let favoriteOffHint: LocalizedStringKey = "즐겨찾기에 추가합니다."
+        static let moveToFavoriteLabel: LocalizedStringKey = "즐겨찾기로 이동"
+
+        static let pauseLabel: LocalizedStringKey = "일시정지"
+        static let playLabel: LocalizedStringKey = "재생"
+        static let stopLabel: LocalizedStringKey = "정지"
+        static let startLabel: LocalizedStringKey = "시작"
+        static let restartLabel: LocalizedStringKey = "다시 시작"
+        static let deleteLabel: LocalizedStringKey = "삭제"
+        static let editLabel: LocalizedStringKey = "편집"
+        
     }
 }
+

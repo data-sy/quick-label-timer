@@ -14,7 +14,7 @@ struct TimerButtonUI {
     let systemImage: String
     let tint: Color
     let role: ButtonRole?
-    let accessibilityLabel: String
+    let accessibilityLabel: LocalizedStringKey
 }
 
 // MARK: - Left
@@ -27,28 +27,28 @@ func ui(for type: TimerLeftButtonType) -> TimerButtonUI? {
             systemImage: "stop.fill",
             tint: .red,
             role: .destructive,
-            accessibilityLabel: "정지"
+            accessibilityLabel: A11yText.TimerRow.stopLabel
         )
     case .moveToFavorite:
         return .init(
             systemImage: "chevron.right",
             tint: .yellow,
             role: nil,
-            accessibilityLabel: "즐겨찾기로 이동"
+            accessibilityLabel: A11yText.TimerRow.moveToFavoriteLabel
         )
     case .delete:
         return .init(
             systemImage: "xmark",
             tint: .gray,
             role: .destructive,
-            accessibilityLabel: "삭제"
+            accessibilityLabel: A11yText.TimerRow.deleteLabel
         )
     case .edit:
         return .init(
             systemImage: "pencil",
             tint: .teal,
             role: nil,
-            accessibilityLabel: "편집"
+            accessibilityLabel: A11yText.TimerRow.editLabel
         )
     }
 }
@@ -61,21 +61,21 @@ func ui(for type: TimerRightButtonType) -> TimerButtonUI {
             systemImage: "play.fill",
             tint: .blue,
             role: nil,
-            accessibilityLabel: "재생"
+            accessibilityLabel: A11yText.TimerRow.playLabel
         )
     case .pause:
         return .init(
             systemImage: "pause.fill",
             tint: .orange,
             role: nil,
-            accessibilityLabel: "일시정지"
+            accessibilityLabel: A11yText.TimerRow.pauseLabel
         )
     case .restart:
         return .init(
             systemImage: "gobackward",
             tint: .blue,
             role: nil,
-            accessibilityLabel: "재시작"
+            accessibilityLabel: A11yText.TimerRow.restartLabel
         )
     }
 }
