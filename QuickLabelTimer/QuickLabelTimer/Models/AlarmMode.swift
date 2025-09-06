@@ -34,4 +34,13 @@ enum AlarmMode: String, CaseIterable, Identifiable {
         case .silent: return "speaker.slash.fill"
         }
     }
+    
+    /// 접근성
+    var a11yLabel: LocalizedStringKey {
+        switch self {
+        case .sound: return "소리"
+        case .vibration: return "진동"
+        case .silent: return "무음"
+        }
+    }
 }

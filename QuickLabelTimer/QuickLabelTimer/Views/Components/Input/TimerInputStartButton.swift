@@ -26,5 +26,10 @@ struct TimerInputStartButton: View {
         .disabled(isDisabled)
         .allowsHitTesting(!isDisabled)
         .animation(.easeInOut(duration: 0.15), value: isDisabled)
+        .a11y(
+            label: A11yText.AddTimer.createButtonLabel,
+            hint: A11yText.AddTimer.createButtonHint,
+            traits: .isButton
+        )
     }
 }

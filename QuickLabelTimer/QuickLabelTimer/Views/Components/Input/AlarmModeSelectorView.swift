@@ -37,6 +37,10 @@ struct AlarmModeSelectorView: View {
                         selectedMode = mode
                     }
                 }
+                .a11y(
+                    label: mode.a11yLabel,
+                    traits: selectedMode == mode ? [.isButton, .isSelected] : .isButton
+                )
                 if mode != AlarmMode.allCases.last {
                     Divider().frame(height: 20)
                 }

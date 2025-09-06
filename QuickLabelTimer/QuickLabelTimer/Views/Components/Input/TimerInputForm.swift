@@ -82,5 +82,10 @@ struct TimeChipButton: View {
                 .background(AppTheme.controlBackgroundColor)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
         }
+        .a11y(
+            label: LocalizedStringKey(label), // "+5분"
+            hint: A11yText.AddTimer.timeChipHint,
+            traits: .isButton
+        )
     }
 }

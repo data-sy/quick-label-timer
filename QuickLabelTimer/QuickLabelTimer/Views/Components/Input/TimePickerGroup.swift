@@ -48,5 +48,10 @@ struct TimePickerGroup: View {
                 .foregroundColor(.gray)
         }
         .frame(height: 128)
+        .a11y(
+            label: A11yText.AddTimer.timePickerLabel,
+            hint: A11yText.AddTimer.timePickerHint,
+            combineChildren: false // 그룹을 먼저 알려준 뒤, 내부 피커 조작할 수 있게
+        )
     }
 }

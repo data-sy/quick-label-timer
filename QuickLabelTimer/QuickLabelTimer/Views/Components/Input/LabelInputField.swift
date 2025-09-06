@@ -54,10 +54,11 @@ struct LabelInputField: View {
                     .padding(.bottom, 8)
             }
         }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("타이머 라벨")
-        .accessibilityValue(label.isEmpty ? "입력되지 않음" : label)
-        .accessibilityHint("타이머의 라벨을 입력해 주세요. 비워두면 자동으로 라벨이 생성됩니다.")
+        .a11yInput(
+            label: A11yText.AddTimer.labelInputLabel,
+            value: label,
+            hint: A11yText.AddTimer.labelInputHint
+        )
         .padding(.vertical, 16)
         .contentShape(Rectangle())
         .onTapGesture {
