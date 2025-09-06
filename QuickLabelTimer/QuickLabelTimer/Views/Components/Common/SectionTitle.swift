@@ -18,5 +18,6 @@ struct SectionTitle: View {
             .font(.title2)
             .bold()
             .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityAddTraits(.isHeader)
     }
 }

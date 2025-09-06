@@ -61,9 +61,11 @@ struct MainTabView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             TimerView(addTimerVM: addTimerVM, runningListVM: runningListVM)
+                .accessibilityLabel(A11yText.MainTabs.timerTab)
                 .tag(Tab.timer)
             
             FavoriteListView(viewModel: favoriteListVM, selectedTab: selectedTab)
+                .accessibilityLabel(A11yText.MainTabs.favoritesTab)
                 .tag(Tab.favorites)
         }
         .tabViewStyle(.page(indexDisplayMode: .automatic))

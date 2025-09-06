@@ -159,6 +159,15 @@ enum A11yText {
         static let runningStatus: LocalizedStringKey = "실행 중"
     }
     
+    // 실행중인 타이머 목록 (RunningListView)
+    enum RunningList {
+     static let emptyMessage: LocalizedStringKey = "아직 실행 중인 타이머가 없습니다."
+    }
 
+    // 메인 탭 (MainTabView)
+    enum MainTabs {
+        static let timerTab: LocalizedStringKey = "타이머 탭"
+        static let favoritesTab: LocalizedStringKey = "즐겨찾기 탭"
+    }
 }
 
