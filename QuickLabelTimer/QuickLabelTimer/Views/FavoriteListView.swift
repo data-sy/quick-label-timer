@@ -30,7 +30,7 @@ struct FavoriteListView: View {
                 TimerListContainerView(
                     title: nil,
                     items: viewModel.visiblePresets,
-                    emptyMessage: "저장된 즐겨찾기가 없습니다.",
+                    emptyMessage: A11yText.FavoriteList.emptyMessage,
                     stateProvider: { _ in
                         return .preset
                     },
@@ -65,10 +65,14 @@ struct FavoriteListView: View {
                                     .scaleEffect(x: -1, y: 1)
                             }
                             .foregroundColor(.white)
+                            .accessibilityHidden(true)
                         }
                     }
                     .disabled(viewModel.isPresetRunning(preset))
                     .deleteDisabled(viewModel.isPresetRunning(preset))
+                    .accessibilityValue(
+                        viewModel.isPresetRunning(preset) ? A11yText.FavoriteList.runningStatus : ""
+                    )
                 }
                 .padding(.horizontal)
                 .navigationTitle("즐겨찾기")

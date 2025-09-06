@@ -28,8 +28,12 @@ struct MainToolbarContent: ToolbarContent {
                         editMode?.wrappedValue = isEditing ? .inactive : .active
                     }
                 } label: {
-                    Text(isEditing ? "완료" : "삭제")
+                    Text(isEditing ? A11yText.MainToolbar.doneButtonLabel : A11yText.MainToolbar.listEditButtonLabel)
                 }
+                .a11y(
+                    label: isEditing ? A11yText.MainToolbar.doneButtonLabel : A11yText.MainToolbar.listEditButtonLabel,
+                    traits: .isButton
+                )
             }
         }
         // "설정" 버튼 (오른쪽)
@@ -42,6 +46,7 @@ struct MainToolbarContent: ToolbarContent {
             }) {
                 Image(systemName: "gearshape")
             }
+            .a11y(label: A11yText.MainToolbar.settingsButtonLabel, traits: .isButton)
         }
     }
 }

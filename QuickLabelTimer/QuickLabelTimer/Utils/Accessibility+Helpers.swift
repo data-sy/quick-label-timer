@@ -96,6 +96,13 @@ enum A11yText {
     static let emptyInput: LocalizedStringKey = "입력되지 않음"
     static let notSet: LocalizedStringKey = "설정되지 않음"
     
+    // 메인 툴바
+    enum MainToolbar {
+        static let listEditButtonLabel: LocalizedStringKey = "삭제"
+        static let doneButtonLabel: LocalizedStringKey = "완료"
+        static let settingsButtonLabel: LocalizedStringKey = "설정"
+    }
+    
     // 타이머 생성 (AddTimerView)
     enum AddTimer {
         static let labelInputLabel: LocalizedStringKey = "타이머 라벨"
@@ -144,7 +151,14 @@ enum A11yText {
         static let restartLabel: LocalizedStringKey = "다시 시작"
         static let deleteLabel: LocalizedStringKey = "삭제"
         static let editLabel: LocalizedStringKey = "편집"
-        
     }
+    
+    // 즐겨찾기 목록 (FavoriteListView)
+    enum FavoriteList {
+        static let emptyMessage: LocalizedStringKey = "저장된 즐겨찾기가 없습니다."
+        static let runningStatus: LocalizedStringKey = "실행 중"
+    }
+    
+
 }
 
