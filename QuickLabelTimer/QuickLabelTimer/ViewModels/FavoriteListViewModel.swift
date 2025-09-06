@@ -15,7 +15,7 @@ import Combine
 class FavoriteListViewModel: ObservableObject {
     // MARK: - Dependencies
     let presetRepository: PresetRepositoryProtocol
-    let timerService: TimerServiceProtocol
+    let timerService: any TimerServiceProtocol
     private let timerRepository: TimerRepositoryProtocol
     
     // MARK: - Published Properties for UI
@@ -34,7 +34,7 @@ class FavoriteListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     
-    init(presetRepository: PresetRepositoryProtocol, timerService: TimerServiceProtocol, timerRepository: TimerRepositoryProtocol) {
+    init(presetRepository: PresetRepositoryProtocol, timerService: any TimerServiceProtocol, timerRepository: TimerRepositoryProtocol) {
         self.presetRepository = presetRepository
         self.timerService = timerService
         self.timerRepository = timerRepository

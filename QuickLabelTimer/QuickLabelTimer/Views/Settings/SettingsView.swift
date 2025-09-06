@@ -82,11 +82,14 @@ struct SettingsView: View {
                     }
 
                     Link("문의하기", destination: URL(string: "https://forms.gle/CobXgiRGjEFQZKgr8")!)
+                        .accessibilityHint(A11yText.Settings.opensExternalLinkHint)
 
                     if languageCode == "ko" {
                         Link("개인정보 처리방침", destination: privacyPolicyURL)
+                            .accessibilityHint(A11yText.Settings.opensExternalLinkHint)
                     } else {
                         Link("Privacy Policy", destination: privacyPolicyURL_en)
+                            .accessibilityHint(A11yText.Settings.opensExternalLinkHint_EN)
                     }
                 }
             }

@@ -21,7 +21,7 @@ struct TimerLeftButtonView: View {
                     .imageScale(.large)
             }
             .timerButton(color: m.tint)
-            .accessibilityLabel(m.accessibilityLabel)
+            .a11y(label: m.accessibilityLabel, traits: .isButton)
         } else {
             EmptyView()
         }

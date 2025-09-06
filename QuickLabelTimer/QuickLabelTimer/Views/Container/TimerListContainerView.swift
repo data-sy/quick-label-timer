@@ -19,7 +19,7 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
     
     let title: String?
     let items: [Item]
-    let emptyMessage: String
+    let emptyMessage: LocalizedStringKey
     let stateProvider: (Item) -> TimerInteractionState
     let onDelete: ((IndexSet) -> Void)?
     let rowContent: (Item) -> RowContent
@@ -27,7 +27,7 @@ struct TimerListContainerView<Item: Identifiable, RowContent: View>: View {
     init(
         title: String?,
         items: [Item],
-        emptyMessage: String,
+        emptyMessage: LocalizedStringKey,
         stateProvider: @escaping (Item) -> TimerInteractionState,
         onDelete: ((IndexSet) -> Void)? = nil,
         @ViewBuilder rowContent: @escaping (Item) -> RowContent

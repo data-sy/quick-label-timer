@@ -19,24 +19,29 @@ struct SoundHelpView: View {
                 알림 소리가 들리지 않는다면 아래 항목을 확인해 주세요.
                 """))){}
 
-            Section(header: Text("기본 점검 항목")) {
+            Section(header: Text("기본 점검 항목").accessibilityAddTraits(.isHeader)) {
                 Text(.init("기기가 **무음 모드**로 설정되어 있지는 않나요?"))
                 Text(.init("기기의 **볼륨**이 0 이지는 않나요?"))
             }
             
-            Section(header: Text("시스템 설정 확인")) {
+            Section(header: Text("시스템 설정 확인").accessibilityAddTraits(.isHeader)) {
                 Text(.init("**설정 > 알림 > 퀵라벨타이머** 로 이동해 '알림 허용'과 '사운드'가 켜져 있는지 확인해 주세요"))
             
                 Button("알림 설정 열기") {
                     openAppNotificationSettings()
                 }
+                .a11y(
+                    label:  "알림 설정 열기",
+                    hint: A11yText.Settings.opensSystemSettingsHint,
+                    traits: .isButton
+                )
             }
 
-            Section(header: Text("집중 모드 확인")) {
+            Section(header: Text("집중 모드 확인").accessibilityAddTraits(.isHeader)) {
                 Text("**설정 > 집중 모드**에서 활성화된 모드가 알림을 차단하고 있지 않은지 확인해 주세요")
             }
             
-            Section(header: Text("Apple Watch 사용자")) {
+            Section(header: Text("Apple Watch 사용자").accessibilityAddTraits(.isHeader)) {
                 Text("Apple Watch를 착용 중이라면, 알림이 Watch로 전달될 수 있습니다")
             }
         }

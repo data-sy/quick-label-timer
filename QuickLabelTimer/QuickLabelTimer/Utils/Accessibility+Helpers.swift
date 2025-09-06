@@ -1,0 +1,187 @@
+//
+//  Accessibility+Helpers.swift
+//  QuickLabelTimer
+//
+//  Created by 이소연 on 9/6/25.
+//
+/// 접근성(Accessibility) 관련 ViewModifier, Extension, 문자열 상수 등을 관리
+///
+/// 사용 목적: 반복적으로 사용되는 접근성 코드를 한 곳에서 관리하여 재사용성을 높이고 유지보수를 용이하게 함
+
+import SwiftUI
+
+// MARK: - Accessibility View Modifiers
+
+/// 입력 필드(TextField, Picker 등)를 위한 ViewModifier
+struct A11yInputModifier: ViewModifier {
+    let label: LocalizedStringKey
+    let value: String
+    let emptyValueText: LocalizedStringKey
+    let hint: LocalizedStringKey
+    let combineChildren: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .accessibilityElement(children: combineChildren ? .combine : .ignore)
+            .accessibilityLabel(label)
+            .accessibilityValue(value.isEmpty ? emptyValueText : LocalizedStringKey(value))
+            .accessibilityHint(hint)
+    }
+}
+
+/// 일반적인 뷰(Button, Text 등)를 위한 ViewModifier
+struct A11yGeneralModifier: ViewModifier {
+    let label: LocalizedStringKey
+    let hint: LocalizedStringKey?
+    let traits: AccessibilityTraits
+    let combineChildren: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .accessibilityElement(children: combineChildren ? .combine : .ignore)
+            .accessibilityLabel(label)
+            .accessibilityHint(hint ?? "")
+            .accessibilityAddTraits(traits)
+    }
+}
+
+// MARK: - View Extension for Accessibility
+
+extension View {
+    /// 접근성: 입력 필드(TextField, Picker 등)에 공통적으로 사용되는 Modifier
+    /// - Parameters:
+    ///   - label: VoiceOver가 읽어줄 UI 요소의 이름 (예: "타이머 이름")
+    ///   - value: 현재 입력되거나 선택된 값 (예: "회의록 작성")
+    ///   - emptyValueText: 값이 비어있을 때 읽어줄 문구 (기본값: "입력되지 않음")
+    ///   - hint: UI 요소의 역할이나 사용법에 대한 추가 안내 (예: "타이머의 라벨을 입력해 주세요.")
+    ///   - combineChildren: 자식 뷰들의 접근성 요소를 합칠지 여부 (기본값: true)
+    func a11yInput(
+        label: LocalizedStringKey,
+        value: String,
+        emptyValueText: LocalizedStringKey = A11yText.emptyInput,
+        hint: LocalizedStringKey,
+        combineChildren: Bool = true
+    ) -> some View {
+        self.modifier(A11yInputModifier(label: label,
+                                        value: value,
+                                        emptyValueText: emptyValueText,
+                                        hint: hint,
+                                        combineChildren: combineChildren))
+    }
+    
+    /// 접근성: 버튼, 텍스트 등 일반적인 뷰에 사용되는 Modifier
+    /// - Parameters:
+    ///   - label: VoiceOver가 읽어줄 UI 요소의 이름 또는 텍스트 (예: "타이머 시작")
+    ///   - hint: UI 요소의 역할이나 사용법에 대한 추가 안내 (선택 사항)
+    ///   - traits: 버튼, 헤더 등 UI 요소의 속성 (기본값: 없음)
+    ///   - combineChildren: 자식 뷰들의 접근성 요소를 합칠지 여부 (기본값: true)
+    func a11y(
+        label: LocalizedStringKey,
+        hint: LocalizedStringKey? = nil,
+        traits: AccessibilityTraits = [],
+        combineChildren: Bool = true
+    ) -> some View {
+        self.modifier(A11yGeneralModifier(label: label,
+                                          hint: hint,
+                                          traits: traits,
+                                          combineChildren: combineChildren))
+    }
+}
+
+
+// MARK: - Centralized Accessibility Strings
+
+enum A11yText {
+    // 공통
+    static let emptyInput: LocalizedStringKey = "입력되지 않음"
+    static let notSet: LocalizedStringKey = "설정되지 않음"
+    
+    // 메인 툴바
+    enum MainToolbar {
+        static let listEditButtonLabel: LocalizedStringKey = "삭제"
+        static let doneButtonLabel: LocalizedStringKey = "완료"
+        static let settingsButtonLabel: LocalizedStringKey = "설정"
+    }
+    
+    // 타이머 생성 (AddTimerView)
+    enum AddTimer {
+        static let labelInputLabel: LocalizedStringKey = "타이머 라벨"
+        static let labelInputHint: LocalizedStringKey = "타이머의 이름을 입력해 주세요. 비워두면 자동으로 이름이 생성됩니다."
+        
+        static let timePickerLabel: LocalizedStringKey = "타이머 시간 설정"
+        static let timePickerHint: LocalizedStringKey = "타이머의 시간을 시간, 분, 초 단위로 설정합니다."
+        
+        static let createButtonLabel: LocalizedStringKey = "타이머 생성"
+        static let createButtonHint: LocalizedStringKey = "입력한 라벨과 시간으로 새로운 타이머를 생성합니다."
+        
+        static let timeChipHint: LocalizedStringKey = "타이머 설정 시간에 5분을 추가합니다."
+    }
+    
+    // Timer Row (TimerRowView) & Buttons
+    enum TimerRow {
+        // %1$@ = label, %2$@ = formatted time
+        static func runningLabel(label: String, time: String) -> LocalizedStringKey {
+            return LocalizedStringKey("\(label), 남은 시간 \(time)")
+        }
+
+        // %1$@ = label, %2$@ = formatted time
+        static func pausedLabel(label: String, time: String) -> LocalizedStringKey {
+            return LocalizedStringKey("\(label), 일시정지됨, 남은 시간 \(time)")
+        }
+
+        // %1$@ = label
+        static func completedLabel(label: String) -> LocalizedStringKey {
+            return LocalizedStringKey("\(label), 완료됨")
+        }
+        
+        // %1$@ = label, %2$@ = formatted time
+        static func presetLabel(label: String, time: String) -> LocalizedStringKey {
+            return LocalizedStringKey("\(label), 설정 시간 \(time)")
+        }
+
+        static let favoriteLabel: LocalizedStringKey = "즐겨찾기"
+        static let favoriteOnHint: LocalizedStringKey = "즐겨찾기에서 해제합니다."
+        static let favoriteOffHint: LocalizedStringKey = "즐겨찾기에 추가합니다."
+        static let moveToFavoriteLabel: LocalizedStringKey = "즐겨찾기로 이동"
+
+        static let pauseLabel: LocalizedStringKey = "일시정지"
+        static let playLabel: LocalizedStringKey = "재생"
+        static let stopLabel: LocalizedStringKey = "정지"
+        static let startLabel: LocalizedStringKey = "시작"
+        static let restartLabel: LocalizedStringKey = "다시 시작"
+        static let deleteLabel: LocalizedStringKey = "삭제"
+        static let editLabel: LocalizedStringKey = "편집"
+    }
+    
+    // 즐겨찾기 목록 (FavoriteListView)
+    enum FavoriteList {
+        static let emptyMessage: LocalizedStringKey = "저장된 즐겨찾기가 없습니다."
+        static let runningStatus: LocalizedStringKey = "실행 중"
+    }
+    
+    // 실행중인 타이머 목록 (RunningListView)
+    enum RunningList {
+     static let emptyMessage: LocalizedStringKey = "아직 실행 중인 타이머가 없습니다."
+    }
+
+    // 메인 탭 (MainTabView)
+    enum MainTabs {
+        static let timerTab: LocalizedStringKey = "타이머 탭"
+        static let favoritesTab: LocalizedStringKey = "즐겨찾기 탭"
+    }
+    
+    // 프리셋 편집 (EditPresetView)
+    enum EditPreset {
+        static let saveButton: LocalizedStringKey = "저장"
+        static let cancelButton: LocalizedStringKey = "취소"
+        static let deleteButton: LocalizedStringKey = "삭제"
+    }
+    
+    // 설정 (SettingsView)
+    enum Settings {
+        static let opensExternalLinkHint: LocalizedStringKey = "외부 브라우저에서 열립니다."
+        static let opensExternalLinkHint_EN: LocalizedStringKey = "Opens in an external browser."
+        static let opensSystemSettingsHint: LocalizedStringKey = "iOS 설정 화면을 엽니다."
+    }
+}
+

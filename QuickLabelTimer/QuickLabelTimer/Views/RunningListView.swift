@@ -17,7 +17,7 @@ struct RunningListView: View {
         TimerListContainerView(
             title: "실행중인 타이머",
             items: viewModel.sortedTimers,
-            emptyMessage: "아직 실행 중인 타이머가 없습니다.",
+            emptyMessage: A11yText.RunningList.emptyMessage,
             stateProvider: { timer in
                 return timer.interactionState
             }

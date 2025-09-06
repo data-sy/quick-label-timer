@@ -12,7 +12,6 @@ import SwiftUI
 import Combine
 
 enum Tab {
-    case debug
     case timer
     case favorites
 }
@@ -28,7 +27,7 @@ struct MainTabView: View {
     @StateObject private var favoriteListVM: FavoriteListViewModel
     
     init(
-        timerService: TimerServiceProtocol,
+        timerService: any TimerServiceProtocol,
         timerRepository: TimerRepositoryProtocol,
         presetRepository: PresetRepositoryProtocol
     ) {
@@ -61,14 +60,12 @@ struct MainTabView: View {
     // 슬라이드 방식
     var body: some View {
         TabView(selection: $selectedTab) {
-//            AlarmModeIndicatorDebugView()
-//                .tag(Tab.debug)
-//            AlarmDebugView()
-//                .tag(Tab.debug)
             TimerView(addTimerVM: addTimerVM, runningListVM: runningListVM)
+                .accessibilityLabel(A11yText.MainTabs.timerTab)
                 .tag(Tab.timer)
             
             FavoriteListView(viewModel: favoriteListVM, selectedTab: selectedTab)
+                .accessibilityLabel(A11yText.MainTabs.favoritesTab)
                 .tag(Tab.favorites)
         }
         .tabViewStyle(.page(indexDisplayMode: .automatic))

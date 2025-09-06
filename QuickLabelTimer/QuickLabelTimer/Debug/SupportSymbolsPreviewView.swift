@@ -103,12 +103,12 @@ private struct SectionGrid: View {
     }
 }
 
-#Preview("Support Symbols — Scroll Grid") {
-    NavigationStack {
-        SupportSymbolsPreviewView()
-            .navigationBarTitleDisplayMode(.inline)
-    }
-    .previewDevice("iPhone 15 Pro")
-}
+//#Preview("Support Symbols — Scroll Grid") {
+//    NavigationStack {
+//        SupportSymbolsPreviewView()
+//            .navigationBarTitleDisplayMode(.inline)
+//    }
+//    .previewDevice("iPhone 15 Pro")
+//}
 
 #endif

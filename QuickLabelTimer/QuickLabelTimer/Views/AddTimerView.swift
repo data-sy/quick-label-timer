@@ -41,7 +41,7 @@ struct AddTimerView: View {
         .onAppear {
             viewModel.setDefaultAlarmMode(defaultAlarmMode)
         }
-        .onChange(of: defaultAlarmMode) { newValue in
+        .onChange(of: defaultAlarmMode) { _, newValue in
             viewModel.setDefaultAlarmMode(newValue)
         }
         .onSubmit { isLabelFocused = false }

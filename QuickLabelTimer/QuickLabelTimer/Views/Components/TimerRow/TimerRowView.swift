@@ -48,7 +48,6 @@ struct TimerRowView: View {
             return .system(.headline).weight(.semibold)
         }
     }
-
     
     private var labelColor: Color {
         switch state {
@@ -85,6 +84,19 @@ struct TimerRowView: View {
         
         return (iconName, finalColor)
     }
+    
+    private var a11yLabel: LocalizedStringKey {
+            switch state {
+            case .running:
+                return A11yText.TimerRow.runningLabel(label: timer.label, time: timer.formattedTime)
+            case .paused:
+                return A11yText.TimerRow.pausedLabel(label: timer.label, time: timer.formattedTime)
+            case .completed:
+                return A11yText.TimerRow.completedLabel(label: timer.label)
+            case .stopped, .preset:
+                return A11yText.TimerRow.presetLabel(label: timer.label, time: timer.formattedTime)
+            }
+        }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -137,5 +149,7 @@ struct TimerRowView: View {
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(a11yLabel)
     }
 }

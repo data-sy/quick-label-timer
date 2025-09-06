@@ -21,6 +21,7 @@ protocol PresetRepositoryProtocol {
     var userPresetsPublisher: AnyPublisher<[TimerPreset], Never> { get }
 
     func getPreset(byId id: UUID) -> TimerPreset?
+    @discardableResult
     func addPreset(from timer: TimerData) -> Bool
     func showPreset(withId id: UUID)
     func hidePreset(withId id: UUID)
@@ -171,11 +172,8 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
 
             return
         }
-        
-        if let idx = userPresets.firstIndex(where: { $0.id == id }) {
-            userPresets[idx].isHiddenInList = true
-            savePresets()
-        }
+        userPresets[idx].isHiddenInList = true
+        savePresets()
     }
 
     /// 프리셋 다시 보이기

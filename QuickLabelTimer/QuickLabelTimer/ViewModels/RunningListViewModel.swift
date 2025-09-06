@@ -13,7 +13,7 @@ import Combine
 
 @MainActor
 final class RunningListViewModel: ObservableObject {
-    private let timerService: TimerServiceProtocol
+    private let timerService: any TimerServiceProtocol
     private let timerRepository: TimerRepositoryProtocol
     private let presetRepository: PresetRepositoryProtocol
 
@@ -24,7 +24,7 @@ final class RunningListViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
     
-    init(timerService: TimerServiceProtocol, timerRepository: TimerRepositoryProtocol, presetRepository: PresetRepositoryProtocol) {
+    init(timerService: any TimerServiceProtocol, timerRepository: TimerRepositoryProtocol, presetRepository: PresetRepositoryProtocol) {
         self.timerService = timerService
         self.timerRepository = timerRepository
         self.presetRepository = presetRepository

@@ -12,7 +12,7 @@ import SwiftUI
 
 @MainActor
 class AddTimerViewModel: ObservableObject {
-    private let timerService: TimerServiceProtocol
+    private let timerService: any TimerServiceProtocol
     
     let maxLabelLength = AppConfig.maxLabelLength
     
@@ -27,7 +27,7 @@ class AddTimerViewModel: ObservableObject {
         (hours + minutes + seconds) == 0
     }
     
-    init(timerService: TimerServiceProtocol, defaultAlarmMode: AlarmMode) {
+    init(timerService: any TimerServiceProtocol, defaultAlarmMode: AlarmMode) {
         self.timerService = timerService
         self.selectedMode = defaultAlarmMode
     }

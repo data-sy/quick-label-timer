@@ -26,6 +26,7 @@ struct TimerView: View {
                         AddTimerView(viewModel: addTimerVM)
                     }
                     Divider()
+                        .accessibilityHidden(true)
                     SectionContainerView{
                         RunningListView(viewModel: runningListVM)
                     }

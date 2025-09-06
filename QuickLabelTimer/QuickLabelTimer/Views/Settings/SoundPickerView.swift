@@ -32,6 +32,9 @@ struct SoundPickerView: View {
                 }
             }
             .contentShape(Rectangle())
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(sound.displayName)
+            .accessibilityAddTraits(sound.id == selectedSoundID ? [.isButton, .isSelected] : .isButton)
             .onTapGesture {
                 selectedSoundID = sound.id
                 playSound(for: sound)
