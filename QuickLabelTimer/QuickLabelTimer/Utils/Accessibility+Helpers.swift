@@ -169,5 +169,12 @@ enum A11yText {
         static let timerTab: LocalizedStringKey = "타이머 탭"
         static let favoritesTab: LocalizedStringKey = "즐겨찾기 탭"
     }
+    
+    // 프리셋 편집 (EditPresetView)
+    enum EditPreset {
+        static let saveButton: LocalizedStringKey = "저장"
+        static let cancelButton: LocalizedStringKey = "취소"
+        static let deleteButton: LocalizedStringKey = "삭제"
+    }
 }
 

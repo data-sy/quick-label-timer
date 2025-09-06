@@ -53,13 +53,14 @@ struct EditPresetView: View {
                         isLabelFocused = !viewModel.isLabelValid
                     }
                 } label: {
-                    Text("저장")
+                    Text(A11yText.EditPreset.saveButton)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 8)
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(!viewModel.canSave)
                 .padding(.horizontal)
+                .a11y(label: A11yText.EditPreset.saveButton, traits: .isButton)
             }
             .padding()
             .navigationTitle("타이머 수정")
@@ -67,15 +68,17 @@ struct EditPresetView: View {
             .background(AppTheme.contentBackground)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("취소") {
+                    Button(A11yText.EditPreset.cancelButton) {
                         dismiss()
                     }
+                    .a11y(label: A11yText.EditPreset.cancelButton, traits: .isButton)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("삭제", role: .destructive) {
+                    Button(A11yText.EditPreset.deleteButton, role: .destructive) {
                         viewModel.requestToDelete()
                     }
                     .foregroundColor(.red)
+                    .a11y(label: A11yText.EditPreset.deleteButton, traits: .isButton)
                 }
             }
             .appAlert(item: $viewModel.activeAlert)
