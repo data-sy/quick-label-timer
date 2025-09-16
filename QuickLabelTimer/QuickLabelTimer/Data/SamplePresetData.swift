@@ -16,7 +16,7 @@ let samplePresets: [TimerPreset] = [
     TimerPreset(label: "유튜브 이제 그만, 공부 시작 ‼️", hours: 0, minutes: 10, seconds: 0, isSoundOn: false, isVibrationOn: false, createdAt: Date().addingTimeInterval(-30)),
     TimerPreset(label: "보고서 검토 종료 📝 더 본다고 좋아지지 않아. 이 버전으로 제출하고 피드백을 받자", hours: 0, minutes: 30, seconds: 0, isSoundOn: true, isVibrationOn: true, createdAt: Date().addingTimeInterval(-40)),
     TimerPreset(label: "염색약 헹굴 시간 💇‍♀️", hours: 0, minutes: 25, seconds: 0, isSoundOn: true, isVibrationOn: true, createdAt: Date().addingTimeInterval(-50)),
-    TimerPreset(label: "고기 해동 확인 🥩 (덜 녹았으면 30분 더 / 다 녹았으면 밥솥 취사 누르기)", hours: 0, minutes: 30, seconds: 0, isSoundOn: false, isVibrationOn: true, createdAt: Date().addingTimeInterval(-60)),
+    TimerPreset(label: "고기 해동 확인 🥩 (덜 녹았으면 10분 더 / 다 녹았으면 밥솥 취사 누르기)", hours: 0, minutes: 30, seconds: 0, isSoundOn: false, isVibrationOn: true, createdAt: Date().addingTimeInterval(-60)),
     TimerPreset(label: "무료 주차 만료 10분 전 🚗", hours: 1, minutes: 50, seconds: 0, isSoundOn: true, isVibrationOn: true, createdAt: Date().addingTimeInterval(-70))
 ]
 
