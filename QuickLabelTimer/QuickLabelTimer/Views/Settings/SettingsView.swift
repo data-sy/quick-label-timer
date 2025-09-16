@@ -17,7 +17,7 @@ struct SettingsView: View {
     let iconAreaWidth: CGFloat = 36
 
     private let githubUsername = "data-sy"
-    private let repoName = "label-timer"
+    private let repoName = "quick-label-timer"
 
     private var privacyPolicyURL: URL {
         URL(string: "https://\(githubUsername).github.io/\(repoName)/privacy-policy-kr")!
