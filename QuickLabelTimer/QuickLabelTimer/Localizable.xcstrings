@@ -1,298 +1,673 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "" : {
-
-    },
-    "“%@”" : {
-
-    },
-    "«« 실행 중" : {
-
-    },
-    "**설정 > 집중 모드**에서 활성화된 모드가 알림을 차단하고 있지 않은지 확인해 주세요" : {
-
-    },
-    "%@, 남은 시간 %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, 남은 시간 %2$@"
+  "sourceLanguage": "en",
+  "strings": {
+    "": {},
+    "“%@”": {},
+    "«« 실행 중": {},
+    "**설정 > 집중 모드**에서 활성화된 모드가 알림을 차단하고 있지 않은지 확인해 주세요": {},
+    "%@, 남은 시간 %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, %2$@ remaining"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, 남은 시간 %2$@"
           }
         }
       }
     },
-    "%@, 설정 시간 %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, 설정 시간 %2$@"
+    "%@, 설정 시간 %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, set for %2$@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, 설정 시간 %2$@"
           }
         }
       }
     },
-    "%@, 완료됨" : {
-
-    },
-    "%@, 일시정지됨, 남은 시간 %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, 일시정지됨, 남은 시간 %2$@"
+    "%@, 완료됨": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, completed"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, 완료됨"
           }
         }
       }
     },
-    "%lld" : {
-
-    },
-    "%lld / %lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld / %2$lld"
+    "%@, 일시정지됨, 남은 시간 %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, paused, %2$@ remaining"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, 일시정지됨, 남은 시간 %2$@"
           }
         }
       }
     },
-    "a11y.addTimer.createButton" : {
-
-    },
-    "a11y.addTimer.createButtonHint" : {
-
-    },
-    "a11y.addTimer.labelInputHint" : {
-
-    },
-    "a11y.addTimer.labelInputLabel" : {
-
-    },
-    "a11y.addTimer.timeChipHint" : {
-
-    },
-    "a11y.addTimer.timePickerHint" : {
-
-    },
-    "a11y.addTimer.timePickerLabel" : {
-
-    },
-    "a11y.common.emptyInput" : {
-
-    },
-    "a11y.common.notSet" : {
-
-    },
-    "a11y.editPreset.cancelButton" : {
-
-    },
-    "a11y.editPreset.deleteButton" : {
-
-    },
-    "a11y.editPreset.saveButton" : {
-
-    },
-    "a11y.favoriteList.emptyMessage" : {
-
-    },
-    "a11y.favoriteList.runningStatus" : {
-
-    },
-    "a11y.mainTabs.favoritesTab" : {
-
-    },
-    "a11y.mainTabs.timerTab" : {
-
-    },
-    "a11y.mainToolbar.doneButton" : {
-
-    },
-    "a11y.mainToolbar.listEditButton" : {
-
-    },
-    "a11y.mainToolbar.settingsButton" : {
-
-    },
-    "a11y.runningList.emptyMessage" : {
-
-    },
-    "a11y.settings.opensExternalLinkHint" : {
-
-    },
-    "a11y.settings.opensExternalLinkHint_EN" : {
-
-    },
-    "a11y.settings.opensSystemSettingsHint" : {
-
-    },
-    "a11y.timerRow.deleteLabel" : {
-
-    },
-    "a11y.timerRow.editLabel" : {
-
-    },
-    "a11y.timerRow.favoriteLabel" : {
-
-    },
-    "a11y.timerRow.favoriteOffHint" : {
-
-    },
-    "a11y.timerRow.favoriteOnHint" : {
-
-    },
-    "a11y.timerRow.moveToFavorite" : {
-
-    },
-    "a11y.timerRow.pauseLabel" : {
-
-    },
-    "a11y.timerRow.playLabel" : {
-
-    },
-    "a11y.timerRow.restartLabel" : {
-
-    },
-    "a11y.timerRow.startLabel" : {
-
-    },
-    "a11y.timerRow.stopLabel" : {
-
-    },
-    "Apple Watch 사용자" : {
-
-    },
-    "Apple Watch를 착용 중이라면, 알림이 Watch로 전달될 수 있습니다" : {
-
-    },
-    "Privacy Policy" : {
-
-    },
-    "Quick Label Timer" : {
-
-    },
-    "개인정보 처리방침" : {
-
-    },
-    "기본 사운드" : {
-
-    },
-    "기본 알림 방식" : {
-
-    },
-    "기본 점검 항목" : {
-
-    },
-    "다크 모드" : {
-
-    },
-    "라벨" : {
-
-    },
-    "라벨 입력 (비워두면 자동 생성)" : {
-
-    },
-    "무음" : {
-
-    },
-    "문의하기" : {
-
-    },
-    "분" : {
-
-    },
-    "삭제" : {
-
-    },
-    "삭제 불가" : {
-
-    },
-    "설정" : {
-
-    },
-    "설정에서 알림 허용하기" : {
-
-    },
-    "소리" : {
-
-    },
-    "소리가 안 들려요" : {
-
-    },
-    "시간" : {
-
-    },
-    "시스템 설정 확인" : {
-
-    },
-    "실행 불가" : {
-
-    },
-    "실행 중인 타이머는 삭제할 수 없습니다." : {
-
-    },
-    "알림 권한" : {
-
-    },
-    "알림 설정" : {
-
-    },
-    "알림 설정 열기" : {
-
-    },
-    "알림 소리가 나지 않나요?" : {
-
-    },
-    "이 타이머를 삭제하시겠습니까?" : {
-
-    },
-    "저장 불가" : {
-
-    },
-    "즐겨찾기" : {
-
-    },
-    "즐겨찾기는 최대 20개까지 추가할 수 있습니다." : {
-
-    },
-    "지원" : {
-
-    },
-    "진동" : {
-
-    },
-    "진동 문제 해결" : {
-
-    },
-    "진동이 안 울려요" : {
-
-    },
-    "집중 모드 확인" : {
-
-    },
-    "초" : {
-
-    },
-    "취소" : {
-
-    },
-    "타이머 수정" : {
-
-    },
-    "타이머 실행" : {
-
-    },
-    "타이머는 최대 %lld개까지 실행할 수 있습니다." : {
-
-    },
-    "현재 상태" : {
-
-    },
-    "확인" : {
-
-    }
+    "%lld": {},
+    "%lld / %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "a11y.addTimer.createButton": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create Timer"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "타이머 생성"
+          }
+        }
+      }
+    },
+    "a11y.addTimer.createButtonHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Creates a new timer with the entered label and time"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "입력한 라벨과 시간으로 새로운 타이머를 생성합니다"
+          }
+        }
+      }
+    },
+    "a11y.addTimer.labelInputHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a name for the timer. Leave blank to auto-generate"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "타이머의 이름을 입력해 주세요. 비워두면 자동으로 이름이 생성됩니다"
+          }
+        }
+      }
+    },
+    "a11y.addTimer.labelInputLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer Label"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "타이머 라벨"
+          }
+        }
+      }
+    },
+    "a11y.addTimer.timeChipHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adds 5 minutes to the timer setting"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "타이머 설정 시간에 5분을 추가합니다"
+          }
+        }
+      }
+    },
+    "a11y.addTimer.timePickerHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set the timer duration in hours, minutes, and seconds"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "타이머의 시간을 시간, 분, 초 단위로 설정합니다"
+          }
+        }
+      }
+    },
+    "a11y.addTimer.timePickerLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer Duration Setting"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "타이머 시간 설정"
+          }
+        }
+      }
+    },
+    "a11y.common.emptyInput": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not entered"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "입력되지 않음"
+          }
+        }
+      }
+    },
+    "a11y.common.notSet": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not set"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설정되지 않음"
+          }
+        }
+      }
+    },
+    "a11y.editPreset.cancelButton": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "취소"
+          }
+        }
+      }
+    },
+    "a11y.editPreset.deleteButton": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "삭제"
+          }
+        }
+      }
+    },
+    "a11y.editPreset.saveButton": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장"
+          }
+        }
+      }
+    },
+    "a11y.favoriteList.emptyMessage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No saved favorites"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장된 즐겨찾기가 없습니다"
+          }
+        }
+      }
+    },
+    "a11y.favoriteList.runningStatus": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실행 중"
+          }
+        }
+      }
+    },
+    "a11y.mainTabs.favoritesTab": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorites Tab"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "즐겨찾기 탭"
+          }
+        }
+      }
+    },
+    "a11y.mainTabs.timerTab": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer Tab"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "타이머 탭"
+          }
+        }
+      }
+    },
+    "a11y.mainToolbar.doneButton": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료"
+          }
+        }
+      }
+    },
+    "a11y.mainToolbar.listEditButton": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "삭제"
+          }
+        }
+      }
+    },
+    "a11y.mainToolbar.settingsButton": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설정"
+          }
+        }
+      }
+    },
+    "a11y.runningList.emptyMessage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No running timers yet"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아직 실행 중인 타이머가 없습니다"
+          }
+        }
+      }
+    },
+    "a11y.settings.opensExternalLinkHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens in an external browser"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "외부 브라우저에서 열립니다"
+          }
+        }
+      }
+    },
+    "a11y.settings.opensExternalLinkHint_EN": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens in an external browser"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "외부 브라우저에서 열립니다"
+          }
+        }
+      }
+    },
+    "a11y.settings.opensSystemSettingsHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens iOS Settings screen"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS 설정 화면을 엽니다"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.deleteLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "삭제"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.editLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "편집"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.favoriteLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorite"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "즐겨찾기"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.favoriteOffHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add to favorites"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "즐겨찾기에 추가합니다"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.favoriteOnHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove from favorites"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "즐겨찾기에서 해제합니다"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.moveToFavorite": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move to Favorites"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "즐겨찾기로 이동"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.pauseLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "일시정지"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.playLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "재생"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.restartLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restart"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다시 시작"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.startLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시작"
+          }
+        }
+      }
+    },
+    "a11y.timerRow.stopLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "정지"
+          }
+        }
+      }
+    },
+    "Apple Watch 사용자": {},
+    "Apple Watch를 착용 중이라면, 알림이 Watch로 전달될 수 있습니다": {},
+    "Privacy Policy": {},
+    "Quick Label Timer": {},
+    "개인정보 처리방침": {},
+    "기본 사운드": {},
+    "기본 알림 방식": {},
+    "기본 점검 항목": {},
+    "다크 모드": {},
+    "라벨": {},
+    "라벨 입력 (비워두면 자동 생성)": {},
+    "무음": {},
+    "문의하기": {},
+    "분": {},
+    "삭제": {},
+    "삭제 불가": {},
+    "설정": {},
+    "설정에서 알림 허용하기": {},
+    "소리": {},
+    "소리가 안 들려요": {},
+    "시간": {},
+    "시스템 설정 확인": {},
+    "실행 불가": {},
+    "실행 중인 타이머는 삭제할 수 없습니다.": {},
+    "알림 권한": {},
+    "알림 설정": {},
+    "알림 설정 열기": {},
+    "알림 소리가 나지 않나요?": {},
+    "이 타이머를 삭제하시겠습니까?": {},
+    "저장 불가": {},
+    "즐겨찾기": {},
+    "즐겨찾기는 최대 20개까지 추가할 수 있습니다.": {},
+    "지원": {},
+    "진동": {},
+    "진동 문제 해결": {},
+    "진동이 안 울려요": {},
+    "집중 모드 확인": {},
+    "초": {},
+    "취소": {},
+    "타이머 수정": {},
+    "타이머 실행": {},
+    "타이머는 최대 %lld개까지 실행할 수 있습니다.": {},
+    "현재 상태": {},
+    "확인": {}
   },
-  "version" : "1.1"
+  "version": "1.1"
 }
