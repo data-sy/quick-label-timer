@@ -388,6 +388,7 @@ preset.isHiddenInList = true  // ✅ Can restore
 - [ ] Check notification count (<64)
 - [ ] Verify persistence works
 - [ ] Check accessibility labels
+- [ ] ❌ **Do NOT** add Claude Code signatures to commit messages
 
 ---
 
