@@ -1,7 +1,231 @@
-# Xcode user-specific files
-**/xcuserdata/
-*.xcuserstate
+# QuickLabelTimer .gitignore
+# iOS Swift project using Xcode and Firebase
 
-# Additional common Xcode metadata (safe to ignore globally)
+# ============================================================================
+# Xcode
+# ============================================================================
+
+## User settings
+xcuserdata/
+
+## User-specific files
+*.xcuserstate
+*.xcuserdata
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+
+## Xcode workspace settings
+xcshareddata/IDEWorkspaceChecks.plist
+
+## Obj-C/Swift specific
+*.hmap
+
+## Build artifacts
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## App packaging
+*.app
+
+## Xcode Patch
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+*.xcworkspace/*
+!*.xcworkspace/contents.xcworkspacedata
+!*.xcworkspace/xcshareddata/
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+## Xcode Patch (additional)
 *.xccheckout
 *.xcscmblueprint
+*.moved-aside
+
+# ============================================================================
+# Build Directories
+# ============================================================================
+
+build/
+DerivedData/
+*.build/
+
+# ============================================================================
+# Swift Package Manager
+# ============================================================================
+
+.swiftpm/
+.build/
+Packages/
+Package.pins
+Package.resolved
+
+# Xcode automatically generates this directory with a .xcworkspacedata file
+# and xcuserdata hence it is not needed
+.swiftpm/
+
+# ============================================================================
+# CocoaPods
+# ============================================================================
+
+# We don't use CocoaPods currently, but keeping patterns for future use
+# Uncomment if CocoaPods is added:
+# Pods/
+# Podfile.lock
+
+# ============================================================================
+# Carthage
+# ============================================================================
+
+# Add this line if you want to avoid checking in source code from Carthage dependencies.
+# Carthage/Checkouts
+
+Carthage/Build/
+
+# ============================================================================
+# SwiftUI Previews
+# ============================================================================
+
+# SwiftUI preview artifacts
+.swiftUIPreviewCache/
+PreviewCache/
+
+# ============================================================================
+# Firebase
+# ============================================================================
+
+# Sensitive Firebase configuration
+# IMPORTANT: Do NOT commit this file with real credentials
+GoogleService-Info.plist
+
+# Firebase debug symbols
+*.dSYM
+
+# ============================================================================
+# Fastlane
+# ============================================================================
+
+# Deployment automation tool
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+fastlane/README.md
+
+# ============================================================================
+# Code Coverage
+# ============================================================================
+
+*.gcda
+*.gcno
+*.profdata
+*.coverage
+
+# ============================================================================
+# macOS
+# ============================================================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# ============================================================================
+# IDE and Editors
+# ============================================================================
+
+# VSCode
+.vscode/
+
+# AppCode
+.idea/
+
+# ============================================================================
+# Certificates and Provisioning Profiles
+# ============================================================================
+
+# Signing certificates
+*.cer
+*.p12
+*.certSigningRequest
+
+# Provisioning profiles
+*.mobileprovision
+*.provisionprofile
+
+# ============================================================================
+# API Keys and Secrets
+# ============================================================================
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# API keys (if stored in separate files)
+**/api-keys.plist
+**/secrets.plist
+**/config-secret.plist
+
+# ============================================================================
+# Testing
+# ============================================================================
+
+# Test results
+*.xcresult
+
+# ============================================================================
+# Documentation
+# ============================================================================
+
+# Generated documentation
+docs/api/
+*.docset
+
+# ============================================================================
+# Backup files
+# ============================================================================
+
+*~
+*.swp
+*.bak
+*.tmp
+*.orig
+
+# ============================================================================
+# Project-specific
+# ============================================================================
+
+# Claude Code configuration and cache
+.claude/
