@@ -37,28 +37,28 @@ extension View {
             switch alertType {
             case .timerRunLimit:
                 return Alert(
-                    title: Text("실행 불가"),
-                    message: Text("타이머는 최대 \(AppConfig.maxConcurrentTimers)개까지 실행할 수 있습니다."),
-                    dismissButton: .default(Text("확인"))
+                    title: Text("ui.alert.cannotRunTitle"),
+                    message: Text("ui.alert.maxTimersMessage", comment: String(AppConfig.maxConcurrentTimers)),
+                    dismissButton: .default(Text("ui.alert.ok"))
                 )
             case .presetSaveLimit:
                 return Alert(
-                    title: Text("저장 불가"),
-                    message: Text("즐겨찾기는 최대 20개까지 추가할 수 있습니다."),
-                    dismissButton: .default(Text("확인"))
+                    title: Text("ui.alert.cannotSaveTitle"),
+                    message: Text("ui.alert.maxFavoritesMessage"),
+                    dismissButton: .default(Text("ui.alert.ok"))
                 )
             case .cannotDeleteRunningPreset:
                 return Alert(
-                    title: Text("삭제 불가"),
-                    message: Text("실행 중인 타이머는 삭제할 수 없습니다."),
-                    dismissButton: .default(Text("확인"))
+                    title: Text("ui.alert.cannotDeleteTitle"),
+                    message: Text("ui.alert.cannotDeleteRunningMessage"),
+                    dismissButton: .default(Text("ui.alert.ok"))
                 )
             case .confirmDeletion(let itemName, let onConfirm):
                 return Alert(
-                    title: Text("“\(itemName)”"),
-                    message: Text("이 타이머를 삭제하시겠습니까?"),
-                    primaryButton: .destructive(Text("삭제"), action: onConfirm),
-                    secondaryButton: .cancel(Text("취소"))
+                    title: Text(""\(itemName)""),
+                    message: Text("ui.alert.deleteConfirmMessage"),
+                    primaryButton: .destructive(Text("ui.alert.delete"), action: onConfirm),
+                    secondaryButton: .cancel(Text("ui.alert.cancel"))
                 )
             }
         }
