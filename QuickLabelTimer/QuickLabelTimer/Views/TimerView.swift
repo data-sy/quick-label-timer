@@ -34,7 +34,7 @@ struct TimerView: View {
                 }
                 .padding(.horizontal)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
-                .navigationTitle("타이머 실행")
+                .navigationTitle("ui.timer.title")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     MainToolbarContent(showSettings: $showSettings, showEditButton: false)

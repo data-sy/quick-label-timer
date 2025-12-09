@@ -57,7 +57,7 @@ struct FavoriteListView: View {
                                 .cornerRadius(12)
                                 .padding(4)
                             HStack(spacing: 8) {
-                                Text("«« 실행 중")
+                                Text("ui.favorite.runningIndicator")
                                     .font(.title)
                                     .fontWeight(.bold)
                                 Image(systemName: "figure.run")
@@ -75,7 +75,7 @@ struct FavoriteListView: View {
                     )
                 }
                 .padding(.horizontal)
-                .navigationTitle("즐겨찾기")
+                .navigationTitle("ui.favorite.title")
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
                     MainToolbarContent(showSettings: $showSettings, showEditButton: true)

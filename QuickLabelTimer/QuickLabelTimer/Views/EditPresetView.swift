@@ -63,7 +63,7 @@ struct EditPresetView: View {
                 .a11y(label: A11yText.EditPreset.saveButton, traits: .isButton)
             }
             .padding()
-            .navigationTitle("타이머 수정")
+            .navigationTitle("ui.editPreset.title")
             .navigationBarTitleDisplayMode(.inline)
             .background(AppTheme.contentBackground)
             .toolbar {
