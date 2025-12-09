@@ -12,6 +12,24 @@
 - **Firebase** - Crashlytics
 - **Target:** iOS 16.0+, iPhone only
 
+## Build & Development Commands
+
+```bash
+# Open project
+open QuickLabelTimer/QuickLabelTimer.xcodeproj
+
+# Build (in Xcode)
+Product → Build (⌘B)
+
+# Run (in Xcode)
+Product → Run (⌘R)
+
+# Run tests (in Xcode)
+Product → Test (⌘U)
+```
+
+**Note:** Project uses `.xcodeproj` (not `.xcworkspace`)
+
 ## Architecture: MVVM + Service/Repository
 
 ```
