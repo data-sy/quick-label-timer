@@ -38,7 +38,7 @@ extension View {
             case .timerRunLimit:
                 return Alert(
                     title: Text("ui.alert.cannotRunTitle"),
-                    message: Text("ui.alert.maxTimersMessage", comment: String(AppConfig.maxConcurrentTimers)),
+                    message: Text(String(format: String(localized: "ui.alert.maxTimersMessage"), AppConfig.maxConcurrentTimers)),
                     dismissButton: .default(Text("ui.alert.ok"))
                 )
             case .presetSaveLimit:
