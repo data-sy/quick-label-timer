@@ -21,15 +21,15 @@ struct LabelInputField: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             HStack {
-                Text("라벨")
+                Text("ui.input.labelField")
                     .font(.body)
                     .foregroundColor(.primary)
-                
+
                 Divider()
                     .frame(height: 20)
                     .overlay(Color.gray.opacity(0.4))
-                
-                TextField("라벨 입력 (비워두면 자동 생성)", text: $label)
+
+                TextField("ui.input.labelPlaceholder", text: $label)
                     .focused($isFocused)
                     .textInputAutocapitalization(.none)
                     .frame(maxWidth: .infinity)
@@ -49,7 +49,7 @@ struct LabelInputField: View {
 
             // 토스트
             if showLimitToast {
-                ToastView(text: "최대 \(AppConfig.maxLabelLength)자까지 입력할 수 있어요")
+                ToastView(text: String(format: String(localized: "ui.input.maxLabelToast"), AppConfig.maxLabelLength))
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .padding(.bottom, 8)
             }

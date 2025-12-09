@@ -30,7 +30,7 @@ struct TimerInputForm: View {
                 Spacer()
                 AlarmModeSelectorView(selectedMode: $selectedMode)
                     .fixedSize()
-                TimeChipButton(label: "+5분", action: addFiveMinutes)
+                TimeChipButton(label: "ui.input.add5Minutes", action: addFiveMinutes)
             }
             LabelInputField(
                 label: $label,
