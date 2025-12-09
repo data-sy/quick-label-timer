@@ -1568,6 +1568,70 @@
         }
       }
     },
+    "ui.countdown.saveToFavorites": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %lld seconds, will be saved to favorites"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld초 후 즐겨찾기로 저장됩니다"
+          }
+        }
+      }
+    },
+    "ui.countdown.returnToFavorites": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %lld seconds, will return to favorites"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld초 후 즐겨찾기로 돌아갑니다"
+          }
+        }
+      }
+    },
+    "ui.countdown.deleteTimer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %lld seconds, timer will be deleted"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld초 후 타이머가 삭제됩니다"
+          }
+        }
+      }
+    },
+    "ui.countdown.removeFromFavorites": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %lld seconds, will be removed from favorites"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld초 후 즐겨찾기에서 삭제됩니다"
+          }
+        }
+      }
+    },
   },
   "version": "1.1"
 }

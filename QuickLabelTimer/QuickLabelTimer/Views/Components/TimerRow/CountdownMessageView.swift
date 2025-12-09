@@ -29,13 +29,13 @@ struct CountdownMessageView: View {
     
     /// 완료 후 n초 카운트다운 안내 메시지를 계산하는 함수
     private func dynamicMessage(remaining: Int) -> String {
-        let phrase: String
+        let messageKey: String
         switch (timer.presetId, timer.endAction) {
-        case (.none, .preserve): phrase = "즐겨찾기로 저장됩니다"
-        case (.some, .preserve): phrase = "즐겨찾기로 돌아갑니다"
-        case (.none, .discard):  phrase = "타이머가 삭제됩니다"
-        case (.some, .discard):  phrase = "즐겨찾기에서 삭제됩니다"
+        case (.none, .preserve): messageKey = "ui.countdown.saveToFavorites"
+        case (.some, .preserve): messageKey = "ui.countdown.returnToFavorites"
+        case (.none, .discard):  messageKey = "ui.countdown.deleteTimer"
+        case (.some, .discard):  messageKey = "ui.countdown.removeFromFavorites"
         }
-        return "\(remaining)초 후 \(phrase)"
+        return String(format: String(localized: String.LocalizationValue(messageKey)), remaining)
     }
 }
