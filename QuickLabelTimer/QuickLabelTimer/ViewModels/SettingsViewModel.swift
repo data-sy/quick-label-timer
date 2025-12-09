@@ -28,12 +28,12 @@ final class SettingsViewModel: ObservableObject {
     /// 알림 권한 상태에 따라 텍스트 반환
     var notificationStatusText: String {
         switch notificationStatus {
-        case .authorized: return "허용됨"
-        case .denied: return "거부됨"
-        case .notDetermined: return "미요청"
-        case .provisional: return "임시 허용"
-        case .ephemeral: return "일시적 세션"
-        @unknown default: return "알 수 없음"
+        case .authorized: return String(localized: "ui.settings.statusAuthorized")
+        case .denied: return String(localized: "ui.settings.statusDenied")
+        case .notDetermined: return String(localized: "ui.settings.statusNotDetermined")
+        case .provisional: return String(localized: "ui.settings.statusProvisional")
+        case .ephemeral: return String(localized: "ui.settings.statusEphemeral")
+        @unknown default: return String(localized: "ui.settings.statusUnknown")
         }
     }
 

@@ -33,41 +33,41 @@ struct SettingsView: View {
         return NavigationStack {
             Form {
                 // MARK: - 알림 설정
-                Section(header: Text("알림 설정")) {
-                    NavigationLink("기본 사운드") {
+                Section(header: Text("ui.settings.notificationSection")) {
+                    NavigationLink("ui.settings.defaultSound") {
                         SoundPickerView()
                     }
-                    NavigationLink("기본 알림 방식") {
+                    NavigationLink("ui.settings.alarmModeTitle") {
                         AlarmModePickerView()
                     }
 
-                    Toggle("다크 모드", isOn: $settingsViewModel.isDarkMode)
+                    Toggle("ui.settings.darkMode", isOn: $settingsViewModel.isDarkMode)
                 }
 
                 // MARK: - 알림 권한
-                Section(header: Text("알림 권한")) {
+                Section(header: Text("ui.settings.permissionSection")) {
                     HStack {
-                        Text("현재 상태")
+                        Text("ui.settings.currentStatus")
                         Spacer()
                         Text(settingsViewModel.notificationStatusText)
                             .foregroundColor(.gray)
                     }
                     if settingsViewModel.notificationStatus != .authorized {
-                        Button("설정에서 알림 허용하기") {
+                        Button("ui.settings.enableNotifications") {
                             settingsViewModel.openSystemSettings()
                         }
                     }
                 }
 
                 // MARK: - 지원
-                Section(header: Text("지원")) {
+                Section(header: Text("ui.settings.supportSection")) {
                     NavigationLink {
                         SoundHelpView()
                     } label: {
                         HStack(spacing: 8) {
                             SpeakerBadgeIcon()
                                 .frame(width: iconAreaWidth, alignment: .center)
-                            Text("소리가 안 들려요")
+                            Text("ui.settings.soundHelp")
                         }
                     }
 
@@ -77,26 +77,26 @@ struct SettingsView: View {
                         HStack(spacing: 8) {
                             VibrationBadgeIcon()
                                 .frame(width: iconAreaWidth, alignment: .center)
-                            Text("진동이 안 울려요")
+                            Text("ui.settings.vibrationHelp")
                         }
                     }
 
-                    Link("문의하기", destination: URL(string: "https://forms.gle/CobXgiRGjEFQZKgr8")!)
+                    Link("ui.settings.contact", destination: URL(string: "https://forms.gle/CobXgiRGjEFQZKgr8")!)
                         .accessibilityHint(A11yText.Settings.opensExternalLinkHint)
 
                     if languageCode == "ko" {
-                        Link("개인정보 처리방침", destination: privacyPolicyURL)
+                        Link("ui.settings.privacyPolicy", destination: privacyPolicyURL)
                             .accessibilityHint(A11yText.Settings.opensExternalLinkHint)
                     } else {
-                        Link("Privacy Policy", destination: privacyPolicyURL_en)
+                        Link("ui.settings.privacyPolicy", destination: privacyPolicyURL_en)
                             .accessibilityHint(A11yText.Settings.opensExternalLinkHint_EN)
                     }
                 }
             }
-            .navigationTitle("설정")
+            .navigationTitle("ui.settings.title")
             .safeAreaInset(edge: .bottom) {
                 VStack(spacing: 2) {
-                    Text("Quick Label Timer")
+                    Text("ui.common.appName")
                         .font(.footnote)
                     Text(Bundle.appVersion)
                         .font(.caption2)

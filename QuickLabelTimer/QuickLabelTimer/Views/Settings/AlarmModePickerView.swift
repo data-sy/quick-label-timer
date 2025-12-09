@@ -48,6 +48,6 @@ struct AlarmModePickerView: View {
                 defaultAlarmMode = mode
             }
         }
-        .navigationTitle("기본 알림 방식")
+        .navigationTitle("ui.settings.alarmModeTitle")
     }
 }
