@@ -1,10 +1,6 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "": {},
-    "“%@”": {},
-    "«« 실행 중": {},
-    "**설정 > 집중 모드**에서 활성화된 모드가 알림을 차단하고 있지 않은지 확인해 주세요": {},
     "%@, 남은 시간 %@": {
       "localizations": {
         "en": {
@@ -69,12 +65,17 @@
         }
       }
     },
-    "%lld": {},
     "%lld / %lld": {
       "localizations": {
         "en": {
           "stringUnit": {
-            "state": "new",
+            "state": "translated",
+            "value": "%1$lld / %2$lld"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
             "value": "%1$lld / %2$lld"
           }
         }
@@ -401,22 +402,6 @@
       }
     },
     "a11y.settings.opensExternalLinkHint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opens in an external browser"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "외부 브라우저에서 열립니다"
-          }
-        }
-      }
-    },
-    "a11y.settings.opensExternalLinkHint_EN": {
       "localizations": {
         "en": {
           "stringUnit": {

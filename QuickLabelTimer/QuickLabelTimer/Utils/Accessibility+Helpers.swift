@@ -177,7 +177,6 @@ enum A11yText {
     // 설정 (SettingsView)
     enum Settings {
         static let opensExternalLinkHint: LocalizedStringKey = "a11y.settings.opensExternalLinkHint"
-        static let opensExternalLinkHint_EN: LocalizedStringKey = "a11y.settings.opensExternalLinkHint_EN"
         static let opensSystemSettingsHint: LocalizedStringKey = "a11y.settings.opensSystemSettingsHint"
     }
 }

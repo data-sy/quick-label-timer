@@ -89,7 +89,7 @@ struct SettingsView: View {
                             .accessibilityHint(A11yText.Settings.opensExternalLinkHint)
                     } else {
                         Link("ui.settings.privacyPolicy", destination: privacyPolicyURL_en)
-                            .accessibilityHint(A11yText.Settings.opensExternalLinkHint_EN)
+                            .accessibilityHint(A11yText.Settings.opensExternalLinkHint)
                     }
                 }
             }
