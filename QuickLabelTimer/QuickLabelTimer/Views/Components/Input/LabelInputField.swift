@@ -37,7 +37,7 @@ struct LabelInputField: View {
                 
                 // 카운터: 80 이상일 때부터 표시
                 if label.count >= warningThreshold {
-                    Text("\(label.count) / \(AppConfig.maxLabelLength)")
+                    Text(String(format: String(localized: "%lld / %lld"), label.count, AppConfig.maxLabelLength))
                         .font(.caption)
                         .foregroundColor(colorForCount(label.count))
                         .transition(.opacity.combined(with: .move(edge: .trailing)))

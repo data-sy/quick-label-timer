@@ -119,21 +119,21 @@ enum A11yText {
     
     // Timer Row (TimerRowView) & Buttons
     enum TimerRow {
-        // 동적 문자열은 원래대로 유지 (자동 추출 안 됨)
-        static func runningLabel(label: String, time: String) -> LocalizedStringKey {
-            return LocalizedStringKey("\(label), 남은 시간 \(time)")
+        // 동적 문자열 - String(format:)을 사용하여 현지화 적용
+        static func runningLabel(label: String, time: String) -> String {
+            return String(format: String(localized: "%@, 남은 시간 %@"), label, time)
         }
 
-        static func pausedLabel(label: String, time: String) -> LocalizedStringKey {
-            return LocalizedStringKey("\(label), 일시정지됨, 남은 시간 \(time)")
+        static func pausedLabel(label: String, time: String) -> String {
+            return String(format: String(localized: "%@, 일시정지됨, 남은 시간 %@"), label, time)
         }
 
-        static func completedLabel(label: String) -> LocalizedStringKey {
-            return LocalizedStringKey("\(label), 완료됨")
+        static func completedLabel(label: String) -> String {
+            return String(format: String(localized: "%@, 완료됨"), label)
         }
-        
-        static func presetLabel(label: String, time: String) -> LocalizedStringKey {
-            return LocalizedStringKey("\(label), 설정 시간 \(time)")
+
+        static func presetLabel(label: String, time: String) -> String {
+            return String(format: String(localized: "%@, 설정 시간 %@"), label, time)
         }
 
         static let favoriteLabel: LocalizedStringKey = "a11y.timerRow.favoriteLabel"

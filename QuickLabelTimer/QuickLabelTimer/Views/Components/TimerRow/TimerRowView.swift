@@ -85,7 +85,7 @@ struct TimerRowView: View {
         return (iconName, finalColor)
     }
     
-    private var a11yLabel: LocalizedStringKey {
+    private var a11yLabel: String {
             switch state {
             case .running:
                 return A11yText.TimerRow.runningLabel(label: timer.label, time: timer.formattedTime)
