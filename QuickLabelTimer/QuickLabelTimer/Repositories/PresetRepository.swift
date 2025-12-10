@@ -74,27 +74,27 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     /// 사용자 프리셋 추가
     func addPreset(_ preset: TimerPreset) -> Bool {
         guard visiblePresetsCount < 20 else {
-            
+
             #if DEBUG
-            logger.info("프리셋 개수 제한(20개) 도달")
+            logger.info("Preset limit reached (20 presets)")
             #endif
-            
+
             return false
         }
         userPresets.append(preset)
         savePresets()
         return true
     }
-    
+
     /// 실행 중 타이머를 프리셋으로 추가
     @discardableResult
     func addPreset(from timer: TimerData) -> Bool {
         guard visiblePresetsCount < 20 else {
-            
+
             #if DEBUG
-            logger.info("프리셋 개수 제한(20개) 도달")
+            logger.info("Preset limit reached (20 presets)")
             #endif
-            
+
             return false
         }
         
@@ -117,11 +117,11 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     /// 프리셋 수정
     func updatePreset(_ preset: TimerPreset, label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool) {
         guard let index = userPresets.firstIndex(where: { $0.id == preset.id }) else {
-            
+
             #if DEBUG
-            logger.warning("수정하려는 프리셋(\(preset.id, privacy: .public))을 찾을 수 없습니다.")
+            logger.warning("Preset to update not found: \(preset.id, privacy: .public)")
             #endif
-            
+
             return
         }
         
@@ -167,7 +167,7 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
         guard let idx = userPresets.firstIndex(where: { $0.id == id }) else {
 
             #if DEBUG
-            logger.warning("숨기려는 프리셋(\(id, privacy: .public))을 찾을 수 없습니다.")
+            logger.warning("Preset to hide not found: \(id, privacy: .public)")
             #endif
 
             return
