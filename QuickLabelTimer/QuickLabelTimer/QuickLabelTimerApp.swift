@@ -43,7 +43,12 @@ struct QuickLabelTimerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView(
+            // MainTabView(
+            //     timerService: timerService,
+            //     timerRepository: timerRepository,
+            //     presetRepository: presetRepository
+            // )
+            MainTabView_New(
                 timerService: timerService,
                 timerRepository: timerRepository,
                 presetRepository: presetRepository
