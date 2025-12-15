@@ -1,1862 +1,1955 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "%@, 남은 시간 %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@, %2$@ remaining"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "\"%@\"" : {
+
+    },
+    "%@, 남은 시간 %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@ remaining"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@, 남은 시간 %2$@"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, 남은 시간 %2$@"
           }
         }
       }
     },
-    "%@, 설정 시간 %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@, set for %2$@"
+    "%@, 설정 시간 %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, set for %2$@"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@, 설정 시간 %2$@"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, 설정 시간 %2$@"
           }
         }
       }
     },
-    "%@, 완료됨": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@, completed"
+    "%@, 완료됨" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, completed"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@, 완료됨"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, 완료됨"
           }
         }
       }
     },
-    "%@, 일시정지됨, 남은 시간 %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@, paused, %2$@ remaining"
+    "%@, 일시정지됨, 남은 시간 %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, paused, %2$@ remaining"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@, 일시정지됨, 남은 시간 %2$@"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, 일시정지됨, 남은 시간 %2$@"
           }
         }
       }
     },
-    "%lld / %lld": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$lld / %2$lld"
+    "%lld" : {
+
+    },
+    "%lld / %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld / %2$lld"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$lld / %2$lld"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld / %2$lld"
           }
         }
       }
     },
-    "a11y.addTimer.createButton": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create Timer"
+    "a11y.addTimer.createButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Timer"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머 생성"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머 생성"
           }
         }
       }
     },
-    "a11y.addTimer.createButtonHint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Creates a new timer with the entered label and time"
+    "a11y.addTimer.createButtonHint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creates a new timer with the entered label and time"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "입력한 라벨과 시간으로 새로운 타이머를 생성합니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력한 라벨과 시간으로 새로운 타이머를 생성합니다"
           }
         }
       }
     },
-    "a11y.addTimer.labelInputHint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter a name for the timer. Leave blank to auto-generate"
+    "a11y.addTimer.labelInputHint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a name for the timer. Leave blank to auto-generate"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머의 이름을 입력해 주세요. 비워두면 자동으로 이름이 생성됩니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머의 이름을 입력해 주세요. 비워두면 자동으로 이름이 생성됩니다"
           }
         }
       }
     },
-    "a11y.addTimer.labelInputLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Timer Label"
+    "a11y.addTimer.labelInputLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timer Label"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머 라벨"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머 라벨"
           }
         }
       }
     },
-    "a11y.addTimer.timeChipHint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adds 5 minutes to the timer setting"
+    "a11y.addTimer.timeChipHint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds 5 minutes to the timer setting"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머 설정 시간에 5분을 추가합니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머 설정 시간에 5분을 추가합니다"
           }
         }
       }
     },
-    "a11y.addTimer.timePickerHint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set the timer duration in hours, minutes, and seconds"
+    "a11y.addTimer.timePickerHint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set the timer duration in hours, minutes, and seconds"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머의 시간을 시간, 분, 초 단위로 설정합니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머의 시간을 시간, 분, 초 단위로 설정합니다"
           }
         }
       }
     },
-    "a11y.addTimer.timePickerLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Timer Duration Setting"
+    "a11y.addTimer.timePickerLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timer Duration Setting"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머 시간 설정"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머 시간 설정"
           }
         }
       }
     },
-    "a11y.common.emptyInput": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not entered"
+    "a11y.common.emptyInput" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not entered"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "입력되지 않음"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력되지 않음"
           }
         }
       }
     },
-    "a11y.common.notSet": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not set"
+    "a11y.common.notSet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not set"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "설정되지 않음"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정되지 않음"
           }
         }
       }
     },
-    "a11y.editPreset.cancelButton": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
+    "a11y.editPreset.cancelButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "취소"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
           }
         }
       }
     },
-    "a11y.editPreset.deleteButton": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete"
+    "a11y.editPreset.deleteButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "삭제"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제"
           }
         }
       }
     },
-    "a11y.editPreset.saveButton": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save"
+    "a11y.editPreset.saveButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "저장"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장"
           }
         }
       }
     },
-    "a11y.favoriteList.emptyMessage": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No saved favorites"
+    "a11y.favoriteList.emptyMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No saved favorites"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "저장된 즐겨찾기가 없습니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장된 즐겨찾기가 없습니다"
           }
         }
       }
     },
-    "a11y.favoriteList.runningStatus": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Running"
+    "a11y.favoriteList.runningStatus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "실행 중"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "실행 중"
           }
         }
       }
     },
-    "a11y.mainTabs.favoritesTab": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Favorites Tab"
+    "a11y.mainTabs.favoritesTab" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorites Tab"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "즐겨찾기 탭"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기 탭"
           }
         }
       }
     },
-    "a11y.mainTabs.timerTab": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Timer Tab"
+    "a11y.mainTabs.timerTab" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timer Tab"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머 탭"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머 탭"
           }
         }
       }
     },
-    "a11y.mainToolbar.doneButton": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
+    "a11y.mainToolbar.doneButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "완료"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "완료"
           }
         }
       }
     },
-    "a11y.mainToolbar.listEditButton": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete"
+    "a11y.mainToolbar.listEditButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "삭제"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제"
           }
         }
       }
     },
-    "a11y.mainToolbar.settingsButton": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
+    "a11y.mainToolbar.settingsButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "설정"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정"
           }
         }
       }
     },
-    "a11y.runningList.emptyMessage": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No running timers yet"
+    "a11y.runningList.emptyMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No running timers yet"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "아직 실행 중인 타이머가 없습니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 실행 중인 타이머가 없습니다"
           }
         }
       }
     },
-    "a11y.settings.opensExternalLinkHint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opens in an external browser"
+    "a11y.settings.opensExternalLinkHint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens in an external browser"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "외부 브라우저에서 열립니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "외부 브라우저에서 열립니다"
           }
         }
       }
     },
-    "a11y.settings.opensSystemSettingsHint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opens iOS Settings screen"
+    "a11y.settings.opensSystemSettingsHint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens iOS Settings screen"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iOS 설정 화면을 엽니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS 설정 화면을 엽니다"
           }
         }
       }
     },
-    "a11y.timerRow.deleteLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete"
+    "a11y.timerRow.deleteLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "삭제"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제"
           }
         }
       }
     },
-    "a11y.timerRow.editLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit"
+    "a11y.timerRow.editLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "편집"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집"
           }
         }
       }
     },
-    "a11y.timerRow.favoriteLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Favorite"
+    "a11y.timerRow.favoriteLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorite"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "즐겨찾기"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기"
           }
         }
       }
     },
-    "a11y.timerRow.favoriteOffHint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add to favorites"
+    "a11y.timerRow.favoriteOffHint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to favorites"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "즐겨찾기에 추가합니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기에 추가합니다"
           }
         }
       }
     },
-    "a11y.timerRow.favoriteOnHint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove from favorites"
+    "a11y.timerRow.favoriteOnHint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove from favorites"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "즐겨찾기에서 해제합니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기에서 해제합니다"
           }
         }
       }
     },
-    "a11y.timerRow.moveToFavorite": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move to Favorites"
+    "a11y.timerRow.moveToFavorite" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move to Favorites"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "즐겨찾기로 이동"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기로 이동"
           }
         }
       }
     },
-    "a11y.timerRow.pauseLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pause"
+    "a11y.timerRow.pauseLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "일시정지"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일시정지"
           }
         }
       }
     },
-    "a11y.timerRow.playLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Resume"
+    "a11y.timerRow.playLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resume"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "재생"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "재생"
           }
         }
       }
     },
-    "a11y.timerRow.restartLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restart"
+    "a11y.timerRow.restartLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restart"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "다시 시작"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 시작"
           }
         }
       }
     },
-    "a11y.timerRow.startLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start"
+    "a11y.timerRow.startLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "시작"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작"
           }
         }
       }
     },
-    "a11y.timerRow.stopLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stop"
+    "a11y.timerRow.stopLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "정지"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정지"
           }
         }
       }
     },
-    "ui.common.appName": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quick Label Timer"
+    "ui.alarmMode.silent" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silent"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quick Label Timer"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무음"
           }
         }
       }
     },
-    "ui.settings.alarmModeTitle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Default Alarm Mode"
+    "ui.alarmMode.sound" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "기본 알림 방식"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리"
           }
         }
       }
     },
-    "ui.settings.contact": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contact Us"
+    "ui.alarmMode.vibration" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibration"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "문의하기"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "진동"
           }
         }
       }
     },
-    "ui.settings.currentStatus": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Current Status"
+    "ui.alarmSound.beepDouble" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Double Beep"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "현재 상태"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이중 삑"
           }
         }
       }
     },
-    "ui.settings.darkMode": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dark Mode"
+    "ui.alarmSound.beepSingle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beep"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "다크 모드"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삑"
           }
         }
       }
     },
-    "ui.settings.defaultSound": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Default Sound"
+    "ui.alarmSound.buzzHigh" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "High Buzz"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "기본 사운드"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "높은 진동음"
           }
         }
       }
     },
-    "ui.settings.enableNotifications": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enable Notifications in Settings"
+    "ui.alarmSound.buzzLow" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Low Buzz"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "설정에서 알림 허용하기"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "낮은 진동음"
           }
         }
       }
     },
-    "ui.settings.notificationSection": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Notification Settings"
+    "ui.alarmSound.default" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "알림 설정"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본"
           }
         }
       }
     },
-    "ui.settings.permissionSection": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Notification Permission"
+    "ui.alarmSound.ringtone01" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ringtone 1"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "알림 권한"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "벨소리 1"
           }
         }
       }
     },
-    "ui.settings.privacyPolicy": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Privacy Policy"
+    "ui.alarmSound.ringtone02" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ringtone 2"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "개인정보 처리방침"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "벨소리 2"
           }
         }
       }
     },
-    "ui.settings.soundHelp": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Can't Hear Sound"
+    "ui.alarmSound.silence" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silence (For Vibration)"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "소리가 안 들려요"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무음 (진동용)"
           }
         }
       }
     },
-    "ui.settings.statusAuthorized": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Authorized"
+    "ui.alert.cancel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "허용됨"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
           }
         }
       }
     },
-    "ui.settings.statusDenied": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Denied"
+    "ui.alert.cannotDeleteRunningMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot delete a running timer."
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "거부됨"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "실행 중인 타이머는 삭제할 수 없습니다."
           }
         }
       }
     },
-    "ui.settings.statusEphemeral": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ephemeral"
+    "ui.alert.cannotDeleteTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot Delete"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "일시적 세션"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제 불가"
           }
         }
       }
     },
-    "ui.settings.statusNotDetermined": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not Requested"
+    "ui.alert.cannotRunTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot Run"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "미요청"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "실행 불가"
           }
         }
       }
     },
-    "ui.settings.statusProvisional": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Provisional"
+    "ui.alert.cannotSaveTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot Save"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "임시 허용"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장 불가"
           }
         }
       }
     },
-    "ui.settings.statusUnknown": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unknown"
+    "ui.alert.delete" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "알 수 없음"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제"
           }
         }
       }
     },
-    "ui.settings.supportSection": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Support"
+    "ui.alert.deleteConfirmMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do you want to delete this timer?"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "지원"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 타이머를 삭제하시겠습니까?"
           }
         }
       }
     },
-    "ui.settings.title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
+    "ui.alert.maxFavoritesMessage" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You can add up to %lld favorite."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You can add up to %lld favorites."
+                }
+              }
+            }
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "설정"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기는 최대 20개까지 추가할 수 있습니다."
           }
         }
       }
     },
-    "ui.settings.vibrationHelp": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vibration Not Working"
+    "ui.alert.maxTimersMessage" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You can run up to %lld timer."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You can run up to %lld timers."
+                }
+              }
+            }
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "진동이 안 울려요"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머는 최대 %lld개까지 실행할 수 있습니다."
           }
         }
       }
     },
-    "ui.help.appleWatchUsers": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple Watch Users"
+    "ui.alert.ok" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple Watch 사용자"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인"
           }
         }
       }
     },
-    "ui.help.appleWatchVibrationText": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "If you're wearing an Apple Watch, notifications may be delivered to your Watch"
+    "ui.common.appName" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick Label Timer"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple Watch를 착용 중이라면, 알림이 Watch로 전달될 수 있습니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick Label Timer"
           }
         }
       }
     },
-    "ui.help.appleWatchHapticText": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Check if the haptic strength is sufficient in **Watch app > My Watch > Sounds & Haptics**"
+    "ui.countdown.deleteTimer" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld second, timer will be deleted"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld seconds, timer will be deleted"
+                }
+              }
+            }
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "**Watch 앱 > 나의 시계 > 사운드 및 햅틱**에서 '촉각' 강도가 충분한지 확인하세요"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld초 후 타이머가 삭제됩니다"
           }
         }
       }
     },
-    "ui.help.basicChecklist": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Basic Checklist"
+    "ui.countdown.removeFromFavorites" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld second, will be removed from favorites"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld seconds, will be removed from favorites"
+                }
+              }
+            }
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "기본 점검 항목"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld초 후 즐겨찾기에서 삭제됩니다"
           }
         }
       }
     },
-    "ui.help.checkMuteMode": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Is your device set to **silent mode**?"
+    "ui.countdown.returnToFavorites" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld second, will return to favorites"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld seconds, will return to favorites"
+                }
+              }
+            }
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "기기가 **무음 모드**로 설정되어 있지는 않나요?"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld초 후 즐겨찾기로 돌아갑니다"
           }
         }
       }
     },
-    "ui.help.checkVolume": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Is your device's **volume** at 0?"
+    "ui.countdown.saveToFavorites" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld second, will be saved to favorites"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "In %lld seconds, will be saved to favorites"
+                }
+              }
+            }
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "기기의 **볼륨**이 0 이지는 않나요?"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld초 후 즐겨찾기로 저장됩니다"
           }
         }
       }
     },
-    "ui.help.focusModeCheck": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Check Focus Mode"
+    "ui.editPreset.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Timer"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "집중 모드 확인"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머 수정"
           }
         }
       }
     },
-    "ui.help.focusModeText": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Check if an active mode in **Settings > Focus** is blocking notifications"
+    "ui.favorite.runningIndicator" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«« Running"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "**설정 > 집중 모드**에서 활성화된 모드가 알림을 차단하고 있지 않은지 확인해 주세요"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«« 실행 중"
           }
         }
       }
     },
-    "ui.help.focusModeVibrationText": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Check if an active mode in **Settings > Focus** is blocking notifications/vibrations"
+    "ui.favorite.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorites"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "**설정 > 집중 모드**에서 활성화된 모드가 알림/진동을 차단하지 않는지 확인해 주세요"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기"
           }
         }
       }
     },
-    "ui.help.notificationPathText": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Go to **Settings > Notifications > QuickLabelTimer** and check if 'Allow Notifications' and 'Sounds' are enabled"
+    "ui.help.appleWatchHapticText" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check if the haptic strength is sufficient in **Watch app > My Watch > Sounds & Haptics**"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "**설정 > 알림 > 퀵라벨타이머** 로 이동해 '알림 허용'과 '사운드'가 켜져 있는지 확인해 주세요"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Watch 앱 > 나의 시계 > 사운드 및 햅틱**에서 '촉각' 강도가 충분한지 확인하세요"
           }
         }
       }
     },
-    "ui.help.openNotificationSettings": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open Notification Settings"
+    "ui.help.appleWatchUsers" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Watch Users"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "알림 설정 열기"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Watch 사용자"
           }
         }
       }
     },
-    "ui.help.soundIntro": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iOS notification sounds are controlled by **system settings**.  \nIf you can't hear notification sounds, please check the following items."
+    "ui.help.appleWatchVibrationText" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you're wearing an Apple Watch, notifications may be delivered to your Watch"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iOS 알림의 소리 출력은 **시스템 설정에 따라 동작**합니다.  \n알림 소리가 들리지 않는다면 아래 항목을 확인해 주세요."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Watch를 착용 중이라면, 알림이 Watch로 전달될 수 있습니다"
           }
         }
       }
     },
-    "ui.help.soundIssueTitle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not Hearing Notification Sound?"
+    "ui.help.basicChecklist" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basic Checklist"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "알림 소리가 나지 않나요?"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본 점검 항목"
           }
         }
       }
     },
-    "ui.help.systemSettings": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Check System Settings"
+    "ui.help.checkMuteMode" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Is your device set to **silent mode**?"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "시스템 설정 확인"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기기가 **무음 모드**로 설정되어 있지는 않나요?"
           }
         }
       }
     },
-    "ui.help.vibrationAccessibilityText": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Go to **Settings > Accessibility > Touch** and check if 'Vibration' is enabled"
+    "ui.help.checkVolume" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Is your device's **volume** at 0?"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "**설정 > 손쉬운 사용 > 터치**로 이동해 '진동'이 켜져 있는지 확인해 주세요"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기기의 **볼륨**이 0 이지는 않나요?"
           }
         }
       }
     },
-    "ui.help.vibrationHapticText": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Go to **Settings > Sounds & Haptics** and check the following:\n  **•** 'Play Haptics in Ring Mode' is enabled\n  **•** 'Play Haptics in Silent Mode' is enabled\n  **•** 'System Haptics' is enabled"
+    "ui.help.focusModeCheck" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check Focus Mode"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "**설정 > 사운드 및 햅틱**으로 이동해 아래 항목을 확인해 주세요\n  **•** '벨소리 모드에서 햅틱 재생'이 켜져 있는지\n  **•** '무음 모드에서 햅틱 재생'이 켜져 있는지\n  **•** '시스템 햅틱'이 켜져 있는지"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "집중 모드 확인"
           }
         }
       }
     },
-    "ui.help.vibrationIntro": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iOS notification vibration (haptics) behavior **varies based on system settings**.  \nIf you don't feel vibrations, please check the following items."
+    "ui.help.focusModeText" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check if an active mode in **Settings > Focus** is blocking notifications"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iOS 알림의 진동(햅틱) 동작은 **시스템 설정에 따라 달라**집니다.  \n진동이 느껴지지 않는다면 아래 항목을 확인해 주세요."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**설정 > 집중 모드**에서 활성화된 모드가 알림을 차단하고 있지 않은지 확인해 주세요"
           }
         }
       }
     },
-    "ui.help.vibrationIssueTitle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Troubleshoot Vibration"
+    "ui.help.focusModeVibrationText" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check if an active mode in **Settings > Focus** is blocking notifications/vibrations"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "진동 문제 해결"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**설정 > 집중 모드**에서 활성화된 모드가 알림/진동을 차단하지 않는지 확인해 주세요"
           }
         }
       }
     },
-    "ui.alert.cancel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
+    "ui.help.notificationPathText" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to **Settings > Notifications > QuickLabelTimer** and check if 'Allow Notifications' and 'Sounds' are enabled"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "취소"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**설정 > 알림 > 퀵라벨타이머** 로 이동해 '알림 허용'과 '사운드'가 켜져 있는지 확인해 주세요"
           }
         }
       }
     },
-    "ui.alert.cannotDeleteRunningMessage": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cannot delete a running timer."
+    "ui.help.openNotificationSettings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Notification Settings"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "실행 중인 타이머는 삭제할 수 없습니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알림 설정 열기"
           }
         }
       }
     },
-    "ui.alert.cannotDeleteTitle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cannot Delete"
+    "ui.help.soundIntro" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS notification sounds are controlled by **system settings**.  \nIf you can't hear notification sounds, please check the following items."
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "삭제 불가"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS 알림의 소리 출력은 **시스템 설정에 따라 동작**합니다.  \n알림 소리가 들리지 않는다면 아래 항목을 확인해 주세요."
           }
         }
       }
     },
-    "ui.alert.cannotRunTitle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cannot Run"
+    "ui.help.soundIssueTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Hearing Notification Sound?"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "실행 불가"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알림 소리가 나지 않나요?"
           }
         }
       }
     },
-    "ui.alert.cannotSaveTitle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cannot Save"
+    "ui.help.systemSettings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check System Settings"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "저장 불가"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 설정 확인"
           }
         }
       }
     },
-    "ui.alert.delete": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete"
+    "ui.help.vibrationAccessibilityText" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to **Settings > Accessibility > Touch** and check if 'Vibration' is enabled"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "삭제"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**설정 > 손쉬운 사용 > 터치**로 이동해 '진동'이 켜져 있는지 확인해 주세요"
           }
         }
       }
     },
-    "ui.alert.deleteConfirmMessage": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Do you want to delete this timer?"
+    "ui.help.vibrationHapticText" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to **Settings > Sounds & Haptics** and check the following:\n  **•** 'Play Haptics in Ring Mode' is enabled\n  **•** 'Play Haptics in Silent Mode' is enabled\n  **•** 'System Haptics' is enabled"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "이 타이머를 삭제하시겠습니까?"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**설정 > 사운드 및 햅틱**으로 이동해 아래 항목을 확인해 주세요\n  **•** '벨소리 모드에서 햅틱 재생'이 켜져 있는지\n  **•** '무음 모드에서 햅틱 재생'이 켜져 있는지\n  **•** '시스템 햅틱'이 켜져 있는지"
           }
         }
       }
     },
-    "ui.alert.maxFavoritesMessage": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You can add up to 20 favorites."
+    "ui.help.vibrationIntro" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS notification vibration (haptics) behavior **varies based on system settings**.  \nIf you don't feel vibrations, please check the following items."
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "즐겨찾기는 최대 20개까지 추가할 수 있습니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS 알림의 진동(햅틱) 동작은 **시스템 설정에 따라 달라**집니다.  \n진동이 느껴지지 않는다면 아래 항목을 확인해 주세요."
           }
         }
       }
     },
-    "ui.alert.maxTimersMessage": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You can run up to %lld timers."
+    "ui.help.vibrationIssueTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Troubleshoot Vibration"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머는 최대 %lld개까지 실행할 수 있습니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "진동 문제 해결"
           }
         }
       }
     },
-    "ui.alert.ok": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OK"
+    "ui.input.add5Minutes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+5 min"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "확인"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+5분"
           }
         }
       }
     },
-    "ui.input.add5Minutes": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "+5 min"
+    "ui.input.hours" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hours"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "+5분"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시간"
           }
         }
       }
     },
-    "ui.input.hours": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hours"
+    "ui.input.labelField" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Label"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "시간"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라벨"
           }
         }
       }
     },
-    "ui.input.labelField": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Label"
+    "ui.input.labelPlaceholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter label (leave blank to auto-generate)"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "라벨"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라벨 입력 (비워두면 자동 생성)"
           }
         }
       }
     },
-    "ui.input.minutes": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Minutes"
+    "ui.input.maxLabelToast" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You can enter up to %lld character"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You can enter up to %lld characters"
+                }
+              }
+            }
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "분"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최대 %lld자까지 입력할 수 있어요"
           }
         }
       }
     },
-    "ui.input.seconds": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seconds"
+    "ui.input.minutes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minutes"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "초"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "분"
           }
         }
       }
     },
-    "ui.input.labelPlaceholder": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter label (leave blank to auto-generate)"
+    "ui.input.seconds" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seconds"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "라벨 입력 (비워두면 자동 생성)"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "초"
           }
         }
       }
     },
-    "ui.input.maxLabelToast": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You can enter up to %lld characters"
+    "ui.notification.tapToDismiss" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to dismiss alarm"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "최대 %lld자까지 입력할 수 있어요"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "눌러서 알람 끄기"
           }
         }
       }
     },
-    "ui.editPreset.title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit Timer"
+    "ui.notification.timerComplete" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timer Complete"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머 수정"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머 완료"
           }
         }
       }
     },
-    "ui.timer.title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Timer"
+    "ui.runningList.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running Timers"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머 실행"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "실행중인 타이머"
           }
         }
       }
     },
-    "ui.favorite.runningIndicator": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "«« Running"
+    "ui.settings.alarmModeTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default Alarm Mode"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "«« 실행 중"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본 알림 방식"
           }
         }
       }
     },
-    "ui.favorite.title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Favorites"
+    "ui.settings.contact" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact Us"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "즐겨찾기"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "문의하기"
           }
         }
       }
     },
-    "ui.countdown.saveToFavorites": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In %lld seconds, will be saved to favorites"
+    "ui.settings.currentStatus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current Status"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld초 후 즐겨찾기로 저장됩니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "현재 상태"
           }
         }
       }
     },
-    "ui.countdown.returnToFavorites": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In %lld seconds, will return to favorites"
+    "ui.settings.darkMode" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Mode"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld초 후 즐겨찾기로 돌아갑니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다크 모드"
           }
         }
       }
     },
-    "ui.countdown.deleteTimer": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In %lld seconds, timer will be deleted"
+    "ui.settings.defaultSound" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default Sound"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld초 후 타이머가 삭제됩니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본 사운드"
           }
         }
       }
     },
-    "ui.countdown.removeFromFavorites": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In %lld seconds, will be removed from favorites"
+    "ui.settings.enableNotifications" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Notifications in Settings"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld초 후 즐겨찾기에서 삭제됩니다"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정에서 알림 허용하기"
           }
         }
       }
     },
-    "ui.notification.timerComplete": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Timer Complete"
+    "ui.settings.notificationSection" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notification Settings"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머 완료"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알림 설정"
           }
         }
       }
     },
-    "ui.notification.tapToDismiss": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tap to dismiss alarm"
+    "ui.settings.permissionSection" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notification Permission"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "눌러서 알람 끄기"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알림 권한"
           }
         }
       }
     },
-    "ui.timer.autoLabel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Timer %lld"
+    "ui.settings.privacyPolicy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "타이머%lld"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개인정보 처리방침"
           }
         }
       }
     },
-    "ui.runningList.title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Running Timers"
+    "ui.settings.soundHelp" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can't Hear Sound"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "실행중인 타이머"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리가 안 들려요"
           }
         }
       }
     },
-    "ui.alarmMode.sound": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sound"
+    "ui.settings.statusAuthorized" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authorized"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "소리"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "허용됨"
           }
         }
       }
     },
-    "ui.alarmMode.vibration": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vibration"
+    "ui.settings.statusDenied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denied"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "진동"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "거부됨"
           }
         }
       }
     },
-    "ui.alarmMode.silent": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Silent"
+    "ui.settings.statusEphemeral" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ephemeral"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "무음"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일시적 세션"
           }
         }
       }
     },
-    "ui.alarmSound.default": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Default"
+    "ui.settings.statusNotDetermined" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Requested"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "기본"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "미요청"
           }
         }
       }
     },
-    "ui.alarmSound.buzzLow": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Low Buzz"
+    "ui.settings.statusProvisional" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provisional"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "낮은 진동음"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "임시 허용"
           }
         }
       }
     },
-    "ui.alarmSound.buzzHigh": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "High Buzz"
+    "ui.settings.statusUnknown" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "높은 진동음"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알 수 없음"
           }
         }
       }
     },
-    "ui.alarmSound.beepSingle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Beep"
+    "ui.settings.supportSection" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "삑"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지원"
           }
         }
       }
     },
-    "ui.alarmSound.beepDouble": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Double Beep"
+    "ui.settings.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "이중 삑"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정"
           }
         }
       }
     },
-    "ui.alarmSound.ringtone01": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ringtone 1"
+    "ui.settings.vibrationHelp" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibration Not Working"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "벨소리 1"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "진동이 안 울려요"
           }
         }
       }
     },
-    "ui.alarmSound.ringtone02": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ringtone 2"
+    "ui.timer.autoLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timer %lld"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "벨소리 2"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머%lld"
           }
         }
       }
     },
-    "ui.alarmSound.silence": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Silence (For Vibration)"
+    "ui.timer.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timer"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "무음 (진동용)"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머 실행"
           }
         }
       }
-    },
+    }
   },
-  "version": "1.1"
+  "version" : "1.1"
 }
