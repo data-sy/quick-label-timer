@@ -350,8 +350,8 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     func scheduleNotification(for timer: TimerData) {
         let policy = AlarmNotificationPolicy.determine(soundOn: timer.isSoundOn, vibrationOn: timer.isVibrationOn)
         let sound = NotificationUtils.createSound(fromPolicy: policy)
-        let title = timer.label.isEmpty ? "타이머 완료" : timer.label
-        let body = "눌러서 알람 끄기"
+        let title = timer.label.isEmpty ? String(localized: "ui.notification.timerComplete") : timer.label
+        let body = String(localized: "ui.notification.tapToDismiss")
         
         scheduleRepeatingNotifications(
             baseId: timer.id.uuidString,
@@ -452,12 +452,12 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         }
     }
     
-    /// 사용자가 라벨을 입력하지 않았을 때 "타이머N" 형식의 고유한 라벨 생성 (오름차순)
+    /// 사용자가 라벨을 입력하지 않았을 때 "Timer N" 형식의 고유한 라벨 생성 (오름차순)
     private func generateAutoLabel() -> String {
         let existingLabels = Set(timerRepository.getAllTimers().map(\.label) + presetRepository.allPresets.map(\.label))
         var index = 1
         while true {
-            let candidate = "타이머\(index)"
+            let candidate = String(format: String(localized: "ui.timer.autoLabel"), index)
             if !existingLabels.contains(candidate) {
                 return candidate
             }

@@ -40,7 +40,7 @@ struct SoundPickerView: View {
                 playSound(for: sound)
             }
         }
-        .navigationTitle("기본 사운드")
+        .navigationTitle("ui.settings.defaultSound")
     }
 
     private func playSound(for sound: AlarmSound) {

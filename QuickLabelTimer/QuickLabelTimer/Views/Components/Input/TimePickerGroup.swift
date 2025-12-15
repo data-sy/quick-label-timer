@@ -23,7 +23,7 @@ struct TimePickerGroup: View {
             .pickerStyle(.wheel)
             .frame(width: 55)
 
-            Text("시간")
+            Text("ui.input.hours")
                 .font(.caption2)
                 .foregroundColor(.gray)
 
@@ -33,7 +33,7 @@ struct TimePickerGroup: View {
             .pickerStyle(.wheel)
             .frame(width: 55)
 
-            Text("분")
+            Text("ui.input.minutes")
                 .font(.caption2)
                 .foregroundColor(.gray)
 
@@ -43,7 +43,7 @@ struct TimePickerGroup: View {
             .pickerStyle(.wheel)
             .frame(width: 55)
 
-            Text("초")
+            Text("ui.input.seconds")
                 .font(.caption2)
                 .foregroundColor(.gray)
         }

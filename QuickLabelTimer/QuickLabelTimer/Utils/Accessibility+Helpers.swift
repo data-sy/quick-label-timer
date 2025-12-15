@@ -93,95 +93,90 @@ extension View {
 
 enum A11yText {
     // 공통
-    static let emptyInput: LocalizedStringKey = "입력되지 않음"
-    static let notSet: LocalizedStringKey = "설정되지 않음"
+    static let emptyInput: LocalizedStringKey = "a11y.common.emptyInput"
+    static let notSet: LocalizedStringKey = "a11y.common.notSet"
     
     // 메인 툴바
     enum MainToolbar {
-        static let listEditButtonLabel: LocalizedStringKey = "삭제"
-        static let doneButtonLabel: LocalizedStringKey = "완료"
-        static let settingsButtonLabel: LocalizedStringKey = "설정"
+        static let listEditButtonLabel: LocalizedStringKey = "a11y.mainToolbar.listEditButton"
+        static let doneButtonLabel: LocalizedStringKey = "a11y.mainToolbar.doneButton"
+        static let settingsButtonLabel: LocalizedStringKey = "a11y.mainToolbar.settingsButton"
     }
     
     // 타이머 생성 (AddTimerView)
     enum AddTimer {
-        static let labelInputLabel: LocalizedStringKey = "타이머 라벨"
-        static let labelInputHint: LocalizedStringKey = "타이머의 이름을 입력해 주세요. 비워두면 자동으로 이름이 생성됩니다."
+        static let labelInputLabel: LocalizedStringKey = "a11y.addTimer.labelInputLabel"
+        static let labelInputHint: LocalizedStringKey = "a11y.addTimer.labelInputHint"
         
-        static let timePickerLabel: LocalizedStringKey = "타이머 시간 설정"
-        static let timePickerHint: LocalizedStringKey = "타이머의 시간을 시간, 분, 초 단위로 설정합니다."
+        static let timePickerLabel: LocalizedStringKey = "a11y.addTimer.timePickerLabel"
+        static let timePickerHint: LocalizedStringKey = "a11y.addTimer.timePickerHint"
         
-        static let createButtonLabel: LocalizedStringKey = "타이머 생성"
-        static let createButtonHint: LocalizedStringKey = "입력한 라벨과 시간으로 새로운 타이머를 생성합니다."
+        static let createButtonLabel: LocalizedStringKey = "a11y.addTimer.createButton"
+        static let createButtonHint: LocalizedStringKey = "a11y.addTimer.createButtonHint"
         
-        static let timeChipHint: LocalizedStringKey = "타이머 설정 시간에 5분을 추가합니다."
+        static let timeChipHint: LocalizedStringKey = "a11y.addTimer.timeChipHint"
     }
     
     // Timer Row (TimerRowView) & Buttons
     enum TimerRow {
-        // %1$@ = label, %2$@ = formatted time
-        static func runningLabel(label: String, time: String) -> LocalizedStringKey {
-            return LocalizedStringKey("\(label), 남은 시간 \(time)")
+        // 동적 문자열 - String(format:)을 사용하여 현지화 적용
+        static func runningLabel(label: String, time: String) -> String {
+            return String(format: String(localized: "%@, 남은 시간 %@"), label, time)
         }
 
-        // %1$@ = label, %2$@ = formatted time
-        static func pausedLabel(label: String, time: String) -> LocalizedStringKey {
-            return LocalizedStringKey("\(label), 일시정지됨, 남은 시간 \(time)")
+        static func pausedLabel(label: String, time: String) -> String {
+            return String(format: String(localized: "%@, 일시정지됨, 남은 시간 %@"), label, time)
         }
 
-        // %1$@ = label
-        static func completedLabel(label: String) -> LocalizedStringKey {
-            return LocalizedStringKey("\(label), 완료됨")
-        }
-        
-        // %1$@ = label, %2$@ = formatted time
-        static func presetLabel(label: String, time: String) -> LocalizedStringKey {
-            return LocalizedStringKey("\(label), 설정 시간 \(time)")
+        static func completedLabel(label: String) -> String {
+            return String(format: String(localized: "%@, 완료됨"), label)
         }
 
-        static let favoriteLabel: LocalizedStringKey = "즐겨찾기"
-        static let favoriteOnHint: LocalizedStringKey = "즐겨찾기에서 해제합니다."
-        static let favoriteOffHint: LocalizedStringKey = "즐겨찾기에 추가합니다."
-        static let moveToFavoriteLabel: LocalizedStringKey = "즐겨찾기로 이동"
+        static func presetLabel(label: String, time: String) -> String {
+            return String(format: String(localized: "%@, 설정 시간 %@"), label, time)
+        }
 
-        static let pauseLabel: LocalizedStringKey = "일시정지"
-        static let playLabel: LocalizedStringKey = "재생"
-        static let stopLabel: LocalizedStringKey = "정지"
-        static let startLabel: LocalizedStringKey = "시작"
-        static let restartLabel: LocalizedStringKey = "다시 시작"
-        static let deleteLabel: LocalizedStringKey = "삭제"
-        static let editLabel: LocalizedStringKey = "편집"
+        static let favoriteLabel: LocalizedStringKey = "a11y.timerRow.favoriteLabel"
+        static let favoriteOnHint: LocalizedStringKey = "a11y.timerRow.favoriteOnHint"
+        static let favoriteOffHint: LocalizedStringKey = "a11y.timerRow.favoriteOffHint"
+        static let moveToFavoriteLabel: LocalizedStringKey = "a11y.timerRow.moveToFavorite"
+
+        static let pauseLabel: LocalizedStringKey = "a11y.timerRow.pauseLabel"
+        static let playLabel: LocalizedStringKey = "a11y.timerRow.playLabel"
+        static let stopLabel: LocalizedStringKey = "a11y.timerRow.stopLabel"
+        static let startLabel: LocalizedStringKey = "a11y.timerRow.startLabel"
+        static let restartLabel: LocalizedStringKey = "a11y.timerRow.restartLabel"
+        static let deleteLabel: LocalizedStringKey = "a11y.timerRow.deleteLabel"
+        static let editLabel: LocalizedStringKey = "a11y.timerRow.editLabel"
     }
     
     // 즐겨찾기 목록 (FavoriteListView)
     enum FavoriteList {
-        static let emptyMessage: LocalizedStringKey = "저장된 즐겨찾기가 없습니다."
-        static let runningStatus: LocalizedStringKey = "실행 중"
+        static let emptyMessage: LocalizedStringKey = "a11y.favoriteList.emptyMessage"
+        static let runningStatus: LocalizedStringKey = "a11y.favoriteList.runningStatus"
     }
     
     // 실행중인 타이머 목록 (RunningListView)
     enum RunningList {
-     static let emptyMessage: LocalizedStringKey = "아직 실행 중인 타이머가 없습니다."
+     static let emptyMessage: LocalizedStringKey = "a11y.runningList.emptyMessage"
     }
 
     // 메인 탭 (MainTabView)
     enum MainTabs {
-        static let timerTab: LocalizedStringKey = "타이머 탭"
-        static let favoritesTab: LocalizedStringKey = "즐겨찾기 탭"
+        static let timerTab: LocalizedStringKey = "a11y.mainTabs.timerTab"
+        static let favoritesTab: LocalizedStringKey = "a11y.mainTabs.favoritesTab"
     }
     
     // 프리셋 편집 (EditPresetView)
     enum EditPreset {
-        static let saveButton: LocalizedStringKey = "저장"
-        static let cancelButton: LocalizedStringKey = "취소"
-        static let deleteButton: LocalizedStringKey = "삭제"
+        static let saveButton: LocalizedStringKey = "a11y.editPreset.saveButton"
+        static let cancelButton: LocalizedStringKey = "a11y.editPreset.cancelButton"
+        static let deleteButton: LocalizedStringKey = "a11y.editPreset.deleteButton"
     }
     
     // 설정 (SettingsView)
     enum Settings {
-        static let opensExternalLinkHint: LocalizedStringKey = "외부 브라우저에서 열립니다."
-        static let opensExternalLinkHint_EN: LocalizedStringKey = "Opens in an external browser."
-        static let opensSystemSettingsHint: LocalizedStringKey = "iOS 설정 화면을 엽니다."
+        static let opensExternalLinkHint: LocalizedStringKey = "a11y.settings.opensExternalLinkHint"
+        static let opensSystemSettingsHint: LocalizedStringKey = "a11y.settings.opensSystemSettingsHint"
     }
 }
-

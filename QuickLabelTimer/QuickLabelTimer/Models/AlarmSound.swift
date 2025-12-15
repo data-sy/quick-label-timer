@@ -21,14 +21,14 @@ enum AlarmSound: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .systemDefault: return "Default"
-        case .buzzLow: return "Low Buzz"
-        case .buzzHigh: return "High Buzz"
-        case .beepSingle: return "Beep"
-        case .beepDouble: return "Double Beep"
-        case .ringtone01: return "Ringtone 1"
-        case .ringtone02: return "Ringtone 2"
-        case .silence: return "Silence For Vibration" // UI에 표시되진 않지만, 디버깅 등을 위해 명확한 이름 부여
+        case .systemDefault: return String(localized: "ui.alarmSound.default")
+        case .buzzLow: return String(localized: "ui.alarmSound.buzzLow")
+        case .buzzHigh: return String(localized: "ui.alarmSound.buzzHigh")
+        case .beepSingle: return String(localized: "ui.alarmSound.beepSingle")
+        case .beepDouble: return String(localized: "ui.alarmSound.beepDouble")
+        case .ringtone01: return String(localized: "ui.alarmSound.ringtone01")
+        case .ringtone02: return String(localized: "ui.alarmSound.ringtone02")
+        case .silence: return String(localized: "ui.alarmSound.silence") // UI에 표시되진 않지만, 디버깅 등을 위해 명확한 이름 부여
         }
     }
     

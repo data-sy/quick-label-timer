@@ -25,6 +25,7 @@ struct QuickLabelTimerApp: App {
     
     // 지연 초기화(deferred init)
     init() {
+        logLocalizationState()
         let timerRepository = TimerRepository()
         let presetRepository = PresetRepository()
         let timerService = TimerService(
@@ -38,10 +39,6 @@ struct QuickLabelTimerApp: App {
         _timerService = StateObject(wrappedValue: timerService)
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel())
         
-        // 디버그 매니저에 실제 서비스 주입
-        #if DEBUG
-        AlarmDebugManager.timerService = timerService
-        #endif
     }
     
     var body: some Scene {
@@ -61,4 +58,10 @@ struct QuickLabelTimerApp: App {
             timerService.updateScenePhase(newPhase)
         }
     }
+}
+
+private func logLocalizationState() {
+    print("Locale.current =", Locale.current)
+    print("Preferred localizations =", Bundle.main.preferredLocalizations)
+    print("Available localizations =", Bundle.main.localizations)
 }

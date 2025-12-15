@@ -12,6 +12,24 @@
 - **Firebase** - Crashlytics
 - **Target:** iOS 16.0+, iPhone only
 
+## Build & Development Commands
+
+```bash
+# Open project
+open QuickLabelTimer/QuickLabelTimer.xcodeproj
+
+# Build (in Xcode)
+Product → Build (⌘B)
+
+# Run (in Xcode)
+Product → Run (⌘R)
+
+# Run tests (in Xcode)
+Product → Test (⌘U)
+```
+
+**Note:** Project uses `.xcodeproj` (not `.xcworkspace`)
+
 ## Architecture: MVVM + Service/Repository
 
 ```
@@ -279,13 +297,34 @@ Logger.ui.notice("User action: \(action)")
 
 ## Localization
 
-- **File:** `/Localizable.xcstrings`
-- **Languages:** English (en), Korean (ko)
-- **Pattern:** `"a11y.{context}.{element}"` or `"ui.{screen}.{element}"`
+- **Files:**
+  - `/Localizable.xcstrings` - Main string catalog
+  - `/Localizable.stringsdict` - Pluralization rules
+  - `/Utils/Accessibility+Helpers.swift` - Centralized accessibility strings
+- **Languages:** English (en, source), Korean (ko)
+- **Key Naming:** `{category}.{screen/component}.{element}`
+  - `ui.*` - User interface text
+  - `a11y.*` - Accessibility labels
 
+**Quick Patterns:**
 ```swift
-Text("a11y.addTimer.createButton")  // Auto-localized
+// Static text
+Text("ui.timer.title")
+
+// String variables
+let msg = String(localized: "ui.alert.ok")
+
+// Formatted strings (with dynamic values)
+let label = String(format: String(localized: "%@, 남은 시간 %@"), name, time)
+
+// Pluralization (uses .stringsdict)
+let msg = String(format: String(localized: "ui.countdown.deleteTimer"), seconds)
+
+// Accessibility (centralized in A11yText)
+.accessibilityLabel(A11yText.TimerRow.startLabel)
 ```
+
+**📖 For complete localization patterns and guidelines, see [`I18N_GUIDE.md`](I18N_GUIDE.md)**
 
 ## Testing
 
@@ -361,6 +400,7 @@ preset.isHiddenInList = true  // ✅ Can restore
 
 ## Additional Documentation
 
+- **`I18N_GUIDE.md`** - Complete internationalization guide: localization patterns, pluralization, accessibility strings, testing
 - **`docs/ARCHITECTURE_DEEP_DIVE.md`** - Detailed MVVM explanation, design decisions, historical context
 - **`docs/STATE_MACHINE_GUIDE.md`** - Complete TimerInteractionState system, all transitions, button mapping logic
 - **`docs/NOTIFICATION_SYSTEM.md`** - Notification scheduling strategy, delegate handling, iOS limitations

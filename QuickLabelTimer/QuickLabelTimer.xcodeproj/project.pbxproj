@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EB1FDA862E62DF1A00328C3B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EB1FDA852E62DF1A00328C3B /* FirebaseAnalytics */; };
-		EB1FDA882E62DF1A00328C3B /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = EB1FDA872E62DF1A00328C3B /* FirebaseCrashlytics */; };
+		EB6F69F12EEFA5F2005C0A05 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EB6F69F02EEFA5F2005C0A05 /* FirebaseAnalytics */; };
+		EB6F69F32EEFA5F8005C0A05 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = EB6F69F22EEFA5F8005C0A05 /* FirebaseCrashlytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,8 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB1FDA862E62DF1A00328C3B /* FirebaseAnalytics in Frameworks */,
-				EB1FDA882E62DF1A00328C3B /* FirebaseCrashlytics in Frameworks */,
+				EB6F69F12EEFA5F2005C0A05 /* FirebaseAnalytics in Frameworks */,
+				EB6F69F32EEFA5F8005C0A05 /* FirebaseCrashlytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,11 +72,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EB6F69EF2EEFA5F2005C0A05 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EB8A19AD2E1E773700ADD4F0 = {
 			isa = PBXGroup;
 			children = (
 				EB8A19B82E1E773700ADD4F0 /* QuickLabelTimer */,
 				EB8A19C72E1E773800ADD4F0 /* QuickLabelTimerTests */,
+				EB6F69EF2EEFA5F2005C0A05 /* Frameworks */,
 				EB8A19B72E1E773700ADD4F0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -111,8 +119,8 @@
 			);
 			name = QuickLabelTimer;
 			packageProductDependencies = (
-				EB1FDA852E62DF1A00328C3B /* FirebaseAnalytics */,
-				EB1FDA872E62DF1A00328C3B /* FirebaseCrashlytics */,
+				EB6F69F02EEFA5F2005C0A05 /* FirebaseAnalytics */,
+				EB6F69F22EEFA5F8005C0A05 /* FirebaseCrashlytics */,
 			);
 			productName = LabelTimer;
 			productReference = EB8A19B62E1E773700ADD4F0 /* QuickLabelTimer.app */;
@@ -312,6 +320,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -368,6 +377,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
@@ -545,12 +555,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		EB1FDA852E62DF1A00328C3B /* FirebaseAnalytics */ = {
+		EB6F69F02EEFA5F2005C0A05 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB1FDA842E62DF1A00328C3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		EB1FDA872E62DF1A00328C3B /* FirebaseCrashlytics */ = {
+		EB6F69F22EEFA5F8005C0A05 /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EB1FDA842E62DF1A00328C3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;

@@ -15,7 +15,7 @@ struct RunningListView: View {
                 
     var body: some View {
         TimerListContainerView(
-            title: "실행중인 타이머",
+            title: String(localized: "ui.runningList.title"),
             items: viewModel.sortedTimers,
             emptyMessage: A11yText.RunningList.emptyMessage,
             stateProvider: { timer in

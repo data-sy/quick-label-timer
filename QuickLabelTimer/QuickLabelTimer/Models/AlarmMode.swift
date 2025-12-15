@@ -20,9 +20,9 @@ enum AlarmMode: String, CaseIterable, Identifiable {
     /// UI에 표시될 텍스트 라벨
     var label: String {
         switch self {
-        case .sound: return "소리"
-        case .vibration: return "진동"
-        case .silent: return "무음"
+        case .sound: return String(localized: "ui.alarmMode.sound")
+        case .vibration: return String(localized: "ui.alarmMode.vibration")
+        case .silent: return String(localized: "ui.alarmMode.silent")
         }
     }
         
@@ -38,9 +38,9 @@ enum AlarmMode: String, CaseIterable, Identifiable {
     /// 접근성
     var a11yLabel: LocalizedStringKey {
         switch self {
-        case .sound: return "소리"
-        case .vibration: return "진동"
-        case .silent: return "무음"
+        case .sound: return "ui.alarmMode.sound"
+        case .vibration: return "ui.alarmMode.vibration"
+        case .silent: return "ui.alarmMode.silent"
         }
     }
 }
