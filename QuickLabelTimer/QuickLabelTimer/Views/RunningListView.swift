@@ -14,7 +14,7 @@ struct RunningListView: View {
     @ObservedObject var viewModel: RunningListViewModel
                 
     var body: some View {
-        TimerListContainerView(
+        TimerSectionView(
             title: String(localized: "ui.runningList.title"),
             items: viewModel.sortedTimers,
             emptyMessage: A11yText.RunningList.emptyMessage,
