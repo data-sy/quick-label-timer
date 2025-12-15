@@ -55,7 +55,7 @@ extension View {
                 )
             case .confirmDeletion(let itemName, let onConfirm):
                 return Alert(
-                    title: Text(""\(itemName)""),
+                    title: Text("\"\(itemName)\""),
                     message: Text("ui.alert.deleteConfirmMessage"),
                     primaryButton: .destructive(Text("ui.alert.delete"), action: onConfirm),
                     secondaryButton: .cancel(Text("ui.alert.cancel"))
