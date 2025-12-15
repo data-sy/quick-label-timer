@@ -618,6 +618,22 @@
         }
       }
     },
+    "ui.addTimer.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Timer"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타이머 생성"
+          }
+        }
+      }
+    },
     "ui.alarmMode.silent" : {
       "localizations" : {
         "en" : {
@@ -1447,13 +1463,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+5 min"
+            "value" : "+ 5min"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+5분"
+            "value" : "+ 5분"
           }
         }
       }
@@ -1463,12 +1479,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hours"
+            "value" : "h"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "시간"
           }
         }
@@ -1539,12 +1555,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Minutes"
+            "value" : "m"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "분"
           }
         }
@@ -1555,12 +1571,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seconds"
+            "value" : "s"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "초"
           }
         }
@@ -1610,6 +1626,57 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "실행중인 타이머"
+          }
+        }
+      }
+    },
+    "ui.settings.alarmMode.silent" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound Off, Vibration Off"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 X, 진동 X"
+          }
+        }
+      }
+    },
+    "ui.settings.alarmMode.sound" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound On, Vibration On"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 O, 진동 O"
+          }
+        }
+      }
+    },
+    "ui.settings.alarmMode.vibration" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound Off, Vibration On"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 X, 진동 O"
           }
         }
       }

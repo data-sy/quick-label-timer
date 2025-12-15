@@ -68,7 +68,7 @@ struct TimerInputForm: View {
 }
 
 struct TimeChipButton: View {
-    let label: String
+    let label: LocalizedStringKey
     let action: () -> Void
     
     var body: some View {
@@ -83,7 +83,7 @@ struct TimeChipButton: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .a11y(
-            label: LocalizedStringKey(label), // "+5분"
+            label: label, // "+5분"
             hint: A11yText.AddTimer.timeChipHint,
             traits: .isButton
         )

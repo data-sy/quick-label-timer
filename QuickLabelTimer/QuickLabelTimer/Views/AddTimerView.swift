@@ -23,7 +23,7 @@ struct AddTimerView: View {
     var body: some View {
         VStack(spacing: 0) {
             TimerInputForm(
-                sectionTitle: "타이머 생성",
+                sectionTitle: String(localized: "ui.addTimer.title"),
                 label: $viewModel.label,
                 hours: $viewModel.hours,
                 minutes: $viewModel.minutes,

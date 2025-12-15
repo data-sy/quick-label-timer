@@ -14,11 +14,11 @@ struct AlarmModePickerView: View {
     @AppStorage("defaultAlarmMode") private var defaultAlarmMode: AlarmMode = .sound
     private let iconAreaWidth: CGFloat = 36
     
-    private func displayName(for mode: AlarmMode) -> String {
+    private func displayName(for mode: AlarmMode) -> LocalizedStringKey {
         switch mode {
-        case .sound: return "소리 O, 진동 O"
-        case .vibration: return "소리 X, 진동 O"
-        case .silent: return "소리 X, 진동 X"
+        case .sound: return "ui.settings.alarmMode.sound"
+        case .vibration: return "ui.settings.alarmMode.vibration"
+        case .silent: return "ui.settings.alarmMode.silent"
         }
     }
 
