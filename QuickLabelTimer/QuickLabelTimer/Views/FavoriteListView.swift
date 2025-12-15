@@ -27,52 +27,54 @@ struct FavoriteListView: View {
                 AppTheme.pageBackground
                     .ignoresSafeArea()
                 
-                TimerListContainerView(
-                    title: nil,
-                    items: viewModel.visiblePresets,
-                    emptyMessage: A11yText.FavoriteList.emptyMessage,
-                    stateProvider: { _ in
-                        return .preset
-                    },
-                    onDelete: viewModel.hidePreset(at:)
-                ) { preset in
-                    ZStack {
-                        FavoritePresetRowView(
-                            preset: preset,
-                            onToggleFavorite: {
-                                viewModel.requestToHide(preset)
-                            },
-                            onLeftTap: {
-                                viewModel.handleLeft(for: preset)
-                                editMode?.wrappedValue = .inactive
-                            },
-                            onRightTap: {
-                                viewModel.handleRight(for: preset)
-                                editMode?.wrappedValue = .inactive
+                ScrollView { // 탭이 나뉘어져 있는 동안 임시 스크롤
+                    TimerSectionView(
+                        title: nil,
+                        items: viewModel.visiblePresets,
+                        emptyMessage: A11yText.FavoriteList.emptyMessage,
+                        stateProvider: { _ in
+                            return .preset
+                        },
+                        onDelete: viewModel.hidePreset(at:)
+                    ) { preset in
+                        ZStack {
+                            FavoritePresetRowView(
+                                preset: preset,
+                                onToggleFavorite: {
+                                    viewModel.requestToHide(preset)
+                                },
+                                onLeftTap: {
+                                    viewModel.handleLeft(for: preset)
+                                    editMode?.wrappedValue = .inactive
+                                },
+                                onRightTap: {
+                                    viewModel.handleRight(for: preset)
+                                    editMode?.wrappedValue = .inactive
+                                }
+                            )
+                            // 실행 중인 프리셋
+                            if viewModel.isPresetRunning(preset) {
+                                Color.black.opacity(0.4)
+                                    .cornerRadius(12)
+                                    .padding(4)
+                                HStack(spacing: 8) {
+                                    Text("ui.favorite.runningIndicator")
+                                        .font(.title)
+                                        .fontWeight(.bold)
+                                    Image(systemName: "figure.run")
+                                        .font(.title)
+                                        .scaleEffect(x: -1, y: 1)
+                                }
+                                .foregroundColor(.white)
+                                .accessibilityHidden(true)
                             }
-                        )
-                        // 실행 중인 프리셋
-                        if viewModel.isPresetRunning(preset) {
-                            Color.black.opacity(0.4)
-                                .cornerRadius(12)
-                                .padding(4)
-                            HStack(spacing: 8) {
-                                Text("ui.favorite.runningIndicator")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                Image(systemName: "figure.run")
-                                    .font(.title)
-                                    .scaleEffect(x: -1, y: 1)
-                            }
-                            .foregroundColor(.white)
-                            .accessibilityHidden(true)
                         }
+                        .disabled(viewModel.isPresetRunning(preset))
+                        .deleteDisabled(viewModel.isPresetRunning(preset))
+                        .accessibilityValue(
+                            viewModel.isPresetRunning(preset) ? A11yText.FavoriteList.runningStatus : ""
+                        )
                     }
-                    .disabled(viewModel.isPresetRunning(preset))
-                    .deleteDisabled(viewModel.isPresetRunning(preset))
-                    .accessibilityValue(
-                        viewModel.isPresetRunning(preset) ? A11yText.FavoriteList.runningStatus : ""
-                    )
                 }
                 .padding(.horizontal)
                 .navigationTitle("ui.favorite.title")
