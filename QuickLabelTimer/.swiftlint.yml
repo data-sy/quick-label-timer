@@ -36,14 +36,15 @@ disabled_rules:
 
 # Custom Rules for i18n
 custom_rules:
-  # Prevent hardcoded Korean strings
+  # Prevent hardcoded Korean strings (excluding comments and localized strings)
   no_hardcoded_korean:
     name: "No Hardcoded Korean Strings"
-    regex: '(?<!//\s*)"[^"]*[가-힣]+[^"]*"'
+    regex: '(?<!//.*)"[^"]*[가-힣]+[^"]*"(?!.*String\(localized:)'
     match_kinds:
       - string
     message: "Hardcoded Korean string detected. Use String(localized:) instead."
     severity: error
+    excluded: ".*Tests\\.swift"  # Allow in test files
 
   # Prevent hardcoded UI strings (common English words in UI context)
   no_hardcoded_ui_strings:
@@ -53,14 +54,33 @@ custom_rules:
       - identifier
     message: "Potential hardcoded UI string in Text(). Consider using localization keys."
     severity: warning
+    excluded: ".*Preview.*|.*Example.*"  # Allow in previews
 
   # Ensure localization keys follow naming convention
   localization_key_format:
     name: "Localization Key Format"
-    regex: 'String\(localized:\s*"(?!ui\.|a11y\.)'
+    regex: 'String\(localized:\s*"(?!ui\.|a11y\.)[^%]*"'  # Exclude format strings with %
     match_kinds:
       - identifier
     message: "Localization keys should start with 'ui.' or 'a11y.' prefix."
+    severity: warning
+
+  # NEW: Catch Button with hardcoded text
+  no_hardcoded_button_labels:
+    name: "No Hardcoded Button Labels"
+    regex: 'Button\s*\(\s*"[^"]+"\s*\)'
+    match_kinds:
+      - identifier
+    message: "Button labels should be localized. Use Button(LocalizedStringKey)."
+    severity: warning
+
+  # NEW: Catch NavigationLink with hardcoded text
+  no_hardcoded_nav_titles:
+    name: "No Hardcoded NavigationLink Titles"
+    regex: 'NavigationLink\s*\(\s*"[A-Za-z가-힣]'
+    match_kinds:
+      - identifier
+    message: "NavigationLink titles should be localized."
     severity: warning
 
 # Rule configurations

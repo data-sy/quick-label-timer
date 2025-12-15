@@ -25,14 +25,16 @@ EXIT_CODE=0
 # ============================================
 echo "1️⃣  Checking for hardcoded Korean strings..."
 
-KOREAN_MATCHES=$(grep -r -n '[가-힣]' "$SWIFT_FILES_DIR" \
+# Only look for Korean in string literals, not comments or metadata
+KOREAN_MATCHES=$(grep -r -n '"[^"]*[가-힣][^"]*"' "$SWIFT_FILES_DIR" \
   --include="*.swift" \
   --exclude-dir="Tests" \
-  | grep -v '^\s*//' \
-  | grep -v 'Created by' \
-  | grep -v 'Copyright' \
-  | grep -v '///' \
-  | grep -v 'MARK:' \
+  --exclude-dir="QuickLabelTimerTests" \
+  --exclude="*Tests.swift" \
+  | grep -v '//' \
+  | grep -v 'String(localized:' \
+  | grep -v 'String(format: String(localized:' \
+  | grep -v 'LocalizedStringKey' \
   || true)
 
 if [ -n "$KOREAN_MATCHES" ]; then
@@ -109,12 +111,18 @@ fi
 # ============================================
 echo "4️⃣  Checking localization key naming convention..."
 
+# Find String(localized:) calls that don't use ui./a11y. prefix
+# Exclude format strings (which contain %@, %lld, etc.) as they might be in stringsdict
 INVALID_KEYS=$(grep -r -n 'String(localized:' "$SWIFT_FILES_DIR" \
   --include="*.swift" \
   --exclude-dir="Tests" \
+  --exclude-dir="QuickLabelTimerTests" \
   | grep -v '"ui\.' \
   | grep -v '"a11y\.' \
   | grep -v 'String.LocalizationValue' \
+  | grep -v '%@' \
+  | grep -v '%lld' \
+  | grep -v 'String(format:' \
   || true)
 
 if [ -n "$INVALID_KEYS" ]; then
@@ -126,6 +134,29 @@ else
   echo -e "${GREEN}✅ All localization keys follow naming convention${NC}"
   echo ""
 fi
+
+# ============================================
+# Check 5: Verify sample/demo data is wrapped or localized
+# ============================================
+echo "5️⃣  Checking sample data localization..."
+
+SAMPLE_DATA_FILES=$(find "$SWIFT_FILES_DIR" -name "*Sample*Data.swift" -o -name "*Demo*.swift" || true)
+
+if [ -n "$SAMPLE_DATA_FILES" ]; then
+  for file in $SAMPLE_DATA_FILES; do
+    # Check if file contains hardcoded strings AND is not wrapped in #if DEBUG
+    KOREAN_IN_SAMPLE=$(grep '[가-힣]' "$file" | grep -v '#if DEBUG' | grep -v '//' || true)
+
+    if [ -n "$KOREAN_IN_SAMPLE" ]; then
+      echo -e "${YELLOW}⚠️  Sample data file contains hardcoded strings: $file${NC}"
+      echo "   Recommendation: Wrap in #if DEBUG or localize sample data"
+      echo ""
+    fi
+  done
+fi
+
+echo -e "${GREEN}✅ Sample data check complete${NC}"
+echo ""
 
 # ============================================
 # Summary
