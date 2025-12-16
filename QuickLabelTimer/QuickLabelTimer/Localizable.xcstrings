@@ -90,6 +90,9 @@
         }
       }
     },
+    "10:30 종료" : {
+
+    },
     "a11y.addTimer.createButton" : {
       "localizations" : {
         "en" : {
@@ -656,6 +659,15 @@
           }
         }
       }
+    },
+    "Design Lab" : {
+
+    },
+    "Design Lab V2" : {
+
+    },
+    "Design Lab V9-V10" : {
+
     },
     "ui.addTimer.title" : {
       "localizations" : {
@@ -2056,6 +2068,24 @@
           }
         }
       }
+    },
+    "오전 10:30 종료 예정" : {
+
+    },
+    "일시정지" : {
+
+    },
+    "일시정지됨" : {
+
+    },
+    "재개" : {
+
+    },
+    "정지" : {
+
+    },
+    "타이머 종료" : {
+
     }
   },
   "version" : "1.1"
