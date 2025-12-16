@@ -5,14 +5,6 @@
 //  Created by 이소연 on 12/16/25.
 //
 
-
-//
-//  CardStyleRow_v8.swift
-//  QuickLabelTimer
-//
-//  Created by 이소연 on 12/16/25.
-//
-
 import SwiftUI
 
 // MARK: - Option D: iOS Clock App Style

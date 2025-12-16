@@ -5,14 +5,6 @@
 //  Created by 이소연 on 12/16/25.
 //
 
-
-//
-//  CardStyleRow_v7.swift
-//  QuickLabelTimer
-//
-//  Created by 이소연 on 12/16/25.
-//
-
 import SwiftUI
 
 // MARK: - Option C: Capsule Button

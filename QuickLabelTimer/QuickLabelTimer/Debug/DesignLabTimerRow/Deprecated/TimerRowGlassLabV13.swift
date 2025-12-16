@@ -5,14 +5,6 @@
 //  Created by 이소연 on 12/16/25.
 //
 
-
-//
-//  TimerRowGlassLabV13.swift
-//  QuickLabelTimer
-//
-//  Created by 이소연 on 12/16/25.
-//
-
 import SwiftUI
 
 // MARK: - 🌑 Glass Material V13 실험실 (Deep Focus)

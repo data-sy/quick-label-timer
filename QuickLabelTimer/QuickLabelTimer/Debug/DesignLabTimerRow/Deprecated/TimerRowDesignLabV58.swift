@@ -5,14 +5,6 @@
 //  Created by 이소연 on 12/16/25.
 //
 
-
-//
-//  TimerRowDesignLabV58.swift
-//  QuickLabelTimer
-//
-//  Created by 이소연 on 12/16/25.
-//
-
 import SwiftUI
 
 // MARK: - 🎛️ 디자인 실험실 V5~V8 - 버튼 스타일 비교

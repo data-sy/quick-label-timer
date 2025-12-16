@@ -1,13 +1,5 @@
 //
-//  TimerRowV17.swift
-//  QuickLabelTimer
-//
-//  Created by 이소연 on 12/16/25.
-//
-
-
-//
-//  TimerRowV17.swift
+//  TimerRowV16.swift
 //  QuickLabelTimer
 //
 //  Created by 이소연 on 12/16/25.
@@ -15,8 +7,8 @@
 
 import SwiftUI
 
-// MARK: - V17: Enhanced Shadow (Deeper Lift)
-struct TimerRowV17: View {
+// MARK: - V16: No Divider (Spacing Only)
+struct TimerRowV16: View {
     let timer: TimerData
     let onLabelChange: (String) -> Void
     
@@ -44,7 +36,7 @@ struct TimerRowV17: View {
                 }
             }
             
-            Divider().padding(.vertical, 4)
+            // Divider 제거 - 여백만 사용
             
             // [중단] 시간 + 버튼
             HStack(alignment: .center, spacing: 16) {
@@ -100,6 +92,6 @@ struct TimerRowV17: View {
         .padding()
         .background(AppTheme.contentBackground)
         .cornerRadius(20)
-        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+        .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
 }
