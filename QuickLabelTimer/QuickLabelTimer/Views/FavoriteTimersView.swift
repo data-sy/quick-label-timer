@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct FavoriteTimersView: View {
-    @ObservedObject var viewModel: FavoriteListViewModel
+    @ObservedObject var viewModel: FavoriteTimersViewModel
     @Binding var editMode: EditMode
     
     var body: some View {
@@ -20,7 +20,7 @@ struct FavoriteTimersView: View {
         TimerSectionView(
             title: String(localized: "ui.favorite.title"),
             items: viewModel.visiblePresets,
-            emptyMessage: A11yText.FavoriteList.emptyMessage,
+            emptyMessage: A11yText.FavoriteTimers.emptyMessage,
             stateProvider: { _ in .preset },
             onDelete: viewModel.hidePreset(at:)
         ) { preset in
@@ -48,7 +48,7 @@ struct FavoriteTimersView: View {
             .disabled(viewModel.isPresetRunning(preset))
             .deleteDisabled(viewModel.isPresetRunning(preset))
             .accessibilityValue(
-                viewModel.isPresetRunning(preset) ? A11yText.FavoriteList.runningStatus : ""
+                viewModel.isPresetRunning(preset) ? A11yText.FavoriteTimers.runningStatus : ""
             )
         }
         // MARK: [이동됨] 편집 시트 로직

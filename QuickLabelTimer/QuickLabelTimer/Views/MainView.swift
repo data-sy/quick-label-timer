@@ -18,7 +18,7 @@ struct MainView: View {
 
     @StateObject private var addTimerVM: AddTimerViewModel
     @StateObject private var runningTimersVM: RunningTimersViewModel
-    @StateObject private var favoriteListVM: FavoriteListViewModel
+    @StateObject private var favoriteTimersVM: FavoriteTimersViewModel
 
     @State private var showSettings = false
     private let timerDidStart: AnyPublisher<Void, Never>
@@ -45,8 +45,8 @@ struct MainView: View {
             )
         )
 
-        _favoriteListVM = StateObject(
-            wrappedValue: FavoriteListViewModel(
+        _favoriteTimersVM = StateObject(
+            wrappedValue: FavoriteTimersViewModel(
                 presetRepository: presetRepository,
                 timerService: timerService,
                 timerRepository: timerRepository
@@ -83,11 +83,11 @@ struct MainView: View {
                             
                             SectionContainerView {
                                 FavoriteTimersView(
-                                    viewModel: favoriteListVM,
+                                    viewModel: favoriteTimersVM,
                                     editMode: editMode ?? .constant(.inactive)
                                 )
                             }
-                            .id("favoriteListSection") //TODO: list->timers
+                            .id("favoriteTimersSection")
 
                             Spacer(minLength: 100)
                         }
@@ -113,7 +113,7 @@ struct MainView: View {
                 .standardToolbarStyle()
             }
         }
-        .appAlert(item: $favoriteListVM.activeAlert)
+        .appAlert(item: $favoriteTimersVM.activeAlert)
         .background(AppTheme.pageBackground)
         .tint(.blue)
         .id(colorScheme)

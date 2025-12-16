@@ -282,7 +282,8 @@
         }
       }
     },
-    "a11y.favoriteList.emptyMessage" : {
+    "a11y.favoriteTimers.emptyMessage" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -298,7 +299,8 @@
         }
       }
     },
-    "a11y.favoriteList.runningStatus" : {
+    "a11y.favoriteTimers.runningStatus" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {

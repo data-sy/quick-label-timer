@@ -150,10 +150,10 @@ enum A11yText {
         static let editLabel: LocalizedStringKey = "a11y.timerRow.editLabel"
     }
     
-    // 즐겨찾기 목록 (FavoriteListView)
-    enum FavoriteList {
-        static let emptyMessage: LocalizedStringKey = "a11y.favoriteList.emptyMessage"
-        static let runningStatus: LocalizedStringKey = "a11y.favoriteList.runningStatus"
+    // 즐겨찾기 목록 (FavoriteTimersView)
+    enum FavoriteTimers {
+        static let emptyMessage: LocalizedStringKey = "a11y.favoriteTimers.emptyMessage"
+        static let runningStatus: LocalizedStringKey = "a11y.favoriteTimers.runningStatus"
     }
     
     // 실행중인 타이머 목록 (RunningTimersView)

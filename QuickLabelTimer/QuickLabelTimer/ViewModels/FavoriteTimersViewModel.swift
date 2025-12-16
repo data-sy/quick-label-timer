@@ -1,10 +1,10 @@
 //
-//  FavoriteListViewModel.swift
+//  FavoriteTimersViewModel.swift
 //  QuickLabelTimer
 //
 //  Created by 이소연 on 8/8/25.
 //
-/// FavoriteListView의 상태와 비즈니스 로직을 관리하는 ViewModel
+/// FavoriteTimersView의 상태와 비즈니스 로직을 관리하는 ViewModel
 ///
 /// - 사용 목적: View로부터 이벤트(버튼 클릭 등)를 받아 로직을 처리하고, View에 표시될 데이터를 @Published 프로퍼티로 제공
 
@@ -12,7 +12,7 @@ import SwiftUI
 import Combine
 
 @MainActor
-class FavoriteListViewModel: ObservableObject {
+class FavoriteTimersViewModel: ObservableObject {
     // MARK: - Dependencies
     let presetRepository: PresetRepositoryProtocol
     let timerService: any TimerServiceProtocol
