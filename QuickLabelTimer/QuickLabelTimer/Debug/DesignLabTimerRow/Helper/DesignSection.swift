@@ -10,10 +10,14 @@ import SwiftUI
 // MARK: - Design Section Helper
 struct DesignSection<Content: View>: View {
     let title: String
-    let description: String
+    let description: String?
     let content: Content
     
-    init(title: String, description: String, @ViewBuilder content: () -> Content) {
+    init(
+        title: String,
+        description: String? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
         self.title = title
         self.description = description
         self.content = content()
@@ -26,12 +30,15 @@ struct DesignSection<Content: View>: View {
                 .bold()
                 .foregroundColor(.blue)
             
-            Text(description)
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .padding(.bottom, 4)
+            if let description {
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .padding(.bottom, 4)
+            }
             
             content
         }
     }
 }
+

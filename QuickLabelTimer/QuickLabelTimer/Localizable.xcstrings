@@ -7,6 +7,12 @@
     "\"%@\"" : {
 
     },
+    "#E8EAF6" : {
+
+    },
+    "#F3E5F5" : {
+
+    },
     "%@, 남은 시간 %@" : {
       "localizations" : {
         "en" : {
@@ -669,7 +675,13 @@
     "Design Lab V9-V10" : {
 
     },
-    "Inline Edit Lab" : {
+    "End Color" : {
+
+    },
+    "Glass Material Lab" : {
+
+    },
+    "Start Color" : {
 
     },
     "timer-completed" : {
@@ -2077,6 +2089,12 @@
           }
         }
       }
+    },
+    "연한 보라" : {
+
+    },
+    "연한 인디고" : {
+
     },
     "오전 10:30 종료 예정" : {
 
