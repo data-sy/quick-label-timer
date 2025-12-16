@@ -15,12 +15,14 @@ struct MainView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.editMode) private var editMode
     @EnvironmentObject var settingsViewModel: SettingsViewModel
-    @State private var showSettings = false
-    private let timerDidStart: AnyPublisher<Void, Never>
 
     @StateObject private var addTimerVM: AddTimerViewModel
     @StateObject private var runningTimersVM: RunningTimersViewModel
     @StateObject private var favoriteListVM: FavoriteListViewModel
+
+    @State private var showSettings = false
+    private let timerDidStart: AnyPublisher<Void, Never>
+
 
     init(
         timerService: any TimerServiceProtocol,
@@ -78,53 +80,14 @@ struct MainView: View {
                             Divider()
                                 .padding(.vertical, 12)
                                 .accessibilityHidden(true)
-
-                            TimerSectionView(
-                                title: String(localized: "ui.favorite.title"),
-                                items: favoriteListVM.visiblePresets,
-                                emptyMessage: A11yText.FavoriteList.emptyMessage,
-                                stateProvider: { _ in .preset },
-                                onDelete: favoriteListVM.hidePreset(at:)
-                            ) { preset in
-                                ZStack {
-                                    FavoritePresetRowView(
-                                        preset: preset,
-                                        onToggleFavorite: { favoriteListVM.requestToHide(preset) },
-                                        onLeftTap: {
-                                            favoriteListVM.handleLeft(for: preset)
-                                            editMode?.wrappedValue = .inactive
-                                        },
-                                        onRightTap: {
-                                            favoriteListVM.handleRight(for: preset)
-                                            editMode?.wrappedValue = .inactive
-                                        }
-                                    )
-
-                                    if favoriteListVM.isPresetRunning(preset) {
-                                        Color.black.opacity(0.4)
-                                            .cornerRadius(12)
-                                            .padding(4)
-                                        HStack(spacing: 8) {
-                                            Text("ui.favorite.runningIndicator")
-                                                .font(.title)
-                                                .fontWeight(.bold)
-                                            Image(systemName: "figure.run")
-                                                .font(.title)
-                                                .scaleEffect(x: -1, y: 1)
-                                        }
-                                        .foregroundColor(.white)
-                                        .accessibilityHidden(true)
-                                    }
-                                }
-                                .disabled(favoriteListVM.isPresetRunning(preset))
-                                .deleteDisabled(favoriteListVM.isPresetRunning(preset))
-                                .accessibilityValue(
-                                    favoriteListVM.isPresetRunning(preset)
-                                        ? A11yText.FavoriteList.runningStatus
-                                        : ""
+                            
+                            SectionContainerView {
+                                FavoriteTimersView(
+                                    viewModel: favoriteListVM,
+                                    editMode: editMode ?? .constant(.inactive)
                                 )
                             }
-                            .id("favoriteListSection")
+                            .id("favoriteListSection") //TODO: list->timers
 
                             Spacer(minLength: 100)
                         }
@@ -146,17 +109,6 @@ struct MainView: View {
                 }
                 .sheet(isPresented: $showSettings) {
                     SettingsView()
-                }
-                .sheet(isPresented: $favoriteListVM.isEditing, onDismiss: favoriteListVM.stopEditing) {
-                    if let preset = favoriteListVM.editingPreset {
-                        let editViewModel = EditPresetViewModel(
-                            preset: preset,
-                            presetRepository: favoriteListVM.presetRepository,
-                            timerService: favoriteListVM.timerService
-                        )
-                        EditPresetView(viewModel: editViewModel)
-                            .presentationDetents([.medium])
-                    }
                 }
                 .standardToolbarStyle()
             }
