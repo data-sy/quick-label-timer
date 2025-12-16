@@ -150,21 +150,23 @@ enum A11yText {
         static let editLabel: LocalizedStringKey = "a11y.timerRow.editLabel"
     }
     
-    // 즐겨찾기 목록 (FavoriteListView)
-    enum FavoriteList {
-        static let emptyMessage: LocalizedStringKey = "a11y.favoriteList.emptyMessage"
-        static let runningStatus: LocalizedStringKey = "a11y.favoriteList.runningStatus"
+    // 즐겨찾기 목록 (FavoriteTimersView)
+    enum FavoriteTimers {
+        static let emptyMessage: LocalizedStringKey = "a11y.favoriteTimers.emptyMessage"
+        static let runningStatus: LocalizedStringKey = "a11y.favoriteTimers.runningStatus"
     }
     
-    // 실행중인 타이머 목록 (RunningListView)
-    enum RunningList {
-     static let emptyMessage: LocalizedStringKey = "a11y.runningList.emptyMessage"
+    // 실행중인 타이머 목록 (RunningTimersView)
+    enum RunningTimers {
+     static let emptyMessage: LocalizedStringKey = "a11y.runningTimers.emptyMessage"
     }
 
-    // 메인 탭 (MainTabView)
-    enum MainTabs {
-        static let timerTab: LocalizedStringKey = "a11y.mainTabs.timerTab"
-        static let favoritesTab: LocalizedStringKey = "a11y.mainTabs.favoritesTab"
+    // 메인 뷰 (MainView)
+    enum MainView {
+        static let addTimerSection: LocalizedStringKey = "a11y.mainView.addTimerSection"
+        static let runningTimersSection: LocalizedStringKey = "a11y.mainView.runningTimersSection"
+        static let favoriteTimersSection: LocalizedStringKey = "a11y.mainView.favoriteTimersSection"
+        static let scrollView: LocalizedStringKey = "a11y.mainView.scrollView"
     }
     
     // 프리셋 편집 (EditPresetView)
