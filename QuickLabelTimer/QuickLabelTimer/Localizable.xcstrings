@@ -7,6 +7,12 @@
     "\"%@\"" : {
 
     },
+    "#E8EAF6" : {
+
+    },
+    "#F3E5F5" : {
+
+    },
     "%@, 남은 시간 %@" : {
       "localizations" : {
         "en" : {
@@ -89,6 +95,9 @@
           }
         }
       }
+    },
+    "10:30 종료" : {
+
     },
     "a11y.addTimer.createButton" : {
       "localizations" : {
@@ -656,6 +665,30 @@
           }
         }
       }
+    },
+    "Design Lab" : {
+
+    },
+    "Design Lab V2" : {
+
+    },
+    "Design Lab V9-V10" : {
+
+    },
+    "End Color" : {
+
+    },
+    "Glass Material Lab" : {
+
+    },
+    "Start Color" : {
+
+    },
+    "timer-completed" : {
+
+    },
+    "timer-label-placeholder" : {
+
     },
     "ui.addTimer.title" : {
       "localizations" : {
@@ -2056,6 +2089,30 @@
           }
         }
       }
+    },
+    "연한 보라" : {
+
+    },
+    "연한 인디고" : {
+
+    },
+    "오전 10:30 종료 예정" : {
+
+    },
+    "일시정지" : {
+
+    },
+    "일시정지됨" : {
+
+    },
+    "재개" : {
+
+    },
+    "정지" : {
+
+    },
+    "타이머 종료" : {
+
     }
   },
   "version" : "1.1"

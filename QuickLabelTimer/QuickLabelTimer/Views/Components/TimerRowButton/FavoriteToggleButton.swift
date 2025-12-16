@@ -18,7 +18,8 @@ struct FavoriteToggleButton: View {
     
     var body: some View {
         Button(action: onToggle) {
-            Image(systemName: endAction.isPreserve ? "star.fill" : "star")
+//            Image(systemName: endAction.isPreserve ? "star.fill" : "star")
+            Image(systemName: endAction.isPreserve ? "bookmark.fill" : "bookmark")
                 .foregroundColor(endAction.isPreserve ? .yellow : .gray.opacity(0.6))
                 .font(.title2)
                 .frame(width: 44, height: 44) // 탭 영역 확보
