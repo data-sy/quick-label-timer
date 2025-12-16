@@ -5,14 +5,6 @@
 //  Created by 이소연 on 12/16/25.
 //
 
-
-//
-//  EditAffordanceLabV18V21.swift
-//  QuickLabelTimer
-//
-//  Created by 이소연 on 12/16/25.
-//
-
 import SwiftUI
 
 // MARK: - 🖊️ 편집 암시 실험실 V18-V21
