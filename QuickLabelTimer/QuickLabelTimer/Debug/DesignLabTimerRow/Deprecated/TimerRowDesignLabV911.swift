@@ -1,5 +1,5 @@
 //
-//  TimerRowDesignLabV910.swift
+//  TimerRowDesignLabV911.swift
 //  QuickLabelTimer
 //
 //  Created by 이소연 on 12/16/25.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-// MARK: - 🎛️ 디자인 실험실 V9-V10 - 북마크 추가 버전
-struct TimerRowDesignLabV910: View {
+// MARK: - 🎛️ 디자인 실험실 V9-V11 - 북마크 추가 버전
+struct TimerRowDesignLabV911: View {
     var body: some View {
         NavigationStack {
             ZStack {
@@ -159,7 +159,7 @@ extension TimerData {
 
 // MARK: - Preview
 #Preview {
-    TimerRowDesignLabV910()
+    TimerRowDesignLabV911()
         .environmentObject(TimerService(
             timerRepository: TimerRepository(),
             presetRepository: PresetRepository(),
