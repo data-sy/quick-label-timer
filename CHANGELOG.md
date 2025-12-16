@@ -8,12 +8,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+### Changed
+### Fixed
+### Removed
+
+## [Unreleased]
+
+### Added
+- Accessibility labels for unified timer view sections (English/Korean)
 
 ### Changed
-
-### Fixed
+- Unified timer management into single scrollable view
+- Replaced tab navigation with vertical scroll
+- Renamed views for clarity:
+  - RunningListView → RunningTimersView
+  - FavoriteListView → FavoriteTimersView
+  - MainTabView → MainView
+- Improved scroll performance with VStack-based architecture
 
 ### Removed
+- Tab-based navigation (TabView)
+- Nested scroll containers
+
+### Technical
+- Implement VStack-based layout to eliminate nested scroll issues
+- Add ScrollViewReader for programmatic navigation
+- Document architecture decision in ADR 015
 
 ## [1.0.0] - 2024-11-15
 
