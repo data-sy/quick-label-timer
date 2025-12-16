@@ -66,6 +66,7 @@ struct MainView: View {
                             SectionContainerView {
                                 AddTimerView(viewModel: addTimerVM)
                             }
+                            .accessibilityLabel(A11yText.MainView.addTimerSection)
                             .id("addTimerSection")
 
                             Divider()
@@ -75,6 +76,7 @@ struct MainView: View {
                             SectionContainerView {
                                 RunningTimersView(viewModel: runningTimersVM)
                             }
+                            .accessibilityLabel(A11yText.MainView.runningTimersSection)
                             .id("runningTimersSection")
 
                             Divider()
@@ -87,12 +89,14 @@ struct MainView: View {
                                     editMode: editMode ?? .constant(.inactive)
                                 )
                             }
+                            .accessibilityLabel(A11yText.MainView.favoriteTimersSection)
                             .id("favoriteTimersSection")
 
                             Spacer(minLength: 100)
                         }
                         .padding(.horizontal)
                     }
+                    .accessibilityIdentifier("unifiedTimerScrollView")
                     .ignoresSafeArea(.keyboard, edges: .bottom)
 
                     // MARK: - Auto-scroll (TODO: anchor 위치 고민)

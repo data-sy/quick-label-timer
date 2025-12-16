@@ -162,9 +162,11 @@ enum A11yText {
     }
 
     // 메인 뷰 (MainView)
-    enum MainTabs {
-        static let timerTab: LocalizedStringKey = "a11y.mainTabs.timerTab"
-        static let favoritesTab: LocalizedStringKey = "a11y.mainTabs.favoritesTab"
+    enum MainView {
+        static let addTimerSection: LocalizedStringKey = "a11y.mainView.addTimerSection"
+        static let runningTimersSection: LocalizedStringKey = "a11y.mainView.runningTimersSection"
+        static let favoriteTimersSection: LocalizedStringKey = "a11y.mainView.favoriteTimersSection"
+        static let scrollView: LocalizedStringKey = "a11y.mainView.scrollView"
     }
     
     // 프리셋 편집 (EditPresetView)

@@ -15,8 +15,6 @@ struct FavoriteTimersView: View {
     @Binding var editMode: EditMode
     
     var body: some View {
-        // MARK: [이동됨] TimerSectionView 호출
-        // MainView에 있던 즐겨찾기 리스트 생성 로직이 그대로 여기로 왔습니다.
         TimerSectionView(
             title: String(localized: "ui.favorite.title"),
             items: viewModel.visiblePresets,
@@ -24,8 +22,6 @@ struct FavoriteTimersView: View {
             stateProvider: { _ in .preset },
             onDelete: viewModel.hidePreset(at:)
         ) { preset in
-            
-            // MARK: [이동됨] 개별 Row 및 오버레이
             ZStack {
                 FavoritePresetRowView(
                     preset: preset,
@@ -51,8 +47,6 @@ struct FavoriteTimersView: View {
                 viewModel.isPresetRunning(preset) ? A11yText.FavoriteTimers.runningStatus : ""
             )
         }
-        // MARK: [이동됨] 편집 시트 로직
-        // 메인 뷰의 .sheet 모디파이어 하나가 여기로 옮겨져, 메인 뷰 코드가 깔끔해졌습니다.
         .sheet(isPresented: $viewModel.isEditing, onDismiss: viewModel.stopEditing) {
             if let preset = viewModel.editingPreset {
                 EditPresetView(viewModel: EditPresetViewModel(
@@ -65,8 +59,6 @@ struct FavoriteTimersView: View {
         }
     }
     
-    // MARK: [추출됨] 오버레이 뷰
-    // 본문 가독성을 위해 별도 프로퍼티로 뺐습니다.
     private var runningOverlay: some View {
         Color.black.opacity(0.4)
             .cornerRadius(12)
