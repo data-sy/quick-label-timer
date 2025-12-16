@@ -40,7 +40,7 @@ struct TimerRowRunningV22: View {
             }
             
             Divider()
-                .background(isRunning ? Color.white.opacity(0.3) : Color.secondary.opacity(0.3))
+                .background(isRunning ? Color.white : Color.secondary.opacity(0.3))
                 .padding(.vertical, 4)
             
             // [중단] 시간 + 버튼
