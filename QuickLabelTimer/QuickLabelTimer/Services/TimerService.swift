@@ -151,7 +151,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
     
     // MARK: - User Actions (UI에서 호출할 함수들)
-    // TODO: 추후 RunningListViewModel 리팩토링 시, 완료 상태의 타이머 버튼 액션을 이 함수로 연결
+    // TODO: 추후 RunningTimersViewModel 리팩토링 시, 완료 상태의 타이머 버튼 액션을 이 함수로 연결
     // Handler를 통해 '최신' 데이터를 기준으로 액션을 처리하여 데이터 정합성을 보장
     func userDidConfirmCompletion(for timerId: UUID) {
         completionHandler.handleCompletionImmediately(timerId: timerId)

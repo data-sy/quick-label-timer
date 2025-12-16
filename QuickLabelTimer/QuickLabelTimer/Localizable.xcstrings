@@ -394,7 +394,8 @@
         }
       }
     },
-    "a11y.runningList.emptyMessage" : {
+    "a11y.runningTimers.emptyMessage" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1614,7 +1615,8 @@
         }
       }
     },
-    "ui.runningList.title" : {
+    "ui.runningTimers.title" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {

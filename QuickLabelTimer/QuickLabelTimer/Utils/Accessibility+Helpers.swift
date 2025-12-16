@@ -156,12 +156,12 @@ enum A11yText {
         static let runningStatus: LocalizedStringKey = "a11y.favoriteList.runningStatus"
     }
     
-    // 실행중인 타이머 목록 (RunningListView)
-    enum RunningList {
-     static let emptyMessage: LocalizedStringKey = "a11y.runningList.emptyMessage"
+    // 실행중인 타이머 목록 (RunningTimersView)
+    enum RunningTimers {
+     static let emptyMessage: LocalizedStringKey = "a11y.runningTimers.emptyMessage"
     }
 
-    // 메인 탭 (MainTabView)
+    // 메인 뷰 (MainView)
     enum MainTabs {
         static let timerTab: LocalizedStringKey = "a11y.mainTabs.timerTab"
         static let favoritesTab: LocalizedStringKey = "a11y.mainTabs.favoritesTab"

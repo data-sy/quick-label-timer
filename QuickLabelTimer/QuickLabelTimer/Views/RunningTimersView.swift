@@ -1,5 +1,5 @@
 //
-//  RunningListView.swift
+//  RunningTimersView.swift
 //  QuickLabelTimer
 //
 //  Created by 이소연 on 7/14/25.
@@ -10,14 +10,14 @@
 
 import SwiftUI
 
-struct RunningListView: View {
-    @ObservedObject var viewModel: RunningListViewModel
+struct RunningTimersView: View {
+    @ObservedObject var viewModel: RunningTimersViewModel
                 
     var body: some View {
         TimerSectionView(
-            title: String(localized: "ui.runningList.title"),
+            title: String(localized: "ui.runningTimers.title"),
             items: viewModel.sortedTimers,
-            emptyMessage: A11yText.RunningList.emptyMessage,
+            emptyMessage: A11yText.RunningTimers.emptyMessage,
             stateProvider: { timer in
                 return timer.interactionState
             }

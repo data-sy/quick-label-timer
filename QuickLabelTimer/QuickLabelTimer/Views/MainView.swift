@@ -1,17 +1,17 @@
 //
-//  MainTabView.swift
+//  MainView.swift
 //  QuickLabelTimer
 //
 //  Created by Claude on 12/15/25.
 //
-/// 메인 통합 스크롤 뷰 (실험)
+/// 타이머 관리의 메인 화면
 ///
-/// - 사용 목적: AddTimer와 RunningList를 단일 ScrollView에 통합하여 중첩 스크롤 문제 해결
+/// - 사용 목적: 사용자가 타이머를 생성하고 실행하며, 저장된 타이머 목록을 한 화면에서 확인할 수 있도록 제공
 
 import SwiftUI
 import Combine
 
-struct MainTabView: View {
+struct MainView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.editMode) private var editMode
     @EnvironmentObject var settingsViewModel: SettingsViewModel
@@ -19,7 +19,7 @@ struct MainTabView: View {
     private let timerDidStart: AnyPublisher<Void, Never>
 
     @StateObject private var addTimerVM: AddTimerViewModel
-    @StateObject private var runningListVM: RunningListViewModel
+    @StateObject private var runningTimersVM: RunningTimersViewModel
     @StateObject private var favoriteListVM: FavoriteListViewModel
 
     init(
@@ -35,8 +35,8 @@ struct MainTabView: View {
                 defaultAlarmMode: .sound
             )
         )
-        _runningListVM = StateObject(
-            wrappedValue: RunningListViewModel(
+        _runningTimersVM = StateObject(
+            wrappedValue: RunningTimersViewModel(
                 timerService: timerService,
                 timerRepository: timerRepository,
                 presetRepository: presetRepository
@@ -71,9 +71,9 @@ struct MainTabView: View {
                                 .accessibilityHidden(true)
 
                             SectionContainerView {
-                                RunningListView(viewModel: runningListVM)
+                                RunningTimersView(viewModel: runningTimersVM)
                             }
-                            .id("runningListSection")
+                            .id("runningTimersSection")
 
                             Divider()
                                 .padding(.vertical, 12)
@@ -135,7 +135,7 @@ struct MainTabView: View {
                     // MARK: - Auto-scroll (TODO: anchor 위치 고민)
                      .onReceive(timerDidStart.receive(on: RunLoop.main)) { _ in
                          withAnimation {
-                             proxy.scrollTo("runningListSection", anchor: .top)
+                             proxy.scrollTo("runningTimersSection", anchor: .top)
                          }
                      }
                 }

@@ -1,5 +1,5 @@
 //
-//  RunningListViewModel.swift
+//  RunningTimersViewModel.swift
 //  QuickLabelTimer
 //
 //  Created by 이소연 on 8/7/25.
@@ -12,7 +12,7 @@ import Foundation
 import Combine
 
 @MainActor
-final class RunningListViewModel: ObservableObject {
+final class RunningTimersViewModel: ObservableObject {
     private let timerService: any TimerServiceProtocol
     private let timerRepository: TimerRepositoryProtocol
     private let presetRepository: PresetRepositoryProtocol
