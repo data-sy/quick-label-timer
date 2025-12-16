@@ -36,18 +36,18 @@ struct TimerRowDesignLabV58: View {
                                 )
                             }
                         }
-                        
-                        // Option C: Capsule Button
-                        DesignSection(title: "Option C: Capsule Button", description: "캡슐형 버튼에 텍스트로 명확한 액션 표시") {
-                            VStack(spacing: 12) {
-                                CardStyleRowV7(
-                                    timer: makeDummyTimer(label: "업무 집중 시간", time: "1:25:00", state: .running)
-                                )
-                                CardStyleRowV7(
-                                    timer: makeDummyTimer(label: "매우 긴 라벨 테스트: 라벨이 길어져도 자연스럽게 줄바꿈됩니다.", time: "0:00:00", state: .completed)
-                                )
-                            }
-                        }
+//                        
+//                        // Option C: Capsule Button
+//                        DesignSection(title: "Option C: Capsule Button", description: "캡슐형 버튼에 텍스트로 명확한 액션 표시") {
+//                            VStack(spacing: 12) {
+//                                CardStyleRowV7(
+//                                    timer: makeDummyTimer(label: "업무 집중 시간", time: "1:25:00", state: .running)
+//                                )
+//                                CardStyleRowV7(
+//                                    timer: makeDummyTimer(label: "매우 긴 라벨 테스트: 라벨이 길어져도 자연스럽게 줄바꿈됩니다.", time: "0:00:00", state: .completed)
+//                                )
+//                            }
+//                        }
                         
                         // Option B: Outlined Circle
                         DesignSection(title: "Option B: Outlined Circle", description: "윤곽선 원형 버튼으로 시각적 무게 감소") {
@@ -60,18 +60,18 @@ struct TimerRowDesignLabV58: View {
                                 )
                             }
                         }
-                        
-                        // Option A: iOS Native
-                        DesignSection(title: "Option A: iOS Native", description: "Apple 표준 텍스트 버튼 스타일") {
-                            VStack(spacing: 12) {
-                                CardStyleRowV5(
-                                    timer: makeDummyTimer(label: "업무 집중 시간", time: "1:25:00", state: .running)
-                                )
-                                CardStyleRowV5(
-                                    timer: makeDummyTimer(label: "매우 긴 라벨 테스트", time: "0:00:00", state: .completed)
-                                )
-                            }
-                        }
+//                        
+//                        // Option A: iOS Native
+//                        DesignSection(title: "Option A: iOS Native", description: "Apple 표준 텍스트 버튼 스타일") {
+//                            VStack(spacing: 12) {
+//                                CardStyleRowV5(
+//                                    timer: makeDummyTimer(label: "업무 집중 시간", time: "1:25:00", state: .running)
+//                                )
+//                                CardStyleRowV5(
+//                                    timer: makeDummyTimer(label: "매우 긴 라벨 테스트", time: "0:00:00", state: .completed)
+//                                )
+//                            }
+//                        }
                     }
                     .padding()
                 }

@@ -16,18 +16,18 @@ struct TimerRowDesignLabV14: View {
                 
                 ScrollView {
                     VStack(spacing: 32) {
-                        
-                        // 4. Modern Card (2-Button) - LATEST
-                        DesignSection(title: "4. Modern Card (2-Button)", description: "3번 디자인에 stop/pause 두 버튼을 추가했습니다.") {
-                            VStack(spacing: 12) {
-                                CardStyleRowTwoButton(
-                                    timer: makeDummyTimer(label: "업무 집중 시간", time: "1:25:00", state: .running)
-                                )
-                                CardStyleRowTwoButton(
-                                    timer: makeDummyTimer(label: "매우 긴 라벨 테스트: 라벨이 길어져도 버튼이나 시간을 밀어내지 않고 자연스럽게 줄바꿈됩니다.", time: "0:00:00", state: .completed)
-                                )
-                            }
-                        }
+//                        
+//                        // 4. Modern Card (2-Button) - LATEST
+//                        DesignSection(title: "4. Modern Card (2-Button)", description: "3번 디자인에 stop/pause 두 버튼을 추가했습니다.") {
+//                            VStack(spacing: 12) {
+//                                CardStyleRowTwoButton(
+//                                    timer: makeDummyTimer(label: "업무 집중 시간", time: "1:25:00", state: .running)
+//                                )
+//                                CardStyleRowTwoButton(
+//                                    timer: makeDummyTimer(label: "매우 긴 라벨 테스트: 라벨이 길어져도 버튼이나 시간을 밀어내지 않고 자연스럽게 줄바꿈됩니다.", time: "0:00:00", state: .completed)
+//                                )
+//                            }
+//                        }
                         
                         // 3. Modern Card Style
                         DesignSection(title: "3. Modern Card Style", description: "각 타이머를 독립된 카드로 분리하여 강조합니다.") {

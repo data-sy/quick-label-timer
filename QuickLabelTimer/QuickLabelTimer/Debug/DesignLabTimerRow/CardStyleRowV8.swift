@@ -59,7 +59,7 @@ struct CardStyleRowV8: View {
                             Image(systemName: "arrow.clockwise")
                                 .font(.footnote)
                                 .foregroundColor(.blue)
-                                .frame(width: 36, height: 36)
+                                .frame(width: 32, height: 32)
                                 .background(
                                     Circle()
                                         .strokeBorder(Color.blue.opacity(0.3), lineWidth: 1.5)
@@ -72,12 +72,9 @@ struct CardStyleRowV8: View {
                         Image(systemName: timer.status == .running ? "pause.fill" : "play.fill")
                             .font(.title2)
                             .foregroundColor(.white)
-                            .frame(width: 64, height: 64)
-                            .background(
-                                Circle()
-                                    .strokeBorder(Color.blue, lineWidth: 3)
-                                    .background(Circle().fill(Color.blue))
-                            )
+                            .frame(width: 56, height: 56)
+                            .background(Circle().fill(Color.blue))
+                            .shadow(radius: 4)
                     }
                 }
             }
