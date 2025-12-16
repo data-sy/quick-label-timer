@@ -21,9 +21,10 @@ struct TimerRowRunningV22: View {
                 FavoriteToggleButton(endAction: timer.endAction, onToggle: {})
                     .frame(width: 44, height: 44)
                 
-                EditableTimerLabelV19(
+                EditableTimerLabelRunningV22(
                     timer: timer,
-                    onLabelChange: onLabelChange
+                    onLabelChange: onLabelChange,
+                    isRunning: isRunning
                 )
                 
                 Spacer()
@@ -97,5 +98,68 @@ struct TimerRowRunningV22: View {
         .background(isRunning ? Color.blue : AppTheme.contentBackground)
         .cornerRadius(20)
         .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+    }
+}
+
+// MARK: - Editable Label for Running V22: White Text + White Background in Edit Mode
+struct EditableTimerLabelRunningV22: View {
+    let timer: TimerData
+    let onLabelChange: (String) -> Void
+    let isRunning: Bool
+    
+    @State private var isEditing = false
+    @State private var editText = ""
+    @FocusState private var isFocused: Bool
+    
+    var body: some View {
+        Group {
+            if isEditing {
+                TextField("timer-label-placeholder", text: $editText, axis: .vertical)
+                    .font(.headline)
+                    .foregroundColor(isRunning ? .blue : .primary)
+                    .lineLimit(nil)
+                    .focused($isFocused)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(isRunning ? Color.white : Color.clear)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(isRunning ? Color.clear : Color.secondary.opacity(0.3), lineWidth: 1.5)
+                    )
+                    .onSubmit { commitEdit() }
+                    .onAppear {
+                        editText = timer.label
+                        isFocused = true
+                    }
+            } else {
+                HStack(spacing: 6) {
+                    Text(timer.label)
+                        .font(.headline)
+                        .foregroundColor(isRunning ? .white : .primary)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    Image(systemName: "pencil")
+                        .font(.caption)
+                        .foregroundColor(isRunning ? .white.opacity(0.8) : .secondary)
+                }
+                .onTapGesture { startEditing() }
+            }
+        }
+    }
+    
+    private func startEditing() {
+        isEditing = true
+    }
+    
+    private func commitEdit() {
+        let trimmed = editText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmed.isEmpty {
+            onLabelChange(trimmed)
+        }
+        isEditing = false
     }
 }
