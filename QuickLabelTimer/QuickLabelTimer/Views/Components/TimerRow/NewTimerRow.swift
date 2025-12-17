@@ -64,10 +64,21 @@ struct NewTimerRow: View {
                 )
             }
 
-            // BOTTOM: Info
-            HStack {
-                Text("BOTTOM")
+            // BOTTOM: Alarm + End Time
+            HStack(spacing: 4) {
+                let alarmMode = AlarmNotificationPolicy.getMode(
+                    soundOn: timer.isSoundOn,
+                    vibrationOn: timer.isVibrationOn
+                )
+                Image(systemName: alarmMode.iconName)
+                    .font(.caption)
                     .foregroundColor(.secondary)
+
+                Text(timer.formattedEndTime)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+
+                Spacer()
             }
         }
         .padding(AppTheme.TimerCard.padding)
