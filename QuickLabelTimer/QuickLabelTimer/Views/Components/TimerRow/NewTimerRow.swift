@@ -57,8 +57,11 @@ struct NewTimerRow: View {
 
                 Spacer()
 
-                Text("BUTTONS")
-                    .foregroundColor(.secondary)
+                TimerActionButtons(
+                    status: timer.status,
+                    onPlayPause: onPlayPause,
+                    onReset: onReset
+                )
             }
 
             // BOTTOM: Info
