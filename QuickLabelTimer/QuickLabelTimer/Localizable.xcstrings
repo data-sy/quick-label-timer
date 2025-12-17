@@ -684,6 +684,9 @@
         }
       }
     },
+    "BOTTOM" : {
+
+    },
     "Deep Blue Black" : {
 
     },
@@ -717,13 +720,34 @@
     "Inline Edit Lab" : {
 
     },
+    "Manual Test Controls" : {
+
+    },
+    "NewTimerRow Test Sandbox" : {
+
+    },
     "Running Style V22-V24" : {
+
+    },
+    "Set Completed" : {
+
+    },
+    "Set Paused" : {
+
+    },
+    "Set Running" : {
+
+    },
+    "Set Stopped" : {
 
     },
     "Slate Blue" : {
 
     },
     "Start Color" : {
+
+    },
+    "Status:" : {
 
     },
     "Timer Row Improvements" : {
