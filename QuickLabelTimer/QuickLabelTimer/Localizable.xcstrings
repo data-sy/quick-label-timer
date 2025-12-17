@@ -7,6 +7,12 @@
     "\"%@\"" : {
 
     },
+    "#0F2027" : {
+
+    },
+    "#2C5364" : {
+
+    },
     "#E8EAF6" : {
 
     },
@@ -95,6 +101,18 @@
           }
         }
       }
+    },
+    "🎯 브랜치 전략" : {
+
+    },
+    "💡 Tip: Play 버튼을 눌러 각 스타일의 재생 모드를 확인하세요" : {
+
+    },
+    "1. feature/timer-row-redesign" : {
+
+    },
+    "2. feature/timer-row-inline-edit" : {
+
     },
     "10:30 종료" : {
 
@@ -666,6 +684,9 @@
         }
       }
     },
+    "Deep Blue Black" : {
+
+    },
     "Design Lab" : {
 
     },
@@ -675,13 +696,37 @@
     "Design Lab V9-V10" : {
 
     },
+    "Design V15-V17 Lab" : {
+
+    },
+    "Edit Affordance V18-V21" : {
+
+    },
     "End Color" : {
+
+    },
+    "Glass Lab V13" : {
+
+    },
+    "Glass Lab V14" : {
 
     },
     "Glass Material Lab" : {
 
     },
+    "Inline Edit Lab" : {
+
+    },
+    "Running Style V22-V24" : {
+
+    },
+    "Slate Blue" : {
+
+    },
     "Start Color" : {
+
+    },
+    "Timer Row Improvements" : {
 
     },
     "timer-completed" : {

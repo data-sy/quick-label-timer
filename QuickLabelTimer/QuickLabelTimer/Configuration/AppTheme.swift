@@ -47,4 +47,22 @@ enum AppTheme {
         /// 아이콘 폰트 두께
         static let iconWeight: Font.Weight = .bold
     }
+
+    // MARK: - Timer Card (타이머 카드 UI)
+    enum TimerCard {
+        /// 카드 모서리 둥글기
+        static let cornerRadius: CGFloat = 20
+        /// 카드 내부 패딩
+        static let padding: CGFloat = 16
+        /// 카드 그림자 반경
+        static let shadowRadius: CGFloat = 8
+        /// 카드 그림자 Y 오프셋
+        static let shadowY: CGFloat = 4
+        /// 시간 텍스트 크기
+        static let timeTextSize: CGFloat = 48
+        /// 주 버튼 크기 (Play/Pause)
+        static let primaryButtonSize: CGFloat = 56
+        /// 보조 버튼 크기 (Reset)
+        static let secondaryButtonSize: CGFloat = 44
+    }
 }
