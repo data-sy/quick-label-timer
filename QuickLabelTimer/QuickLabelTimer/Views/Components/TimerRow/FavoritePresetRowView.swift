@@ -42,12 +42,12 @@ struct FavoritePresetRowView: View {
     }
 
     var body: some View {
-        TimerRowView(
+        NewTimerRow(
             timer: tempTimer,
-            state: TimerInteractionState.preset,
-            onToggleFavorite: onToggleFavorite,
-            onLeftTap: onLeftTap,
-            onRightTap: onRightTap
+            onToggleFavorite: onToggleFavorite ?? {},
+            onPlayPause: onRightTap ?? {},
+            onReset: onLeftTap ?? {},
+            onDelete: {}
         )
         .opacity(isEditing ? 0.5 : 1.0)
         .allowsHitTesting(!isEditing)
