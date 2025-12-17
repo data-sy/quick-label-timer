@@ -29,6 +29,8 @@ struct NewTimerRowTestView: View {
             presetId: nil,
             endAction: .discard
         ))
+        let formatted = TimeFormatter.formatEndTime(Date())
+        print("⏰ formattedEndTime:", formatted)
     }
 
     var body: some View {
@@ -37,6 +39,8 @@ struct NewTimerRowTestView: View {
                 .font(.title2)
                 .fontWeight(.bold)
 
+            // FommatedTest
+     
             // Status display
             HStack {
                 Text("Status:")
