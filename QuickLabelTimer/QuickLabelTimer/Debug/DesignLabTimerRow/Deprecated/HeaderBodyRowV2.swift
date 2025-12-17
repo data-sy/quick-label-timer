@@ -48,11 +48,11 @@ struct HeaderBodyRow: View {
                 
                 Spacer()
                 
-                // 버튼 영역 (기존 컴포넌트 재사용)
-                HStack(spacing: 12) {
-                    TimerLeftButtonView(type: .stop, action: {})
-                    TimerRightButtonView(type: .pause, action: {})
-                }
+//                // 버튼 영역 (기존 컴포넌트 재사용)
+//                HStack(spacing: 12) {
+//                    TimerLeftButtonView(type: .stop, action: {})
+//                    TimerRightButtonView(type: .pause, action: {})
+//                }
                 .padding(.bottom, 6)
             }
             .padding(.leading, 4) // 라벨보다 살짝 들여쓰기
