@@ -118,6 +118,15 @@ extension TimerData {
             return String(format: "%02d:%02d", minutes, seconds)
         }
     }
+
+    /// Formats the scheduled end time according to locale
+    var formattedEndTime: String {
+        if status == .completed {
+            return String(localized: "ui.timer.completed")
+        }
+        let timeString = TimeFormatter.formatEndTime(endDate)
+        return String(format: String(localized: "ui.timer.endTimeFormat"), timeString)
+    }
 }
 
 // 테스트에 필요한 최소한의 파라미터로 TimerData 생성
