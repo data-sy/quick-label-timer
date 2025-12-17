@@ -20,9 +20,28 @@ struct NewTimerRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             // TOP: Favorite + Label + Delete
-            HStack {
-                Text("TOP")
-                    .foregroundColor(.secondary)
+            HStack(alignment: .center, spacing: 8) {
+                FavoriteToggleButton(
+                    endAction: timer.endAction,
+                    onToggle: onToggleFavorite
+                )
+
+                Text(timer.label)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Spacer()
+
+                Button(action: onDelete) {
+                    Image(systemName: "xmark")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
             }
 
             Divider()
