@@ -54,6 +54,8 @@ enum AppTheme {
         static let cornerRadius: CGFloat = 20
         /// 카드 내부 패딩
         static let padding: CGFloat = 16
+        /// 카드 그림자 색깔
+        static let shadowColor = Color.primary.opacity(0.12) //TODO: 다크모드에서 더 진하게
         /// 카드 그림자 반경
         static let shadowRadius: CGFloat = 8
         /// 카드 그림자 Y 오프셋

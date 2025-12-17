@@ -52,10 +52,92 @@ struct NewTimerRow: View {
         .background(AppTheme.contentBackground)
         .cornerRadius(AppTheme.TimerCard.cornerRadius)
         .shadow(
-            color: .black.opacity(0.1),
+            color: AppTheme.TimerCard.shadowColor,
             radius: AppTheme.TimerCard.shadowRadius,
             x: 0,
             y: AppTheme.TimerCard.shadowY
         )
     }
 }
+
+#Preview("NewTimerRow – Light & Dark") {
+    let now = Date()
+
+    // Running timer
+    let runningTimer = TimerData(
+        label: "Running Timer",
+        hours: 0,
+        minutes: 25,
+        seconds: 0,
+        isSoundOn: true,
+        isVibrationOn: false,
+        createdAt: now,
+        endDate: now.addingTimeInterval(25 * 60),
+        remainingSeconds: 10 * 60,
+        status: .running,
+        presetId: nil,
+        endAction: .discard
+    )
+
+    // Paused timer
+    let pausedTimer = TimerData(
+        label: "Paused Timer",
+        hours: 0,
+        minutes: 15,
+        seconds: 0,
+        isSoundOn: false,
+        isVibrationOn: true,
+        createdAt: now,
+        endDate: now.addingTimeInterval(15 * 60),
+        remainingSeconds: 15 * 60,
+        status: .paused,
+        presetId: nil,
+        endAction: .preserve
+    )
+
+    Group {
+        VStack(spacing: 16) {
+            NewTimerRow(
+                timer: runningTimer,
+                onToggleFavorite: {},
+                onPlayPause: {},
+                onReset: {},
+                onDelete: {}
+            )
+
+            NewTimerRow(
+                timer: pausedTimer,
+                onToggleFavorite: {},
+                onPlayPause: {},
+                onReset: {},
+                onDelete: {}
+            )
+        }
+        .padding()
+        .background(AppTheme.pageBackground)
+        .previewDisplayName("Light Mode")
+
+        VStack(spacing: 16) {
+            NewTimerRow(
+                timer: runningTimer,
+                onToggleFavorite: {},
+                onPlayPause: {},
+                onReset: {},
+                onDelete: {}
+            )
+
+            NewTimerRow(
+                timer: pausedTimer,
+                onToggleFavorite: {},
+                onPlayPause: {},
+                onReset: {},
+                onDelete: {}
+            )
+        }
+        .padding()
+        .background(AppTheme.pageBackground)
+        .environment(\.colorScheme, .dark)
+        .previewDisplayName("Dark Mode")
+    }
+}
+
