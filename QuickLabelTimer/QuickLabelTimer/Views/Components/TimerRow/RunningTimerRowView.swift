@@ -17,18 +17,13 @@ struct RunningTimerRowView: View {
     let onRightTap: (() -> Void)?
 
     var body: some View {
-        let statusText = self.statusText(for: timer.interactionState)
-
-        VStack(alignment: .leading, spacing: 4) {
-            TimerRowView(
-                timer: timer,
-                state: timer.interactionState,
-                statusText: statusText,
-                onToggleFavorite: onToggleFavorite,
-                onLeftTap: onLeftTap,
-                onRightTap: onRightTap
-            )
-        }
+        NewTimerRow(
+            timer: timer,
+            onToggleFavorite: onToggleFavorite ?? {},
+            onPlayPause: onRightTap ?? {},
+            onReset: onLeftTap ?? {},
+            onDelete: onLeftTap ?? {}
+        )
         .id(timer.id) // 삭제 후 뷰 리프레시 보장
     }
     
