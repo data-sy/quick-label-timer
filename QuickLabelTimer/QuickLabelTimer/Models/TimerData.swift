@@ -78,6 +78,7 @@ struct TimerData: Identifiable, Hashable, Codable {
 extension TimerData {
     /// 여러 프로퍼티를 한 번에 업데이트. remainingSeconds가 전달되면 상태 자동 판정
     func updating(
+        label: String? = nil,
         endDate: Date? = nil,
         remainingSeconds: Int? = nil,
         status: TimerStatus? = nil,
@@ -90,7 +91,7 @@ extension TimerData {
         
         return TimerData(
             id: self.id,
-            label: self.label,
+            label: label ?? self.label,
             hours: self.hours,
             minutes: self.minutes,
             seconds: self.seconds,

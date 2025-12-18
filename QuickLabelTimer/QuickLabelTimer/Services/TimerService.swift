@@ -172,9 +172,9 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     ///   - timerId: 업데이트할 타이머 ID
     ///   - newLabel: 새로운 라벨 텍스트
     func updateLabel(timerId: UUID, newLabel: String) {
-        guard var timer = timerRepository.getTimer(byId: timerId) else { return }
-        timer.label = newLabel
-        timerRepository.updateTimer(timer)
+        guard let timer = timerRepository.getTimer(byId: timerId) else { return }
+        let updatedTimer = timer.updating(label: newLabel)
+        timerRepository.updateTimer(updatedTimer)
     }
 
     @discardableResult

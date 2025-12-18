@@ -34,9 +34,10 @@ struct FavoriteTimersView: View {
                         viewModel.handleRight(for: preset)
                         editMode = .inactive
                     },
-                    onLabelChange: { newLabel in
-                        viewModel.updatePresetLabel(for: preset.id, newLabel: newLabel)
-                    }
+                    onLabelChange: nil,
+//                        { newLabel in
+//                        viewModel.updatePresetLabel(for: preset.id, newLabel: newLabel)
+//                    }
                 )
                 
                 // 실행 중일 때 가림막(Overlay) 처리

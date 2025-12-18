@@ -33,9 +33,10 @@ struct RunningTimersView: View {
                 onRightTap: {
                     viewModel.handleRight(for: timer)
                 },
-                onLabelChange: { newLabel in
-                    viewModel.updateLabel(for: timer.id, newLabel: newLabel)
-                }
+                onLabelChange: nil
+//                    { newLabel in
+//                    viewModel.updateLabel(for: timer.id, newLabel: newLabel)
+//                }
             )
             .id(timer.id)
         }
