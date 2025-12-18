@@ -14,8 +14,7 @@ struct FavoritePresetRowView: View {
     @Environment(\.editMode) private var editMode
     let preset: TimerPreset
     let onToggleFavorite: (() -> Void)?
-    let onLeftTap: (() -> Void)?
-    let onRightTap: (() -> Void)?
+    let onPlayPause: (() -> Void)?
     let onLabelChange: ((String) -> Void)?
 
     private var isEditing: Bool {
@@ -46,8 +45,8 @@ struct FavoritePresetRowView: View {
         NewTimerRow(
             timer: tempTimer,
             onToggleFavorite: onToggleFavorite ?? {},
-            onPlayPause: onRightTap ?? {},
-            onReset: onLeftTap ?? {},
+            onPlayPause: onPlayPause ?? {},
+            onReset: {},
             onDelete: {},
             onLabelChange: onLabelChange ?? { _ in }
         )

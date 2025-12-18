@@ -27,11 +27,11 @@ struct FavoriteTimersView: View {
                     preset: preset,
                     onToggleFavorite: { viewModel.requestToHide(preset) },
                     onLeftTap: {
-                        viewModel.handleLeft(for: preset)
+                        viewModel.startEditing(for: preset)
                         editMode = .inactive
                     },
                     onRightTap: {
-                        viewModel.handleRight(for: preset)
+                        viewModel.runTimerFromPreset(preset: preset)
                         editMode = .inactive
                     },
                     onLabelChange: { newLabel in

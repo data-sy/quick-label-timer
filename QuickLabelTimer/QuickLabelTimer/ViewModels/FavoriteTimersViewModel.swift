@@ -69,16 +69,16 @@ class FavoriteTimersViewModel: ObservableObject {
     
     // MARK: - Actions (Left / Right)
 
-    /// Left 버튼 액션 처리
-    func handleLeft(for preset: TimerPreset) {
-        startEditing(for: preset)
-    }
-
-    /// Right 버튼 액션 처리
-    func handleRight(for preset: TimerPreset) {
-        runTimer(from: preset)
-    }
-    
+//    /// Left 버튼 액션 처리
+//    func handleLeft(for preset: TimerPreset) {
+//        startEditing(for: preset)
+//    }
+//
+//    /// Right 버튼 액션 처리
+//    func handleRight(for preset: TimerPreset) {
+//        runTimer(from: preset)
+//    }
+//    
     // MARK: - Business
     
     /// 프리셋의 라벨 업데이트
@@ -137,5 +137,13 @@ class FavoriteTimersViewModel: ObservableObject {
     func stopEditing() {
         editingPreset = nil
         isEditing = false
+    }
+
+    // MARK: - Direct Button Actions
+
+    /// Run 버튼 액션 - 프리셋에서 타이머를 실행합니다
+    func runTimerFromPreset(preset: TimerPreset) {
+        runTimer(from: preset)
+        print("Run timer from preset: \(preset.label)")
     }
 }

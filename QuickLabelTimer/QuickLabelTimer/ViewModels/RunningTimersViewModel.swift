@@ -38,40 +38,40 @@ final class RunningTimersViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    /// Left 버튼 액션 처리
-    func handleLeft(for timer: TimerData) {
-        let set = makeButtonSet(for: timer.interactionState, endAction: timer.endAction)
-        switch set.left {
-        case .none:
-            break
-        case .stop:
-            timerService.stopTimer(id: timer.id)
-        case .moveToFavorite:
-            handleMoveToPreset(for: timer)
-        case .delete:
-            if let presetId = timer.presetId {
-                presetRepository.hidePreset(withId: presetId)
-            }
-            timerService.removeTimer(id: timer.id)
-        case .edit:
-            // Running에선 등장하지 않아야 함
-            assertionFailure("Left .edit should not appear for running timers")
-            break
-        }
-    }
-
-    /// Right 버튼 액션 처리
-    func handleRight(for timer: TimerData) {
-        let set = makeButtonSet(for: timer.interactionState, endAction: timer.endAction)
-        switch set.right {
-        case .play:
-            timerService.resumeTimer(id: timer.id)
-        case .pause:
-            timerService.pauseTimer(id: timer.id)
-        case .restart:
-            timerService.restartTimer(id: timer.id)
-        }
-    }    
+//    /// Left 버튼 액션 처리
+//    func handleLeft(for timer: TimerData) {
+//        let set = makeButtonSet(for: timer.interactionState, endAction: timer.endAction)
+//        switch set.left {
+//        case .none:
+//            break
+//        case .stop:
+//            timerService.stopTimer(id: timer.id)
+//        case .moveToFavorite:
+//            handleMoveToPreset(for: timer)
+//        case .delete:
+//            if let presetId = timer.presetId {
+//                presetRepository.hidePreset(withId: presetId)
+//            }
+//            timerService.removeTimer(id: timer.id)
+//        case .edit:
+//            // Running에선 등장하지 않아야 함
+//            assertionFailure("Left .edit should not appear for running timers")
+//            break
+//        }
+//    }
+//
+//    /// Right 버튼 액션 처리
+//    func handleRight(for timer: TimerData) {
+//        let set = makeButtonSet(for: timer.interactionState, endAction: timer.endAction)
+//        switch set.right {
+//        case .play:
+//            timerService.resumeTimer(id: timer.id)
+//        case .pause:
+//            timerService.pauseTimer(id: timer.id)
+//        case .restart:
+//            timerService.restartTimer(id: timer.id)
+//        }
+//    }    
     
     /// 실행 중인 타이머를 프리셋으로 이동/복구
     func handleMoveToPreset(for timer: TimerData) {
@@ -107,6 +107,32 @@ final class RunningTimersViewModel: ObservableObject {
     ///   - newLabel: 새로운 라벨 텍스트
     func updateLabel(for timerId: UUID, newLabel: String) {
         timerService.updateLabel(timerId: timerId, newLabel: newLabel)
+    }
+
+    // MARK: - Direct Button Actions
+
+    /// Play/Pause 버튼 액션 - 타이머 상태에 따라 동작 결정
+    func playPauseTimer(timer: TimerData) {
+        switch timer.status {
+        case .running:
+            timerService.pauseTimer(id: timer.id)
+            print("Paused timer: \(timer.id)")
+        case .paused:
+            timerService.resumeTimer(id: timer.id)
+            print("Resumed timer: \(timer.id)")
+        case .completed:
+            timerService.restartTimer(id: timer.id)
+            print("Restarted completed timer: \(timer.id)")
+        case .stopped:
+            // Stopped 상태는 현재 UI에 나타나지 않음
+            break
+        }
+    }
+
+    /// Reset 버튼 액션 - 타이머를 처음부터 다시 시작
+    func resetTimer(id: UUID) {
+        timerService.restartTimer(id: id)
+        print("Reset timer: \(id)")
     }
 
 }

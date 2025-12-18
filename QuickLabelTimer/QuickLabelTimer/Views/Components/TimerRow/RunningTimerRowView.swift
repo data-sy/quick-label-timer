@@ -13,17 +13,18 @@ import SwiftUI
 struct RunningTimerRowView: View {
     let timer: TimerData
     let onToggleFavorite: (() -> Void)?
-    let onLeftTap: (() -> Void)?
-    let onRightTap: (() -> Void)?
+    let onPlayPause: (() -> Void)?
+    let onReset: (() -> Void)?
+    let onDelete: (() -> Void)?
     let onLabelChange: ((String) -> Void)?
 
     var body: some View {
         NewTimerRow(
             timer: timer,
             onToggleFavorite: onToggleFavorite ?? {},
-            onPlayPause: onRightTap ?? {},
-            onReset: onLeftTap ?? {},
-            onDelete: onLeftTap ?? {},
+            onPlayPause: onPlayPause ?? {},
+            onReset: onReset ?? {},
+            onDelete: onDelete ?? {},
             onLabelChange: onLabelChange ?? { _ in }
         )
         .id(timer.id) // 삭제 후 뷰 리프레시 보장
