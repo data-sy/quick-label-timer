@@ -22,6 +22,7 @@ protocol TimerServiceProtocol: ObservableObject {
 
     // MARK: - CRUD
     func getTimer(byId id: UUID) -> TimerData?
+    func updateLabel(timerId: UUID, newLabel: String)
     func addTimer(label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool, presetId: UUID?,  endAction: TimerEndAction) -> Bool
     func runTimer(from preset: TimerPreset) -> Bool
     @discardableResult

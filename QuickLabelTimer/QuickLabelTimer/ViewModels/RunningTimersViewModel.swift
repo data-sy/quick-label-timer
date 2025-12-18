@@ -93,10 +93,18 @@ final class RunningTimersViewModel: ObservableObject {
     /// 타이머의 즐겨찾기 상태를 토글
     func toggleFavorite(for id: UUID) {
         let success = timerService.toggleFavorite(for: id)
-        
+
         if !success {
             activeAlert = .presetSaveLimit
         }
     }
-    
+
+    /// 실행 중인 타이머의 라벨을 업데이트합니다
+    /// - Parameters:
+    ///   - timerId: 업데이트할 타이머 ID
+    ///   - newLabel: 새로운 라벨 텍스트
+    func updateLabel(for timerId: UUID, newLabel: String) {
+        timerService.updateLabel(timerId: timerId, newLabel: newLabel)
+    }
+
 }
