@@ -13,14 +13,31 @@ import SwiftUI
 struct FavoriteToggleButton: View {
     let endAction: TimerEndAction
     let onToggle: () -> Void
+    let isRunning: Bool
+    
+    //TODO: 실험실 코드 용이므로, Debug 삭제할 때 함께 삭제하기
+    init(
+        endAction: TimerEndAction,
+        onToggle: @escaping () -> Void,
+        isRunning: Bool = false
+    ) {
+        self.endAction = endAction
+        self.onToggle = onToggle
+        self.isRunning = isRunning
+    }
     
     private var isOn: Bool { endAction.isPreserve }
     
+    private var tint: Color {
+        if isOn { return AppTheme.Bookmark.on }
+        if isRunning { return AppTheme.Bookmark.offRunning }
+        return AppTheme.Bookmark.off
+    }
+    
     var body: some View {
         Button(action: onToggle) {
-//            Image(systemName: endAction.isPreserve ? "star.fill" : "star")
-            Image(systemName: endAction.isPreserve ? "bookmark.fill" : "bookmark")
-                .foregroundColor(endAction.isPreserve ? .yellow : .gray.opacity(0.6))
+            Image(systemName: isOn ? "bookmark.fill" : "bookmark")
+                .foregroundColor(tint)
                 .font(.title2)
                 .frame(width: 44, height: 44) // 탭 영역 확보
                 .a11y(

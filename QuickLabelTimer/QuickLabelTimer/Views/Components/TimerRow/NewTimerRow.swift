@@ -17,18 +17,24 @@ struct NewTimerRow: View {
     let onReset: () -> Void
     let onDelete: () -> Void
 
+    // Running state for color inversion
+    private var isRunning: Bool {
+        timer.status == .running
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             // TOP: Favorite + Label + Delete
             HStack(alignment: .center, spacing: 8) {
                 FavoriteToggleButton(
                     endAction: timer.endAction,
-                    onToggle: onToggleFavorite
+                    onToggle: onToggleFavorite,
+                    isRunning: isRunning
                 )
 
                 Text(timer.label)
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundColor(isRunning ? .white : .primary)
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
 
@@ -37,7 +43,7 @@ struct NewTimerRow: View {
                 Button(action: onDelete) {
                     Image(systemName: "xmark")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(isRunning ? .white.opacity(0.8) : .secondary)
                         .frame(width: 44, height: 44)
                         .contentShape(Rectangle())
                 }
@@ -45,20 +51,21 @@ struct NewTimerRow: View {
             }
 
             Divider()
-                .background(Color.secondary.opacity(0.3))
+                .background(isRunning ? Color.white : Color.secondary.opacity(0.3))
                 .padding(.vertical, 4)
 
             // MIDDLE: Time + Buttons
             HStack {
                 Text(timer.formattedTime)
                     .font(.system(size: AppTheme.TimerCard.timeTextSize, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
+                    .foregroundColor(isRunning ? .white : .primary)
                     .minimumScaleFactor(0.5)
 
                 Spacer()
 
                 TimerActionButtons(
                     status: timer.status,
+                    isRunning: isRunning,
                     onPlayPause: onPlayPause,
                     onReset: onReset
                 )
@@ -72,17 +79,17 @@ struct NewTimerRow: View {
                 )
                 Image(systemName: alarmMode.iconName)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(isRunning ? .white.opacity(0.8) : .secondary)
 
                 Text(timer.formattedEndTime)
                     .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(isRunning ? .white.opacity(0.8) : .secondary)
 
                 Spacer()
             }
         }
         .padding(AppTheme.TimerCard.padding)
-        .background(AppTheme.contentBackground)
+        .background(isRunning ? Color.blue : AppTheme.contentBackground)
         .cornerRadius(AppTheme.TimerCard.cornerRadius)
         .shadow(
             color: AppTheme.TimerCard.shadowColor,

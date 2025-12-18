@@ -67,4 +67,12 @@ enum AppTheme {
         /// 보조 버튼 크기 (Reset)
         static let secondaryButtonSize: CGFloat = 44
     }
+    
+    // MARK: - Bookmark
+    enum Bookmark {
+        static let on = Color.yellow
+        static let off = Color.gray.opacity(0.6)
+        static let offRunning = Color.white.opacity(0.8)
+    }
+
 }
