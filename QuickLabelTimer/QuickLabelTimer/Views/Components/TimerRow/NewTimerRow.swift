@@ -16,6 +16,7 @@ struct NewTimerRow: View {
     let onPlayPause: () -> Void
     let onReset: () -> Void
     let onDelete: () -> Void
+    let onLabelChange: (String) -> Void
 
     // Running state for color inversion
     private var isRunning: Bool {
@@ -32,11 +33,11 @@ struct NewTimerRow: View {
                     isRunning: isRunning
                 )
 
-                Text(timer.label)
-                    .font(.headline)
-                    .foregroundColor(isRunning ? .white : .primary)
-                    .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: true)
+                EditableTimerLabel(
+                    label: timer.label,
+                    isRunning: isRunning,
+                    onLabelChange: onLabelChange
+                )
 
                 Spacer()
 
@@ -142,7 +143,8 @@ struct NewTimerRow: View {
                 onToggleFavorite: {},
                 onPlayPause: {},
                 onReset: {},
-                onDelete: {}
+                onDelete: {},
+                onLabelChange: { print("Label changed to: \($0)") }
             )
 
             NewTimerRow(
@@ -150,7 +152,8 @@ struct NewTimerRow: View {
                 onToggleFavorite: {},
                 onPlayPause: {},
                 onReset: {},
-                onDelete: {}
+                onDelete: {},
+                onLabelChange: { print("Label changed to: \($0)") }
             )
         }
         .padding()
@@ -163,7 +166,8 @@ struct NewTimerRow: View {
                 onToggleFavorite: {},
                 onPlayPause: {},
                 onReset: {},
-                onDelete: {}
+                onDelete: {},
+                onLabelChange: { print("Label changed to: \($0)") }
             )
 
             NewTimerRow(
@@ -171,7 +175,8 @@ struct NewTimerRow: View {
                 onToggleFavorite: {},
                 onPlayPause: {},
                 onReset: {},
-                onDelete: {}
+                onDelete: {},
+                onLabelChange: { print("Label changed to: \($0)") }
             )
         }
         .padding()

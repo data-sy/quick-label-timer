@@ -15,6 +15,7 @@ struct RunningTimerRowView: View {
     let onToggleFavorite: (() -> Void)?
     let onLeftTap: (() -> Void)?
     let onRightTap: (() -> Void)?
+    let onLabelChange: ((String) -> Void)?
 
     var body: some View {
         NewTimerRow(
@@ -22,7 +23,8 @@ struct RunningTimerRowView: View {
             onToggleFavorite: onToggleFavorite ?? {},
             onPlayPause: onRightTap ?? {},
             onReset: onLeftTap ?? {},
-            onDelete: onLeftTap ?? {}
+            onDelete: onLeftTap ?? {},
+            onLabelChange: onLabelChange ?? { _ in }
         )
         .id(timer.id) // 삭제 후 뷰 리프레시 보장
     }

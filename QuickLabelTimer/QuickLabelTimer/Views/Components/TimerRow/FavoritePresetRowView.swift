@@ -16,7 +16,8 @@ struct FavoritePresetRowView: View {
     let onToggleFavorite: (() -> Void)?
     let onLeftTap: (() -> Void)?
     let onRightTap: (() -> Void)?
-    
+    let onLabelChange: ((String) -> Void)?
+
     private var isEditing: Bool {
         editMode?.wrappedValue.isEditing ?? false
     }
@@ -47,7 +48,8 @@ struct FavoritePresetRowView: View {
             onToggleFavorite: onToggleFavorite ?? {},
             onPlayPause: onRightTap ?? {},
             onReset: onLeftTap ?? {},
-            onDelete: {}
+            onDelete: {},
+            onLabelChange: onLabelChange ?? { _ in }
         )
         .opacity(isEditing ? 0.5 : 1.0)
         .allowsHitTesting(!isEditing)

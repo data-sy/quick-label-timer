@@ -33,6 +33,9 @@ struct FavoriteTimersView: View {
                     onRightTap: {
                         viewModel.handleRight(for: preset)
                         editMode = .inactive
+                    },
+                    onLabelChange: { newLabel in
+                        viewModel.updatePresetLabel(for: preset.id, newLabel: newLabel)
                     }
                 )
                 
