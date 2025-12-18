@@ -12,26 +12,27 @@ import SwiftUI
 
 struct FavoriteToggleButton: View {
     let endAction: TimerEndAction
+    let status: TimerStatus
     let onToggle: () -> Void
-    let isRunning: Bool
     
-    //TODO: 실험실 코드 용이므로, Debug 삭제할 때 함께 삭제하기
-    init(
-        endAction: TimerEndAction,
-        onToggle: @escaping () -> Void,
-        isRunning: Bool = false
-    ) {
-        self.endAction = endAction
-        self.onToggle = onToggle
-        self.isRunning = isRunning
+    private var isOn: Bool {
+        endAction.isPreserve
     }
     
-    private var isOn: Bool { endAction.isPreserve }
-    
     private var tint: Color {
-        if isOn { return AppTheme.Bookmark.on }
-        if isRunning { return AppTheme.Bookmark.offRunning }
-        return AppTheme.Bookmark.off
+        let colors = RowTheme.colors(for: status)
+        
+        switch (isOn, status) {
+        case (true, _):
+            // 북마크 ON = 항상 노란색
+            return AppTheme.Bookmark.on
+        case (false, .running), (false, .completed), (false, .paused):
+            // 북마크 OFF + 실행중/완료 = 흰색 아웃라인
+            return AppTheme.Bookmark.offRunning
+        case (false, .stopped):
+            // 북마크 OFF + 준비/일시정지 = 검정 아웃라인
+            return AppTheme.Bookmark.off
+        }
     }
     
     var body: some View {
@@ -39,7 +40,7 @@ struct FavoriteToggleButton: View {
             Image(systemName: isOn ? "bookmark.fill" : "bookmark")
                 .foregroundColor(tint)
                 .font(.title2)
-                .frame(width: 44, height: 44) // 탭 영역 확보
+                .frame(width: 44, height: 44)
                 .a11y(
                     label: A11yText.TimerRow.favoriteLabel,
                     hint: isOn ? A11yText.TimerRow.favoriteOnHint : A11yText.TimerRow.favoriteOffHint,

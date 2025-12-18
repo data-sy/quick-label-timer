@@ -4,15 +4,15 @@
 //
 //  Created for TimerRow Redesign - Inline Editing
 //
+/// 탭하여 편집 가능한 타이머 라벨
+///
+/// - 사용 목적: 타이머 라벨을 탭하여 즉시 편집 가능하게 함
 
 import SwiftUI
 
-/// Editable timer label that switches to TextField on tap
-///
-/// - 사용 목적: 타이머 레이블을 탭하여 즉시 편집 가능하게 함
 struct EditableTimerLabel: View {
     let label: String
-    let isRunning: Bool
+    let status: TimerStatus
     let onLabelChange: (String) -> Void
 
     @State private var isEditing = false
@@ -20,11 +20,13 @@ struct EditableTimerLabel: View {
     @FocusState private var isFocused: Bool
 
     var body: some View {
+        let colors = RowTheme.colors(for: status)
+        
         Group {
             if isEditing {
                 TextField("", text: $editedLabel)
                     .font(.headline)
-                    .foregroundColor(isRunning ? .white : .primary)
+                    .foregroundColor(colors.cardForeground)
                     .focused($isFocused)
                     .onSubmit {
                         commitEdit()
@@ -36,7 +38,7 @@ struct EditableTimerLabel: View {
             } else {
                 Text(label)
                     .font(.headline)
-                    .foregroundColor(isRunning ? .white : .primary)
+                    .foregroundColor(colors.cardForeground)
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
                     .onTapGesture {
@@ -70,27 +72,46 @@ struct EditableTimerLabel: View {
     }
 }
 
-#Preview("EditableTimerLabel") {
+#Preview("EditableTimerLabel - All States") {
     VStack(spacing: 20) {
+        // Stopped (준비)
         EditableTimerLabel(
-            label: "Tap to Edit",
-            isRunning: false,
-            onLabelChange: { newLabel in
-                print("Label changed to: \(newLabel)")
-            }
+            label: "Ready to Start",
+            status: .stopped,
+            onLabelChange: { print("Changed to: \($0)") }
         )
         .padding()
-        .background(Color.gray.opacity(0.1))
-
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        
+        // Paused (일시정지)
         EditableTimerLabel(
-            label: "Running Timer Label",
-            isRunning: true,
-            onLabelChange: { newLabel in
-                print("Label changed to: \(newLabel)")
-            }
+            label: "Paused Timer",
+            status: .paused,
+            onLabelChange: { print("Changed to: \($0)") }
+        )
+        .padding()
+        .background(Color.blue.opacity(0.15))
+        .cornerRadius(12)
+
+        // Running (실행 중)
+        EditableTimerLabel(
+            label: "Running Timer",
+            status: .running,
+            onLabelChange: { print("Changed to: \($0)") }
         )
         .padding()
         .background(Color.blue)
+        .cornerRadius(12)
+        
+        // Completed (완료)
+        EditableTimerLabel(
+            label: "Completed Timer",
+            status: .completed,
+            onLabelChange: { print("Changed to: \($0)") }
+        )
+        .padding()
+        .background(Color.green)
         .cornerRadius(12)
     }
     .padding()

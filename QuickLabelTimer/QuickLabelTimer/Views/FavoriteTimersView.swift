@@ -26,11 +26,7 @@ struct FavoriteTimersView: View {
                 FavoritePresetRowView(
                     preset: preset,
                     onToggleFavorite: { viewModel.requestToHide(preset) },
-                    onLeftTap: {
-                        viewModel.startEditing(for: preset)
-                        editMode = .inactive
-                    },
-                    onRightTap: {
+                    onPlayPause: {
                         viewModel.runTimerFromPreset(preset: preset)
                         editMode = .inactive
                     },
