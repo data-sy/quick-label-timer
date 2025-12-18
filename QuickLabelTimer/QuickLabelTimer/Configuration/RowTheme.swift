@@ -60,74 +60,74 @@ enum RowTheme {
     /// - buttonBackground: 버튼 동그라미 배경색
     /// - buttonForeground: 버튼 내부 아이콘 색상
     /// 시작 전 (준비 상태)
-        enum Stopped {
-            static let cardBackground = Color(.systemBackground)
-            static let cardForeground = Color.primary
-            static let buttonBackground = Color.blue       // ✅ 파란 동그라미
-            static let buttonForeground = Color.white      // ✅ 흰색 아이콘
-        }
-        
-        /// 일시정지 상태
-        enum Paused {
-            static let cardBackground = Color.blue.opacity(0.15)
-            static let cardForeground = Color.primary
-            static let buttonBackground = Color.blue       // ✅ 파란 동그라미
-            static let buttonForeground = Color.white      // ✅ 흰색 아이콘
-        }
-        
-        /// 실행 중 상태
-        enum Running {
-            static let cardBackground = Color.blue
-            static let cardForeground = Color.white
-            static let buttonBackground = Color.white      // ✅ 흰색 동그라미
-            static let buttonForeground = Color.blue       // ✅ 파란 아이콘
-        }
-        
-        /// 완료 상태
-        enum Completed {
-            static let cardBackground = Color.green
-            static let cardForeground = Color.white
-            static let buttonBackground = Color.white      // ✅ 흰색 동그라미
-            static let buttonForeground = Color.green      // ✅ 초록 아이콘
-        }
-        
-        // MARK: - Helper
-        /// ✅ 타이머 상태에 따른 색상 가져오기 (4가지 색상 반환)
-        static func colors(for status: TimerStatus) -> (
-            cardBackground: Color,
-            cardForeground: Color,
-            buttonBackground: Color,
-            buttonForeground: Color
-        ) {
-            switch status {
-            case .stopped:
-                return (
-                    Stopped.cardBackground,
-                    Stopped.cardForeground,
-                    Stopped.buttonBackground,
-                    Stopped.buttonForeground
-                )
-            case .paused:
-                return (
-                    Paused.cardBackground,
-                    Paused.cardForeground,
-                    Paused.buttonBackground,
-                    Paused.buttonForeground
-                )
-            case .running:
-                return (
-                    Running.cardBackground,
-                    Running.cardForeground,
-                    Running.buttonBackground,
-                    Running.buttonForeground
-                )
-            case .completed:
-                return (
-                    Completed.cardBackground,
-                    Completed.cardForeground,
-                    Completed.buttonBackground,
-                    Completed.buttonForeground
-                )
-            }
+    enum Stopped {
+        static let cardBackground = Color(.systemBackground)
+        static let cardForeground = Color.primary
+        static let buttonBackground = Color.blue
+        static let buttonForeground = Color.white
+    }
+    
+    /// 일시정지 상태
+    enum Paused {
+        static let cardBackground = Color.blue.opacity(0.15)
+        static let cardForeground = Color.primary
+        static let buttonBackground = Color.blue
+        static let buttonForeground = Color.white
+    }
+    
+    /// 실행 중 상태
+    enum Running {
+        static let cardBackground = Color.blue.opacity(0.8)
+        static let cardForeground = Color.white
+        static let buttonBackground = Color.white
+        static let buttonForeground = Color.blue
+    }
+    
+    /// 완료 상태
+    enum Completed {
+        static let cardBackground = Color.green.opacity(0.8)
+        static let cardForeground = Color.white
+        static let buttonBackground = Color.white
+        static let buttonForeground = Color.green
+    }
+    
+    // MARK: - Helper
+    ///  타이머 상태에 따른 색상 가져오기 (4가지 색상 반환)
+    static func colors(for status: TimerStatus) -> (
+        cardBackground: Color,
+        cardForeground: Color,
+        buttonBackground: Color,
+        buttonForeground: Color
+    ) {
+        switch status {
+        case .stopped:
+            return (
+                Stopped.cardBackground,
+                Stopped.cardForeground,
+                Stopped.buttonBackground,
+                Stopped.buttonForeground
+            )
+        case .paused:
+            return (
+                Paused.cardBackground,
+                Paused.cardForeground,
+                Paused.buttonBackground,
+                Paused.buttonForeground
+            )
+        case .running:
+            return (
+                Running.cardBackground,
+                Running.cardForeground,
+                Running.buttonBackground,
+                Running.buttonForeground
+            )
+        case .completed:
+            return (
+                Completed.cardBackground,
+                Completed.cardForeground,
+                Completed.buttonBackground,
+                Completed.buttonForeground
+            )
         }
     }
+}
