@@ -76,17 +76,19 @@ final class RunningTimersViewModel: ObservableObject {
     /// 실행 중인 타이머를 프리셋으로 이동/복구
     func handleMoveToPreset(for timer: TimerData) {
         // 기존 프리셋에서 실행된 타이머였다면 타이머 삭제만 하면 됨 (id가 쓰이지 않게 된 프리셋은 자동으로 실행중 화면 사라짐)
-        guard timer.presetId == nil else {
-            timerService.removeTimer(id: timer.id)
-            return
-        }
-        // 사용자 생성 타이머라면 새 프리셋으로 변환 후 삭제
-        let success = presetRepository.addPreset(from: timer)
-        
-        if success {
+        if let presetId = timer.presetId {
+            // 프리셋 기반: 라벨 업데이트 + 삭제
+            presetRepository.updatePresetLabel(presetId: presetId, newLabel: timer.label)
             timerService.removeTimer(id: timer.id)
         } else {
-            activeAlert = .presetSaveLimit
+            // 사용자 생성 타이머라면 새 프리셋으로 변환 후 삭제
+            let success = presetRepository.addPreset(from: timer)
+            
+            if success {
+                timerService.removeTimer(id: timer.id)
+            } else {
+                activeAlert = .presetSaveLimit
+            }
         }
     }
     

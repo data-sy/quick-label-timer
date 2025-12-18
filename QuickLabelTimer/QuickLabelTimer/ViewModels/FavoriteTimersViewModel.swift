@@ -80,6 +80,11 @@ class FavoriteTimersViewModel: ObservableObject {
     }
     
     // MARK: - Business
+    
+    /// 프리셋의 라벨 업데이트
+    func updateLabel(for presetId: UUID, newLabel: String) {
+        presetRepository.updatePresetLabel(presetId: presetId, newLabel: newLabel)
+    }
         
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
     func runTimer(from preset: TimerPreset) {

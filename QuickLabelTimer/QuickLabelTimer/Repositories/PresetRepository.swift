@@ -27,6 +27,7 @@ protocol PresetRepositoryProtocol {
     func hidePreset(withId id: UUID)
     func updatePreset(_ preset: TimerPreset, label: String, hours: Int, minutes: Int, seconds: Int, isSoundOn: Bool, isVibrationOn: Bool)
     func updateLastUsed(for presetId: UUID)
+    func updatePresetLabel(presetId: UUID, newLabel: String)
 }
 
 // MARK: - PresetRepository Class
@@ -147,6 +148,35 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
             userPresets[index].lastUsedAt = Date()
             savePresets()
         }
+    }
+
+    /// 프리셋의 라벨을 업데이트하고 저장합니다
+    /// - Parameters:
+    ///   - presetId: 업데이트할 프리셋 ID
+    ///   - newLabel: 새로운 라벨 텍스트
+    func updatePresetLabel(presetId: UUID, newLabel: String) {
+        guard let index = userPresets.firstIndex(where: { $0.id == presetId }) else {
+            #if DEBUG
+            logger.warning("Preset to update label not found: \(presetId, privacy: .public)")
+            #endif
+            return
+        }
+        
+        let preset = userPresets[index]
+        let updated = TimerPreset(
+            id: preset.id,
+            label: newLabel,  // 새 라벨
+            hours: preset.hours,
+            minutes: preset.minutes,
+            seconds: preset.seconds,
+            isSoundOn: preset.isSoundOn,
+            isVibrationOn: preset.isVibrationOn,
+            createdAt: preset.createdAt,
+            lastUsedAt: preset.lastUsedAt,
+            isHiddenInList: preset.isHiddenInList
+        )
+        userPresets[index] = updated
+        savePresets()
     }
 
     /// 사용자 프리셋 삭제
