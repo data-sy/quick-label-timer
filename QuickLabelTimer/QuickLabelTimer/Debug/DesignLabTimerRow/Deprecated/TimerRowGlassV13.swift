@@ -20,12 +20,12 @@ struct TimerRowGlassV13: View {
                 FavoriteToggleButton(endAction: timer.endAction, onToggle: {})
                     .frame(width: 44, height: 44) // 터치 영역 확보
                 
-                EditableTimerLabel(
-                    timer: timer,
-                    onLabelChange: onLabelChange
-                )
-                .padding(.top, 10) // 시각적 정렬 보정
-                .foregroundColor(.white) // 다크 모드용 명시적 컬러 (필요시)
+//                EditableTimerLabel(
+//                    timer: timer,
+//                    onLabelChange: onLabelChange
+//                )
+//                .padding(.top, 10) // 시각적 정렬 보정
+//                .foregroundColor(.white) // 다크 모드용 명시적 컬러 (필요시)
                 
                 Spacer()
                 

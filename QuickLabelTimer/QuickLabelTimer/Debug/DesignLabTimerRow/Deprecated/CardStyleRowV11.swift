@@ -18,10 +18,10 @@ struct CardStyleRowV11: View {
             HStack(alignment: .center, spacing: 8) {
                 FavoriteToggleButton(endAction: timer.endAction, onToggle: {})
                 
-                EditableTimerLabel(
-                    timer: timer,
-                    onLabelChange: onLabelChange
-                )
+//                EditableTimerLabel(
+//                    timer: timer,
+//                    onLabelChange: onLabelChange
+//                )
                 
                 Spacer()
                 

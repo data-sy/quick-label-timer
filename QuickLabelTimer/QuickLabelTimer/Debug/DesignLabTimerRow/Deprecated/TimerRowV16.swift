@@ -19,10 +19,10 @@ struct TimerRowV16: View {
                 FavoriteToggleButton(endAction: timer.endAction, onToggle: {})
                     .frame(width: 44, height: 44)
                 
-                EditableTimerLabel(
-                    timer: timer,
-                    onLabelChange: onLabelChange
-                )
+//                EditableTimerLabel(
+//                    timer: timer,
+//                    onLabelChange: onLabelChange
+//                )
                 
                 Spacer()
                 
