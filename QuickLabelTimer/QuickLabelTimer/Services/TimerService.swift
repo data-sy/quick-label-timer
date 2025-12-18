@@ -162,9 +162,19 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
 
     // MARK: - CRUD
-    
+
     func getTimer(byId id: UUID) -> TimerData? {
         return timerRepository.getTimer(byId: id)
+    }
+
+    /// 실행 중인 타이머의 라벨을 업데이트합니다 (메모리만)
+    /// - Parameters:
+    ///   - timerId: 업데이트할 타이머 ID
+    ///   - newLabel: 새로운 라벨 텍스트
+    func updateLabel(timerId: UUID, newLabel: String) {
+        guard var timer = timerRepository.getTimer(byId: timerId) else { return }
+        timer.label = newLabel
+        timerRepository.updateTimer(timer)
     }
 
     @discardableResult
