@@ -1,5 +1,5 @@
 ////
-////  TimerRowInlineEditLab.swift
+////  TimerRowImprovementsLab.swift
 ////  QuickLabelTimer
 ////
 ////  Created by 이소연 on 12/16/25.
@@ -7,9 +7,10 @@
 //
 //import SwiftUI
 //
-//// MARK: - 🎛️ 인라인 편집 실험실
-//struct TimerRowInlineEditLab: View {
+//// MARK: - 🎯 타이머 행 단계적 개선 실험실
+//struct TimerRowImprovementsLab: View {
 //    @State private var timers: [TimerData] = []
+//    @State private var runningStates: [UUID: Bool] = [:]
 //    
 //    var body: some View {
 //        NavigationStack {
@@ -19,41 +20,75 @@
 //                ScrollView {
 //                    VStack(spacing: 32) {
 //                        
-//                        // V11: EditableTimerLabel 적용
+//                        // Phase 1: Redesign Only
 //                        DesignSection(
-//                            title: "V11: Inline Edit (Tap to Edit)",
-//                            description: "라벨을 탭하면 편집 모드로 전환"
+//                            title: "Phase 1: Redesign Only",
+//                            description: "실행 상태 반전 디자인만 적용 (인라인 편집 없음)"
 //                        ) {
 //                            VStack(spacing: 12) {
 //                                ForEach(timers) { timer in
-//                                    CardStyleRowV11(
+//                                    TimerRowRedesign(
 //                                        timer: timer,
-//                                        onLabelChange: { newLabel in
-//                                            updateTimerLabel(timerId: timer.id, newLabel: newLabel)
+//                                        isRunning: runningStates[timer.id] ?? false,
+//                                        onToggleRunning: {
+//                                            runningStates[timer.id]?.toggle()
 //                                        }
 //                                    )
 //                                }
 //                            }
 //                        }
 //                        
-//                        // 사용 가이드
+//                        // Phase 2: Redesign + Inline Edit
 //                        DesignSection(
-//                            title: "사용 방법",
+//                            title: "Phase 2: Redesign + Inline Edit",
+//                            description: "디자인 + 인라인 편집 기능 추가 (최종)"
+//                        ) {
+//                            VStack(spacing: 12) {
+//                                ForEach(timers) { timer in
+//                                    TimerRowInlineEdit(
+//                                        timer: timer,
+//                                        onLabelChange: { newLabel in
+//                                            updateTimerLabel(timerId: timer.id, newLabel: newLabel)
+//                                        },
+//                                        isRunning: runningStates[timer.id] ?? false,
+//                                        onToggleRunning: {
+//                                            runningStates[timer.id]?.toggle()
+//                                        }
+//                                    )
+//                                }
+//                            }
+//                        }
+//                        
+//                        // 개선 단계 가이드
+//                        DesignSection(
+//                            title: "단계적 개선 전략",
 //                            description: ""
 //                        ) {
 //                            VStack(alignment: .leading, spacing: 12) {
 //                                GuideItem(
-//                                    icon: "hand.tap.fill",
-//                                    text: "라벨을 탭하면 편집 모드로 전환됩니다"
+//                                    icon: "1.circle.fill",
+//                                    text: "Phase 1 (Redesign): 실행 상태 시각적 피드백 - 파란 배경 반전, 흰색 텍스트"
 //                                )
 //                                GuideItem(
-//                                    icon: "keyboard",
-//                                    text: "Return 키를 누르면 편집이 완료됩니다"
+//                                    icon: "2.circle.fill",
+//                                    text: "Phase 2 (Inline Edit): 인라인 라벨 편집 - 연필 아이콘, 탭하여 즉시 수정"
 //                                )
-//                                GuideItem(
-//                                    icon: "xmark.circle",
-//                                    text: "빈 값으로 제출하면 원래 값이 유지됩니다"
-//                                )
+//                                
+//                                Divider().padding(.vertical, 4)
+//                                
+//                                VStack(alignment: .leading, spacing: 6) {
+//                                    Text("🎯 브랜치 전략")
+//                                        .font(.caption)
+//                                        .fontWeight(.semibold)
+//                                    
+//                                    Text("1. feature/timer-row-redesign")
+//                                        .font(.caption)
+//                                        .foregroundColor(.secondary)
+//                                    
+//                                    Text("2. feature/timer-row-inline-edit")
+//                                        .font(.caption)
+//                                        .foregroundColor(.secondary)
+//                                }
 //                            }
 //                            .padding()
 //                            .background(AppTheme.contentBackground)
@@ -63,11 +98,15 @@
 //                    .padding()
 //                }
 //            }
-//            .navigationTitle("Inline Edit Lab")
+//            .navigationTitle("Timer Row Improvements")
 //            .navigationBarTitleDisplayMode(.inline)
 //            .onAppear {
 //                if timers.isEmpty {
 //                    timers = makeDummyTimers()
+//                    // Initialize running states
+//                    for timer in timers {
+//                        runningStates[timer.id] = false
+//                    }
 //                }
 //            }
 //        }
@@ -77,7 +116,6 @@
 //    private func updateTimerLabel(timerId: UUID, newLabel: String) {
 //        if let index = timers.firstIndex(where: { $0.id == timerId }) {
 //            let updatedTimer = timers[index]
-//            // TimerData의 복사본을 만들어서 새 라벨로 재생성
 //            timers[index] = TimerData(
 //                id: updatedTimer.id,
 //                label: newLabel,
@@ -100,28 +138,20 @@
 //    private func makeDummyTimers() -> [TimerData] {
 //        return [
 //            makeDummyTimer(
-//                label: "업무 집중 시간",
-//                time: "1:25:00",
-//                state: .running,
-//                endAction: .preserve,
-//                isSoundOn: true,
-//                isVibrationOn: true
-//            ),
-//            makeDummyTimer(
-//                label: "점심 준비",
-//                time: "0:15:30",
-//                state: .paused,
-//                endAction: .discard,
-//                isSoundOn: false,
-//                isVibrationOn: true
-//            ),
-//            makeDummyTimer(
-//                label: "매우 긴 라벨 테스트: 아이들이 깨지 않도록 조용히 설거지하고 정리한 다음 내일 아침 도시락 준비까지 완료하기",
-//                time: "0:05:00",
+//                label: "라면 끓이기",
+//                time: "0:03:00",
 //                state: .running,
 //                endAction: .preserve,
 //                isSoundOn: true,
 //                isVibrationOn: false
+//            ),
+//            makeDummyTimer(
+//                label: "업무 집중 타이머",
+//                time: "0:25:00",
+//                state: .paused,
+//                endAction: .discard,
+//                isSoundOn: false,
+//                isVibrationOn: true
 //            )
 //        ]
 //    }
@@ -166,29 +196,7 @@
 //    }
 //}
 //
-//// MARK: - Guide Item Component
-//struct GuideItem: View {
-//    let icon: String
-//    let text: String
-//    
-//    var body: some View {
-//        HStack(alignment: .top, spacing: 12) {
-//            Image(systemName: icon)
-//                .font(.body)
-//                .foregroundColor(.blue)
-//                .frame(width: 24)
-//            
-//            Text(text)
-//                .font(.body)
-//                .foregroundColor(.primary)
-//                .fixedSize(horizontal: false, vertical: true)
-//            
-//            Spacer()
-//        }
-//    }
-//}
-//
 //// MARK: - Preview
 //#Preview {
-//    TimerRowInlineEditLab()
+//    TimerRowImprovementsLab()
 //}

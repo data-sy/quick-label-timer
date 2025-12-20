@@ -47,4 +47,12 @@ enum AppTheme {
         /// 아이콘 폰트 두께
         static let iconWeight: Font.Weight = .bold
     }
+
+    // MARK: - Bookmark
+    enum Bookmark {
+        static let on = Color.yellow
+        static let off = Color.gray.opacity(0.6)
+        static let offRunning = Color.white.opacity(0.8)
+    }
+
 }

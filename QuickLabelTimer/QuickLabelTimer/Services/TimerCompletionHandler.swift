@@ -99,8 +99,10 @@ final class TimerCompletionHandler {
             
             case (.none, .discard):
               timerService.removeTimer(id: timerId)
-              
-            case (.some, .preserve):
+
+            case (.some(let presetId), .preserve):
+              // 변경된 라벨이 있으면 프리셋에 반영
+              presetRepository.updatePresetLabel(presetId: presetId, newLabel: latestTimer.label)
               timerService.removeTimer(id: timerId)
 
             case (.some(let presetId), .discard):

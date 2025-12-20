@@ -26,13 +26,12 @@ struct FavoriteTimersView: View {
                 FavoritePresetRowView(
                     preset: preset,
                     onToggleFavorite: { viewModel.requestToHide(preset) },
-                    onLeftTap: {
-                        viewModel.handleLeft(for: preset)
+                    onPlayPause: {
+                        viewModel.runTimerFromPreset(preset: preset)
                         editMode = .inactive
                     },
-                    onRightTap: {
-                        viewModel.handleRight(for: preset)
-                        editMode = .inactive
+                    onLabelChange: { newLabel in
+                        viewModel.updateLabel(for: preset.id, newLabel: newLabel)
                     }
                 )
                 

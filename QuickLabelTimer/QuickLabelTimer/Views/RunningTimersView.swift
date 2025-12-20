@@ -27,11 +27,18 @@ struct RunningTimersView: View {
                 onToggleFavorite: {
                     viewModel.toggleFavorite(for: timer.id)
                 },
-                onLeftTap: {
-                    viewModel.handleLeft(for: timer)
+                onPlayPause: {
+                    viewModel.playPauseTimer(timer: timer)
                 },
-                onRightTap: {
-                    viewModel.handleRight(for: timer)
+                onReset: {
+                    viewModel.resetTimer(id: timer.id)
+                },
+                onDelete: {
+                    // TODO: 나중에 슬라이드 삭제로 대체
+                    viewModel.resetTimer(id: timer.id)  // 임시로 reset 사용
+                },
+                onLabelChange: { newLabel in
+                    viewModel.updateLabel(for: timer.id, newLabel: newLabel)
                 }
             )
             .id(timer.id)

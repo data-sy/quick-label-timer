@@ -30,3 +30,29 @@ func schedule(
 func cancel(task: DispatchWorkItem?) {
     task?.cancel()
 }
+
+// MARK: - Time Formatting
+
+/// Time formatting utility
+enum TimeFormatter {
+    /// Converts remaining seconds to "HH:MM:SS" or "MM:SS"
+    static func formatRemaining(_ seconds: Int) -> String {
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
+        let secs = seconds % 60
+
+        if hours > 0 {
+            return String(format: "%01d:%02d:%02d", hours, minutes, secs)
+        } else {
+            return String(format: "%02d:%02d", minutes, secs)
+        }
+    }
+
+    /// Converts Date to a locale-aware time string (e.g. "10:30 AM")
+    static func formatEndTime(_ date: Date, locale: Locale = .current) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "a h:mm"
+        formatter.locale = locale
+        return formatter.string(from: date)
+    }
+}

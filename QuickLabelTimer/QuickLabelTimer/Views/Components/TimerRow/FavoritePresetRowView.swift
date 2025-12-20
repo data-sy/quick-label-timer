@@ -14,9 +14,9 @@ struct FavoritePresetRowView: View {
     @Environment(\.editMode) private var editMode
     let preset: TimerPreset
     let onToggleFavorite: (() -> Void)?
-    let onLeftTap: (() -> Void)?
-    let onRightTap: (() -> Void)?
-    
+    let onPlayPause: (() -> Void)?
+    let onLabelChange: ((String) -> Void)?
+
     private var isEditing: Bool {
         editMode?.wrappedValue.isEditing ?? false
     }
@@ -42,12 +42,13 @@ struct FavoritePresetRowView: View {
     }
 
     var body: some View {
-        TimerRowView(
+        NewTimerRow(
             timer: tempTimer,
-            state: TimerInteractionState.preset,
-            onToggleFavorite: onToggleFavorite,
-            onLeftTap: onLeftTap,
-            onRightTap: onRightTap
+            onToggleFavorite: onToggleFavorite ?? {},
+            onPlayPause: onPlayPause ?? {},
+            onReset: {},
+            onDelete: {},
+            onLabelChange: onLabelChange ?? { _ in }
         )
         .opacity(isEditing ? 0.5 : 1.0)
         .allowsHitTesting(!isEditing)

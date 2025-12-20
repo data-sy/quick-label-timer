@@ -1,5 +1,5 @@
 ////
-////  CardStyleRowV11.swift
+////  TimerRowRunningV23.swift
 ////  QuickLabelTimer
 ////
 ////  Created by 이소연 on 12/16/25.
@@ -7,21 +7,24 @@
 //
 //import SwiftUI
 //
-//// MARK: - V11: iOS Clock Style with Editable Label
-//struct CardStyleRowV11: View {
+//// MARK: - V23: Border Emphasis
+//struct TimerRowRunningV23: View {
 //    let timer: TimerData
 //    let onLabelChange: (String) -> Void
+//    let isRunning: Bool
+//    let onToggleRunning: () -> Void
 //    
 //    var body: some View {
 //        VStack(alignment: .leading, spacing: 12) {
 //            // [상단] 북마크 + 라벨 + 삭제
 //            HStack(alignment: .center, spacing: 8) {
 //                FavoriteToggleButton(endAction: timer.endAction, onToggle: {})
+//                    .frame(width: 44, height: 44)
 //                
-////                EditableTimerLabel(
-////                    timer: timer,
-////                    onLabelChange: onLabelChange
-////                )
+//                EditableTimerLabelV19(
+//                    timer: timer,
+//                    onLabelChange: onLabelChange
+//                )
 //                
 //                Spacer()
 //                
@@ -30,7 +33,8 @@
 //                    Image(systemName: "xmark")
 //                        .font(.caption)
 //                        .foregroundColor(.secondary)
-//                        .frame(width: 24, height: 24)
+//                        .frame(width: 44, height: 44)
+//                        .contentShape(Rectangle())
 //                }
 //            }
 //            
@@ -47,14 +51,14 @@
 //                Spacer()
 //                
 //                // 버튼 영역
-//                HStack(spacing: 12) {
+//                HStack(spacing: 16) {
 //                    // 리셋 버튼 (일시정지 시에만 표시)
 //                    if timer.status == .paused {
 //                        Button(action: {}) {
 //                            Image(systemName: "arrow.clockwise")
 //                                .font(.footnote)
 //                                .foregroundColor(.blue)
-//                                .frame(width: 32, height: 32)
+//                                .frame(width: 44, height: 44)
 //                                .background(
 //                                    Circle()
 //                                        .strokeBorder(Color.blue.opacity(0.3), lineWidth: 1.5)
@@ -63,8 +67,8 @@
 //                    }
 //                    
 //                    // Play/Pause 토글 버튼 (메인)
-//                    Button(action: {}) {
-//                        Image(systemName: timer.status == .running ? "pause.fill" : "play.fill")
+//                    Button(action: onToggleRunning) {
+//                        Image(systemName: isRunning ? "pause.fill" : "play.fill")
 //                            .font(.title2)
 //                            .foregroundColor(.white)
 //                            .frame(width: 56, height: 56)
@@ -90,6 +94,10 @@
 //        .padding()
 //        .background(AppTheme.contentBackground)
 //        .cornerRadius(20)
-//        .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
+//        .overlay(
+//            RoundedRectangle(cornerRadius: 20)
+//                .stroke(isRunning ? Color.blue : Color.clear, lineWidth: 2)
+//        )
+//        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
 //    }
 //}

@@ -1,5 +1,5 @@
 ////
-////  TimerRowInlineEditLab.swift
+////  TimerRowRunningLabV22V24.swift
 ////  QuickLabelTimer
 ////
 ////  Created by 이소연 on 12/16/25.
@@ -7,9 +7,10 @@
 //
 //import SwiftUI
 //
-//// MARK: - 🎛️ 인라인 편집 실험실
-//struct TimerRowInlineEditLab: View {
+//// MARK: - 🏃 타이머 재생 중 스타일 실험실 V22-V24
+//struct TimerRowRunningLabV22V24: View {
 //    @State private var timers: [TimerData] = []
+//    @State private var runningStates: [UUID: Bool] = [:]
 //    
 //    var body: some View {
 //        NavigationStack {
@@ -19,41 +20,93 @@
 //                ScrollView {
 //                    VStack(spacing: 32) {
 //                        
-//                        // V11: EditableTimerLabel 적용
+//                        // V22: Strong Background Inversion
 //                        DesignSection(
-//                            title: "V11: Inline Edit (Tap to Edit)",
-//                            description: "라벨을 탭하면 편집 모드로 전환"
+//                            title: "V22: Strong Background Inversion",
+//                            description: "재생 중 파란 배경 + 흰색 텍스트 (강한 강조)"
 //                        ) {
 //                            VStack(spacing: 12) {
 //                                ForEach(timers) { timer in
-//                                    CardStyleRowV11(
+//                                    TimerRowRunningV22(
 //                                        timer: timer,
 //                                        onLabelChange: { newLabel in
 //                                            updateTimerLabel(timerId: timer.id, newLabel: newLabel)
+//                                        },
+//                                        isRunning: runningStates[timer.id] ?? false,
+//                                        onToggleRunning: {
+//                                            runningStates[timer.id]?.toggle()
 //                                        }
 //                                    )
 //                                }
 //                            }
 //                        }
 //                        
-//                        // 사용 가이드
+//                        // V23: Border Emphasis
 //                        DesignSection(
-//                            title: "사용 방법",
+//                            title: "V23: Border Emphasis",
+//                            description: "재생 중 파란 테두리 (중간 강조)"
+//                        ) {
+//                            VStack(spacing: 12) {
+//                                ForEach(timers) { timer in
+//                                    TimerRowRunningV23(
+//                                        timer: timer,
+//                                        onLabelChange: { newLabel in
+//                                            updateTimerLabel(timerId: timer.id, newLabel: newLabel)
+//                                        },
+//                                        isRunning: runningStates[timer.id] ?? false,
+//                                        onToggleRunning: {
+//                                            runningStates[timer.id]?.toggle()
+//                                        }
+//                                    )
+//                                }
+//                            }
+//                        }
+//                        
+//                        // V24: Subtle Background + Border
+//                        DesignSection(
+//                            title: "V24: Subtle Background + Border",
+//                            description: "재생 중 연한 배경 + 테두리 (약한 강조)"
+//                        ) {
+//                            VStack(spacing: 12) {
+//                                ForEach(timers) { timer in
+//                                    TimerRowRunningV24(
+//                                        timer: timer,
+//                                        onLabelChange: { newLabel in
+//                                            updateTimerLabel(timerId: timer.id, newLabel: newLabel)
+//                                        },
+//                                        isRunning: runningStates[timer.id] ?? false,
+//                                        onToggleRunning: {
+//                                            runningStates[timer.id]?.toggle()
+//                                        }
+//                                    )
+//                                }
+//                            }
+//                        }
+//                        
+//                        // 비교 가이드
+//                        DesignSection(
+//                            title: "재생 중 스타일 비교",
 //                            description: ""
 //                        ) {
 //                            VStack(alignment: .leading, spacing: 12) {
 //                                GuideItem(
-//                                    icon: "hand.tap.fill",
-//                                    text: "라벨을 탭하면 편집 모드로 전환됩니다"
+//                                    icon: "paintbrush.fill",
+//                                    text: "V22: 파란 배경 + 흰색 텍스트 (가장 강한 시각적 피드백)"
 //                                )
 //                                GuideItem(
-//                                    icon: "keyboard",
-//                                    text: "Return 키를 누르면 편집이 완료됩니다"
+//                                    icon: "rectangle.portrait.on.rectangle.portrait",
+//                                    text: "V23: 파란 테두리만 (깔끔하고 전문적)"
 //                                )
 //                                GuideItem(
-//                                    icon: "xmark.circle",
-//                                    text: "빈 값으로 제출하면 원래 값이 유지됩니다"
+//                                    icon: "circle.dotted",
+//                                    text: "V24: 연한 배경 + 테두리 (미묘하고 세련됨)"
 //                                )
+//                                
+//                                Divider().padding(.vertical, 4)
+//                                
+//                                Text("💡 Tip: Play 버튼을 눌러 각 스타일의 재생 모드를 확인하세요")
+//                                    .font(.caption)
+//                                    .foregroundColor(.secondary)
 //                            }
 //                            .padding()
 //                            .background(AppTheme.contentBackground)
@@ -63,11 +116,15 @@
 //                    .padding()
 //                }
 //            }
-//            .navigationTitle("Inline Edit Lab")
+//            .navigationTitle("Running Style V22-V24")
 //            .navigationBarTitleDisplayMode(.inline)
 //            .onAppear {
 //                if timers.isEmpty {
 //                    timers = makeDummyTimers()
+//                    // Initialize running states
+//                    for timer in timers {
+//                        runningStates[timer.id] = false
+//                    }
 //                }
 //            }
 //        }
@@ -77,7 +134,6 @@
 //    private func updateTimerLabel(timerId: UUID, newLabel: String) {
 //        if let index = timers.firstIndex(where: { $0.id == timerId }) {
 //            let updatedTimer = timers[index]
-//            // TimerData의 복사본을 만들어서 새 라벨로 재생성
 //            timers[index] = TimerData(
 //                id: updatedTimer.id,
 //                label: newLabel,
@@ -100,28 +156,20 @@
 //    private func makeDummyTimers() -> [TimerData] {
 //        return [
 //            makeDummyTimer(
-//                label: "업무 집중 시간",
-//                time: "1:25:00",
-//                state: .running,
-//                endAction: .preserve,
-//                isSoundOn: true,
-//                isVibrationOn: true
-//            ),
-//            makeDummyTimer(
-//                label: "점심 준비",
-//                time: "0:15:30",
-//                state: .paused,
-//                endAction: .discard,
-//                isSoundOn: false,
-//                isVibrationOn: true
-//            ),
-//            makeDummyTimer(
-//                label: "매우 긴 라벨 테스트: 아이들이 깨지 않도록 조용히 설거지하고 정리한 다음 내일 아침 도시락 준비까지 완료하기",
-//                time: "0:05:00",
+//                label: "라면 끓이기",
+//                time: "0:03:00",
 //                state: .running,
 //                endAction: .preserve,
 //                isSoundOn: true,
 //                isVibrationOn: false
+//            ),
+//            makeDummyTimer(
+//                label: "업무 집중 타이머",
+//                time: "0:25:00",
+//                state: .paused,
+//                endAction: .discard,
+//                isSoundOn: false,
+//                isVibrationOn: true
 //            )
 //        ]
 //    }
@@ -166,29 +214,7 @@
 //    }
 //}
 //
-//// MARK: - Guide Item Component
-//struct GuideItem: View {
-//    let icon: String
-//    let text: String
-//    
-//    var body: some View {
-//        HStack(alignment: .top, spacing: 12) {
-//            Image(systemName: icon)
-//                .font(.body)
-//                .foregroundColor(.blue)
-//                .frame(width: 24)
-//            
-//            Text(text)
-//                .font(.body)
-//                .foregroundColor(.primary)
-//                .fixedSize(horizontal: false, vertical: true)
-//            
-//            Spacer()
-//        }
-//    }
-//}
-//
 //// MARK: - Preview
 //#Preview {
-//    TimerRowInlineEditLab()
+//    TimerRowRunningLabV22V24()
 //}

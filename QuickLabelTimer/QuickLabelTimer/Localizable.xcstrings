@@ -7,6 +7,12 @@
     "\"%@\"" : {
 
     },
+    "#0F2027" : {
+
+    },
+    "#2C5364" : {
+
+    },
     "#E8EAF6" : {
 
     },
@@ -95,6 +101,18 @@
           }
         }
       }
+    },
+    "🎯 브랜치 전략" : {
+
+    },
+    "💡 Tip: Play 버튼을 눌러 각 스타일의 재생 모드를 확인하세요" : {
+
+    },
+    "1. feature/timer-row-redesign" : {
+
+    },
+    "2. feature/timer-row-inline-edit" : {
+
     },
     "10:30 종료" : {
 
@@ -666,6 +684,9 @@
         }
       }
     },
+    "Deep Blue Black" : {
+
+    },
     "Design Lab" : {
 
     },
@@ -675,13 +696,58 @@
     "Design Lab V9-V10" : {
 
     },
+    "Design V15-V17 Lab" : {
+
+    },
+    "Edit Affordance V18-V21" : {
+
+    },
     "End Color" : {
+
+    },
+    "Glass Lab V13" : {
+
+    },
+    "Glass Lab V14" : {
 
     },
     "Glass Material Lab" : {
 
     },
+    "Inline Edit Lab" : {
+
+    },
+    "Manual Test Controls" : {
+
+    },
+    "NewTimerRow Test Sandbox" : {
+
+    },
+    "Running Style V22-V24" : {
+
+    },
+    "Set Completed" : {
+
+    },
+    "Set Paused" : {
+
+    },
+    "Set Running" : {
+
+    },
+    "Set Stopped" : {
+
+    },
+    "Slate Blue" : {
+
+    },
     "Start Color" : {
+
+    },
+    "Status:" : {
+
+    },
+    "Timer Row Improvements" : {
 
     },
     "timer-completed" : {
@@ -2070,6 +2136,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "타이머%lld"
+          }
+        }
+      }
+    },
+    "ui.timer.completed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completed"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "종료됨"
+          }
+        }
+      }
+    },
+    "ui.timer.endTimeFormat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ends at %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 종료 예정"
           }
         }
       }

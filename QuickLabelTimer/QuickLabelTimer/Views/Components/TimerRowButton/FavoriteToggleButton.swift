@@ -12,17 +12,35 @@ import SwiftUI
 
 struct FavoriteToggleButton: View {
     let endAction: TimerEndAction
+    let status: TimerStatus
     let onToggle: () -> Void
     
-    private var isOn: Bool { endAction.isPreserve }
+    private var isOn: Bool {
+        endAction.isPreserve
+    }
+    
+    private var tint: Color {
+        let colors = RowTheme.colors(for: status)
+        
+        switch (isOn, status) {
+        case (true, _):
+            // 북마크 ON = 항상 노란색
+            return AppTheme.Bookmark.on
+        case (false, .running), (false, .completed), (false, .paused):
+            // 북마크 OFF + 실행중/완료 = 흰색 아웃라인
+            return AppTheme.Bookmark.offRunning
+        case (false, .stopped):
+            // 북마크 OFF + 준비/일시정지 = 검정 아웃라인
+            return AppTheme.Bookmark.off
+        }
+    }
     
     var body: some View {
         Button(action: onToggle) {
-//            Image(systemName: endAction.isPreserve ? "star.fill" : "star")
-            Image(systemName: endAction.isPreserve ? "bookmark.fill" : "bookmark")
-                .foregroundColor(endAction.isPreserve ? .yellow : .gray.opacity(0.6))
+            Image(systemName: isOn ? "bookmark.fill" : "bookmark")
+                .foregroundColor(tint)
                 .font(.title2)
-                .frame(width: 44, height: 44) // 탭 영역 확보
+                .frame(width: 44, height: 44)
                 .a11y(
                     label: A11yText.TimerRow.favoriteLabel,
                     hint: isOn ? A11yText.TimerRow.favoriteOnHint : A11yText.TimerRow.favoriteOffHint,

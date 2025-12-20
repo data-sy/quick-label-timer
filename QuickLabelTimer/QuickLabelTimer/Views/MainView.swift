@@ -63,6 +63,7 @@ struct MainView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(spacing: 0) {
+//                            NewTimerRowTestView()
                             SectionContainerView {
                                 AddTimerView(viewModel: addTimerVM)
                             }

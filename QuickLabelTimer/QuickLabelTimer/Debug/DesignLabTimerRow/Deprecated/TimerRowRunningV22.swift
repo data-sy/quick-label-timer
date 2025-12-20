@@ -1,5 +1,5 @@
 ////
-////  TimerRowEditAffordanceV18.swift
+////  TimerRowRunningV22.swift
 ////  QuickLabelTimer
 ////
 ////  Created by 이소연 on 12/16/25.
@@ -7,10 +7,12 @@
 //
 //import SwiftUI
 //
-//// MARK: - V18: Edit Mode Gray Border
-//struct TimerRowEditAffordanceV18: View {
+//// MARK: - V22: Strong Background Inversion
+//struct TimerRowRunningV22: View {
 //    let timer: TimerData
 //    let onLabelChange: (String) -> Void
+//    let isRunning: Bool
+//    let onToggleRunning: () -> Void
 //    
 //    var body: some View {
 //        VStack(alignment: .leading, spacing: 12) {
@@ -19,10 +21,11 @@
 //                FavoriteToggleButton(endAction: timer.endAction, onToggle: {})
 //                    .frame(width: 44, height: 44)
 //                
-////                EditableTimerLabelV18(
-////                    timer: timer,
-////                    onLabelChange: onLabelChange
-////                )
+//                EditableTimerLabelRunningV22(
+//                    timer: timer,
+//                    onLabelChange: onLabelChange,
+//                    isRunning: isRunning
+//                )
 //                
 //                Spacer()
 //                
@@ -30,20 +33,22 @@
 //                Button(action: {}) {
 //                    Image(systemName: "xmark")
 //                        .font(.caption)
-//                        .foregroundColor(.secondary)
+//                        .foregroundColor(isRunning ? .white.opacity(0.8) : .secondary)
 //                        .frame(width: 44, height: 44)
 //                        .contentShape(Rectangle())
 //                }
 //            }
 //            
-//            Divider().padding(.vertical, 4)
+//            Divider()
+//                .background(isRunning ? Color.white : Color.secondary.opacity(0.3))
+//                .padding(.vertical, 4)
 //            
 //            // [중단] 시간 + 버튼
 //            HStack(alignment: .center, spacing: 16) {
 //                // 시간 표시
 //                Text(timer.formattedTime)
 //                    .font(.system(size: 48, weight: .bold, design: .rounded))
-//                    .foregroundColor(timer.status == .completed ? .red : .primary)
+//                    .foregroundColor(isRunning ? .white : (timer.status == .completed ? .red : .primary))
 //                    .minimumScaleFactor(0.5)
 //                
 //                Spacer()
@@ -55,22 +60,22 @@
 //                        Button(action: {}) {
 //                            Image(systemName: "arrow.clockwise")
 //                                .font(.footnote)
-//                                .foregroundColor(.blue)
+//                                .foregroundColor(isRunning ? .white : .blue)
 //                                .frame(width: 44, height: 44)
 //                                .background(
 //                                    Circle()
-//                                        .strokeBorder(Color.blue.opacity(0.3), lineWidth: 1.5)
+//                                        .strokeBorder(isRunning ? Color.white.opacity(0.5) : Color.blue.opacity(0.3), lineWidth: 1.5)
 //                                )
 //                        }
 //                    }
 //                    
 //                    // Play/Pause 토글 버튼 (메인)
-//                    Button(action: {}) {
-//                        Image(systemName: timer.status == .running ? "pause.fill" : "play.fill")
+//                    Button(action: onToggleRunning) {
+//                        Image(systemName: isRunning ? "pause.fill" : "play.fill")
 //                            .font(.title2)
-//                            .foregroundColor(.white)
+//                            .foregroundColor(isRunning ? .blue : .white)
 //                            .frame(width: 56, height: 56)
-//                            .background(Circle().fill(Color.blue))
+//                            .background(Circle().fill(isRunning ? Color.white : Color.blue))
 //                            .shadow(radius: 4)
 //                    }
 //                }
@@ -80,26 +85,27 @@
 //            HStack(spacing: 4) {
 //                Image(systemName: timer.alarmMode.iconName)
 //                    .font(.caption)
-//                    .foregroundColor(.secondary)
+//                    .foregroundColor(isRunning ? .white.opacity(0.8) : .secondary)
 //                
 //                Text(timer.status == .completed ? "timer-completed" : "오전 10:30 종료 예정")
 //                    .font(.footnote)
-//                    .foregroundColor(.secondary)
+//                    .foregroundColor(isRunning ? .white.opacity(0.8) : .secondary)
 //                
 //                Spacer()
 //            }
 //        }
 //        .padding()
-//        .background(AppTheme.contentBackground)
+//        .background(isRunning ? Color.blue : AppTheme.contentBackground)
 //        .cornerRadius(20)
 //        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
 //    }
 //}
 //
-//// MARK: - Editable Label V18: Gray Border in Edit Mode
-//struct EditableTimerLabelV18: View {
+//// MARK: - Editable Label for Running V22: White Text + White Background in Edit Mode
+//struct EditableTimerLabelRunningV22: View {
 //    let timer: TimerData
 //    let onLabelChange: (String) -> Void
+//    let isRunning: Bool
 //    
 //    @State private var isEditing = false
 //    @State private var editText = ""
@@ -110,18 +116,18 @@
 //            if isEditing {
 //                TextField("timer-label-placeholder", text: $editText, axis: .vertical)
 //                    .font(.headline)
-//                    .foregroundColor(.primary)
+//                    .foregroundColor(isRunning ? .blue : .primary)
 //                    .lineLimit(nil)
 //                    .focused($isFocused)
 //                    .padding(.horizontal, 8)
 //                    .padding(.vertical, 4)
 //                    .background(
 //                        RoundedRectangle(cornerRadius: 6)
-//                            .fill(Color(.clear))
+//                            .fill(isRunning ? Color.white : Color.clear)
 //                    )
 //                    .overlay(
 //                        RoundedRectangle(cornerRadius: 6)
-//                            .stroke(Color.secondary.opacity(0.3), lineWidth: 1.5)
+//                            .stroke(isRunning ? Color.clear : Color.secondary.opacity(0.3), lineWidth: 1.5)
 //                    )
 //                    .onSubmit { commitEdit() }
 //                    .onAppear {
@@ -129,12 +135,18 @@
 //                        isFocused = true
 //                    }
 //            } else {
-//                Text(timer.label)
-//                    .font(.headline)
-//                    .foregroundColor(.primary)
-//                    .lineLimit(nil)
-//                    .fixedSize(horizontal: false, vertical: true)
-//                    .onTapGesture { startEditing() }
+//                HStack(spacing: 6) {
+//                    Text(timer.label)
+//                        .font(.headline)
+//                        .foregroundColor(isRunning ? .white : .primary)
+//                        .lineLimit(nil)
+//                        .fixedSize(horizontal: false, vertical: true)
+//                    
+//                    Image(systemName: "pencil")
+//                        .font(.caption)
+//                        .foregroundColor(isRunning ? .white.opacity(0.8) : .secondary)
+//                }
+//                .onTapGesture { startEditing() }
 //            }
 //        }
 //    }
