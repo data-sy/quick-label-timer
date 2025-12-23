@@ -1633,13 +1633,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter label (leave blank to auto-generate)"
+            "value" : "Enter a label"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "라벨 입력 (비워두면 자동 생성)"
+            "value" : "라벨을 입력하세요."
           }
         }
       }
