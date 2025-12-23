@@ -22,7 +22,7 @@ struct FavoriteTimersView: View {
             stateProvider: { _ in .preset },
             onDelete: viewModel.hidePreset(at:)
         ) { preset in
-            ZStack {
+            if !viewModel.isPresetRunning(preset) {
                 FavoritePresetRowView(
                     preset: preset,
                     onToggleFavorite: { viewModel.requestToHide(preset) },
@@ -34,18 +34,13 @@ struct FavoriteTimersView: View {
                         viewModel.updateLabel(for: preset.id, newLabel: newLabel)
                     }
                 )
-                
-                // 실행 중일 때 가림막(Overlay) 처리
-                if viewModel.isPresetRunning(preset) {
-                    runningOverlay
-                }
+                .transition(.asymmetric(
+                    insertion: .opacity.combined(with: .scale(scale: 0.95)),
+                    removal: .opacity.combined(with: .scale(scale: 0.95))
+                ))
             }
-            .disabled(viewModel.isPresetRunning(preset))
-            .deleteDisabled(viewModel.isPresetRunning(preset))
-            .accessibilityValue(
-                viewModel.isPresetRunning(preset) ? A11yText.FavoriteTimers.runningStatus : ""
-            )
         }
+        .animation(.easeInOut(duration: 0.3), value: viewModel.runningPresetIds)
         .sheet(isPresented: $viewModel.isEditing, onDismiss: viewModel.stopEditing) {
             if let preset = viewModel.editingPreset {
                 EditPresetView(viewModel: EditPresetViewModel(
@@ -56,21 +51,5 @@ struct FavoriteTimersView: View {
                 .presentationDetents([.medium])
             }
         }
-    }
-    
-    private var runningOverlay: some View {
-        Color.black.opacity(0.4)
-            .cornerRadius(12)
-            .padding(4)
-            .overlay {
-                 HStack(spacing: 8) {
-                    Text("ui.favorite.runningIndicator")
-                        .font(.title).fontWeight(.bold)
-                    Image(systemName: "figure.run")
-                        .font(.title).scaleEffect(x: -1, y: 1)
-                }
-                .foregroundColor(.white)
-            }
-            .accessibilityHidden(true)
     }
 }
