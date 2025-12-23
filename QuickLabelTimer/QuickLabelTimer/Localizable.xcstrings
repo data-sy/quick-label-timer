@@ -2138,9 +2138,6 @@
         }
       }
     },
-    "ui.timer.deletionCountdown" : {
-
-    },
     "ui.timer.endTimeFormat" : {
       "extractionState" : "manual",
       "localizations" : {

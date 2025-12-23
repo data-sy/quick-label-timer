@@ -31,6 +31,7 @@ struct FavoriteTimersView: View {
                         editMode = .inactive
                     },
                     onDelete: { viewModel.requestToHide(preset) },
+                    onEdit: { viewModel.startEditing(for: preset) },
                     onLabelChange: { newLabel in
                         viewModel.updateLabel(for: preset.id, newLabel: newLabel)
                     }

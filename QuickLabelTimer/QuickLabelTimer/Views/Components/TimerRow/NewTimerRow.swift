@@ -20,6 +20,7 @@ struct NewTimerRow: View {
     let onPlayPause: () -> Void
     let onReset: () -> Void
     let onDelete: () -> Void
+    let onEdit: (() -> Void)?
     let onLabelChange: (String) -> Void
 
     var body: some View {
@@ -64,6 +65,11 @@ struct NewTimerRow: View {
                     .font(.system(size: RowTheme.timeTextSize, weight: .bold, design: .rounded))
                     .foregroundColor(colors.cardForeground)
                     .minimumScaleFactor(0.5)
+                    .if(onEdit != nil) { view in
+                        view.onTapGesture {
+                            onEdit?()
+                        }
+                    }
 
                 Spacer()
 
@@ -94,6 +100,17 @@ struct NewTimerRow: View {
             x: 0,
             y: RowTheme.shadowY
         )
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
     }
 }
 
@@ -172,6 +189,7 @@ struct NewTimerRow: View {
                 onPlayPause: {},
                 onReset: {},
                 onDelete: {},
+                onEdit: {},
                 onLabelChange: { print("Label changed to: \($0)") }
             )
 
@@ -181,6 +199,7 @@ struct NewTimerRow: View {
                 onPlayPause: {},
                 onReset: {},
                 onDelete: {},
+                onEdit: {},
                 onLabelChange: { print("Label changed to: \($0)") }
             )
 
@@ -190,6 +209,7 @@ struct NewTimerRow: View {
                 onPlayPause: {},
                 onReset: {},
                 onDelete: {},
+                onEdit: {},
                 onLabelChange: { print("Label changed to: \($0)") }
             )
 
@@ -199,6 +219,7 @@ struct NewTimerRow: View {
                 onPlayPause: {},
                 onReset: {},
                 onDelete: {},
+                onEdit: {},
                 onLabelChange: { print("Label changed to: \($0)") }
             )
         }
@@ -213,6 +234,7 @@ struct NewTimerRow: View {
                 onPlayPause: {},
                 onReset: {},
                 onDelete: {},
+                onEdit: {},
                 onLabelChange: { print("Label changed to: \($0)") }
             )
 
@@ -222,6 +244,7 @@ struct NewTimerRow: View {
                 onPlayPause: {},
                 onReset: {},
                 onDelete: {},
+                onEdit: {},
                 onLabelChange: { print("Label changed to: \($0)") }
             )
 
@@ -231,6 +254,7 @@ struct NewTimerRow: View {
                 onPlayPause: {},
                 onReset: {},
                 onDelete: {},
+                onEdit: {},
                 onLabelChange: { print("Label changed to: \($0)") }
             )
 
@@ -240,6 +264,7 @@ struct NewTimerRow: View {
                 onPlayPause: {},
                 onReset: {},
                 onDelete: {},
+                onEdit: {},
                 onLabelChange: { print("Label changed to: \($0)") }
             )
         }
