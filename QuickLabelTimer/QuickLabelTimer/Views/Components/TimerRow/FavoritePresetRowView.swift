@@ -51,7 +51,17 @@ struct FavoritePresetRowView: View {
             onReset: {},
             onDelete: onDelete ?? {},
             onEdit: onEdit,
-            onLabelChange: onLabelChange ?? { _ in }
+            onLabelChange: onLabelChange ?? { _ in },
+            trailingContent: {  // 북마크 시, 알람모드
+                AnyView(
+                    AlarmModeButton(
+                        isSoundOn: preset.isSoundOn,
+                        isVibrationOn: preset.isVibrationOn,
+                        status: tempTimer.status,
+                        onTap: onEdit ?? {}
+                    )
+                )
+            }
         )
         .opacity(isEditing ? 0.5 : 1.0)
         .allowsHitTesting(!isEditing)

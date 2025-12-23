@@ -22,6 +22,7 @@ struct NewTimerRow: View {
     let onDelete: () -> Void
     let onEdit: (() -> Void)?
     let onLabelChange: (String) -> Void
+    let trailingContent: (() -> AnyView)? // 우측 상단 슬롯
 
     var body: some View {
         let colors = RowTheme.colors(for: timer.status)
@@ -43,16 +44,9 @@ struct NewTimerRow: View {
                 
                 Spacer()
                 
-                // X 삭제 버튼
-                Button(action: onDelete) {
-                    Image(systemName: "xmark")
-                        .font(.caption)
-                        .foregroundColor(colors.cardForeground.opacity(RowTheme.deleteButtonOpacity))
-                        .frame(width: RowTheme.deleteButtonSize, height: RowTheme.deleteButtonSize)
-                        .frame(width: RowTheme.deleteButtonTapArea, height: RowTheme.deleteButtonTapArea)
+                if let trailingContent = trailingContent {
+                    trailingContent()
                 }
-                .buttonStyle(.plain)
-
             }
 
             Divider()
@@ -80,15 +74,17 @@ struct NewTimerRow: View {
                 )
             }
 
-            // BOTTOM: Alarm + End Time
-            HStack(spacing: 4) {
-                if timer.status == .completed, let deletionTime = timer.pendingDeletionAt {
-                    CountdownMessageView(timer: timer)
-                } else {
-                    EndTimeInfoView(timer: timer, foregroundColor: colors.cardForeground)
+            // BOTTOM: Alarm + End Time (stopped 상태가 아닐 때만)
+            if timer.status != .stopped {
+                HStack(spacing: 4) {
+                    if timer.status == .completed, let deletionTime = timer.pendingDeletionAt {
+                        CountdownMessageView(timer: timer)
+                    } else {
+                        EndTimeInfoView(timer: timer, foregroundColor: colors.cardForeground)
+                    }
+                    
+                    Spacer()
                 }
-                
-                Spacer()
             }
         }
         .padding(RowTheme.padding)
@@ -111,166 +107,5 @@ extension View {
         } else {
             self
         }
-    }
-}
-
-#Preview("NewTimerRow – All States") {
-    let now = Date()
-
-    // Stopped timer (프리셋)
-    let stoppedTimer = TimerData(
-        label: "Ready Timer",
-        hours: 1,
-        minutes: 0,
-        seconds: 0,
-        isSoundOn: false,
-        isVibrationOn: false,
-        createdAt: now,
-        endDate: now,
-        remainingSeconds: 3600,
-        status: .stopped,
-        presetId: nil,
-        endAction: .preserve
-    )
-
-    // Running timer
-    let runningTimer = TimerData(
-        label: "Running Timer",
-        hours: 0,
-        minutes: 25,
-        seconds: 0,
-        isSoundOn: true,
-        isVibrationOn: false,
-        createdAt: now,
-        endDate: now.addingTimeInterval(25 * 60),
-        remainingSeconds: 10 * 60,
-        status: .running,
-        presetId: nil,
-        endAction: .discard
-    )
-
-    // Paused timer
-    let pausedTimer = TimerData(
-        label: "Paused Timer",
-        hours: 0,
-        minutes: 15,
-        seconds: 0,
-        isSoundOn: false,
-        isVibrationOn: true,
-        createdAt: now,
-        endDate: now.addingTimeInterval(15 * 60),
-        remainingSeconds: 15 * 60,
-        status: .paused,
-        presetId: nil,
-        endAction: .preserve
-    )
-
-    // Completed timer
-    let completedTimer = TimerData(
-        label: "Completed Timer",
-        hours: 0,
-        minutes: 10,
-        seconds: 0,
-        isSoundOn: true,
-        isVibrationOn: true,
-        createdAt: now,
-        endDate: now,
-        remainingSeconds: 0,
-        status: .completed,
-        presetId: nil,
-        endAction: .preserve
-    )
-
-    Group {
-        VStack(spacing: 16) {
-            NewTimerRow(
-                timer: stoppedTimer,
-                onToggleFavorite: {},
-                onPlayPause: {},
-                onReset: {},
-                onDelete: {},
-                onEdit: {},
-                onLabelChange: { print("Label changed to: \($0)") }
-            )
-
-            NewTimerRow(
-                timer: runningTimer,
-                onToggleFavorite: {},
-                onPlayPause: {},
-                onReset: {},
-                onDelete: {},
-                onEdit: {},
-                onLabelChange: { print("Label changed to: \($0)") }
-            )
-
-            NewTimerRow(
-                timer: pausedTimer,
-                onToggleFavorite: {},
-                onPlayPause: {},
-                onReset: {},
-                onDelete: {},
-                onEdit: {},
-                onLabelChange: { print("Label changed to: \($0)") }
-            )
-
-            NewTimerRow(
-                timer: completedTimer,
-                onToggleFavorite: {},
-                onPlayPause: {},
-                onReset: {},
-                onDelete: {},
-                onEdit: {},
-                onLabelChange: { print("Label changed to: \($0)") }
-            )
-        }
-        .padding()
-        .background(AppTheme.pageBackground)
-        .previewDisplayName("Light Mode")
-
-        VStack(spacing: 16) {
-            NewTimerRow(
-                timer: stoppedTimer,
-                onToggleFavorite: {},
-                onPlayPause: {},
-                onReset: {},
-                onDelete: {},
-                onEdit: {},
-                onLabelChange: { print("Label changed to: \($0)") }
-            )
-
-            NewTimerRow(
-                timer: runningTimer,
-                onToggleFavorite: {},
-                onPlayPause: {},
-                onReset: {},
-                onDelete: {},
-                onEdit: {},
-                onLabelChange: { print("Label changed to: \($0)") }
-            )
-
-            NewTimerRow(
-                timer: pausedTimer,
-                onToggleFavorite: {},
-                onPlayPause: {},
-                onReset: {},
-                onDelete: {},
-                onEdit: {},
-                onLabelChange: { print("Label changed to: \($0)") }
-            )
-
-            NewTimerRow(
-                timer: completedTimer,
-                onToggleFavorite: {},
-                onPlayPause: {},
-                onReset: {},
-                onDelete: {},
-                onEdit: {},
-                onLabelChange: { print("Label changed to: \($0)") }
-            )
-        }
-        .padding()
-        .background(AppTheme.pageBackground)
-        .environment(\.colorScheme, .dark)
-        .previewDisplayName("Dark Mode")
     }
 }
