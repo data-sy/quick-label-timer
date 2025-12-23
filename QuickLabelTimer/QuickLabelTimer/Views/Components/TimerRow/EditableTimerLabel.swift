@@ -14,8 +14,8 @@ struct EditableTimerLabel: View {
     let label: String
     let status: TimerStatus
     let onLabelChange: (String) -> Void
+    @Binding var isEditing: Bool
 
-    @State private var isEditing = false
     @State private var editedLabel: String = ""
     @FocusState private var isFocused: Bool
 
@@ -70,6 +70,12 @@ struct EditableTimerLabel: View {
         .onChange(of: isFocused) { newValue in
             if !newValue && isEditing {
                 // Lost focus - commit changes
+                commitEdit()
+            }
+        }
+        .onChange(of: isEditing) { newValue in
+            if !newValue && isFocused {
+                // Parent forced edit to end (e.g., play button tapped) - commit changes
                 commitEdit()
             }
         }

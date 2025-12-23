@@ -39,11 +39,11 @@ final class RunningTimersViewModel: ObservableObject {
     }
     
     /// 실행 중인 타이머를 프리셋으로 이동/복구
-    func handleMoveToPreset(for timer: TimerData) {
+    func handleMoveToPreset(for timer: TimerData) async {
         // 기존 프리셋에서 실행된 타이머였다면 타이머 삭제만 하면 됨 (id가 쓰이지 않게 된 프리셋은 자동으로 실행중 화면 사라짐)
         if let presetId = timer.presetId {
             // 프리셋 기반: 라벨 업데이트 + 삭제
-            presetRepository.updatePresetLabel(presetId: presetId, newLabel: timer.label)
+            await presetRepository.updatePresetLabel(presetId: presetId, newLabel: timer.label)
             timerService.removeTimer(id: timer.id)
         } else {
             // 사용자 생성 타이머라면 새 프리셋으로 변환 후 삭제
@@ -135,8 +135,12 @@ final class RunningTimersViewModel: ObservableObject {
                 onConfirm: { [weak self] in
                     guard let self = self else { return }
                     guard let finalTimer = self.timerService.getTimer(byId: timer.id) else { return }
-                    self.presetRepository.updatePresetLabel(presetId: presetId, newLabel: finalTimer.label)
-                    self.timerService.removeTimer(id: timer.id)
+                    Task {
+                        await self.presetRepository.updatePresetLabel(presetId: presetId, newLabel: finalTimer.label)
+                        await MainActor.run {
+                            self.timerService.removeTimer(id: timer.id)
+                        }
+                    }
                 }
             )
             

@@ -24,6 +24,8 @@ struct NewTimerRow: View {
     let onLabelChange: (String) -> Void
     let trailingContent: (() -> AnyView)? // 우측 상단 슬롯
 
+    @State private var isLabelEditing = false
+
     var body: some View {
         let colors = RowTheme.colors(for: timer.status)
 
@@ -39,7 +41,8 @@ struct NewTimerRow: View {
                 EditableTimerLabel(
                     label: timer.label,
                     status: timer.status,
-                    onLabelChange: onLabelChange
+                    onLabelChange: onLabelChange,
+                    isEditing: $isLabelEditing
                 )
                 
                 if let trailingContent = trailingContent {
@@ -67,7 +70,17 @@ struct NewTimerRow: View {
 
                 TimerActionButtons(
                     status: timer.status,
-                    onPlayPause: onPlayPause,
+                    onPlayPause: {
+                        // Force commit any pending label edit before playing
+                        if isLabelEditing {
+                            isLabelEditing = false
+                            DispatchQueue.main.async {
+                                onPlayPause()
+                            }
+                        } else {
+                            onPlayPause()
+                        }
+                    },
                     onReset: onReset
                 )
             }

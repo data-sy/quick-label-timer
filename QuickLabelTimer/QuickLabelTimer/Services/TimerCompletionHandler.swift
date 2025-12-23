@@ -81,7 +81,7 @@ final class TimerCompletionHandler {
     /// 모든 최종 로직을 실행하는 핵심 함수
     /// UI와 관련된 작업을 할 수 있으므로 @MainActor 명시
     @MainActor
-    private func handle(timerId: UUID) {
+    private func handle(timerId: UUID) async {
         // '최신' TimerData 가져오기 (완료 후의 즐겨찾기 토글 적용)
         guard let latestTimer = timerService.getTimer(byId: timerId) else {
             onComplete?(timerId)
@@ -102,7 +102,7 @@ final class TimerCompletionHandler {
 
             case (.some(let presetId), .preserve):
               // 변경된 라벨이 있으면 프리셋에 반영
-              presetRepository.updatePresetLabel(presetId: presetId, newLabel: latestTimer.label)
+            await presetRepository.updatePresetLabel(presetId: presetId, newLabel: latestTimer.label)
               timerService.removeTimer(id: timerId)
 
             case (.some(let presetId), .discard):
