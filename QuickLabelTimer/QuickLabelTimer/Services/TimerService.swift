@@ -62,8 +62,6 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
     @Published private(set) var scenePhase: ScenePhase = .active
 
-    let deleteCountdownSeconds: Int
-
     let didStart = PassthroughSubject<Void, Never>()
     
     private var lastActivationCleanupAt: Date = .distantPast
@@ -87,10 +85,9 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     
     private var timer: Timer?
 
-    init(timerRepository: TimerRepositoryProtocol, presetRepository: PresetRepositoryProtocol, deleteCountdownSeconds: Int) {
+    init(timerRepository: TimerRepositoryProtocol, presetRepository: PresetRepositoryProtocol) {
         self.timerRepository = timerRepository
         self.presetRepository = presetRepository
-        self.deleteCountdownSeconds = deleteCountdownSeconds
         reconcileTimersOnLaunch()
         startTicking()
     }
@@ -144,11 +141,11 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         guard timer.pendingDeletionAt == nil else { return }
         
         var mutableTimer = timer
-        let deadline = Date().addingTimeInterval(TimeInterval(deleteCountdownSeconds))
+        let deadline = Date().addingTimeInterval(TimeInterval(AppConfig.deleteCountdownSeconds))
         mutableTimer.pendingDeletionAt = deadline
         
         timerRepository.updateTimer(mutableTimer)
-        completionHandler.scheduleCompletion(for: mutableTimer, after: deleteCountdownSeconds)
+        completionHandler.scheduleCompletion(for: mutableTimer, after: AppConfig.deleteCountdownSeconds)
     }
     
     // MARK: - User Actions (UI에서 호출할 함수들)
@@ -444,7 +441,7 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
 
             case .completed:
                 let elapsedTime = now.timeIntervalSince(timer.endDate)
-                if elapsedTime > TimeInterval(deleteCountdownSeconds) {
+                if elapsedTime > TimeInterval(AppConfig.deleteCountdownSeconds) {
                     
                     #if DEBUG
                     logger.debug("...Timer \(timer.id, privacy: .public) was already completed. Finalizing.")

@@ -76,27 +76,12 @@ struct NewTimerRow: View {
 
             // BOTTOM: Alarm + End Time
             HStack(spacing: 4) {
-                let alarmMode = AlarmNotificationPolicy.getMode(
-                    soundOn: timer.isSoundOn,
-                    vibrationOn: timer.isVibrationOn
-                )
-                Image(systemName: alarmMode.iconName)
-                    .font(.caption)
-                    .foregroundColor(colors.cardForeground.opacity(RowTheme.secondaryOpacity))
-
-                if timer.status == .paused || timer.status == .stopped {
-                    // 일시정지/준비 상태는 실시간 업데이트
-                    TimelineView(.periodic(from: .now, by: 60)) { _ in
-                        Text(timer.formattedEndTime)
-                            .font(.footnote)
-                            .foregroundColor(colors.cardForeground.opacity(RowTheme.secondaryOpacity))
-                    }
+                if timer.status == .completed, let deletionTime = timer.pendingDeletionAt {
+                    CountdownMessageView(timer: timer)
                 } else {
-                    Text(timer.formattedEndTime)
-                        .font(.footnote)
-                        .foregroundColor(colors.cardForeground.opacity(RowTheme.secondaryOpacity))
+                    EndTimeInfoView(timer: timer, foregroundColor: colors.cardForeground)
                 }
-
+                
                 Spacer()
             }
         }

@@ -1153,13 +1153,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "In %lld second, timer will be deleted"
+                  "value" : "Will be deleted in %d second"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "In %lld seconds, timer will be deleted"
+                  "value" : "Will be deleted in %d seconds"
                 }
               }
             }
@@ -1168,7 +1168,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld초 후 타이머가 삭제됩니다"
+            "value" : "%d초 후 자동 삭제됩니다."
           }
         }
       }
@@ -1181,13 +1181,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "In %lld second, will be removed from favorites"
+                  "value" : "Will be removed from bookmarks in %d second"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "In %lld seconds, will be removed from favorites"
+                  "value" : "Will be removed from bookmarks in %d seconds"
                 }
               }
             }
@@ -1196,7 +1196,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld초 후 즐겨찾기에서 삭제됩니다"
+            "value" : "%d초 후 북마크에서 제거됩니다."
           }
         }
       }
@@ -1209,13 +1209,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "In %lld second, will return to favorites"
+                  "value" : "Will return to bookmarks in %d second"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "In %lld seconds, will return to favorites"
+                  "value" : "Will return to bookmarks in %d seconds"
                 }
               }
             }
@@ -1224,7 +1224,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld초 후 즐겨찾기로 돌아갑니다"
+            "value" : "%d초 후 북마크로 돌아갑니다."
           }
         }
       }
@@ -1237,13 +1237,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "In %lld second, will be saved to favorites"
+                  "value" : "Will be saved to bookmarks in %d second"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "In %lld seconds, will be saved to favorites"
+                  "value" : "Will be saved to bookmarks in %d seconds"
                 }
               }
             }
@@ -1252,7 +1252,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld초 후 즐겨찾기로 저장됩니다"
+            "value" : "%d초 후 북마크에 저장됩니다."
           }
         }
       }
@@ -2137,6 +2137,9 @@
           }
         }
       }
+    },
+    "ui.timer.deletionCountdown" : {
+
     },
     "ui.timer.endTimeFormat" : {
       "extractionState" : "manual",

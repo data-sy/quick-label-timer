@@ -17,7 +17,7 @@ final class RunningTimersViewModel: ObservableObject {
     private let timerRepository: TimerRepositoryProtocol
     private let presetRepository: PresetRepositoryProtocol
 
-    let deleteCountdownSeconds = QuickLabelTimerApp.deleteCountdownSeconds
+    let deleteCountdownSeconds = AppConfig.deleteCountdownSeconds
 
     @Published private(set) var sortedTimers: [TimerData] = []
     @Published var activeAlert: AppAlert?

@@ -18,12 +18,28 @@ struct CountdownMessageView: View {
             if let pendingAt = timer.pendingDeletionAt {
                 let remaining = Int(pendingAt.timeIntervalSince(context.date))
                 if remaining > 0 {
-                    Text(dynamicMessage(remaining: remaining))
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .padding(.top, 2)
+                    HStack(spacing: 4) {
+                        Image(systemName: iconName)
+                            .font(.caption)
+                        
+                        Text(dynamicMessage(remaining: remaining))
+                            .font(.footnote)
+                            .fontWeight(.medium)
+                    }
+                    .foregroundColor(timer.endAction.isPreserve ? .yellow : .red)
+                    .foregroundColor(.red)
                 }
             }
+        }
+    }
+    
+    /// endAction에 따라 적절한 아이콘 반환
+    private var iconName: String {
+        switch timer.endAction {
+        case .preserve:
+            return "bookmark.circle.fill"
+        case .discard:
+            return "trash.circle.fill"  
         }
     }
     
