@@ -15,6 +15,7 @@ struct FavoritePresetRowView: View {
     let preset: TimerPreset
     let onToggleFavorite: (() -> Void)?
     let onPlayPause: (() -> Void)?
+    let onDelete: (() -> Void)?
     let onLabelChange: ((String) -> Void)?
 
     private var isEditing: Bool {
@@ -47,7 +48,7 @@ struct FavoritePresetRowView: View {
             onToggleFavorite: onToggleFavorite ?? {},
             onPlayPause: onPlayPause ?? {},
             onReset: {},
-            onDelete: {},
+            onDelete: onDelete ?? {},
             onLabelChange: onLabelChange ?? { _ in }
         )
         .opacity(isEditing ? 0.5 : 1.0)

@@ -169,9 +169,6 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     }
 
     /// 실행 중인 타이머의 라벨을 업데이트합니다 (메모리만)
-    /// - Parameters:
-    ///   - timerId: 업데이트할 타이머 ID
-    ///   - newLabel: 새로운 라벨 텍스트
     func updateLabel(timerId: UUID, newLabel: String) {
         guard let timer = timerRepository.getTimer(byId: timerId) else { return }
         let updatedTimer = timer.updating(label: newLabel)

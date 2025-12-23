@@ -42,6 +42,12 @@ enum RowTheme {
     static let buttonShadowRadius: CGFloat = 4
     /// 버튼 아이콘 기본 색상
     static let buttonIconDefaultColor = Color.white
+    /// 삭제 버튼 크기
+    static let deleteButtonSize: CGFloat = 24
+    /// 삭제 버튼 탭 영역 크기
+    static let deleteButtonTapArea: CGFloat = 44
+    /// 삭제 버튼 아이콘 투명도
+    static let deleteButtonOpacity: CGFloat = 0.6
     
     // MARK: - Opacity (중앙 관리)
     /// 보조 요소 투명도 (아이콘, 서브텍스트 등)

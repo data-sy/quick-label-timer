@@ -39,8 +39,19 @@ struct NewTimerRow: View {
                     status: timer.status,
                     onLabelChange: onLabelChange
                 )
-
+                
                 Spacer()
+                
+                // X 삭제 버튼
+                Button(action: onDelete) {
+                    Image(systemName: "xmark")
+                        .font(.caption)
+                        .foregroundColor(colors.cardForeground.opacity(RowTheme.deleteButtonOpacity))
+                        .frame(width: RowTheme.deleteButtonSize, height: RowTheme.deleteButtonSize)
+                        .frame(width: RowTheme.deleteButtonTapArea, height: RowTheme.deleteButtonTapArea)
+                }
+                .buttonStyle(.plain)
+
             }
 
             Divider()

@@ -71,7 +71,9 @@ class FavoriteTimersViewModel: ObservableObject {
     
     /// 프리셋의 라벨 업데이트
     func updateLabel(for presetId: UUID, newLabel: String) {
-        presetRepository.updatePresetLabel(presetId: presetId, newLabel: newLabel)
+        Task { @MainActor in
+            presetRepository.updatePresetLabel(presetId: presetId, newLabel: newLabel)
+        }
     }
         
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
@@ -127,7 +129,7 @@ class FavoriteTimersViewModel: ObservableObject {
         isEditing = false
     }
 
-    // MARK: - Actions
+    // MARK: - Button Actions
 
     /// Run 버튼 액션 - 프리셋에서 타이머를 실행합니다
     func runTimerFromPreset(preset: TimerPreset) {

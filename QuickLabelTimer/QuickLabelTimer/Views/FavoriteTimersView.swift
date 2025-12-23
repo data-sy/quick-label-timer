@@ -30,6 +30,7 @@ struct FavoriteTimersView: View {
                         viewModel.runTimerFromPreset(preset: preset)
                         editMode = .inactive
                     },
+                    onDelete: { viewModel.requestToHide(preset) },
                     onLabelChange: { newLabel in
                         viewModel.updateLabel(for: preset.id, newLabel: newLabel)
                     }
