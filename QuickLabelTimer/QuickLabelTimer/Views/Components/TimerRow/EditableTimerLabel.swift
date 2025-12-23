@@ -35,15 +35,36 @@ struct EditableTimerLabel: View {
                         editedLabel = label
                         isFocused = true
                     }
+                    .padding(RowTheme.editingBackgroundPadding)
+                    .background(
+                        RoundedRectangle(cornerRadius: RowTheme.editingCornerRadius)
+                            .fill(RowTheme.editingBackgroundOverlay)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: RowTheme.editingCornerRadius)
+                                    .strokeBorder(RowTheme.editingBorderColor, lineWidth: RowTheme.editingBorderWidth)
+                            )
+                    )
             } else {
-                Text(label)
-                    .font(.headline)
-                    .foregroundColor(colors.cardForeground)
-                    .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .onTapGesture {
-                        startEditing()
-                    }
+                HStack(spacing: 0) {
+                    Text(label)
+                        .font(.headline)
+                        .foregroundColor(colors.cardForeground)
+                        .lineLimit(nil)
+//                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    Spacer()
+                                        
+                    Image(systemName: "pencil")
+                        .font(.system(size: RowTheme.editIconSize))
+                        .foregroundColor(colors.cardForeground)
+                        .opacity(RowTheme.editIconOpacity)
+                }
+                // 텍스트 필드와 높이를 맞추기 위해 패딩이나 프레임 조정 가능 (여기선 최소 높이 보장)
+                .frame(minHeight: RowTheme.minimumTapHeight)
+                .contentShape(Rectangle()) // 빈 공간(Spacer)도 탭 인식되도록 설정
+                .onTapGesture {
+                    startEditing()
+                }
             }
         }
         .onChange(of: isFocused) { newValue in
@@ -52,6 +73,8 @@ struct EditableTimerLabel: View {
                 commitEdit()
             }
         }
+        // 3. 영역 확장: 부모 뷰(HStack) 내에서 가로로 꽉 차게 설정
+        .frame(maxWidth: .infinity)
     }
 
     private func startEditing() {
@@ -70,49 +93,4 @@ struct EditableTimerLabel: View {
         isEditing = false
         isFocused = false
     }
-}
-
-#Preview("EditableTimerLabel - All States") {
-    VStack(spacing: 20) {
-        // Stopped (준비)
-        EditableTimerLabel(
-            label: "Ready to Start",
-            status: .stopped,
-            onLabelChange: { print("Changed to: \($0)") }
-        )
-        .padding()
-        .background(Color(.systemBackground))
-        .cornerRadius(12)
-        
-        // Paused (일시정지)
-        EditableTimerLabel(
-            label: "Paused Timer",
-            status: .paused,
-            onLabelChange: { print("Changed to: \($0)") }
-        )
-        .padding()
-        .background(Color.blue.opacity(0.15))
-        .cornerRadius(12)
-
-        // Running (실행 중)
-        EditableTimerLabel(
-            label: "Running Timer",
-            status: .running,
-            onLabelChange: { print("Changed to: \($0)") }
-        )
-        .padding()
-        .background(Color.blue)
-        .cornerRadius(12)
-        
-        // Completed (완료)
-        EditableTimerLabel(
-            label: "Completed Timer",
-            status: .completed,
-            onLabelChange: { print("Changed to: \($0)") }
-        )
-        .padding()
-        .background(Color.green)
-        .cornerRadius(12)
-    }
-    .padding()
 }

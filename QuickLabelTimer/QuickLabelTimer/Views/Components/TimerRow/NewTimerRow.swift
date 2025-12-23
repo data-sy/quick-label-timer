@@ -42,8 +42,6 @@ struct NewTimerRow: View {
                     onLabelChange: onLabelChange
                 )
                 
-                Spacer()
-                
                 if let trailingContent = trailingContent {
                     trailingContent()
                 }
