@@ -84,9 +84,18 @@ struct NewTimerRow: View {
                     .font(.caption)
                     .foregroundColor(colors.cardForeground.opacity(RowTheme.secondaryOpacity))
 
-                Text(timer.formattedEndTime)
-                    .font(.footnote)
-                    .foregroundColor(colors.cardForeground.opacity(RowTheme.secondaryOpacity))
+                if timer.status == .paused || timer.status == .stopped {
+                    // 일시정지/준비 상태는 실시간 업데이트
+                    TimelineView(.periodic(from: .now, by: 60)) { _ in
+                        Text(timer.formattedEndTime)
+                            .font(.footnote)
+                            .foregroundColor(colors.cardForeground.opacity(RowTheme.secondaryOpacity))
+                    }
+                } else {
+                    Text(timer.formattedEndTime)
+                        .font(.footnote)
+                        .foregroundColor(colors.cardForeground.opacity(RowTheme.secondaryOpacity))
+                }
 
                 Spacer()
             }
