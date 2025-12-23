@@ -15,6 +15,8 @@ struct FavoritePresetRowView: View {
     let preset: TimerPreset
     let onToggleFavorite: (() -> Void)?
     let onPlayPause: (() -> Void)?
+    let onDelete: (() -> Void)?
+    let onEdit: (() -> Void)?
     let onLabelChange: ((String) -> Void)?
 
     private var isEditing: Bool {
@@ -47,8 +49,19 @@ struct FavoritePresetRowView: View {
             onToggleFavorite: onToggleFavorite ?? {},
             onPlayPause: onPlayPause ?? {},
             onReset: {},
-            onDelete: {},
-            onLabelChange: onLabelChange ?? { _ in }
+            onDelete: onDelete ?? {},
+            onEdit: onEdit,
+            onLabelChange: onLabelChange ?? { _ in },
+            trailingContent: {  // 북마크 시, 알람모드
+                AnyView(
+                    AlarmModeButton(
+                        isSoundOn: preset.isSoundOn,
+                        isVibrationOn: preset.isVibrationOn,
+                        status: tempTimer.status,
+                        onTap: onEdit ?? {}
+                    )
+                )
+            }
         )
         .opacity(isEditing ? 0.5 : 1.0)
         .allowsHitTesting(!isEditing)

@@ -34,8 +34,7 @@ struct RunningTimersView: View {
                     viewModel.resetTimer(id: timer.id)
                 },
                 onDelete: {
-                    // TODO: 나중에 슬라이드 삭제로 대체
-                    viewModel.resetTimer(id: timer.id)  // 임시로 reset 사용
+                    viewModel.requestToDeleteTimer(timer)
                 },
                 onLabelChange: { newLabel in
                     viewModel.updateLabel(for: timer.id, newLabel: newLabel)

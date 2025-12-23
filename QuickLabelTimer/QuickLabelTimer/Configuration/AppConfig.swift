@@ -24,5 +24,8 @@ enum AppConfig {
     static let notificationRepeatingInterval: TimeInterval = 3.0
     /// iOS 시스템이 허용하는 앱당 최대 알림 예약 개수
     static let notificationSystemLimit = 64
+
+    /// 타이머 완료 후 자동 삭제까지 대기 시간 (초)
+    static let deleteCountdownSeconds = 30
     
 }

@@ -125,6 +125,17 @@ extension TimerData {
         if status == .completed {
             return String(localized: "ui.timer.completed")
         }
+        
+        // 일시정지/준비 상태는 실시간 계산
+        let endDate: Date
+        if status == .paused {
+            endDate = Date().addingTimeInterval(TimeInterval(remainingSeconds))
+        } else if status == .stopped {
+            endDate = Date().addingTimeInterval(TimeInterval(totalSeconds))
+        } else {
+            endDate = self.endDate
+        }
+        
         let timeString = TimeFormatter.formatEndTime(endDate)
         return String(format: String(localized: "ui.timer.endTimeFormat"), timeString)
     }

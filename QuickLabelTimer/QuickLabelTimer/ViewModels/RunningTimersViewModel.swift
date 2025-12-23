@@ -17,7 +17,7 @@ final class RunningTimersViewModel: ObservableObject {
     private let timerRepository: TimerRepositoryProtocol
     private let presetRepository: PresetRepositoryProtocol
 
-    let deleteCountdownSeconds = QuickLabelTimerApp.deleteCountdownSeconds
+    let deleteCountdownSeconds = AppConfig.deleteCountdownSeconds
 
     @Published private(set) var sortedTimers: [TimerData] = []
     @Published var activeAlert: AppAlert?
@@ -37,41 +37,6 @@ final class RunningTimersViewModel: ObservableObject {
             .assign(to: \.sortedTimers, on: self)
             .store(in: &cancellables)
     }
-    
-//    /// Left 버튼 액션 처리
-//    func handleLeft(for timer: TimerData) {
-//        let set = makeButtonSet(for: timer.interactionState, endAction: timer.endAction)
-//        switch set.left {
-//        case .none:
-//            break
-//        case .stop:
-//            timerService.stopTimer(id: timer.id)
-//        case .moveToFavorite:
-//            handleMoveToPreset(for: timer)
-//        case .delete:
-//            if let presetId = timer.presetId {
-//                presetRepository.hidePreset(withId: presetId)
-//            }
-//            timerService.removeTimer(id: timer.id)
-//        case .edit:
-//            // Running에선 등장하지 않아야 함
-//            assertionFailure("Left .edit should not appear for running timers")
-//            break
-//        }
-//    }
-//
-//    /// Right 버튼 액션 처리
-//    func handleRight(for timer: TimerData) {
-//        let set = makeButtonSet(for: timer.interactionState, endAction: timer.endAction)
-//        switch set.right {
-//        case .play:
-//            timerService.resumeTimer(id: timer.id)
-//        case .pause:
-//            timerService.pauseTimer(id: timer.id)
-//        case .restart:
-//            timerService.restartTimer(id: timer.id)
-//        }
-//    }    
     
     /// 실행 중인 타이머를 프리셋으로 이동/복구
     func handleMoveToPreset(for timer: TimerData) {
@@ -101,15 +66,14 @@ final class RunningTimersViewModel: ObservableObject {
         }
     }
 
-    /// 실행 중인 타이머의 라벨을 업데이트합니다
-    /// - Parameters:
-    ///   - timerId: 업데이트할 타이머 ID
-    ///   - newLabel: 새로운 라벨 텍스트
+    /// 실행 중인 타이머의 라벨 업데이트
     func updateLabel(for timerId: UUID, newLabel: String) {
-        timerService.updateLabel(timerId: timerId, newLabel: newLabel)
+        Task { @MainActor in
+            timerService.updateLabel(timerId: timerId, newLabel: newLabel)
+        }
     }
 
-    // MARK: - Direct Button Actions
+    // MARK: - Button Actions
 
     /// Play/Pause 버튼 액션 - 타이머 상태에 따라 동작 결정
     func playPauseTimer(timer: TimerData) {
@@ -134,5 +98,57 @@ final class RunningTimersViewModel: ObservableObject {
         timerService.restartTimer(id: id)
         print("Reset timer: \(id)")
     }
-
+    
+    // MARK: - Delete (X 버튼)
+    
+    /// X 버튼 액션 - 타이머 삭제 요청 (얼럿 표시)
+    func requestToDeleteTimer(_ timer: TimerData) {
+        // 최신 타이머 데이터 가져오기 (라벨이 변경되었을 수 있음)
+        guard let latestTimer = timerService.getTimer(byId: timer.id) else {
+            print("⚠️ [RunningVM] Timer not found: \(timer.id)")
+            return
+        }
+        
+        switch (latestTimer.presetId, latestTimer.endAction) {
+        case (.none, .preserve):
+            activeAlert = .confirmStopAndSaveTimer(
+                itemName: latestTimer.label,
+                onConfirm: { [weak self] in
+                    guard let self = self else { return }
+                    guard let finalTimer = self.timerService.getTimer(byId: timer.id) else { return }
+                    self.presetRepository.addPreset(from: finalTimer)
+                    self.timerService.removeTimer(id: timer.id)
+                }
+            )
+            
+        case (.none, .discard):
+            activeAlert = .confirmStopTimer(
+                itemName: latestTimer.label,
+                onConfirm: { [weak self] in
+                    self?.timerService.removeTimer(id: timer.id)
+                }
+            )
+            
+        case (.some(let presetId), .preserve):
+            activeAlert = .confirmStopTimer(
+                itemName: latestTimer.label,
+                onConfirm: { [weak self] in
+                    guard let self = self else { return }
+                    guard let finalTimer = self.timerService.getTimer(byId: timer.id) else { return }
+                    self.presetRepository.updatePresetLabel(presetId: presetId, newLabel: finalTimer.label)
+                    self.timerService.removeTimer(id: timer.id)
+                }
+            )
+            
+        case (.some(let presetId), .discard):
+            activeAlert = .confirmStopAndHideTimer(
+                itemName: latestTimer.label,
+                onConfirm: { [weak self] in
+                    guard let self = self else { return }
+                    self.presetRepository.hidePreset(withId: presetId)
+                    self.timerService.removeTimer(id: timer.id)
+                }
+            )
+        }
+    }
 }

@@ -15,6 +15,9 @@ enum AppAlert: Identifiable {
     case presetSaveLimit
     case cannotDeleteRunningPreset
     case confirmDeletion(itemName: String, onConfirm: () -> Void)
+    case confirmStopTimer(itemName: String, onConfirm: () -> Void)
+    case confirmStopAndHideTimer(itemName: String, onConfirm: () -> Void)
+    case confirmStopAndSaveTimer(itemName: String, onConfirm: () -> Void)
 
     var id: String {
         switch self {
@@ -26,6 +29,12 @@ enum AppAlert: Identifiable {
             return "cannotDeleteRunningPreset"
         case .confirmDeletion(let itemName, _):
             return "confirmDeletion_\(itemName)"
+        case .confirmStopTimer(let itemName, _):
+            return "confirmStopTimer_\(itemName)"
+        case .confirmStopAndHideTimer(let itemName, _):
+            return "confirmStopAndHideTimer_\(itemName)"
+        case .confirmStopAndSaveTimer(let itemName, _):
+            return "confirmStopAndSaveTimer_\(itemName)"
         }
     }
 }
@@ -41,23 +50,49 @@ extension View {
                     message: Text(String(format: String(localized: "ui.alert.maxTimersMessage"), AppConfig.maxConcurrentTimers)),
                     dismissButton: .default(Text("ui.alert.ok"))
                 )
+                
             case .presetSaveLimit:
                 return Alert(
                     title: Text("ui.alert.cannotSaveTitle"),
                     message: Text("ui.alert.maxFavoritesMessage"),
                     dismissButton: .default(Text("ui.alert.ok"))
                 )
+                
             case .cannotDeleteRunningPreset:
                 return Alert(
                     title: Text("ui.alert.cannotDeleteTitle"),
                     message: Text("ui.alert.cannotDeleteRunningMessage"),
                     dismissButton: .default(Text("ui.alert.ok"))
                 )
+                
             case .confirmDeletion(let itemName, let onConfirm):
                 return Alert(
                     title: Text("\"\(itemName)\""),
                     message: Text("ui.alert.deleteConfirmMessage"),
                     primaryButton: .destructive(Text("ui.alert.delete"), action: onConfirm),
+                    secondaryButton: .cancel(Text("ui.alert.cancel"))
+                )
+                
+            case .confirmStopTimer(let itemName, let onConfirm):
+                return Alert(
+                    title: Text("\"\(itemName)\""),
+                    message: Text("ui.alert.stopTimer.message"),
+                    primaryButton: .destructive(Text("ui.alert.stop"), action: onConfirm),
+                    secondaryButton: .cancel(Text("ui.alert.cancel"))
+                )
+                
+            case .confirmStopAndHideTimer(let itemName, let onConfirm):
+                return Alert(
+                    title: Text("\"\(itemName)\""),
+                    message: Text("ui.alert.stopAndHideTimer.message"),
+                    primaryButton: .destructive(Text("ui.alert.stopAndHide"), action: onConfirm),
+                    secondaryButton: .cancel(Text("ui.alert.cancel"))
+                )
+            case .confirmStopAndSaveTimer(let itemName, let onConfirm):
+                return Alert(
+                    title: Text("\"\(itemName)\""),
+                    message: Text("ui.alert.stopAndSaveTimer.message"),
+                    primaryButton: .destructive(Text("ui.alert.stopAndSave"), action: onConfirm),
                     secondaryButton: .cancel(Text("ui.alert.cancel"))
                 )
             }

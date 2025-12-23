@@ -25,7 +25,16 @@ struct RunningTimerRowView: View {
             onPlayPause: onPlayPause ?? {},
             onReset: onReset ?? {},
             onDelete: onDelete ?? {},
-            onLabelChange: onLabelChange ?? { _ in }
+            onEdit: nil,
+            onLabelChange: onLabelChange ?? { _ in },
+            trailingContent: {
+                AnyView(
+                    DeleteTimerButton(
+                        status: timer.status,
+                        onTap: onDelete ?? {}
+                    )
+                )
+            }
         )
         .id(timer.id) // 삭제 후 뷰 리프레시 보장
     }

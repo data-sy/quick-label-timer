@@ -12,8 +12,6 @@ import SwiftUI
 
 @main
 struct QuickLabelTimerApp: App {
-    static let deleteCountdownSeconds = 10
-    
     @Environment(\.scenePhase) private var scenePhase
 
     @StateObject private var timerRepository: TimerRepository
@@ -30,8 +28,7 @@ struct QuickLabelTimerApp: App {
         let presetRepository = PresetRepository()
         let timerService = TimerService(
             timerRepository: timerRepository,
-            presetRepository: presetRepository,
-            deleteCountdownSeconds: Self.deleteCountdownSeconds
+            presetRepository: presetRepository
         )
 
         _timerRepository = StateObject(wrappedValue: timerRepository)
