@@ -657,6 +657,9 @@
         }
       }
     },
+    "Key" : {
+      "extractionState" : "manual"
+    },
     "ui.addTimer.title" : {
       "localizations" : {
         "en" : {
@@ -1577,18 +1580,18 @@
         }
       }
     },
-    "ui.input.add5Minutes" : {
+    "ui.input.addMinutes.%lld" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+ 5min"
+            "value" : "+ %lldmin"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+ 5분"
+            "value" : "+ %lld분"
           }
         }
       }

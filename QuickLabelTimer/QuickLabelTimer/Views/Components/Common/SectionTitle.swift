@@ -15,8 +15,8 @@ struct SectionTitle: View {
 
     var body: some View {
         Text(text)
-            .font(.title2)
-            .bold()
+            .font(.headline)
+            .fontWeight(.bold)
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityAddTraits(.isHeader)
     }
