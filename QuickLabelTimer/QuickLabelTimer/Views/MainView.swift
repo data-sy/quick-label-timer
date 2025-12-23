@@ -63,7 +63,6 @@ struct MainView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(spacing: 0) {
-//                            NewTimerRowTestView()
                             SectionContainerView {
                                 AddTimerView(viewModel: addTimerVM)
                             }
@@ -87,7 +86,8 @@ struct MainView: View {
                             SectionContainerView {
                                 FavoriteTimersView(
                                     viewModel: favoriteTimersVM,
-                                    editMode: editMode ?? .constant(.inactive)
+                                    editMode: editMode ?? .constant(.inactive),
+                                    scrollProxy: proxy
                                 )
                             }
                             .accessibilityLabel(A11yText.MainView.favoriteTimersSection)
@@ -98,9 +98,8 @@ struct MainView: View {
                         .padding(.horizontal)
                     }
                     .accessibilityIdentifier("unifiedTimerScrollView")
-                    .ignoresSafeArea(.keyboard, edges: .bottom)
 
-                    // MARK: - Auto-scroll (TODO: anchor 위치 고민)
+                    // MARK: - Auto-scroll
                      .onReceive(timerDidStart.receive(on: RunLoop.main)) { _ in
                          withAnimation {
                              proxy.scrollTo("runningTimersSection", anchor: .top)

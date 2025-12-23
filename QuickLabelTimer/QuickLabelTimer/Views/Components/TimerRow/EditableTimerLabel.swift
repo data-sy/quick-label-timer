@@ -13,6 +13,8 @@ import SwiftUI
 struct EditableTimerLabel: View {
     let label: String
     let status: TimerStatus
+    let timerId: UUID
+    let scrollProxy: ScrollViewProxy?
     let onLabelChange: (String) -> Void
     @Binding var isEditing: Bool
 
@@ -34,6 +36,13 @@ struct EditableTimerLabel: View {
                     .onAppear {
                         editedLabel = label
                         isFocused = true
+                        
+                        // 키보드 위로 스크롤
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation {
+                                scrollProxy?.scrollTo(timerId, anchor: .bottom)
+                            }
+                        }
                     }
                     .padding(RowTheme.editingBackgroundPadding)
                     .background(

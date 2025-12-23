@@ -13,6 +13,7 @@ import SwiftUI
 struct FavoritePresetRowView: View {
     @Environment(\.editMode) private var editMode
     let preset: TimerPreset
+    let scrollProxy: ScrollViewProxy?
     let onToggleFavorite: (() -> Void)?
     let onPlayPause: (() -> Void)?
     let onDelete: (() -> Void)?
@@ -46,6 +47,7 @@ struct FavoritePresetRowView: View {
     var body: some View {
         NewTimerRow(
             timer: tempTimer,
+            scrollProxy: scrollProxy,
             onToggleFavorite: onToggleFavorite ?? {},
             onPlayPause: onPlayPause ?? {},
             onReset: {},

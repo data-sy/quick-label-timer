@@ -21,6 +21,7 @@ struct RunningTimerRowView: View {
     var body: some View {
         NewTimerRow(
             timer: timer,
+            scrollProxy: nil,
             onToggleFavorite: onToggleFavorite ?? {},
             onPlayPause: onPlayPause ?? {},
             onReset: onReset ?? {},

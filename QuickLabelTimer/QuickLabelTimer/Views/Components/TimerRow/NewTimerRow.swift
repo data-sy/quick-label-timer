@@ -14,6 +14,7 @@ import SwiftUI
 /// 새로운 카드 스타일 타이머 행 (3-section layout)
 struct NewTimerRow: View {
     let timer: TimerData
+    let scrollProxy: ScrollViewProxy?
 
     // Closure pattern for actions
     let onToggleFavorite: () -> Void
@@ -41,6 +42,8 @@ struct NewTimerRow: View {
                 EditableTimerLabel(
                     label: timer.label,
                     status: timer.status,
+                    timerId: timer.id,
+                    scrollProxy: scrollProxy,
                     onLabelChange: onLabelChange,
                     isEditing: $isLabelEditing
                 )
