@@ -660,6 +660,118 @@
     "Key" : {
       "extractionState" : "manual"
     },
+    "preset.label.break" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweet Break ☕️"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "꿀 같은 휴식 ☕️"
+          }
+        }
+      }
+    },
+    "preset.label.deepwork" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep Work 🧠"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "딥 워크 (최고의 몰입) 🧠"
+          }
+        }
+      }
+    },
+    "preset.label.egg" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soft-boiled Egg 🥚"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "반숙 계란 삶기 🥚"
+          }
+        }
+      }
+    },
+    "preset.label.eyecare" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eye Exercises 👀"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "눈 스트레칭 👀"
+          }
+        }
+      }
+    },
+    "preset.label.meditation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Morning Routine: Meditation 🧘‍♀️"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "모닝 루틴: 명상 🧘‍♀️"
+          }
+        }
+      }
+    },
+    "preset.label.plank" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plank Challenge (1 min) 🔥"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "플랭크 1분 도전 🔥"
+          }
+        }
+      }
+    },
+    "preset.label.pomodoro" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomodoro 🍅"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "뽀모도로 🍅"
+          }
+        }
+      }
+    },
     "ui.addTimer.title" : {
       "localizations" : {
         "en" : {
@@ -972,13 +1084,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can add up to %lld bookmark."
+                  "value" : "You can add up to %d bookmark."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can add up to %lld bookmarks."
+                  "value" : "You can add up to %d bookmarks."
                 }
               }
             }
@@ -986,8 +1098,8 @@
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "북마크는 최대 20개까지 추가할 수 있습니다."
+            "state" : "needs_review",
+            "value" : "북마크는 최대 %d개까지 추가할 수 있습니다."
           }
         }
       }
@@ -1000,13 +1112,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can run up to %lld timer."
+                  "value" : "For optimal focus, we recommend managing up to %11d timer at once."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can run up to %lld timers."
+                  "value" : "For optimal focus, we recommend managing up to %11d timers at once."
                 }
               }
             }
@@ -1015,7 +1127,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "타이머는 최대 %lld개까지 실행할 수 있습니다."
+            "value" : "효율적인 집중을 위해, 타이머는 동시에 %11d개까지만 관리하는 것을 추천드려요."
           }
         }
       }

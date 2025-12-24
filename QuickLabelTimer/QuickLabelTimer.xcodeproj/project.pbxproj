@@ -30,7 +30,6 @@
 		EBFBBEEE2E22357000C94C47 /* Exceptions for "QuickLabelTimer" folder in "QuickLabelTimer" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Debug/DesignLabTimerRow/Deprecated/EditableTimerLabel.swift,
 				Info.plist,
 			);
 			target = EB8A19B52E1E773700ADD4F0 /* QuickLabelTimer */;

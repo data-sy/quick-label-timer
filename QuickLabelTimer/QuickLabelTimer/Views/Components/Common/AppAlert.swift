@@ -54,7 +54,7 @@ extension View {
             case .presetSaveLimit:
                 return Alert(
                     title: Text("ui.alert.cannotSaveTitle"),
-                    message: Text("ui.alert.maxFavoritesMessage"),
+                    message: Text(String(format: String(localized: "ui.alert.maxFavoritesMessage"), AppConfig.maxFavoritesPresets)),
                     dismissButton: .default(Text("ui.alert.ok"))
                 )
                 

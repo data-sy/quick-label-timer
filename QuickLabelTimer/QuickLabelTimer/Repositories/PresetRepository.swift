@@ -74,10 +74,10 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     
     /// 사용자 프리셋 추가
     func addPreset(_ preset: TimerPreset) -> Bool {
-        guard visiblePresetsCount < 20 else {
+        guard visiblePresetsCount < AppConfig.maxFavoritesPresets else {
 
             #if DEBUG
-            logger.info("Preset limit reached (20 presets)")
+            logger.info("Preset limit reached (\(AppConfig.maxFavoritesPresets) presets)")
             #endif
 
             return false
@@ -90,10 +90,10 @@ final class PresetRepository: ObservableObject, PresetRepositoryProtocol {
     /// 실행 중 타이머를 프리셋으로 추가
     @discardableResult
     func addPreset(from timer: TimerData) -> Bool {
-        guard visiblePresetsCount < 20 else {
+        guard visiblePresetsCount < AppConfig.maxFavoritesPresets else {
 
             #if DEBUG
-            logger.info("Preset limit reached (20 presets)")
+            logger.info("Preset limit reached (\(AppConfig.maxFavoritesPresets) presets)")
             #endif
 
             return false
