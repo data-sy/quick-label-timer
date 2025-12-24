@@ -12,28 +12,92 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Removed
 
-## [Unreleased]
+## [1.1.0] - 2025-12-24
+
+**🎨 Complete UI/UX Redesign** - This release features a modern, card-based interface with improved visual hierarchy and interaction patterns.
 
 ### Added
-- Accessibility labels for unified timer view sections (English/Korean)
+
+#### UI/UX Enhancements
+- **Inline label editing**: Tap to edit timer labels directly in timer rows
+- **Card-based timer design**: Modern card layout with dynamic shadows and visual feedback
+- **Delete buttons**: Context-aware deletion with confirmation alerts
+- **Deletion countdown**: Visual countdown before timer removal with context-aware messaging
+- **Real-time end time display**: Live updates for estimated completion times across all timer states
+- **Tap-to-edit time picker**: Quick access to time adjustment for preset timers
+- **Auto-scroll behavior**: Automatic scrolling when editing timer labels for better UX
+- **Dedicated alarm buttons**: Separate controls for sound and vibration settings
+- **Sample presets**: Pre-configured lifestyle use cases with localized labels
+
+#### Features
+- **English language support**: Full internationalization (i18n) implementation alongside Korean
+- **Time-based auto-labels**: Auto-generated labels use time format (e.g., "3:30") instead of generic "Timer N"
+- **Label persistence**: Timer label changes automatically sync to presets on completion/stop
+- **Unified scroll view**: Single vertical scroll replacing tab navigation for better content flow
+
+#### Technical
+- `TimeFormatter` utility for consistent time display formatting
+- `RowTheme` design system for centralized timer card styling
+- `EditableTimerLabel` component for inline editing
+- Improved keyboard UX and label input consistency
 
 ### Changed
-- Unified timer management into single scrollable view
-- Replaced tab navigation with vertical scroll
-- Renamed views for clarity:
-  - RunningListView → RunningTimersView
-  - FavoriteListView → FavoriteTimersView
-  - MainTabView → MainView
-- Improved scroll performance with VStack-based architecture
+
+#### UI/UX Overhaul
+- **Navigation structure**: Replaced tab-based navigation with unified scrollable view
+- **Timer cards**: Reduced visual intensity with refined color scheme and spacing
+- **Action controls**: Simplified button layout with explicit action methods
+- **Section organization**: Improved layout hierarchy with consistent padding
+- **Edit affordance**: Enhanced visual cues for editable elements
+- **Running timer style**: Color inversion for better distinction of active timers
+
+#### Terminology
+- Replaced "Favorite" with "Bookmark" throughout the app
+- Improved timer limit alert messaging to emphasize focus management
+
+#### Notification System
+- Redesigned notification content for better clarity
+- Updated notification repetition logic
+- Removed inconsistent beep sounds
+- Updated default notification sound
+- Trimmed and normalized all audio files for consistent quality
+
+#### Internal
+- View naming for clarity:
+  - `RunningListView` → `RunningTimersView`
+  - `FavoriteListView` → `FavoriteTimersView`
+  - `MainTabView` → `MainView`
+- Replaced hardcoded preset limits with `AppConfig` constants
+- Refactored action handlers from generic left/right to explicit methods
+
+### Fixed
+
+- Build warnings and errors for production release
+- Audio quality issues with notification sounds
+- Label update timing (ensures completion before timer starts)
+- Bookmark count format specifier in localization strings
 
 ### Removed
-- Tab-based navigation (TabView)
-- Nested scroll containers
 
-### Technical
-- Implement VStack-based layout to eliminate nested scroll issues
-- Add ScrollViewReader for programmatic navigation
-- Document architecture decision in ADR 015
+- Tab-based navigation (`TabView`)
+- Nested scroll containers
+- Legacy timer row UI components
+- Experimental debug code
+
+### Technical Details
+
+#### Architecture Improvements
+- VStack-based layout to eliminate nested scroll performance issues
+- Conditional rendering replacing overlay patterns for better performance
+- Protocol-based design system for timer row theming
+- Enhanced separation of concerns in timer lifecycle management
+
+#### Performance
+- Improved scroll performance with optimized VStack architecture
+- Reduced view hierarchy complexity
+- Better memory management with conditional rendering
+
+---
 
 ## [1.0.0] - 2024-11-15
 
@@ -144,5 +208,6 @@ Initial release with core timer functionality.
 - iOS notification limit of 64 total scheduled notifications
 - 1-second tick granularity (sufficient for timer use case)
 
-[unreleased]: https://github.com/data-sy/quick-label-timer/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/data-sy/quick-label-timer/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/data-sy/quick-label-timer/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/data-sy/quick-label-timer/releases/tag/v1.0.0
