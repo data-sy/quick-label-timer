@@ -40,7 +40,7 @@ struct TimerInputForm: View {
             }
             .frame(maxWidth: .infinity)
             .multilineTextAlignment(.center)
-            .padding(.horizontal, RowTheme.padding)
+//            .padding(.horizontal, RowTheme.padding)
             .padding(.top, RowTheme.padding)
             
             LabelInputField(

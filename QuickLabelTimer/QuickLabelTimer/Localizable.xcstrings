@@ -100,7 +100,7 @@
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "타이머 생성"
           }
         }
@@ -657,9 +657,6 @@
         }
       }
     },
-    "Key" : {
-      "extractionState" : "manual"
-    },
     "preset.label.break" : {
       "localizations" : {
         "en" : {
@@ -777,12 +774,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create Timer"
+            "value" : "New Timer"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "타이머 생성"
           }
         }
@@ -2282,23 +2279,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld초"
-          }
-        }
-      }
-    },
-    "ui.timer.title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timer"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "타이머 실행"
           }
         }
       }
