@@ -30,6 +30,7 @@ struct EditableTimerLabel: View {
                     .font(.headline)
                     .foregroundColor(colors.cardForeground)
                     .focused($isFocused)
+                    .submitLabel(.done)
                     .onSubmit {
                         commitEdit()
                     }
