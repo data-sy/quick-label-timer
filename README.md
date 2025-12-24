@@ -1,6 +1,10 @@
 # QuickLabelTimer
 
-A production-ready iOS timer application built with SwiftUI, implementing MVVM architecture with state machine patterns for robust state management and comprehensive notification handling.
+<!-- Screenshot placeholders for v1.1.0 - Replace with actual images -->
+<!-- TODO: Add main app screenshot here -->
+<!-- TODO: Add timer card interface screenshot here -->
+
+A production-ready iOS timer application built with SwiftUI, featuring a modern card-based interface with inline editing, real-time updates, and intuitive gesture controls. Implements MVVM architecture with state machine patterns for robust state management and comprehensive notification handling.
 
 ## Table of Contents
 
@@ -17,16 +21,26 @@ A production-ready iOS timer application built with SwiftUI, implementing MVVM a
 
 ## Overview
 
-QuickLabelTimer provides a multi-timer management system with preset support, designed for reliability and accessibility. The application handles concurrent timers with deterministic state transitions, background persistence, and comprehensive notification scheduling within iOS constraints.
+QuickLabelTimer provides a multi-timer management system with preset support, designed for reliability and accessibility. Version 1.1.0 introduces a complete UI/UX redesign with modern card-based interfaces, inline label editing, and intuitive tap-to-edit interactions. The application handles concurrent timers with deterministic state transitions, background persistence, and comprehensive notification scheduling within iOS constraints.
+
+<!-- TODO: Add UI comparison screenshot (v1.0.0 vs v1.1.0) here -->
 
 Built for iOS 16.0+, iPhone only.
 
 ## Features
 
+<!-- TODO: Add feature showcase GIF here -->
+
 ### Core Functionality
 
 - **Concurrent Timer Management**: Run up to 5 simultaneous timers with independent configurations
-- **Preset System**: Save frequently used timer configurations with soft-delete support
+- **Modern Card Interface**: Card-based timer design with dynamic shadows and visual feedback
+- **Inline Label Editing**: Tap to edit timer labels directly in place with auto-scroll support
+- **Real-time Updates**: Live estimated end times that update across all timer states
+- **Tap-to-Edit Time**: Quick access to time adjustment for preset timers
+- **Preset System**: Save frequently used timer configurations with bookmark support
+- **Smart Auto-Labels**: Time-based auto-generated labels (e.g., "3:30") for quick identification
+- **Context-Aware Deletion**: Delete buttons with confirmation alerts and visual countdown
 - **Notification Scheduling**: Escalating notification pattern (12 notifications over 36 seconds) with sound and vibration controls
 - **State Machine**: Deterministic timer state transitions with flexible UI button mapping
 - **Background Reconciliation**: Automatic state synchronization when returning to foreground
@@ -37,7 +51,7 @@ Built for iOS 16.0+, iPhone only.
 - **VoiceOver Support**: Full screen reader compatibility with semantic accessibility labels
 - **Dynamic Type**: Text scaling support across all interfaces
 - **High Contrast**: Compatible with system accessibility display modes
-- **Localization**: English and Korean language support
+- **Bilingual Interface**: Full English and Korean language support with localized presets and UI strings
 
 ### Technical Features
 
@@ -48,6 +62,8 @@ Built for iOS 16.0+, iPhone only.
 - Testable architecture with Swift Testing support
 
 ## Architecture
+
+<!-- TODO: Add architecture diagram screenshot here -->
 
 ### Pattern: MVVM + Service/Repository
 

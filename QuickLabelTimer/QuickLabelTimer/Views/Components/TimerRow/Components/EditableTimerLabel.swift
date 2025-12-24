@@ -2,7 +2,7 @@
 //  EditableTimerLabel.swift
 //  QuickLabelTimer
 //
-//  Created for TimerRow Redesign - Inline Editing
+//  Created by 이소연 on 12/20/25.
 //
 /// 탭하여 편집 가능한 타이머 라벨
 ///
@@ -59,7 +59,6 @@ struct EditableTimerLabel: View {
                         .font(.headline)
                         .foregroundColor(colors.cardForeground)
                         .lineLimit(nil)
-//                        .fixedSize(horizontal: false, vertical: true)
                     
                     Spacer()
                                         
@@ -76,13 +75,13 @@ struct EditableTimerLabel: View {
                 }
             }
         }
-        .onChange(of: isFocused) { newValue in
+        .onChange(of: isFocused) { oldValue, newValue in
             if !newValue && isEditing {
                 // Lost focus - commit changes
                 commitEdit()
             }
         }
-        .onChange(of: isEditing) { newValue in
+        .onChange(of: isEditing) { oldValue, newValue in
             if !newValue && isFocused {
                 // Parent forced edit to end (e.g., play button tapped) - commit changes
                 commitEdit()

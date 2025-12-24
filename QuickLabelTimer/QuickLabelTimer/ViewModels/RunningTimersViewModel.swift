@@ -61,13 +61,10 @@ final class RunningTimersViewModel: ObservableObject {
         switch timer.status {
         case .running:
             timerService.pauseTimer(id: timer.id)
-            print("Paused timer: \(timer.id)")
         case .paused:
             timerService.resumeTimer(id: timer.id)
-            print("Resumed timer: \(timer.id)")
         case .completed:
             timerService.restartTimer(id: timer.id)
-            print("Restarted completed timer: \(timer.id)")
         case .stopped:
             // Stopped 상태는 현재 UI에 나타나지 않음
             break
@@ -77,7 +74,6 @@ final class RunningTimersViewModel: ObservableObject {
     /// Reset 버튼 액션 - 타이머를 처음부터 다시 시작
     func resetTimer(id: UUID) {
         timerService.restartTimer(id: id)
-        print("Reset timer: \(id)")
     }
     
     // MARK: - Delete (X 버튼)
@@ -87,7 +83,7 @@ final class RunningTimersViewModel: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             guard let latestTimer = timerService.getTimer(byId: id) else {
-                print("⚠️ [RunningVM] Timer not found: \(id)")
+                // TODO: 로깅 추가
                 return
             }
             

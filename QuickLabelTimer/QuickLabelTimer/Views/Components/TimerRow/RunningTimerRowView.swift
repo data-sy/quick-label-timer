@@ -19,7 +19,7 @@ struct RunningTimerRowView: View {
     let onLabelChange: ((String) -> Void)?
 
     var body: some View {
-        NewTimerRow(
+        TimerRow(
             timer: timer,
             scrollProxy: nil,
             onToggleFavorite: onToggleFavorite ?? {},
@@ -39,18 +39,5 @@ struct RunningTimerRowView: View {
         )
         .id(timer.id) // 삭제 후 뷰 리프레시 보장
     }
-    
-    // 상태별로 보여줄 서브텍스트
-    private func statusText(for state: TimerInteractionState) -> String? {
-        switch state {
-        case .paused:
-            return "일시정지"
-        case .stopped:
-            return "정지"
-        case .completed:
-            return "종료"
-        default:
-            return nil
-        }
-    }
+
 }

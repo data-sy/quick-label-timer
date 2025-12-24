@@ -12,7 +12,7 @@
 import UserNotifications
 
 protocol NotificationScheduling {
-    func add(_ request: UNNotificationRequest, withCompletionHandler: ((Error?) -> Void)?)
+    func add(_ request: UNNotificationRequest, withCompletionHandler: (@Sendable (Error?) -> Void)?)
     func removePendingNotificationRequests(withIdentifiers identifiers: [String])
 }
 

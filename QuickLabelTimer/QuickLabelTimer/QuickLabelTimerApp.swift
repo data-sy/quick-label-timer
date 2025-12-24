@@ -23,7 +23,6 @@ struct QuickLabelTimerApp: App {
     
     // 지연 초기화(deferred init)
     init() {
-        logLocalizationState()
         let timerRepository = TimerRepository()
         let presetRepository = PresetRepository()
         let timerService = TimerService(
@@ -55,10 +54,4 @@ struct QuickLabelTimerApp: App {
             timerService.updateScenePhase(newPhase)
         }
     }
-}
-
-private func logLocalizationState() {
-    print("Locale.current =", Locale.current)
-    print("Preferred localizations =", Bundle.main.preferredLocalizations)
-    print("Available localizations =", Bundle.main.localizations)
 }

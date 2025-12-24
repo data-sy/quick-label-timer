@@ -1,18 +1,18 @@
 //
-//  NewTimerRow.swift
+//  TimerRow.swift
 //  QuickLabelTimer
 //
-//  Created for TimerRow Redesign
+//  Created by 이소연 on 2025/12/24.
 //
-/// 나중에 이름 다시 정상화 시키면 그 때 주석 추가하자
+/// 타이머 목록에서 개별 타이머의 정보를 카드 형태로 표시하고 제어하는 메인 뷰
 ///
-/// - 사용 목적: 
+/// - 사용 목적: 타이머의 남은 시간과 라벨, 상태를 직관적으로 제공하고 재생, 정지, 편집 등 주요 상호작용을 처리하기 위함
 
 
 import SwiftUI
 
 /// 새로운 카드 스타일 타이머 행 (3-section layout)
-struct NewTimerRow: View {
+struct TimerRow: View {
     let timer: TimerData
     let scrollProxy: ScrollViewProxy?
 
@@ -59,15 +59,25 @@ struct NewTimerRow: View {
 
             // MIDDLE: Time + Buttons
             HStack {
-                Text(timer.formattedTime)
-                    .font(.system(size: RowTheme.timeTextSize, weight: .bold, design: .rounded))
-                    .foregroundColor(colors.cardForeground)
-                    .minimumScaleFactor(0.5)
-                    .if(onEdit != nil) { view in
-                        view.onTapGesture {
-                            onEdit?()
-                        }
+                HStack(alignment: .center, spacing: 8) {
+                    Text(timer.formattedTime)
+                        .font(.system(size: RowTheme.timeTextSize, weight: .bold, design: .rounded))
+                        .foregroundColor(colors.cardForeground)
+                        .minimumScaleFactor(0.5)
+                    
+                    if onEdit != nil {
+                        Image(systemName: "pencil")
+                            .font(.title3)
+                            .foregroundColor(colors.cardForeground)
+                            .opacity(RowTheme.editIconOpacity)
                     }
+                }
+                .contentShape(Rectangle())
+                .if(onEdit != nil) { view in
+                    view.onTapGesture {
+                        onEdit?()
+                    }
+                }
 
                 Spacer()
 
@@ -91,7 +101,7 @@ struct NewTimerRow: View {
             // BOTTOM: Alarm + End Time (stopped 상태가 아닐 때만)
             if timer.status != .stopped {
                 HStack(spacing: 4) {
-                    if timer.status == .completed, let deletionTime = timer.pendingDeletionAt {
+                    if timer.status == .completed, timer.pendingDeletionAt != nil {
                         CountdownMessageView(timer: timer)
                     } else {
                         EndTimeInfoView(timer: timer, foregroundColor: colors.cardForeground)
