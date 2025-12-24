@@ -660,6 +660,118 @@
     "Key" : {
       "extractionState" : "manual"
     },
+    "preset.label.break" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweet Break ☕️"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "꿀 같은 휴식 ☕️"
+          }
+        }
+      }
+    },
+    "preset.label.deepwork" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep Work 🧠"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "딥 워크 (최고의 몰입) 🧠"
+          }
+        }
+      }
+    },
+    "preset.label.egg" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soft-boiled Egg 🥚"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "반숙 계란 삶기 🥚"
+          }
+        }
+      }
+    },
+    "preset.label.eyecare" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eye Exercises 👀"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "눈 스트레칭 👀"
+          }
+        }
+      }
+    },
+    "preset.label.meditation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Morning Routine: Meditation 🧘‍♀️"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "모닝 루틴: 명상 🧘‍♀️"
+          }
+        }
+      }
+    },
+    "preset.label.plank" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plank Challenge (1 min) 🔥"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "플랭크 1분 도전 🔥"
+          }
+        }
+      }
+    },
+    "preset.label.pomodoro" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomodoro 🍅"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "뽀모도로 🍅"
+          }
+        }
+      }
+    },
     "ui.addTimer.title" : {
       "localizations" : {
         "en" : {

@@ -11,12 +11,80 @@
 import Foundation
 
 let samplePresets: [TimerPreset] = [
-    TimerPreset(label: "세탁기 빨래 꺼내기 🧺", hours: 0, minutes: 45, seconds: 0, isSoundOn: true, isVibrationOn: true, createdAt: Date().addingTimeInterval(-10)),
-    TimerPreset(label: "마스크팩 🧖‍♀️", hours: 0, minutes: 15, seconds: 0, isSoundOn: false, isVibrationOn: true, createdAt: Date().addingTimeInterval(-20)),
-    TimerPreset(label: "유튜브 이제 그만, 공부 시작 ‼️", hours: 0, minutes: 10, seconds: 0, isSoundOn: false, isVibrationOn: false, createdAt: Date().addingTimeInterval(-30)),
-    TimerPreset(label: "보고서 검토 종료 📝 더 본다고 좋아지지 않아. 이 버전으로 제출하고 피드백을 받자", hours: 0, minutes: 30, seconds: 0, isSoundOn: true, isVibrationOn: true, createdAt: Date().addingTimeInterval(-40)),
-    TimerPreset(label: "염색약 헹굴 시간 💇‍♀️", hours: 0, minutes: 25, seconds: 0, isSoundOn: true, isVibrationOn: true, createdAt: Date().addingTimeInterval(-50)),
-    TimerPreset(label: "고기 해동 확인 🥩 (덜 녹았으면 10분 더 / 다 녹았으면 밥솥 취사 누르기)", hours: 0, minutes: 30, seconds: 0, isSoundOn: false, isVibrationOn: true, createdAt: Date().addingTimeInterval(-60)),
-    TimerPreset(label: "무료 주차 만료 10분 전 🚗", hours: 1, minutes: 50, seconds: 0, isSoundOn: true, isVibrationOn: true, createdAt: Date().addingTimeInterval(-70))
+    // 1. 딥 워크 (50분): 앱의 핵심 가치 (생산성/몰입)
+    TimerPreset(
+        label: String(localized: "preset.label.deepwork"),
+        hours: 0,
+        minutes: 50,
+        seconds: 0,
+        isSoundOn: true,
+        isVibrationOn: true,
+        createdAt: Date().addingTimeInterval(-10)
+    ),
+    
+    // 2. 뽀모도로 (25분): 가장 대중적인 시간 관리
+    TimerPreset(
+        label: String(localized: "preset.label.pomodoro"),
+        hours: 0,
+        minutes: 25,
+        seconds: 0,
+        isSoundOn: true,
+        isVibrationOn: true,
+        createdAt: Date().addingTimeInterval(-20)
+    ),
+    
+    // 3. 브레이크 타임 (10분): 업무 후의 자연스러운 흐름
+    TimerPreset(
+        label: String(localized: "preset.label.break"),
+        hours: 0,
+        minutes: 10,
+        seconds: 0,
+        isSoundOn: true,
+        isVibrationOn: true,
+        createdAt: Date().addingTimeInterval(-30)
+    ),
+    
+    // 4. 반숙 계란 삶기 (7분): 요리 등 일상 활용성 강조 (반전 매력)
+    TimerPreset(
+        label: String(localized: "preset.label.egg"),
+        hours: 0,
+        minutes: 7,
+        seconds: 0,
+        isSoundOn: true,
+        isVibrationOn: true,
+        createdAt: Date().addingTimeInterval(-40)
+    ),
+    
+    // 5. 모닝 루틴: 명상 (5분): 라벨 수정 유도 & 웰니스 (소리 끔)
+    TimerPreset(
+        label: String(localized: "preset.label.meditation"),
+        hours: 0,
+        minutes: 5,
+        seconds: 0,
+        isSoundOn: false, // 명상은 조용하게 진동으로만
+        isVibrationOn: true,
+        createdAt: Date().addingTimeInterval(-50)
+    ),
+    
+    // 6. 플랭크 (1분): 가벼운 도전 의식 자극
+    TimerPreset(
+        label: String(localized: "preset.label.plank"),
+        hours: 0,
+        minutes: 1,
+        seconds: 0,
+        isSoundOn: true,
+        isVibrationOn: true,
+        createdAt: Date().addingTimeInterval(-60)
+    ),
+    
+    // 7. 눈 스트레칭 (1분): 섬세한 배려와 감동 포인트
+    TimerPreset(
+        label: String(localized: "preset.label.eyecare"),
+        hours: 0,
+        minutes: 1,
+        seconds: 0,
+        isSoundOn: true,
+        isVibrationOn: true,
+        createdAt: Date().addingTimeInterval(-70)
+    )
 ]
-
