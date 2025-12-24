@@ -2108,18 +2108,18 @@
         }
       }
     },
-    "ui.timer.autoLabel" : {
+    "ui.timer.autoLabel.time" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Timer %lld"
+            "value" : "%@ Timer"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "타이머%lld"
+            "value" : "%@ 타이머"
           }
         }
       }
@@ -2154,6 +2154,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 종료 예정"
+          }
+        }
+      }
+    },
+    "ui.timer.hourFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld hour"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld시간"
+          }
+        }
+      }
+    },
+    "ui.timer.minuteFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld분"
+          }
+        }
+      }
+    },
+    "ui.timer.secondFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld sec"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld초"
           }
         }
       }
