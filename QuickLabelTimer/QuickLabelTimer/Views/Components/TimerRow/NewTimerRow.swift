@@ -59,15 +59,25 @@ struct NewTimerRow: View {
 
             // MIDDLE: Time + Buttons
             HStack {
-                Text(timer.formattedTime)
-                    .font(.system(size: RowTheme.timeTextSize, weight: .bold, design: .rounded))
-                    .foregroundColor(colors.cardForeground)
-                    .minimumScaleFactor(0.5)
-                    .if(onEdit != nil) { view in
-                        view.onTapGesture {
-                            onEdit?()
-                        }
+                HStack(alignment: .center, spacing: 8) {
+                    Text(timer.formattedTime)
+                        .font(.system(size: RowTheme.timeTextSize, weight: .bold, design: .rounded))
+                        .foregroundColor(colors.cardForeground)
+                        .minimumScaleFactor(0.5)
+                    
+                    if onEdit != nil {
+                        Image(systemName: "pencil")
+                            .font(.title3)
+                            .foregroundColor(colors.cardForeground)
+                            .opacity(RowTheme.editIconOpacity)
                     }
+                }
+                .contentShape(Rectangle())
+                .if(onEdit != nil) { view in
+                    view.onTapGesture {
+                        onEdit?()
+                    }
+                }
 
                 Spacer()
 
