@@ -68,10 +68,6 @@ struct MainView: View {
                                 .accessibilityLabel(A11yText.MainView.addTimerSection)
                                 .id("addTimerSection")
 
-                            Divider()
-                                .padding(.vertical, 12)
-                                .accessibilityHidden(true)
-
                             RunningTimersView(viewModel: runningTimersVM)
                                 .accessibilityLabel(A11yText.MainView.runningTimersSection)
                                 .id("runningTimersSection")
@@ -87,6 +83,8 @@ struct MainView: View {
                             )
                                 .accessibilityLabel(A11yText.MainView.favoriteTimersSection)
                                 .id("favoriteTimersSection")
+                            
+                            Spacer(minLength: 100) // 목록의 사이즈 확보를 위해 필수. 지우지 말 것!
                             
                         }
                         .padding(.horizontal)

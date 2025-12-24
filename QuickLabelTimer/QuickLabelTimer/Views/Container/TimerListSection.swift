@@ -43,28 +43,27 @@ struct TimerListSection<Item: Identifiable, RowContent: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // TODO: 섹션 타이틀 패딩 추가 예정 (.horizontal, .top, .bottom)
+            
             if let title {
                 SectionTitle(text: title)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                    .padding(.bottom, 12)
             }
 
-            // TODO: Empty view 패딩 추가 예정 (.vertical)
             if items.isEmpty {
                 Text(emptyMessage)
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity, minHeight: 100, alignment: .center)
+                    .padding(.vertical, 40)
             } else {
-                // TODO: LazyVStack spacing 및 전체 패딩 추가 예정
-                LazyVStack(spacing: 0) {
+                LazyVStack(spacing: 8) { // 행 사이 간격
                     ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                         row(for: item, at: index)
                     }
                 }
             }
         }
-        // TODO: 배경 + 코너 radius 추가 예정
-        // .background(AppTheme.contentBackground)
-        // .cornerRadius(12)
     }
 
     /// 개별 행을 생성하고 편집 모드일 때 delete 버튼을 표시
