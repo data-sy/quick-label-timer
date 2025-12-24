@@ -63,59 +63,49 @@ struct MainView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(spacing: 0) {
-//                            NewTimerRowTestView()
-                            SectionContainerView {
-                                AddTimerView(viewModel: addTimerVM)
-                            }
-                            .accessibilityLabel(A11yText.MainView.addTimerSection)
-                            .id("addTimerSection")
-
-                            Divider()
-                                .padding(.vertical, 12)
-                                .accessibilityHidden(true)
-
-                            SectionContainerView {
-                                RunningTimersView(viewModel: runningTimersVM)
-                            }
-                            .accessibilityLabel(A11yText.MainView.runningTimersSection)
-                            .id("runningTimersSection")
-
-                            Divider()
-                                .padding(.vertical, 12)
-                                .accessibilityHidden(true)
                             
-                            SectionContainerView {
-                                FavoriteTimersView(
-                                    viewModel: favoriteTimersVM,
-                                    editMode: editMode ?? .constant(.inactive)
-                                )
-                            }
-                            .accessibilityLabel(A11yText.MainView.favoriteTimersSection)
-                            .id("favoriteTimersSection")
+                            Spacer()
 
-                            Spacer(minLength: 100)
+                            AddTimerView(viewModel: addTimerVM)
+                                .accessibilityLabel(A11yText.MainView.addTimerSection)
+                                .id("addTimerSection")
+
+                            RunningTimersView(viewModel: runningTimersVM)
+                                .accessibilityLabel(A11yText.MainView.runningTimersSection)
+                                .id("runningTimersSection")
+
+                            Divider()
+                                .padding(.vertical, 12)
+                                .accessibilityHidden(true)
+
+                            FavoriteTimersView(
+                                viewModel: favoriteTimersVM,
+                                editMode: editMode ?? .constant(.inactive),
+                                scrollProxy: proxy
+                            )
+                                .accessibilityLabel(A11yText.MainView.favoriteTimersSection)
+                                .id("favoriteTimersSection")
+                            
+                            Spacer(minLength: 100) // 목록의 사이즈 확보를 위해 필수. 지우지 말 것!
+                            
                         }
                         .padding(.horizontal)
                     }
                     .accessibilityIdentifier("unifiedTimerScrollView")
-                    .ignoresSafeArea(.keyboard, edges: .bottom)
 
-                    // MARK: - Auto-scroll (TODO: anchor 위치 고민)
+                    // MARK: - Auto-scroll
                      .onReceive(timerDidStart.receive(on: RunLoop.main)) { _ in
                          withAnimation {
                              proxy.scrollTo("runningTimersSection", anchor: .top)
                          }
                      }
                 }
-                .navigationTitle("ui.timer.title")
-                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     MainToolbarContent(showSettings: $showSettings, showEditButton: false)
                 }
                 .sheet(isPresented: $showSettings) {
                     SettingsView()
                 }
-                .standardToolbarStyle()
             }
         }
         .appAlert(item: $favoriteTimersVM.activeAlert)

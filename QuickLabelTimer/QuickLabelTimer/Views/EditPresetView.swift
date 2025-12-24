@@ -23,26 +23,25 @@ struct EditPresetView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 0) {
-                SectionContainerView {
-                    VStack(spacing: 0) {
-                        TimerInputForm(
-                            sectionTitle: "",
-                            label: $viewModel.label,
-                            hours: $viewModel.hours,
-                            minutes: $viewModel.minutes,
-                            seconds: $viewModel.seconds,
-                            selectedMode: $viewModel.selectedMode,
-                            isLabelFocused: $isLabelFocused,
-                            isStartDisabled: !viewModel.canStart,
-                            onStart: {
-                                if viewModel.start() {
-                                    dismiss()
-                                } else {
-                                    isLabelFocused = !viewModel.isLabelValid  // 라벨 문제면 포커스
-                                }
+                VStack(spacing: 0) {
+                    TimerInputForm(
+                        sectionTitle: nil,
+                        label: $viewModel.label,
+                        hours: $viewModel.hours,
+                        minutes: $viewModel.minutes,
+                        seconds: $viewModel.seconds,
+                        selectedMode: $viewModel.selectedMode,
+                        isLabelFocused: $isLabelFocused,
+                        isStartDisabled: !viewModel.canStart,
+                        onStart: {
+                            if viewModel.start() {
+                                dismiss()
+                            } else {
+                                isLabelFocused = !viewModel.isLabelValid  // 라벨 문제면 포커스
                             }
-                        )
-                    }
+                        }
+                    )
+
                 }
                 .padding()
                 Spacer()
@@ -62,7 +61,6 @@ struct EditPresetView: View {
                 .padding(.horizontal)
                 .a11y(label: A11yText.EditPreset.saveButton, traits: .isButton)
             }
-            .padding()
             .navigationTitle("ui.editPreset.title")
             .navigationBarTitleDisplayMode(.inline)
             .background(AppTheme.contentBackground)

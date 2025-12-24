@@ -30,18 +30,11 @@ struct MainToolbarContent: ToolbarContent {
                 } label: {
                     Text(isEditing ? A11yText.MainToolbar.doneButtonLabel : A11yText.MainToolbar.listEditButtonLabel)
                 }
-                .a11y(
-                    label: isEditing ? A11yText.MainToolbar.doneButtonLabel : A11yText.MainToolbar.listEditButtonLabel,
-                    traits: .isButton
-                )
             }
         }
         // "설정" 버튼 (오른쪽)
         ToolbarItem(placement: .navigationBarTrailing) {
             Button(action: {
-                if isEditing {
-                    editMode?.wrappedValue = .inactive
-                }
                 showSettings = true
             }) {
                 Image(systemName: "gearshape")

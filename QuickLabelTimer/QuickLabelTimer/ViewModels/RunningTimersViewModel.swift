@@ -38,25 +38,6 @@ final class RunningTimersViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    /// 실행 중인 타이머를 프리셋으로 이동/복구
-    func handleMoveToPreset(for timer: TimerData) {
-        // 기존 프리셋에서 실행된 타이머였다면 타이머 삭제만 하면 됨 (id가 쓰이지 않게 된 프리셋은 자동으로 실행중 화면 사라짐)
-        if let presetId = timer.presetId {
-            // 프리셋 기반: 라벨 업데이트 + 삭제
-            presetRepository.updatePresetLabel(presetId: presetId, newLabel: timer.label)
-            timerService.removeTimer(id: timer.id)
-        } else {
-            // 사용자 생성 타이머라면 새 프리셋으로 변환 후 삭제
-            let success = presetRepository.addPreset(from: timer)
-            
-            if success {
-                timerService.removeTimer(id: timer.id)
-            } else {
-                activeAlert = .presetSaveLimit
-            }
-        }
-    }
-    
     /// 타이머의 즐겨찾기 상태를 토글
     func toggleFavorite(for id: UUID) {
         let success = timerService.toggleFavorite(for: id)
@@ -102,53 +83,55 @@ final class RunningTimersViewModel: ObservableObject {
     // MARK: - Delete (X 버튼)
     
     /// X 버튼 액션 - 타이머 삭제 요청 (얼럿 표시)
-    func requestToDeleteTimer(_ timer: TimerData) {
-        // 최신 타이머 데이터 가져오기 (라벨이 변경되었을 수 있음)
-        guard let latestTimer = timerService.getTimer(byId: timer.id) else {
-            print("⚠️ [RunningVM] Timer not found: \(timer.id)")
-            return
-        }
-        
-        switch (latestTimer.presetId, latestTimer.endAction) {
-        case (.none, .preserve):
-            activeAlert = .confirmStopAndSaveTimer(
-                itemName: latestTimer.label,
-                onConfirm: { [weak self] in
-                    guard let self = self else { return }
-                    guard let finalTimer = self.timerService.getTimer(byId: timer.id) else { return }
-                    self.presetRepository.addPreset(from: finalTimer)
-                    self.timerService.removeTimer(id: timer.id)
-                }
-            )
+    func requestToDeleteTimer(id: UUID) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            guard let latestTimer = timerService.getTimer(byId: id) else {
+                print("⚠️ [RunningVM] Timer not found: \(id)")
+                return
+            }
             
-        case (.none, .discard):
-            activeAlert = .confirmStopTimer(
-                itemName: latestTimer.label,
-                onConfirm: { [weak self] in
-                    self?.timerService.removeTimer(id: timer.id)
-                }
-            )
-            
-        case (.some(let presetId), .preserve):
-            activeAlert = .confirmStopTimer(
-                itemName: latestTimer.label,
-                onConfirm: { [weak self] in
-                    guard let self = self else { return }
-                    guard let finalTimer = self.timerService.getTimer(byId: timer.id) else { return }
-                    self.presetRepository.updatePresetLabel(presetId: presetId, newLabel: finalTimer.label)
-                    self.timerService.removeTimer(id: timer.id)
-                }
-            )
-            
-        case (.some(let presetId), .discard):
-            activeAlert = .confirmStopAndHideTimer(
-                itemName: latestTimer.label,
-                onConfirm: { [weak self] in
-                    guard let self = self else { return }
-                    self.presetRepository.hidePreset(withId: presetId)
-                    self.timerService.removeTimer(id: timer.id)
-                }
-            )
+            switch (latestTimer.presetId, latestTimer.endAction) {
+            case (.none, .preserve):
+                activeAlert = .confirmStopAndSaveTimer(
+                    itemName: latestTimer.label,
+                    onConfirm: { [weak self] in
+                        guard let self = self else { return }
+                        guard let finalTimer = self.timerService.getTimer(byId: id) else { return }
+                        self.presetRepository.addPreset(from: finalTimer)
+                        self.timerService.removeTimer(id: id)
+                    }
+                )
+                
+            case (.none, .discard):
+                activeAlert = .confirmStopTimer(
+                    itemName: latestTimer.label,
+                    onConfirm: { [weak self] in
+                        self?.timerService.removeTimer(id: id)
+                    }
+                )
+                
+            case (.some(let presetId), .preserve):
+                activeAlert = .confirmStopTimer(
+                    itemName: latestTimer.label,
+                    onConfirm: { [weak self] in
+                        guard let self = self else { return }
+                        guard let finalTimer = self.timerService.getTimer(byId: id) else { return }
+                        self.presetRepository.updatePresetLabel(presetId: presetId, newLabel: finalTimer.label)
+                        self.timerService.removeTimer(id: id)
+                    }
+                )
+                
+            case (.some(let presetId), .discard):
+                activeAlert = .confirmStopAndHideTimer(
+                    itemName: latestTimer.label,
+                    onConfirm: { [weak self] in
+                        guard let self = self else { return }
+                        self.presetRepository.hidePreset(withId: presetId)
+                        self.timerService.removeTimer(id: id)
+                    }
+                )
+            }
         }
     }
 }

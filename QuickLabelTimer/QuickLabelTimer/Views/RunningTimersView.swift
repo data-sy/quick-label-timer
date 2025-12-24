@@ -14,7 +14,7 @@ struct RunningTimersView: View {
     @ObservedObject var viewModel: RunningTimersViewModel
                 
     var body: some View {
-        TimerSectionView(
+        TimerListSection(
             title: String(localized: "ui.runningTimers.title"),
             items: viewModel.sortedTimers,
             emptyMessage: A11yText.RunningTimers.emptyMessage,
@@ -34,7 +34,7 @@ struct RunningTimersView: View {
                     viewModel.resetTimer(id: timer.id)
                 },
                 onDelete: {
-                    viewModel.requestToDeleteTimer(timer)
+                    viewModel.requestToDeleteTimer(id: timer.id)
                 },
                 onLabelChange: { newLabel in
                     viewModel.updateLabel(for: timer.id, newLabel: newLabel)

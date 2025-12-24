@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct TimerInputForm: View {
-    var sectionTitle: String
+    var sectionTitle: String?
 
     @Binding var label: String
     @Binding var hours: Int
@@ -26,17 +26,34 @@ struct TimerInputForm: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                SectionTitle(text: sectionTitle)
-                Spacer()
+                if let sectionTitle {
+                    SectionTitle(text: sectionTitle)
+                }
+                                
                 AlarmModeSelectorView(selectedMode: $selectedMode)
                     .fixedSize()
-                TimeChipButton(label: "ui.input.add5Minutes", action: addFiveMinutes)
+                                
+                TimeChipButton(minutes: 5) {
+                    addMinutes(5)
+                }
+                .fixedSize()
+//                TimeChipButton(minutes: 30) {
+//                    addMinutes(30)
+//                }
             }
+            .frame(maxWidth: .infinity)
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, RowTheme.padding)
+            .padding(.top, RowTheme.padding)
+            
             LabelInputField(
                 label: $label,
                 isFocused: $isLabelFocused
             )
+            .padding(.horizontal, RowTheme.padding)
+            
             Divider()
+            
             HStack(spacing: 24) {
                 TimePickerGroup(
                     hours: $hours,
@@ -48,32 +65,45 @@ struct TimerInputForm: View {
                     onTap: onStart
                 )
             }
+            .padding(.horizontal, RowTheme.padding)
         }
-        .padding()
+        .cornerRadius(RowTheme.cornerRadius)
+        .padding(.horizontal, RowTheme.padding)
+        .overlay(
+            RoundedRectangle(cornerRadius: RowTheme.cornerRadius)
+                .stroke(
+                    isLabelFocused
+                    ? Color.blue.opacity(0.8)
+                    : Color(.systemGray4),
+                    lineWidth: isLabelFocused ? 1 : 0.5
+                )
+                .animation(.easeOut(duration: 0.15), value: isLabelFocused)
+        )
+
     }
     
-    // [+5분] 버튼
-    func addFiveMinutes() {
+    // [+N분] 버튼 공용 로직
+    func addMinutes(_ amount: Int) {
         withAnimation {
-            let newMinutes = self.minutes + 5
+            let totalMinutes = hours * 60 + minutes + amount
             
-            if newMinutes < 60 {
-                self.minutes = newMinutes
-            } else {
-                self.hours += newMinutes / 60
-                self.minutes = newMinutes % 60
-            }
+            hours = totalMinutes / 60
+            minutes = totalMinutes % 60
         }
     }
 }
 
 struct TimeChipButton: View {
-    let label: LocalizedStringKey
+    let minutes: Int
     let action: () -> Void
+    
+    private var labelKey: LocalizedStringKey {
+        LocalizedStringKey("ui.input.addMinutes.\(minutes)")
+    }
     
     var body: some View {
         Button(action: action) {
-            Text(label)
+            Text(labelKey)
                 .font(.callout)
                 .fontWeight(.semibold)
                 .foregroundColor(AppTheme.controlForegroundColor)
@@ -83,7 +113,7 @@ struct TimeChipButton: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .a11y(
-            label: label, // "+5분"
+            label: labelKey, // "+5분"
             hint: A11yText.AddTimer.timeChipHint,
             traits: .isButton
         )

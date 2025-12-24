@@ -183,8 +183,12 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             return false
         }
         
+        let finalLabel = label.isEmpty
+            ? generateAutoLabel(hours: hours, minutes: minutes, seconds: seconds)
+            : label
+        
         let newTimer = TimerData(
-            label: label.isEmpty ? generateAutoLabel() : label,
+            label: finalLabel,
             hours: hours,
             minutes: minutes,
             seconds: seconds,
@@ -355,13 +359,13 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     func scheduleNotification(for timer: TimerData) {
         let policy = AlarmNotificationPolicy.determine(soundOn: timer.isSoundOn, vibrationOn: timer.isVibrationOn)
         let sound = NotificationUtils.createSound(fromPolicy: policy)
-        let title = timer.label.isEmpty ? String(localized: "ui.notification.timerComplete") : timer.label
-        let body = String(localized: "ui.notification.tapToDismiss")
-        
+        let timeString = timer.endDate.formatted(date: .omitted, time: .shortened)
+        let title = String(localized: "ui.notification.timerEndedAt \(timeString)")
+        let bodyContent = timer.label.isEmpty ? String(localized: "ui.notification.timerComplete") : timer.label
         scheduleRepeatingNotifications(
             baseId: timer.id.uuidString,
             title: title,
-            body: body,
+            body: bodyContent,
             sound: sound,
             endDate: timer.endDate,
             repeatingInterval: AppConfig.notificationRepeatingInterval
@@ -378,9 +382,9 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             
             guard interval > 0 else { continue }
             
-            let clockCount = (i % 5) + 1
+            let clockCount = i + 1
             let clocks = String(repeating: "⏰", count: clockCount)
-            let dynamicBody = "\(body) \(clocks)"
+            let dynamicBody = "\(clocks)\n\(body)"
 
             let userInfo: [AnyHashable: Any] = [
                 "baseIdentifier": baseId,
@@ -457,17 +461,27 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
         }
     }
     
-    /// 사용자가 라벨을 입력하지 않았을 때 "Timer N" 형식의 고유한 라벨 생성 (오름차순)
-    private func generateAutoLabel() -> String {
-        let existingLabels = Set(timerRepository.getAllTimers().map(\.label) + presetRepository.allPresets.map(\.label))
-        var index = 1
-        while true {
-            let candidate = String(format: String(localized: "ui.timer.autoLabel"), index)
-            if !existingLabels.contains(candidate) {
-                return candidate
-            }
-            index += 1
+    /// 사용자가 라벨을 입력하지 않았을 때 타이머 시간 기반 라벨 생성 (예: "5분 타이머", "1시간 30분 타이머")
+    private func generateAutoLabel(hours: Int, minutes: Int, seconds: Int) -> String {
+        let components = buildTimeComponents(hours: hours, minutes: minutes, seconds: seconds)
+        return String(format: String(localized: "ui.timer.autoLabel.time"), components)
+    }
+
+    /// 시간 컴포넌트를 자연어로 조합 (예: "5분", "1시간 30분", "2시간 15분 30초")
+    private func buildTimeComponents(hours: Int, minutes: Int, seconds: Int) -> String {
+        var parts: [String] = []
+        
+        if hours > 0 {
+            parts.append(String(format: String(localized: "ui.timer.hourFormat"), hours))
         }
+        if minutes > 0 {
+            parts.append(String(format: String(localized: "ui.timer.minuteFormat"), minutes))
+        }
+        if seconds > 0 && hours == 0 { // 시간 단위가 있으면 초는 생략
+            parts.append(String(format: String(localized: "ui.timer.secondFormat"), seconds))
+        }
+        
+        return parts.joined(separator: " ")
     }
     
     /// 연속 활성화 시 과도 호출을 방지하는 디바운스

@@ -138,4 +138,29 @@ enum RowTheme {
             )
         }
     }
+
+    // MARK: - Editable Label
+    /// 편집 아이콘 크기
+    static let editIconSize: CGFloat = 16
+    /// 편집 아이콘 투명도 (일반 상태)
+    static let editIconOpacity: CGFloat = 0.5
+    /// 편집 중 배경 모서리 반경
+    static let editingCornerRadius: CGFloat = 8
+    /// 편집 중 배경 패딩 (상하좌우)
+    static let editingBackgroundPadding: EdgeInsets = EdgeInsets(
+        top: 8,
+        leading: 12,
+        bottom: 8,
+        trailing: 12
+    )
+    /// 편집 중 외곽선 두께
+    static let editingBorderWidth: CGFloat = 1.5
+    /// 최소 탭 영역 높이
+    static let minimumTapHeight: CGFloat = 44
+
+    // MARK: - Editable Label Colors
+    /// 편집 중 배경색 오버레이 (기존 카드 배경 위에 살짝 더 어둡게)
+    static let editingBackgroundOverlay = Color.black.opacity(0.05)
+    /// 편집 중 외곽선 색상 (단일 색상)
+    static let editingBorderColor = Color.primary.opacity(0.2)
 }

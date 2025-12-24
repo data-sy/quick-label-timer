@@ -71,9 +71,7 @@ class FavoriteTimersViewModel: ObservableObject {
     
     /// 프리셋의 라벨 업데이트
     func updateLabel(for presetId: UUID, newLabel: String) {
-        Task { @MainActor in
-            presetRepository.updatePresetLabel(presetId: presetId, newLabel: newLabel)
-        }
+        presetRepository.updatePresetLabel(presetId: presetId, newLabel: newLabel)
     }
         
     /// 타이머 실행 (프리셋 숨김 + 타이머 생성)
@@ -133,7 +131,12 @@ class FavoriteTimersViewModel: ObservableObject {
 
     /// Run 버튼 액션 - 프리셋에서 타이머를 실행합니다
     func runTimerFromPreset(preset: TimerPreset) {
-        runTimer(from: preset)
-        print("Run timer from preset: \(preset.label)")
+        // Fetch the latest preset to ensure we have the most recent changes (e.g., label edits)
+        guard let latestPreset = presetRepository.getPreset(byId: preset.id) else {
+            print("Preset not found: \(preset.id)")
+            return
+        }
+        runTimer(from: latestPreset)
+        print("Run timer from preset: \(latestPreset.label)")
     }
 }

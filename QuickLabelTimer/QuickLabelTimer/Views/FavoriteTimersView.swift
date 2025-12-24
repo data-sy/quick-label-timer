@@ -13,9 +13,10 @@ import SwiftUI
 struct FavoriteTimersView: View {
     @ObservedObject var viewModel: FavoriteTimersViewModel
     @Binding var editMode: EditMode
+    let scrollProxy: ScrollViewProxy?
     
     var body: some View {
-        TimerSectionView(
+        TimerListSection(
             title: String(localized: "ui.favorite.title"),
             items: viewModel.visiblePresets,
             emptyMessage: A11yText.FavoriteTimers.emptyMessage,
@@ -25,6 +26,7 @@ struct FavoriteTimersView: View {
             if !viewModel.isPresetRunning(preset) {
                 FavoritePresetRowView(
                     preset: preset,
+                    scrollProxy: scrollProxy,
                     onToggleFavorite: { viewModel.requestToHide(preset) },
                     onPlayPause: {
                         viewModel.runTimerFromPreset(preset: preset)
@@ -36,6 +38,7 @@ struct FavoriteTimersView: View {
                         viewModel.updateLabel(for: preset.id, newLabel: newLabel)
                     }
                 )
+                .id(preset.id)
                 .transition(.asymmetric(
                     insertion: .opacity.combined(with: .scale(scale: 0.95)),
                     removal: .opacity.combined(with: .scale(scale: 0.95))
