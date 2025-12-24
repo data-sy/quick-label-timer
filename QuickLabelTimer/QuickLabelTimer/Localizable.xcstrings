@@ -288,13 +288,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No saved favorites"
+            "value" : "No saved bookmarks"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "저장된 즐겨찾기가 없습니다"
+            "value" : "저장된 북마크가 없습니다"
           }
         }
       }
@@ -518,13 +518,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Favorite"
+            "value" : "Bookmark"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "즐겨찾기"
+            "value" : "북마크"
           }
         }
       }
@@ -534,13 +534,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add to favorites"
+            "value" : "Add to bookmarks"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "즐겨찾기에 추가합니다"
+            "value" : "북마크에 추가합니다"
           }
         }
       }
@@ -550,13 +550,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Remove from favorites"
+            "value" : "Remove from bookmarks"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "즐겨찾기에서 해제합니다"
+            "value" : "북마크에서 해제합니다"
           }
         }
       }
@@ -566,13 +566,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Move to Favorites"
+            "value" : "Move to Bookmarks"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "즐겨찾기로 이동"
+            "value" : "북마크로 이동"
           }
         }
       }
@@ -972,13 +972,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can add up to %lld favorite."
+                  "value" : "You can add up to %lld bookmark."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can add up to %lld favorites."
+                  "value" : "You can add up to %lld bookmarks."
                 }
               }
             }
@@ -987,7 +987,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "즐겨찾기는 최대 20개까지 추가할 수 있습니다."
+            "value" : "북마크는 최대 20개까지 추가할 수 있습니다."
           }
         }
       }
@@ -1281,13 +1281,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Favorites"
+            "value" : "Bookmarks"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "즐겨찾기"
+            "value" : "북마크"
           }
         }
       }
