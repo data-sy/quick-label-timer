@@ -75,13 +75,13 @@ struct EditableTimerLabel: View {
                 }
             }
         }
-        .onChange(of: isFocused) { newValue in
+        .onChange(of: isFocused) { oldValue, newValue in
             if !newValue && isEditing {
                 // Lost focus - commit changes
                 commitEdit()
             }
         }
-        .onChange(of: isEditing) { newValue in
+        .onChange(of: isEditing) { oldValue, newValue in
             if !newValue && isFocused {
                 // Parent forced edit to end (e.g., play button tapped) - commit changes
                 commitEdit()

@@ -20,7 +20,7 @@ struct FavoriteToggleButton: View {
     }
     
     private var tint: Color {
-        let colors = RowTheme.colors(for: status)
+        _ = RowTheme.colors(for: status)
         
         switch (isOn, status) {
         case (true, _):

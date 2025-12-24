@@ -91,7 +91,7 @@ struct NewTimerRow: View {
             // BOTTOM: Alarm + End Time (stopped 상태가 아닐 때만)
             if timer.status != .stopped {
                 HStack(spacing: 4) {
-                    if timer.status == .completed, let deletionTime = timer.pendingDeletionAt {
+                    if timer.status == .completed, timer.pendingDeletionAt != nil {
                         CountdownMessageView(timer: timer)
                     } else {
                         EndTimeInfoView(timer: timer, foregroundColor: colors.cardForeground)
