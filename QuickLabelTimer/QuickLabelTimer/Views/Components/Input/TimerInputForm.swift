@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct TimerInputForm: View {
-    var sectionTitle: String
+    var sectionTitle: String?
 
     @Binding var label: String
     @Binding var hours: Int
@@ -26,9 +26,13 @@ struct TimerInputForm: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                SectionTitle(text: sectionTitle)
+                if let sectionTitle {
+                    SectionTitle(text: sectionTitle)
+                }
+                                
                 AlarmModeSelectorView(selectedMode: $selectedMode)
                     .fixedSize()
+                                
                 TimeChipButton(minutes: 5) {
                     addMinutes(5)
                 }
@@ -37,6 +41,8 @@ struct TimerInputForm: View {
 //                    addMinutes(30)
 //                }
             }
+            .frame(maxWidth: .infinity)
+            .multilineTextAlignment(.center)
             .padding(.horizontal, RowTheme.padding)
             .padding(.top, RowTheme.padding)
             
@@ -47,7 +53,6 @@ struct TimerInputForm: View {
             .padding(.horizontal, RowTheme.padding)
             
             Divider()
-                .opacity(RowTheme.dividerOpacity)
             
             HStack(spacing: 24) {
                 TimePickerGroup(

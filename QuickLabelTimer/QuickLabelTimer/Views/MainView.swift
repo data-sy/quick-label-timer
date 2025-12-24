@@ -63,6 +63,8 @@ struct MainView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(spacing: 0) {
+                            
+                            Spacer()
 
                             AddTimerView(viewModel: addTimerVM)
                                 .accessibilityLabel(A11yText.MainView.addTimerSection)

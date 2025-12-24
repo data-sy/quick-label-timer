@@ -30,10 +30,20 @@ struct LabelInputField: View {
                     .overlay(Color.gray.opacity(0.4))
 
                 TextField("ui.input.labelPlaceholder", text: $label)
+                    .submitLabel(.done)
                     .focused($isFocused)
+                    .onSubmit {
+                        isFocused = false
+                    }
                     .textInputAutocapitalization(.none)
                     .frame(maxWidth: .infinity)
                 Spacer()
+                
+                Image(systemName: "pencil")
+                    .font(.system(size: RowTheme.editIconSize))
+                    .foregroundColor(.secondary)
+                    .opacity(isFocused ? 0.0 : RowTheme.editIconOpacity)
+                    .animation(.easeInOut(duration: 0.2), value: isFocused)
                 
                 // 카운터: 80 이상일 때부터 표시
                 if label.count >= warningThreshold {
