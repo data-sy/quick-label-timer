@@ -17,9 +17,9 @@ enum AppConfig {
     
     // MARK: - Timer & Notification Policy
     /// 동시에 실행 가능한 최대 타이머 개수
-    static let maxConcurrentTimers = 5
+    static let maxConcurrentTimers = 6
     /// 타이머 하나당 예약되는 반복 알림의 개수
-    static let repeatingNotificationCount = 12
+    static let repeatingNotificationCount = 10
     /// 연속 알림의 반복 간격 (초)
     static let notificationRepeatingInterval: TimeInterval = 3.0
     /// iOS 시스템이 허용하는 앱당 최대 알림 예약 개수

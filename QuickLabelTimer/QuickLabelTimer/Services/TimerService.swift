@@ -359,13 +359,13 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
     func scheduleNotification(for timer: TimerData) {
         let policy = AlarmNotificationPolicy.determine(soundOn: timer.isSoundOn, vibrationOn: timer.isVibrationOn)
         let sound = NotificationUtils.createSound(fromPolicy: policy)
-        let title = timer.label.isEmpty ? String(localized: "ui.notification.timerComplete") : timer.label
-        let body = String(localized: "ui.notification.tapToDismiss")
-        
+        let timeString = timer.endDate.formatted(date: .omitted, time: .shortened)
+        let title = String(localized: "ui.notification.timerEndedAt \(timeString)")
+        let bodyContent = timer.label.isEmpty ? String(localized: "ui.notification.timerComplete") : timer.label
         scheduleRepeatingNotifications(
             baseId: timer.id.uuidString,
             title: title,
-            body: body,
+            body: bodyContent,
             sound: sound,
             endDate: timer.endDate,
             repeatingInterval: AppConfig.notificationRepeatingInterval
@@ -382,9 +382,9 @@ final class TimerService: ObservableObject, TimerServiceProtocol {
             
             guard interval > 0 else { continue }
             
-            let clockCount = (i % 5) + 1
+            let clockCount = i + 1
             let clocks = String(repeating: "⏰", count: clockCount)
-            let dynamicBody = "\(body) \(clocks)"
+            let dynamicBody = "\(clocks)\n\(body)"
 
             let userInfo: [AnyHashable: Any] = [
                 "baseIdentifier": baseId,
