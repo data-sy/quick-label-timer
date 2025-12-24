@@ -1000,13 +1000,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can run up to %lld timer."
+                  "value" : "For optimal focus, we recommend managing up to %11d timer at once."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can run up to %lld timers."
+                  "value" : "For optimal focus, we recommend managing up to %11d timers at once."
                 }
               }
             }
@@ -1015,7 +1015,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "타이머는 최대 %lld개까지 실행할 수 있습니다."
+            "value" : "효율적인 집중을 위해, 타이머는 동시에 %11d개까지만 관리하는 것을 추천드려요."
           }
         }
       }
