@@ -1084,13 +1084,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can add up to %lld bookmark."
+                  "value" : "You can add up to %d bookmark."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "You can add up to %lld bookmarks."
+                  "value" : "You can add up to %d bookmarks."
                 }
               }
             }
@@ -1098,8 +1098,8 @@
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "북마크는 최대 %11d개까지 추가할 수 있습니다."
+            "state" : "needs_review",
+            "value" : "북마크는 최대 %d개까지 추가할 수 있습니다."
           }
         }
       }
