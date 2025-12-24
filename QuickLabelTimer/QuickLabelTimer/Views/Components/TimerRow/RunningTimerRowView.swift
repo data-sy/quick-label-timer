@@ -19,7 +19,7 @@ struct RunningTimerRowView: View {
     let onLabelChange: ((String) -> Void)?
 
     var body: some View {
-        NewTimerRow(
+        TimerRow(
             timer: timer,
             scrollProxy: nil,
             onToggleFavorite: onToggleFavorite ?? {},

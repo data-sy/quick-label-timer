@@ -2,7 +2,7 @@
 //  EditableTimerLabel.swift
 //  QuickLabelTimer
 //
-//  Created for TimerRow Redesign - Inline Editing
+//  Created by 이소연 on 12/20/25.
 //
 /// 탭하여 편집 가능한 타이머 라벨
 ///

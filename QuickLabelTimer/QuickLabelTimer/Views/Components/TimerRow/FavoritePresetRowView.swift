@@ -45,7 +45,7 @@ struct FavoritePresetRowView: View {
     }
 
     var body: some View {
-        NewTimerRow(
+        TimerRow(
             timer: tempTimer,
             scrollProxy: scrollProxy,
             onToggleFavorite: onToggleFavorite ?? {},
