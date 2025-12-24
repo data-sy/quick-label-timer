@@ -28,4 +28,8 @@ enum AppConfig {
     /// 타이머 완료 후 자동 삭제까지 대기 시간 (초)
     static let deleteCountdownSeconds = 30
     
+    // MARK: - Preset
+    /// 저장 가능한 최대 즐겨찾기 개수
+    static let maxFavoritesPresets = 20
+    
 }
