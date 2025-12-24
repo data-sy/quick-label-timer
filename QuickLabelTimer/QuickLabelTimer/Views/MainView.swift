@@ -100,15 +100,12 @@ struct MainView: View {
                          }
                      }
                 }
-                .navigationTitle("ui.timer.title")
-                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     MainToolbarContent(showSettings: $showSettings, showEditButton: false)
                 }
                 .sheet(isPresented: $showSettings) {
                     SettingsView()
                 }
-                .standardToolbarStyle()
             }
         }
         .appAlert(item: $favoriteTimersVM.activeAlert)
