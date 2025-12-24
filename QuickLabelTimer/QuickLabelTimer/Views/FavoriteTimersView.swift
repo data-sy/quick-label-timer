@@ -16,7 +16,7 @@ struct FavoriteTimersView: View {
     let scrollProxy: ScrollViewProxy?
     
     var body: some View {
-        TimerSectionView(
+        TimerListSection(
             title: String(localized: "ui.favorite.title"),
             items: viewModel.visiblePresets,
             emptyMessage: A11yText.FavoriteTimers.emptyMessage,

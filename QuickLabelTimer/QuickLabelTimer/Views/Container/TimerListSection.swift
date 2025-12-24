@@ -1,19 +1,19 @@
 //
-//  TimerSectionView.swift
+//  TimerListSection.swift
 //  QuickLabelTimer
 //
-//  Created by Claude on 12/15/25.
+//  Created by 이소연 on 12/24/25.
 //
-/// 타이머 섹션 뷰 (VStack 기반)
+/// 타이머 리스트를 섹션 단위로 표시하는 컨테이너 뷰
 ///
-/// - 사용 목적: TimerListContainerView의 VStack 기반 대체 구현
-/// - 중첩 스크롤 문제 방지를 위해 List 대신 LazyVStack 사용
+/// - 사용 목적: 섹션 타이틀과 타이머 리스트를 하나의 카드 형태로 그룹화
 
 import SwiftUI
 
-struct TimerSectionView<Item: Identifiable, RowContent: View>: View {
+struct TimerListSection<Item: Identifiable, RowContent: View>: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.editMode) private var editMode
+    
     private var isEditing: Bool {
         editMode?.wrappedValue.isEditing ?? false
     }
@@ -43,17 +43,18 @@ struct TimerSectionView<Item: Identifiable, RowContent: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // TODO: 섹션 타이틀 패딩 추가 예정 (.horizontal, .top, .bottom)
             if let title {
                 SectionTitle(text: title)
-                    .padding([.horizontal, .top])
-                    .padding(.bottom, 8)
             }
 
+            // TODO: Empty view 패딩 추가 예정 (.vertical)
             if items.isEmpty {
                 Text(emptyMessage)
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity, minHeight: 100, alignment: .center)
             } else {
+                // TODO: LazyVStack spacing 및 전체 패딩 추가 예정
                 LazyVStack(spacing: 0) {
                     ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                         row(for: item, at: index)
@@ -61,12 +62,16 @@ struct TimerSectionView<Item: Identifiable, RowContent: View>: View {
                 }
             }
         }
+        // TODO: 배경 + 코너 radius 추가 예정
+        // .background(AppTheme.contentBackground)
+        // .cornerRadius(12)
     }
 
-    /// Vstack에 표시될 개별 행을 생성하고 공통 스타일(배경, 색상 등)을 적용하는 헬퍼 뷰
+    /// 개별 행을 생성하고 편집 모드일 때 delete 버튼을 표시
     @ViewBuilder
     private func row(for item: Item, at index: Int) -> some View {
         HStack(spacing: 0) {
+            // TODO: 편집 모드 delete 버튼 패딩 조정 예정
             if isEditing, onDelete != nil {
                 Button(role: .destructive) {
                     onDelete?(IndexSet(integer: index))
@@ -75,24 +80,10 @@ struct TimerSectionView<Item: Identifiable, RowContent: View>: View {
                         .foregroundColor(.red)
                         .imageScale(.large)
                 }
-                .padding(.horizontal, 12)
             }
 
             rowContent(item)
         }
-        .background(backgroundColor(for: stateProvider(item)))
-        .cornerRadius(12)
-        .padding(.vertical, 4)
-        .padding(.horizontal, 16)
         .animation(.default, value: isEditing)
-    }
-
-    private func backgroundColor(for state: TimerInteractionState) -> Color {
-        switch state {
-        case .paused, .stopped, .completed:
-            return Color(.systemGray5)
-        default:
-            return AppTheme.contentBackground
-        }
     }
 }

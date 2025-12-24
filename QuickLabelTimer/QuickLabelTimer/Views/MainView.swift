@@ -63,37 +63,31 @@ struct MainView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(spacing: 0) {
-                            SectionContainerView {
-                                AddTimerView(viewModel: addTimerVM)
-                            }
-                            .accessibilityLabel(A11yText.MainView.addTimerSection)
-                            .id("addTimerSection")
+
+                            AddTimerView(viewModel: addTimerVM)
+                                .accessibilityLabel(A11yText.MainView.addTimerSection)
+                                .id("addTimerSection")
 
                             Divider()
                                 .padding(.vertical, 12)
                                 .accessibilityHidden(true)
 
-                            SectionContainerView {
-                                RunningTimersView(viewModel: runningTimersVM)
-                            }
-                            .accessibilityLabel(A11yText.MainView.runningTimersSection)
-                            .id("runningTimersSection")
+                            RunningTimersView(viewModel: runningTimersVM)
+                                .accessibilityLabel(A11yText.MainView.runningTimersSection)
+                                .id("runningTimersSection")
 
                             Divider()
                                 .padding(.vertical, 12)
                                 .accessibilityHidden(true)
+
+                            FavoriteTimersView(
+                                viewModel: favoriteTimersVM,
+                                editMode: editMode ?? .constant(.inactive),
+                                scrollProxy: proxy
+                            )
+                                .accessibilityLabel(A11yText.MainView.favoriteTimersSection)
+                                .id("favoriteTimersSection")
                             
-                            SectionContainerView {
-                                FavoriteTimersView(
-                                    viewModel: favoriteTimersVM,
-                                    editMode: editMode ?? .constant(.inactive),
-                                    scrollProxy: proxy
-                                )
-                            }
-                            .accessibilityLabel(A11yText.MainView.favoriteTimersSection)
-                            .id("favoriteTimersSection")
-
-                            Spacer(minLength: 100)
                         }
                         .padding(.horizontal)
                     }
