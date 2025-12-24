@@ -13,7 +13,7 @@ import UserNotifications
 
 enum AlarmSound: String, CaseIterable, Identifiable {
     // 사용자에게 표시될 실제 사운드
-    case systemDefault, beepSingle, beepDouble, buzzLow, buzzHigh, ringtone01, ringtone02
+    case systemDefault, buzzLow, buzzHigh, ringtone01, ringtone02
     // '진동만' 모드를 위한 기술적인 케이스 (UI에는 표시되지 않음)
     case silence
     
@@ -24,8 +24,6 @@ enum AlarmSound: String, CaseIterable, Identifiable {
         case .systemDefault: return String(localized: "ui.alarmSound.default")
         case .buzzLow: return String(localized: "ui.alarmSound.buzzLow")
         case .buzzHigh: return String(localized: "ui.alarmSound.buzzHigh")
-        case .beepSingle: return String(localized: "ui.alarmSound.beepSingle")
-        case .beepDouble: return String(localized: "ui.alarmSound.beepDouble")
         case .ringtone01: return String(localized: "ui.alarmSound.ringtone01")
         case .ringtone02: return String(localized: "ui.alarmSound.ringtone02")
         case .silence: return String(localized: "ui.alarmSound.silence") // UI에 표시되진 않지만, 디버깅 등을 위해 명확한 이름 부여
@@ -55,7 +53,7 @@ enum AlarmSound: String, CaseIterable, Identifiable {
         return allCases.filter { $0 != .silence && $0 != .systemDefault }
     }
 
-    static var `default`: AlarmSound { .beepSingle }
+    static var `default`: AlarmSound { .ringtone01 }
 
     static var current: AlarmSound {
         if let id = UserDefaults.standard.string(forKey: "defaultSound"),
@@ -74,8 +72,6 @@ enum AlarmSound: String, CaseIterable, Identifiable {
         case .systemDefault: return nil
         case .buzzLow: return "buzz-low"
         case .buzzHigh: return "buzz-high"
-        case .beepSingle: return "beep-single"
-        case .beepDouble: return "beep-double"
         case .ringtone01: return "ringtone-01"
         case .ringtone02: return "ringtone-02"
         case .silence: return "inaudible_tone"

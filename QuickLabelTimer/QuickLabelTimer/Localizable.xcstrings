@@ -836,38 +836,6 @@
         }
       }
     },
-    "ui.alarmSound.beepDouble" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Double Beep"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이중 삑"
-          }
-        }
-      }
-    },
-    "ui.alarmSound.beepSingle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beep"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "삑"
-          }
-        }
-      }
-    },
     "ui.alarmSound.buzzHigh" : {
       "localizations" : {
         "en" : {
