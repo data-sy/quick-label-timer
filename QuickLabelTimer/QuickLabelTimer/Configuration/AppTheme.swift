@@ -24,17 +24,6 @@ enum AppTheme {
     static let controlBackgroundColor = Color.primary.opacity(0.075)
     /// 폼 내부 보조 컨트롤의 아이콘/텍스트 색상
     static let controlForegroundColor = Color.primary.opacity(0.75)
-
-    // MARK: - Fonts (예시)
-    /*
-    static let titleFont = Font.system(size: 24, weight: .bold)
-    static let bodyFont = Font.system(size: 16)
-    */
-    
-    // MARK: - Spacing (예시)
-    /*
-    static let defaultPadding: CGFloat = 16
-    */
     
     // MARK: - Buttons (중앙 관리)
     enum Buttons {

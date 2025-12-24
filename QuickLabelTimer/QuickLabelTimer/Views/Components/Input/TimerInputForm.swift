@@ -37,9 +37,6 @@ struct TimerInputForm: View {
                     addMinutes(5)
                 }
                 .fixedSize()
-//                TimeChipButton(minutes: 30) {
-//                    addMinutes(30)
-//                }
             }
             .frame(maxWidth: .infinity)
             .multilineTextAlignment(.center)

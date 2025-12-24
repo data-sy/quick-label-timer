@@ -59,7 +59,6 @@ struct EditableTimerLabel: View {
                         .font(.headline)
                         .foregroundColor(colors.cardForeground)
                         .lineLimit(nil)
-//                        .fixedSize(horizontal: false, vertical: true)
                     
                     Spacer()
                                         

@@ -60,9 +60,3 @@ struct SoundHelpView: View {
         }
     }
 }
-
-#Preview {
-    NavigationStack {
-        SoundHelpView()
-    }
-}

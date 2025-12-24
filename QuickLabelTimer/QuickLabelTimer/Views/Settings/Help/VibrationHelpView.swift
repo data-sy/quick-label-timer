@@ -34,9 +34,3 @@ struct VibrationHelpView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-
-#Preview {
-    NavigationStack {
-        VibrationHelpView()
-    }
-}

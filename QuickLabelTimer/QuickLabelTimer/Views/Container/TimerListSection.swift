@@ -70,7 +70,6 @@ struct TimerListSection<Item: Identifiable, RowContent: View>: View {
     @ViewBuilder
     private func row(for item: Item, at index: Int) -> some View {
         HStack(spacing: 0) {
-            // TODO: 편집 모드 delete 버튼 패딩 조정 예정
             if isEditing, onDelete != nil {
                 Button(role: .destructive) {
                     onDelete?(IndexSet(integer: index))

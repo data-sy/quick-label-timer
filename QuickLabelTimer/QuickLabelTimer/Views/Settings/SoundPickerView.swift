@@ -48,7 +48,7 @@ struct SoundPickerView: View {
                 audioPlayer?.stop()
             }
             guard let url = sound.playableURL else {
-                logger.info("'\(sound.displayName)' has no local file to play for preview.")
+                logger.warning("'\(sound.displayName)' has no local file to play.")
                 return
             }
 
@@ -64,8 +64,4 @@ struct SoundPickerView: View {
                 #endif
             }
         }
-}
-
-#Preview {
-    SoundPickerView()
 }

@@ -133,10 +133,8 @@ class FavoriteTimersViewModel: ObservableObject {
     func runTimerFromPreset(preset: TimerPreset) {
         // Fetch the latest preset to ensure we have the most recent changes (e.g., label edits)
         guard let latestPreset = presetRepository.getPreset(byId: preset.id) else {
-            print("Preset not found: \(preset.id)")
             return
         }
         runTimer(from: latestPreset)
-        print("Run timer from preset: \(latestPreset.label)")
     }
 }
