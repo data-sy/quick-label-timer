@@ -252,7 +252,8 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
 ## License
 
-[License information to be added]
+Licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE).
+You may use, modify, and share this software for **noncommercial purposes only** — commercial use is not permitted.
 
 ---
 
